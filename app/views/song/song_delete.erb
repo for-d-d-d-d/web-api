@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+    <!--[if IE 9 ]><html class="ie9"><![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Material Admin</title>
+        
+        <!-- Vendor CSS -->
+        <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+            
+        <!-- CSS -->
+        <link href="/css/app.min.1.css" rel="stylesheet">
+        <link href="/css/app.min.2.css" rel="stylesheet">
+    </head>
+    
+    <body class="login-content">
+        <!-- Login -->
+        <div class="lc-block toggled" id="l-login">
+            <form action="/song/song_delete/<%= @song.id %>?confirm=true" method="POST">
+            <p class="text-left">곡의 정보를 보호하기 위해 삭제하기에 앞서 관리자임을 확인합니다.</p>
+            <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
+                <div class="fg-line">
+                    <input type="text" name="username" class="form-control" placeholder="Username">
+                </div>
+            </div>
+            
+            <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
+                <div class="fg-line">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                </div>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+            <div class="checkbox">
+                <a href="/admin/songs_info" class="btn bgm-lightgreen btn-xs waves-effect">
+                    <i class="input-helper"></i>
+                    이전 화면으로
+                </a>
+            </div>
+            
+            <button type="submit" class="btn btn-login btn-danger btn-float"><i class="zmdi zmdi-arrow-forward"></i></button>
+            </form>
+            
+        </div>
+        
+        <!-- Javascript Libraries -->
+        <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
+        
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+        
+        <script src="/js/functions.js"></script>
+        
+    </body>
+</html>

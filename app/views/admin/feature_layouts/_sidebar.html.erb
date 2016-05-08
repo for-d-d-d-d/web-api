@@ -1,0 +1,65 @@
+<aside id="sidebar" class="sidebar c-overflow">
+    <div class="profile-menu">
+        <a href="" style="background: url(<%= image_path 'profile-menu.png' %>) no-repeat left top; background-size: 100%;">
+            <div class="profile-pic">
+                <!--<img src="images/profile-pics/1.jpg" alt="">-->
+                <%= image_tag 'profile-pics/1.jpg', alt: "" %>
+            </div>
+
+            <div class="profile-info">
+                Malinda Hollaway
+
+                <i class="zmdi zmdi-caret-down"></i>
+            </div>
+        </a>
+
+        <ul class="main-menu">
+            <li>
+                <a href="profile_about.html"><i class="zmdi zmdi-account"></i> 프로필 보기</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-input-antenna"></i> Privacy Settings</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-time-restore"></i> Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="main-menu">
+        <li class="active">
+            <a href="index.html"><i class="zmdi zmdi-home"></i> 관리자 홈</a>
+        </li>
+        <li class="sub-menu">
+            <a href=""><i class="zmdi zmdi-view-compact"></i> 상단헤더 컨트롤</a>
+
+            <ul>
+                <li><a href="textual-menu.html">문자형 로고</a></li>
+                <li><a href="image-logo.html">이미지 로고</a></li>
+                <li><a href="top-mainmenu.html">사이드바 포함하기</a></li>
+            </ul>
+        </li>
+        <li class="sub-menu">
+            <a href=""><i class="zmdi zmdi-widgets"></i> 팀 & 멤버 & 커뮤니티</a>
+
+            <ul>
+                <li><a href="http://whale-0-0-1-cloned-yhk1038-2.c9users.io/admin/awesome_4d.html">팀 4D</a></li>
+                <li><a href="widget-templates.html">무적함대 멤버들</a></li>
+                <li><a href="widget-templates.html">Templates</a></li>
+                <li><a href="widgets.html">Widgets</a></li>
+            </ul>
+        </li>
+        <li class="sub-menu">
+            <a href=""><i class="zmdi zmdi-view-list"></i> 곡 정보들</a>
+
+            <ul>
+                <li><a href="songs_info">전체 곡 및 정보입력</a></li>
+                <li><a href="gui_vr_info">곡별 음역대 분포도</a></li>
+                <li><a href="list_range">곡/음역 이슈 정리</a></li>
+            </ul>
+        </li>
+    </ul>
+</aside>

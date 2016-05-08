@@ -1,0 +1,139 @@
+<% if @guess_error.nil? %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <title>고래방 !</title>
+  <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%#= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%#= csrf_meta_tags %>
+  
+  
+  <!--아이콘 및 파비콘 menifest-->
+  <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/img/favicon/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/img/favicon/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/img/favicon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/img/favicon/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/img/favicon/manifest.json">
+  <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+  <meta name="apple-mobile-web-app-title" content="Gorebang">
+  <meta name="application-name" content="Gorebang">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/img/favicon/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+	
+  
+  <!-- 480 481-767 768-979 980-1199 1200 -->
+  <!--<link rel="stylesheet" href="/css/-480.css" media="all and (max-width:480px)">-->
+  <!--<link rel="stylesheet" href="/css/481-767.css" media="all and (min-width:481px) and (max-width:767px)">-->
+  <!--<link rel="stylesheet" href="/css/768-979.css" media="all and (min-width:768px) and (max-width:979px)">-->
+  <!--<link rel="stylesheet" href="/css/980-1199.css" media="all and (min-width:980px) and (max-width:1199px)">-->
+  <!--<link rel="stylesheet" href="/css/1200-.css" media="all and (min-width:1200px)">-->
+  <!--<link rel="stylesheet" href="/css/all.css">-->
+  
+  
+  
+  
+   <!-- 합쳐지고 최소화된 최신 CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <!-- 부가적인 테마 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <%= stylesheet_link_tag params[:controller] %>
+  
+  <link href="../assets/stylesheets/gorae.css" rel="stylesheet">
+  
+  <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <!-- 드롭바용 제이커리 -->
+  <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> 
+  
+  <!--글씨체 한나체로 변경-->
+  <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/earlyaccess/nanumgothic.css' rel='stylesheet' type='text/css'>  
+</head>
+<body>
+  <% @filled_songs_array2 = Song.all %>
+  <% @filled_albums_array2 = Album.all %>
+  
+  
+  <h1>Modified Songs in Song Table are here.</h1>
+  <table class="table table-striped">
+    <tbody>
+      
+      <tr>
+        <% Song.attribute_names.each do |att1| %>
+          <% next if att1 == "id" || att1 == "lowkey" || att1 == "highkey" || att1 == "created_at" || att1 == "updated_at" %>
+          <td><%= att1 %></td>
+        <% end %>
+      </tr>
+      
+      <% @filled_songs_array2.each do |song| %>
+      <tr>
+        <% Song.attribute_names.each do |song_column| %>
+          <% next if song_column == "id" || song_column == "lowkey" || song_column == "highkey" || song_column == "created_at" || song_column == "updated_at" %>
+          <% if song_column == "artist_photo" || song_column == "jacket" %>
+            <td><img src="<%= eval("song.#{song_column}") %>" style="width:75px; height:75px;"></td>
+          <% elsif song_column == "lyrics" %>
+            <td><%= eval("song.#{song_column}.present?") %></td>
+          <% else %>
+            <% if eval("song.#{song_column}.to_s.length") >= 40 %>
+              <td><%= eval("song.#{song_column}.first(10)") %></td>
+            <% else %>
+              <td><%= eval("song.#{song_column}") %></td>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
+  <br>
+  <br>
+  <h1>So, Added Albums on Album Table with modified songs, are here.</h1>
+  <table class="table table-striped">
+    <tbody>
+      
+      <tr>
+        <% Album.attribute_names.each do |att2| %>
+          <% next if att2 == "id" || att2 == "created_at" || att2 == "updated_at" %>
+          <td><%= att2 %></td>
+        <% end %>
+      </tr>
+      
+      <% @filled_albums_array2. each do |album| %>
+      <tr>
+        <% Album.attribute_names.each do |album_column| %>
+          <% next if album_column == "id" || album_column == "created_at" || album_column == "updated_at" %>
+          <% if album_column == "jacket" || album_column == "artist_photo" %>
+            <td><img src="<%= eval("album.#{album_column}") %>" style="width:75px; height:75px;"></td>
+          <% else %>
+            <td><%= eval("album.#{album_column}") %></td>
+          <% end %>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</body>
+</html>
+<% else %>
+  <%= @guess_error.to_s %>
+<% end %>

@@ -1,0 +1,67 @@
+<table style="width:100%;">
+    <thead>
+        <tr style="height:50px; font-size:20px; background:#fff;">
+            <th>순위</th>
+            <th>노래번호</th>
+            <th>제목</th>
+            <th>가수명</th>
+            <th>설정</th>
+        </tr>
+        <style>
+            thead tr th{
+                text-align:center;
+            }
+            tbody tr td{
+                text-align:center;
+                font-size:19px;
+                font-weight:bold;
+                /*opacity:0.5;*/
+                background:rgb(173, 182, 129);
+            }
+        </style>
+    </thead>
+    <tbody>
+        <% (1..100).to_a.each do |i| %>
+            <% symd = @syy + @smm + @sdd %>
+            <% eymd = @eyy + @emm + @edd %>
+            <% db = DailyTjPopularRank.where(:symd => symd, :eymd => eymd) %>
+            <%# song_num = eval("@result#{i}_2") %>
+            <% if db.all.count != 0 %>
+                <% if db.where(:song_rank => i).take != nil %>
+                    <% song = db.where(:song_rank => i).take %>
+                    <tr>
+                        <!--<form action="/crawl/save_daily_popular/<%= song.id %>" method="POST">-->
+                        <input type="hidden" name="symd" value="<%= song.symd %>">
+                        <input type="hidden" name="eymd" value="<%= song.eymd %>">
+                        <td><%= song.song_rank %>위</td>
+                        <td><%= song.song_num %></td>
+                        <td><%= song.song_title %></td>
+                        <td><%= song.song_singer %></td>
+                        <td><input type="submit" value="수정" class="btn btn-warning" style="color:#fff;"></td>
+                        <!--</form>-->
+                    </tr>
+                <% else %>
+                    <tr><form action="/crawl/save_daily_popular" method="POST">
+                        <input type="hidden" name="symd" value="<%= symd %>">
+                        <input type="hidden" name="eymd" value="<%= eymd %>">
+                        <td><input type="text" name="song_rank" value="<%= eval("@result#{i}_1") %>">위</td>
+                        <td><input type="text" name="song_num" value="<%= eval("@result#{i}_2") %>"></td>
+                        <td><input type="text" name="song_title" value="<%= eval("@result#{i}_3") %>"></td>
+                        <td><input type="text" name="song_singer" value="<%= eval("@result#{i}_4") %>"></td>
+                        <td><input type="submit" value="등록" class="btn btn-info" style="color:#fff;"></td>
+                    </form></tr>
+                <% end %>
+            <% else %>
+                <tr><form action="/crawl/save_daily_popular" method="POST">
+                    <input type="hidden" name="symd" value="<%= symd %>">
+                    <input type="hidden" name="eymd" value="<%= eymd %>">
+                    <td><input type="text" name="song_rank" value="<%= eval("@result#{i}_1") %>">위</td>
+                    <td><input type="text" name="song_num" value="<%= eval("@result#{i}_2") %>"></td>
+                    <td><input type="text" name="song_title" value="<%= eval("@result#{i}_3") %>"></td>
+                    <td><input type="text" name="song_singer" value="<%= eval("@result#{i}_4") %>"></td>
+                    <td><input type="submit" value="등록" class="btn btn-info" style="color:#fff;"></td>
+                </form></tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>

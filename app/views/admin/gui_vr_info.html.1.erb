@@ -1,0 +1,135 @@
+<!-- Javascript Libraries -->
+<script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
+<script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>  
+<!--<script src="../vendors/bootgrid/jquery.bootgrid.updated.min.js"></script>-->
+
+
+<script src="/vendors/bower_components/moment/min/moment.min.js"></script>
+<script src="/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script src="/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
+<script src="/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/vendors/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
+<script src="/vendors/summernote/dist/summernote-updated.min.js"></script>
+
+<!-- Placeholder for IE9 -->
+<!--[if IE 9 ]>
+    <script src="../vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+<![endif]-->
+
+<script src="/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
+<script src="/vendors/fileinput/fileinput.min.js"></script>
+<script src="/vendors/input-mask/input-mask.min.js"></script>
+<script src="/vendors/farbtastic/farbtastic.min.js"></script>
+
+<script src="/js/functions.js"></script>
+<script src="/js/demo.js"></script>
+
+<!-- Data Table -->
+
+
+
+
+<section id="main">
+    <%= render partial: 'admin/feature_layouts/sidebar' %>
+    <%= render partial: 'admin/feature_layouts/chat' %>
+    
+    <section id="content">
+        <div class="container">
+            <div class="block-header">
+                <h2>Data Table</h2>
+                
+                <ul class="actions">
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-trending-up"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-check-all"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-more-vert"></i>
+                        </a>
+                        
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="">Refresh</a>
+                            </li>
+                            <li>
+                                <a href="">Manage Widgets</a>
+                            </li>
+                            <li>
+                                <a href="">Widgets Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--음역대 입-출력 Table-->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Input Slider <small>noUiSlider is a range slider without bloat. It offers a ton off features, and it is as small, lightweight and minimal as possible, which is great for mobile use on the many supported devices.</small></h2>
+                </div>
+                
+                <div class="card-body card-padding">
+                    <p class="f-500 c-black m-b-20">Output Value with tap and drag</p>
+                    
+                    <div class="m-b-20 clearfix">
+                        <div class="input-slider-values m-b-15"></div>
+                        <strong class="pull-left text-muted" id="value-upper"></strong>
+                        <strong class="pull-right text-muted" id="value-lower"></strong>
+                    </div>
+                    
+                    <div id="slider"></div>
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                          $('#slider').slider({
+                              range : true
+                          }); 
+                        });
+                    </script>
+                    
+                    <br>
+                    
+                    
+                    <p class="f-500 c-black m-b-5">Optional ColoR Schemes</p>
+                    <small>Use the given data attribute to change the color scheme of the Toggle Switch</small>
+                    
+                    <br>
+                    <br>
+                    <br>
+                    
+                    <div class="input-slider m-b-25 noUi-target noUi-ltr noUi-horizontal noUi-background" data-is-start="35" data-is-color="red"><div class="noUi-base"><div class="noUi-origin" style="left: 35%;"><div class="noUi-handle noUi-handle-lower"></div></div></div></div>
+                    
+                    <br>
+                    
+                    <div class="input-slider m-b-25 noUi-target noUi-ltr noUi-horizontal noUi-background" data-is-color="blue" data-is-start="95"><div class="noUi-base"><div class="noUi-origin noUi-stacking" style="left: 95%;"><div class="noUi-handle noUi-handle-lower"></div></div></div></div>
+                    
+                    <br>
+                    
+                    <div class="input-slider m-b-25 noUi-target noUi-ltr noUi-horizontal noUi-background" data-is-color="cyan" data-is-start="20"><div class="noUi-base"><div class="noUi-origin" style="left: 20%;"><div class="noUi-handle noUi-handle-lower"></div></div></div></div>
+                    
+                    <br>
+                    
+                    <div class="input-slider m-b-25 noUi-target noUi-ltr noUi-horizontal noUi-background" data-is-color="amber" data-is-start="55"><div class="noUi-base"><div class="noUi-origin noUi-stacking" style="left: 55%;"><div class="noUi-handle noUi-handle-lower"></div></div></div></div>
+                    
+                    <br>
+                    
+                    <div class="input-slider m-b-25 noUi-target noUi-ltr noUi-horizontal noUi-background" data-is-color="green" data-is-start="70"><div class="noUi-base"><div class="noUi-origin noUi-stacking" style="left: 70%;"><div class="noUi-handle noUi-handle-lower"></div></div></div></div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+
+
