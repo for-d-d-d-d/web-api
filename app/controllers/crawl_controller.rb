@@ -148,7 +148,9 @@ class CrawlController < ApplicationController
       ## ganre2(장르2)
       song.ganre2 = @song_ganre2
       ## runtime(재생시간)
-      @runtime = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(4)//span.value").inner_html.to_s unless error7
+      unless error7 == true
+        @runtime = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(4)//span.value").inner_html.to_s unless error7
+      end
       song.runtime = @runtime
       ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
       @lyrics = html_doc.css("div#body-content//div.lyrics-area//div.tit-box//pre").inner_html.to_s
@@ -162,12 +164,16 @@ class CrawlController < ApplicationController
 
       # 음원 정보(참조)
       ## artist_num(아티스트 번호)
-      @artist_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(1)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('artistInfo','","").first(8) unless error7
+      unless == true
+        @artist_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(1)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('artistInfo','","").first(8) unless error7
+      end
       song.artist_num = @artist_num
       ## album_num(앨범 번호)
-      @album_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('albumInfo','","").first(8) unless error7
+      unless == true
+        @album_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('albumInfo','","").first(8) unless error7
+      end
       song.album_num = @album_num
-
+      
       #**       Album Table Details    **#
       if Album.where(album_num: @album_num).first.nil?
         album = Album.new
@@ -194,7 +200,7 @@ class CrawlController < ApplicationController
         ## jacket(앨범자켓 :: 이미지)
         @jacket = "http:" + html_doc_album.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
         album.jacket = @jacket
-
+        
         uri_artist = URI("http://www.genie.co.kr/detail/artistInfo?xxnm=#{@artist_num}")
         html_doc_artist = Nokogiri::HTML(Net::HTTP.get(uri_artist))
         ## artist_num(아티스트 번호)
@@ -255,7 +261,17 @@ class CrawlController < ApplicationController
     render layout: false
     puts "요청하신 크롤링이 종료되었습니다."
   end
-
+  
+  
+  ############################################################################################################
+  ############################################################################################################
+  def gini_song_parser(html_doc)
+    
+  end
+  
+  def gini_album_parser()
+  end
+  ############################################################################################################
   ############################################################################################################
 
 

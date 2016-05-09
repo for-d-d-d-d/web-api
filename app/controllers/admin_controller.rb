@@ -47,10 +47,10 @@ class AdminController < ApplicationController
   end
 
   def index
-
+    
     render layout: "../admin_layouts/application.html.erb"
   end
-
+  
   def songs_info
     # @song = Song.all
     @song = Song.where(ganre1: "가요").all
@@ -65,10 +65,10 @@ class AdminController < ApplicationController
           @song_miss << song
         end
       end
-
+    
     render layout: "../admin_layouts/application.html.erb"
   end
-
+  
   def songs_info2
     @song = Song.all
     @top100 = DailyTjPopularRank.all

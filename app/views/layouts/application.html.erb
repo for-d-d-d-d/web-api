@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Workspace</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-
-<%= yield %>
-
-</body>
+    <head>
+        <title>Workspace</title>
+        <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+        <%= csrf_meta_tags %>
+        
+        <!-- 합쳐지고 최소화된 최신 CSS -->
+        <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
+        
+        <!-- 부가적인 테마 -->
+        <%= stylesheet_link_tag 'bootstrap/bootstrap-theme.css' %>
+        
+        <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+        <%= javascript_include_tag 'bootstrap/bootstrap.js' %>
+    </head>
+    <body>
+    
+        <%= yield %>
+    
+    </body>
 </html>
