@@ -73,13 +73,13 @@ class CrawlController < ApplicationController
     # Setting( Focus.한번에 몇개 긁어올지 - 권장 20개, 장기크롤링 - 100개 )
     ## 정탐색 갯수 설정(파생탐색 및 탐색 손실은 측정하지 않음)
     # 갯수 지정 안할 시 기본값 1천개(예상 소요시간: 5분)
-    how_many_songs_do_you_want = 1000
+    how_many_songs_do_you_want = 100
     # 지정된 갯수대로 크롤링(속도: 100여개/30초, 200여개/분, 2천여개/10분)
     how_many_songs_do_you_want = params[:id].to_i unless params[:id].nil?
-    
+
     #변수 초기화 (앨범번호가 없는 곡들)
     # @filled_songs_array2 = Array.new
-    
+
     ## 언제부터
     if Song.last == nil
       @start_num = 79999991   # 예제) 82425426 번은 악동뮤지션 200% 곡의 넘버임
@@ -89,11 +89,11 @@ class CrawlController < ApplicationController
     end
     last_saved_song_count = Song.count
     @start_num = params[:start_at].to_i unless params[:start_at].nil?
-    
+
     #멈춰야하는 SongNumber
     @must_break_id_limit_count = last_saved_song_count + how_many_songs_do_you_want
     #-----------------------------------------------------------------------------------------------------
-    
+
     num = @start_num - 1
     loop do
       num += 1
@@ -102,7 +102,7 @@ class CrawlController < ApplicationController
 
       # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
       html_doc = load_page(num, "song_number")
-      
+
       # 이후 작업은 html_doc에 담아온 HTML문서를 파싱하는 과정
       # @result     = html_doc.css("div#body-content")   # [중간테스트] 여기까지는 잘 가져오는가.
       # @result1    = html_doc.css("div#body-content//div.info-zone")   # [중간테스트] 여기까지는 잘 가져오는가.
@@ -110,7 +110,7 @@ class CrawlController < ApplicationController
       @song_title = html_doc.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip!
       @song_ganre1 = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(3)//span.value").inner_html.to_s.split(' / ').first.to_s
       @song_ganre2 = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(3)//span.value").inner_html.to_s.split(' / ').last.to_s
-      
+
       # 다음 상황에서는 루프를 스킵한다.
       # =>유형1. @song_title = "제목이 발견되지 않는다"
       next if @song_title.length == 0
@@ -124,7 +124,7 @@ class CrawlController < ApplicationController
       # =>유형7. 앨범번호 에러시 예외처리
       guess_error = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a")[0]
       if guess_error.nil?
-        error7 = true 
+        error7 = true
         guess_error = html_doc.css("div#body-content//div.info-zone//ul.info-data//li//span.value").to_s.split('</span>')
         @song_ganre1 = guess_error[2].gsub('<span class="value">','').split(' / ').first.to_s
         @song_ganre2 = guess_error[2].gsub('<span class="value">','').split(' / ').last.to_s
@@ -132,7 +132,7 @@ class CrawlController < ApplicationController
         @album_num = guess_error.second.gsub('<a href="#" onclick="fnGoMore(\'albumInfo\',\'' , '/////').gsub('\');return false;">' , '/////').split('/////')[1].to_i
         @runtime = guess_error[3].gsub('<span class="value">','').to_s
       end
-      
+
       # 루프가 스킵 되지 않았다면 본격적으로 데이터를 작성하자.
       # 임의로 때려넣은 지니넘버 주소에 노래정보 있는거 확인했으니까
       # 긁어올거 일단 다 긁어오고나서 저장하자
@@ -667,8 +667,8 @@ class CrawlController < ApplicationController
     if searchText.nil? || type.nil?
       return false
     end
-    searchText= CGI::escape(searchText)
-    
+    searchText= CGI::escape(searchText.to_s)
+
     case type
     when "song_title"
       return Nokogiri::HTML(Net::HTTP.get(URI("http://www.tjmedia.co.kr/tjsong/song_search_list.asp?strType=0&strText=#{searchText}&strCond=0&strSize01=100&strSize02=15&strSize03=15&strSize04=15&strSize05=15"))).css("table.board_type1").first.css("tbody//tr")
@@ -720,12 +720,9 @@ class CrawlController < ApplicationController
         end
 
         # 결과가 0개, 1개이상, 1개일때 로그출력
-        case a.count
-        when 0
-        # if a.count == 0
+        if a.count == 0
           f.puts "'#{s.title} - #{singer}' 의 해당하는 노래를 찾지 못했습니다."
-        # elsif a.count > 1
-        when > 1
+        elsif a.count > 1
           f.puts "'#{s.title} - #{singer}' 의 해당하는 노래를 2곡 이상 찾아냈습니다."
           a.each do |aa|
             f.puts "   SongNumber : #{aa}"
