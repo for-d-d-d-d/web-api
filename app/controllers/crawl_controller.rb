@@ -4,9 +4,9 @@ class CrawlController < ApplicationController
   require 'sidekiq-status'
 
   def index
-    # @job_id = CrawlSongsJob.perform_async()
-    num = 123
-    html_doc = CrawlController.load_page(num, "song_number")
+    @job_id = CrawlSongsJob.perform_async()
+    # num = 123
+    # html_doc = CrawlController.load_page(num, "song_number")
   end
 
   def tj_monthly_new
@@ -672,10 +672,8 @@ class CrawlController < ApplicationController
   # )
   # Method Description : 검색을 하고 해당하는 테이블의 데이터 전체를 반환하게됨. 데이터를 받아 활용하기 전에 호출.
   def self.load_page(searchText, type)
-    if searchText.nil? || type.nil?
-      return false
-    end
-    searchText= CGI::escape(searchText.to_s)
+    return false if searchText.nil? || type.nil?
+    searchText = CGI::escape(searchText.to_s)
 
     case type
     when "song_title"
@@ -684,6 +682,8 @@ class CrawlController < ApplicationController
       return Nokogiri::HTML(Net::HTTP.get(URI("http://www.genie.co.kr/detail/songInfo?xgnm=#{searchText}")))
     when "album_number"
       return Nokogiri::HTML(Net::HTTP.get(URI("http://www.genie.co.kr/detail/albumInfo?axnm=#{searchText}")))
+    when "artist_number"
+      return Nokogiri::HTML(Net::HTTP.get(URI("http://www.genie.co.kr/detail/artistInfo?xxnm=#{searchText}")))
     else
       return false
     end

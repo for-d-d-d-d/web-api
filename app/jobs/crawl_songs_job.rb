@@ -110,7 +110,7 @@ class CrawlSongsJob
       if Album.where(album_num: @album_num).first.nil?
         album = Album.new
         # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
-        html_doc_album = load_page(@album_num, "album_number")
+        html_doc_album = CrawlController.load_page(@album_num, "album_number")
         ## title(앨범제목)
         @album_title = html_doc_album.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
         album.title = @album_title
@@ -133,8 +133,7 @@ class CrawlSongsJob
         @jacket = "http:" + html_doc_album.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
         album.jacket = @jacket
 
-        uri_artist = URI("http://www.genie.co.kr/detail/artistInfo?xxnm=#{@artist_num}")
-        html_doc_artist = Nokogiri::HTML(Net::HTTP.get(uri_artist))
+        html_doc_artist = CrawlController.load_page(@artist_num)
         ## artist_num(아티스트 번호)
         album.artist_num = @artist_num
         ## artist_photo(아티스트 사진)
@@ -185,11 +184,12 @@ class CrawlSongsJob
 
       break if Song.count >= @must_break_id_limit_count
       break if num >= 89525426
-  end
+    end
 
-  # Start debugger
-  @message = how_many_songs_do_you_want.to_s + "개 저장완료! 확인하셈!"
-  # End debugger
-  render layout: false
-  puts "요청하신 크롤링이 종료되었습니다."
+    # Start debugger
+    @message = how_many_songs_do_you_want.to_s + "개 저장완료! 확인하셈!"
+    # End debugger
+    render layout: false
+    puts "요청하신 크롤링이 종료되었습니다."
+  end
 end
