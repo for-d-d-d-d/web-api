@@ -1,5 +1,13 @@
 class CrawlController < ApplicationController
   require 'fuzzystringmatch'
+  require 'sidekiq'
+  require 'sidekiq-status'
+
+  def index
+    # @job_id = CrawlSongsJob.perform_async()
+    num = 123
+    html_doc = CrawlController.load_page(num, "song_number")
+  end
 
   def tj_monthly_new
   end
@@ -663,7 +671,7 @@ class CrawlController < ApplicationController
   # album_number:앨범번호로검색
   # )
   # Method Description : 검색을 하고 해당하는 테이블의 데이터 전체를 반환하게됨. 데이터를 받아 활용하기 전에 호출.
-  def load_page(searchText, type)
+  def self.load_page(searchText, type)
     if searchText.nil? || type.nil?
       return false
     end

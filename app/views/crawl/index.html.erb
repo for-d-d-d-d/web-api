@@ -1,0 +1,31 @@
+<%= job_id = @job_id %><br>
+total : <%= Sidekiq::Status::total   job_id %><br>
+at : <%= Sidekiq::Status::at   job_id %><br>
+
+<div id="progressbar"></div>
+
+<script>
+$( "#progressbar" ).progressbar({
+  value: 0
+});
+</script>
+
+<script type="text/javascript">
+var job_id = "<%= job_id %>"
+$(document).ready(function (){
+  queryForPercentage();
+});
+function queryForPercentage (){
+  $.ajax({
+    url: "/percentage_done",
+    type: 'GET',
+    data:{
+      job_id: job_id
+    },
+    success: function (data) {
+      $( "#progressbar" ).progressbar( "value", Number(data['percentage_done']) );
+      return queryForPercentage();
+    }
+  });
+};
+</script>

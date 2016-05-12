@@ -1,4 +1,4 @@
-class CrawlSongsJob #< ActiveJob::Base
+class CrawlSongsJob
   include Sidekiq::Worker
   include Sidekiq::Status::Worker
 
@@ -39,7 +39,7 @@ class CrawlSongsJob #< ActiveJob::Base
       next if Song.where(song_num: num).take.present? #Song이 이미 있으면
 
       # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
-      html_doc = load_page(num, "song_number")
+      html_doc = CrawlController.load_page(num, "song_number")
 
       # 이후 작업은 html_doc에 담아온 HTML문서를 파싱하는 과정
       # @result     = html_doc.css("div#body-content")   # [중간테스트] 여기까지는 잘 가져오는가.
