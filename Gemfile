@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
+gem 'sidekiq'
+# gem 'sidekiq_status'
+gem 'sidekiq-status'
+gem 'daemons'
+
 gem 'fuzzy-string-match'
 gem 'awesome_print'
 gem 'seed_dump'
