@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20160510104913) do
     t.string   "songwriter"
     t.string   "composer"
     t.integer  "singer_id"
+    t.integer  "artist_num"
     t.integer  "team_id"
     t.integer  "album_num"
     t.text     "artist_photo"

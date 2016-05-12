@@ -24,6 +24,19 @@ class HomeController < ApplicationController
   end
 
   def main
+      @song = Song.where.not(lowkey: nil).all
+      @carousel = @song.first(7)
+
+      @rankers = DailyTjPopularRank.all
+
+      @ranker = Array.new
+      @rankers.each do |r|
+          aa = Song.where(song_tjnum: r.song_num).take
+          if aa != nil
+              @ranker << aa
+          end
+      end
+
     #render :layout => false
   end
 

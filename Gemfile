@@ -1,6 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'omniauth-facebook'
+gem 'coffee-script-source', '1.8.0'
+gem 'fuzzy-string-match'
+gem 'awesome_print'
+gem 'seed_dump'
+gem 'nokogiri'
+gem 'tzinfo-data'
 gem 'devise'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'

@@ -1,23 +1,43 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Workspace</title>
+        <title>고래방 :: 오늘도 노래방을 부탁해!</title>
         <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
         <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
         <%= csrf_meta_tags %>
-        
+
         <!-- 합쳐지고 최소화된 최신 CSS -->
-        <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
-        
-        <!-- 부가적인 테마 -->
-        <%= stylesheet_link_tag 'bootstrap/bootstrap-theme.css' %>
-        
+        <% if params[:action] != "main" %>
+            <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
+        <% else %>
+            <link href="http://blackrockdigital.github.io/startbootstrap-freelancer/css/bootstrap.min.css" rel="stylesheet">
+        <% end %>
+
+        <% if params[:action] != "main" %>
+            <!-- 부가적인 테마 -->
+            <%= stylesheet_link_tag 'bootstrap/bootstrap-theme.css' %>
+        <% else %>
+            <!-- Custom CSS -->
+            <link href="main.css" rel="stylesheet">
+        <% end %>
+
         <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
         <%= javascript_include_tag 'bootstrap/bootstrap.js' %>
+
+
+        <!-- Custom styles for this template -->
+        <link href="carousel.css" rel="stylesheet">
+
+
+
+        <!-- Custom Fonts -->
+        <link href="http://blackrockdigital.github.io/startbootstrap-freelancer/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     </head>
-    <body>
-    
+    <body id="page-top" class="index">
+
         <%= yield %>
-    
+
     </body>
 </html>
