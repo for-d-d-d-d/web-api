@@ -2,6 +2,11 @@ source 'https://rubygems.org'
 
 gem 'omniauth-facebook'
 gem 'coffee-script-source', '1.8.0'
+gem 'sidekiq'
+# gem 'sidekiq_status'
+gem 'sidekiq-status'
+gem 'daemons'
+
 gem 'fuzzy-string-match'
 gem 'awesome_print'
 gem 'seed_dump'
