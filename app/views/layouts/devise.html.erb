@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Goraebang</title>
+        <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+        <%= csrf_meta_tags %>
+
+        <!-- 합쳐지고 최소화된 최신 CSS -->
+        <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
+
+        <!-- 부가적인 테마 -->
+        <%= stylesheet_link_tag 'bootstrap/bootstrap-theme.css' %>
+
+        <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+        <%= javascript_include_tag 'bootstrap/bootstrap.js' %>
+    </head>
+    <body style="background-color:lightblue;">
+        <!-- header 추가!!!!!!! -->
+        <%= yield %>
+        <!--footer-->
+        <!-- <div class="col-md-12" style="height:55px; background:#3b3a3c; position:fixed; bottom:0px;">
+            <ul id="footer_ul">
+                <li>
+                    <button >More 고래방</button>
+                    <ul style="display:none;">
+                        <li>회사소개</li>
+                        <li>이용약관</li>
+                        <li>저작권 관련정책</li>
+                        <li>고객센터</li>
+                    </ul>
+                </li>
+                <li>
+                    <button>광고문의</button>
+                </li>
+                <li>
+                    <button>제휴문의</button>
+                </li>
+                <li>
+                    <button>개인 정보 취급방침</button>
+                </li>
+                <li style="">
+                    <button>App Download</button>
+                </li>
+                <li style="float:right; width:20%;">
+                    <img src="http://www.deejay.it/wp-content/uploads/2015/10/App-store-logo.png" style="width:40%; margin-right: 1%; margin-top:3px; height:100%; float:right;">
+                    <img src="http://vantage.millpoo.com/assets/images/common/googleplay_icon.png" style="width:40%; margin-right: 1%; margin-top:3px; height:100%; float:right;">
+                </li>
+            </ul>
+        </div> -->
+
+    </body>
+</html>
