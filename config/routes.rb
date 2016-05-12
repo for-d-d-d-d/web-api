@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
         # root :to => redirect('/users/sign_in')
 
-        root 'gorae#entering'
+        root 'home#entering'
 
         match "/:controller(/:action(/:id))", :via => [:post, :get]
 

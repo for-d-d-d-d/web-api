@@ -17,7 +17,7 @@ class HomeController < ApplicationController
     # view/devise/sessions/new.html.erb 에다가 entering 패이지를 옴기새요
 
     if user_signed_in?
-      redirect_to '/gorae/main2'
+      redirect_to '/home/main'
     else
       redirect_to '/users/sign_in'
     end
