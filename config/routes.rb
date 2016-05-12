@@ -3,15 +3,6 @@ Rails.application.routes.draw do
     devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks",
         :registrations => "users/registrations",
         :sessions => "users/sessions" }
-
-        get 'song/song_save'
-        get 'song/song_delete'
-        get 'admin/index'
-        get 'crawl/tj_monthly_new'
-        get 'crawl/tj_monthly_popular'
-        get 'crawl/tj_daily_popular'
-        get 'crawl/tj_linker'
-
         # root :to => redirect('/users/sign_in')
 
         root 'home#entering'
