@@ -78,4 +78,8 @@ class HomeController < ApplicationController
 
     render layout: "../gorae_layouts/application.html.erb"
   end
+
+  def EvalKey
+      
+  end
 end

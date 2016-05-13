@@ -11,12 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160510104913) do
+ActiveRecord::Schema.define(version: 20160512163114) do
 
   create_table "administers", force: :cascade do |t|
     t.string   "username"
     t.string   "email"
     t.string   "password"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "album_singers", force: :cascade do |t|
+    t.integer  "singer_id"
+    t.integer  "album_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "album_teams", force: :cascade do |t|
+    t.integer  "album_id"
+    t.integer  "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -52,6 +66,13 @@ ActiveRecord::Schema.define(version: 20160510104913) do
     t.string   "key"
     t.integer  "keyNum"
     t.float    "percent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "singer_teams", force: :cascade do |t|
+    t.integer  "singer_id"
+    t.integer  "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

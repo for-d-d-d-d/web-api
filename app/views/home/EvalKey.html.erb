@@ -1,0 +1,82 @@
+<%= render partial: "home/home_layouts/home_header" %>
+
+<div style="height:100px"> </div>
+
+<div style="padding:100px 30px 20px 30px;">
+    <h2 style="text-align:center;"> 음역대 측정을 시작합니다. </h2>
+    <h2 style="text-align:center;" id="keyid"></h2>
+</div>
+
+<div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div id="progressbar"></div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+<div>
+    <button id="button-11" onClick="progress_eval()"> </button>
+</div>
+<br>
+<br>
+<br>
+<div>
+    <h4 style="text-align:center; display:none; margin-bottom:30px;" id="key_result"></h2>
+        <p align="center">
+            <button type="button" class="btn btn-primary">노래 추천받으러 가기!</button>
+        </p>
+    </div>
+
+    <script>
+    var key_index = 0;
+    var keys = new Array("C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4", "D4", "E4", "G4", "A5", "B5", "C5", "D5");
+    var limit = 0;
+    var min = 0;
+    var max = 14;
+    var progressbar = $( "#progressbar" );
+    $( "#progressbar" ).progressbar({
+        value: 0,
+        max:100
+    });
+
+    $("#key_result").text("당신의 음역대는 " + keys[min] + "~" + keys[max]);
+    $("#keyid").text(keys[key_index]);
+    $('.ui-progressbar-value').css("background", "orange");
+    function progress() {
+        var val = progressbar.css("border-color", "magenta").progressbar( "value" ) || 0;
+        if (val >= 14*5+1) return;
+        progressbar.progressbar( "value", val + 1 );
+        if ( val < limit ) {
+            setTimeout( progress, 15 );
+        }
+    }
+
+    function progress_eval(){
+        limit += 5;
+        key_index++;
+        $("#keyid").text(keys[key_index]);
+        if(key_index == 14) {
+            document.getElementById("key_result").style.display = "block"
+            $('.ui-progressbar-value').css("background", "red");
+        };
+        if (limit > 100){
+            return;
+        }
+        setTimeout( progress, 15 );
+    }
+    </script>
+
+    <script>
+
+    $(function() {
+        $( "#button-11" ).button({
+            text: false,
+            icons: {
+                primary: "ui-icon-play"
+            }
+        });
+    });
+    // 텍스트 리프레쉬
+
+    // 텍스트 리프레쉬 종료
+    </script>

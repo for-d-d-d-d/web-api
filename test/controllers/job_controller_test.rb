@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TASTest < ActiveSupport::TestCase
+class JobControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end

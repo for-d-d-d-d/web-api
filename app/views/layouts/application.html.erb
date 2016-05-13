@@ -3,22 +3,24 @@
     <head>
         <title>고래방 :: 오늘도 노래방을 부탁해!</title>
         <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-        <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+        <%#= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
         <%= csrf_meta_tags %>
 
         <!-- 합쳐지고 최소화된 최신 CSS -->
-        <% if params[:action] != "main" %>
+        <% if !(params[:action] == "main" || params[:action] == "EvalKey") %>
             <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
-        <% else %>
-            <link href="https://blackrockdigital.github.io/startbootstrap-freelancer/css/bootstrap.min.css" rel="stylesheet">
+        <% else %> <!-- main 이랑 EvalKey에서 사용 커스텀 된거임 -->
+            <link href="freelancer.css" rel="stylesheet">
         <% end %>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
-        <% if params[:action] != "main" %>
-            <!-- 부가적인 테마 -->
-            <%= stylesheet_link_tag 'bootstrap/bootstrap-theme.css' %>
-        <% else %>
+        <% if params[:action] == "main" %>
+            <link href="main.css" rel="stylesheet">
+        <% elsif params[:action] == "EvalKey" %>
             <!-- Custom CSS -->
             <link href="main.css" rel="stylesheet">
+        <% else %>
+            <%= stylesheet_link_tag 'bootstrap/bootstrap-theme.css' %>
         <% end %>
 
         <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
@@ -28,6 +30,9 @@
         <!-- Custom styles for this template -->
         <link href="carousel.css" rel="stylesheet">
 
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 
         <!-- Custom Fonts -->

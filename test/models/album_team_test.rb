@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CrawlSongsJobTest < ActiveJob::TestCase
+class AlbumTeamTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -2,8 +2,10 @@ class CreateSongs < ActiveRecord::Migration
   def change
     create_table :songs do |t|
 
-      # 음원은 싱글이던 아니던 앨범에 속한다
+      # Relation
       t.integer :album_id       # =>앨범아이디(1:N 릴레이션)
+      t.integer :singer_id      # =>가수아이디(1:N 릴레이션)
+      t.integer :team_id        # =>팀아이디(1:M 릴레이션)
 
       # 음원 정보(보통)
       t.string  :title          # =>제목
@@ -11,18 +13,15 @@ class CreateSongs < ActiveRecord::Migration
       t.string  :ganre2         # =>장르2
       t.string  :runtime        # =>재생시간
       t.text    :lyrics         # =>가사
-      t.string  :songwriter     # =>작사
+      t.string  :writer         # =>작사
       t.string  :composer       # =>작곡
-      # t.string  :artist_name    # =>아티스트 이름
-      t.integer :singer_id      # =>가수아이디(1:N 릴레이션)
 
       # 음원 정보(참조)
-      t.integer :artist_num     # =>아티스트 번호(Default : 팀 단위)
-      t.integer :team_id        # =>팀아이디(1:M 릴레이션)
-      t.integer :album_num      # =>앨범 번호
+      # t.integer :artist_num     # =>아티스트 번호(Default : 팀 단위)
+      # t.integer :album_num      # =>앨범 번호번호번호번호번호
 
       # 음원 정보(참조추출)
-      t.text    :artist_photo   # =>아티스트 사진(아티스트테이블로부터 불러와 저장)
+      # t.text    :artist_photo   # =>아티스트 사진(아티스트테이블로부터 불러와 저장)
       t.text    :jacket         # =>자켓사진(앨범테이블로부터 불러와 저장)
 
       # 음원 정보(고유값)
