@@ -37,7 +37,11 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><%= current_user.name %></a></li>
+                    <% if user_signed_in? %>
+                        <li><a href="#"><%= current_user.name %></a></li>
+                    <% else %>
+                        <li><a href="#"><%= "로그인하셈!" %></a></li>
+                    <% end %>
                     <li class="dropdown">
                         <a href="#" class="myaccount">My Zone</a>
                         <ul class="dropdown-menu myaccount-dropdown" role="menu">
