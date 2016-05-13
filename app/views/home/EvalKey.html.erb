@@ -1,0 +1,144 @@
+<div id="header">
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-image: none;">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/home/main">고래방</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#" style="background-image: initial;">마이리스트 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li>
+                        <a href="#" style="background-image: initial;">친구의 라인업</a>
+                    </li>
+                    <li>
+                        <a href="/home/EvalKey" style="background-image: initial;">평가하기</a>
+                    </li>
+                    <li>
+                        <a href="#" style="background-image: initial;">추천받기</a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left" role="search" style="width:30%;">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="노래를 검색하세요!" style="width:70%;">
+                            <button type="submit" class="btn btn-default" style="wdith:30%">찾기<i>!</i></button>
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><%= current_user.name %></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="myaccount">My Zone</a>
+                        <ul class="dropdown-menu myaccount-dropdown" role="menu">
+                            <li><a href="#">파트너 추가하기</a></li>
+                            <li><a href="#">Smth else here</a></li>
+                            <li><a href="#">정보 고치기</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/users/sign_out">로그아웃</a></li>
+                        </ul>
+                        <script>
+                        $(".myaccount").hover(function(){
+                            $(".myaccount-dropdown").fadeIn(50, function(){
+                                $(".myaccount-dropdown").hover(function(){
+                                    $(".myaccount-dropdown").css("display","block");
+                                }, function(){
+                                    $(".myaccount-dropdown").css("display","none");
+                                });
+                            });
+                        });
+                        </script>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+
+<div style="height:100px"> </div>
+
+<div style="padding:100px 30px 20px 30px;">
+    <h2 style="text-align:center;"> 음역대 측정을 시작합니다. </h2>
+    <h2 style="text-align:center;" id="keyid"></h2>
+</div>
+
+<div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div id="progressbar"></div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+<div>
+<button id="button-11" onClick="progress_eval()"> </button>
+</div>
+<br>
+<br>
+<br>
+<div>
+    <h4 style="text-align:center; display:none;" id="key_result"></h2>
+</div>
+
+<script>
+var key_index = 0;
+var keys = new Array("C3", "D3", "E3", "F3", "G3", "A4", "B4", "C4", "D4", "E4", "G4", "A5", "B5", "C5", "D5");
+var limit = 0;
+var min = 0;
+var max = 14;
+var progressbar = $( "#progressbar" );
+$( "#progressbar" ).progressbar({
+    value: 0,
+    max:100
+});
+
+$("#key_result").text("당신의 음역대는 " + keys[min] + "~" + keys[max]);
+$("#keyid").text(keys[key_index]);
+$('.ui-progressbar-value').css("background", "orange");
+function progress() {
+    var val = progressbar.css("border-color", "magenta").progressbar( "value" ) || 0;
+    if (val >= 14*5+1) return;
+    progressbar.progressbar( "value", val + 1 );
+    if ( val < limit ) {
+        setTimeout( progress, 15 );
+    }
+}
+
+function progress_eval(){
+    limit += 5;
+    key_index++;
+    $("#keyid").text(keys[key_index]);
+    if(key_index == 14) {
+        document.getElementById("key_result").style.display = "block"
+        $('.ui-progressbar-value').css("background", "red");
+};
+    if (limit > 100){
+        return;
+    }
+    setTimeout( progress, 15 );
+}
+</script>
+
+<script>
+
+$(function() {
+        $( "#button-11" ).button({
+        text: false,
+        icons: {
+            primary: "ui-icon-play"
+        }
+    });
+});
+// 텍스트 리프레쉬
+
+// 텍스트 리프레쉬 종료
+</script>
