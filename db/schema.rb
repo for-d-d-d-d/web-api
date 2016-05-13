@@ -105,13 +105,6 @@ ActiveRecord::Schema.define(version: 20160512163114) do
     t.datetime "updated_at",   null: false
   end
 
-  create_table "t_a_s", force: :cascade do |t|
-    t.integer  "singer_id"
-    t.integer  "team_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "teams", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
