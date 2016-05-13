@@ -3,7 +3,7 @@ class CreateIntervalKeys < ActiveRecord::Migration
     create_table :interval_keys do |t|
       t.string  :key
       t.integer :number
-      # t.float   :percent
+      t.float   :percent
 
       t.timestamps null: false
     end

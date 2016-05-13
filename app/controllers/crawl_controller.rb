@@ -75,7 +75,7 @@ class CrawlController < ApplicationController
     # Setting( Focus.한번에 몇개 긁어올지 - 권장 20개, 장기크롤링 - 100개 )
     ## 정탐색 갯수 설정(파생탐색 및 탐색 손실은 측정하지 않음)
     # 갯수 지정 안할 시 기본값 1천개(예상 소요시간: 5분)
-    how_many_songs_do_you_want = 10
+    how_many_songs_do_you_want = 1000
     # 지정된 갯수대로 크롤링(속도: 100여개/30초, 200여개/분, 2천여개/10분)
     how_many_songs_do_you_want = params[:id].to_i unless params[:id].nil?
 

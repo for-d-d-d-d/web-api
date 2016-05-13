@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20160512163114) do
   create_table "interval_keys", force: :cascade do |t|
     t.string   "key"
     t.integer  "number"
+    t.float    "percent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
