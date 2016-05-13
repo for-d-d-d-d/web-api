@@ -7,12 +7,13 @@
         <%= csrf_meta_tags %>
 
         <!-- 합쳐지고 최소화된 최신 CSS -->
-        <% if params[:action] == "main" %>
+        <% if !(params[:action] == "main" || params[:action] == "EvalKey") %>
             <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
-        <% else %>
+        <% else %> <!-- main 이랑 EvalKey에서 사용 커스텀 된거임 -->
             <link href="http://blackrockdigital.github.io/startbootstrap-freelancer/css/bootstrap.min.css" rel="stylesheet">
         <% end %>
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+
         <% if params[:action] == "main" %>
             <link href="main.css" rel="stylesheet">
         <% elsif params[:action] == "EvalKey" %>
@@ -32,14 +33,6 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <style>
-         .ui-widget-header {
-            background: #cedc98;
-            border: 1px solid #DDDDDD;
-            color: #333333;
-            font-weight: bold;
-         }
-         </style>
 
 
         <!-- Custom Fonts -->
