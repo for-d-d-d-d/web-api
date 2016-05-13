@@ -1,3 +1,4 @@
+<!-- HEADER -->
 <div id="header">
     <nav class="navbar navbar-default navbar-fixed-top" style="background-image: none;">
         <div class="container-fluid">
@@ -18,9 +19,9 @@
                     <li class="active">
                         <a href="#" style="background-image: initial;">마이리스트 <span class="sr-only">(current)</span></a>
                     </li>
-                    <li>
-                        <a href="#" style="background-image: initial;">친구의 라인업</a>
-                    </li>
+                    <!--<li>-->
+                    <!--    <a href="#" style="background-image: initial;">친구의 라인업</a>-->
+                    <!--</li>-->
                     <li>
                         <a href="#" style="background-image: initial;">평가하기</a>
                     </li>
@@ -37,7 +38,11 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><%= current_user.name %></a></li>
+                    <% if user_signed_in? %>
+                        <li><a href="/users/sign_in"><%= current_user.name %></a></li>
+                    <% else %>
+                        <li><a href="/users/sign_in">로그인 하셈!</a></li>
+                    <% end %>
                     <li class="dropdown">
                         <a href="#" class="myaccount">My Zone</a>
                         <ul class="dropdown-menu myaccount-dropdown" role="menu">
@@ -63,11 +68,9 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+</div><!-- /.HEADER -->
 
-
-</div>
-<!-- Carousel
-    ================================================== -->
+<!-- 캐러셀 슬라이드 -->
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <% arr = [
         "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/811/068/80811068_1461316611366_1_600x600.JPG",
@@ -85,23 +88,6 @@
         <% end %>
     </ol>
     <div class="carousel-inner" role="listbox">
-        <!-- <div class="item active">
-            <div class="first-slide slide-background" style="background-image: url(http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/736/024/80736024_1446818236525_1_600x600.JPG);">
-                <div class="slide-background-blur">
-                    <img class="slide-focus-img" src="http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/736/024/80736024_1446818236525_1_600x600.JPG" alt="Third slide">
-                </div>
-            </div>
-            <div class="container">
-                <div class="carousel-caption carousel-details">
-                    <p class="c-left carousel-artist"><em>BEST!</em></p>
-                    <h1 class="c-left carousel-title">걱정말아요 그대 <code>번호 46641</code></h1>
-                    <p class="c-left carousel-artist">이적</p>
-                    <p class="c-left carousel-album">앨범명: 응답하라 1988 OST Part 2 (tvN 금토드라마)</p>
-                    <p class="c-left carousel-getlist"><code>2,801</code>명의 리스트에 라인업<i>!</i></p>
-                    <p class="c-left"><a class="btn btn-lg btn-primary" href="#" role="button"><em>Line up!</em></a></p>
-                </div>
-            </div>
-        </div> -->
         <% i = 0 %>
         <% @carousel.each do |song| %>
         <% album = Album.find(song.album_id) %>
@@ -139,225 +125,349 @@
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-</div><!-- /.carousel -->
+</div><!-- /.캐러셀 슬라이드 -->
 
-<!-- Header -->
-<!-- <header>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <img class="img-responsive" src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/profile.png" alt="">
-                <div class="intro-text">
-                    <span class="name">Start Bootstrap</span>
-                    <hr class="star-light">
-                    <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header> -->
+<!-- 본문 네비게이션 -->
 <header style="height:55px;">
     <div class="container" style="height:100%; padding:0% 10%;">
         <div class="row" style="height:90%;margin: 0px;">
-            <div class="col-lg-3 f-tabs f-tabs-tab">
-                노래방 인기차트
+            <div class="col-lg-3 f-tabs f-tabs-tab" id="tab-most_popular">
+                <span id="text-most_popular">노래방 인기차트</span>
             </div>
-            <div class="col-lg-3 f-tabs f-tabs-tab">
-                이달의 신곡
+            <div class="col-lg-3 f-tabs f-tabs-tab" id="tab-monthly_new">
+                <span id="text-monthly_new">이달의 신곡</span>
             </div>
-            <div class="col-lg-3 f-tabs f-tabs-tab">
-                테마별 선곡표
+            <div class="col-lg-3 f-tabs f-tabs-tab" id="tab-theme_pick">
+                <span id="text-theme_pick">테마별 선곡표</span>
             </div>
-            <div class="col-lg-3 f-tabs f-tabs-tab">
-                카테고리별 노래
+            <div class="col-lg-3 f-tabs f-tabs-tab" id="tab-category">
+                <span id="text-category">카테고리별 노래</span>
             </div>
         </div>
         <div class="row" style="height:10%;margin: 0px;">
-            <div class="col-lg-3 f-tabs f-tabs-active">&nbsp;</div>
-            <div class="col-lg-3 f-tabs">&nbsp;</div>
-            <div class="col-lg-3 f-tabs">&nbsp;</div>
-            <div class="col-lg-3 f-tabs">&nbsp;</div>
+            <div id="underline-1" class="col-lg-3 f-tabs f-tabs-active">&nbsp;</div>
+            <div id="underline-11" class="col-lg-3 f-tabs" style="display:none;">&nbsp;</div>
+            
+            <div id="underline-2" class="col-lg-3 f-tabs f-tabs-active" style="display:none;">&nbsp;</div>
+            <div id="underline-22" class="col-lg-3 f-tabs">&nbsp;</div>
+            
+            <div id="underline-3" class="col-lg-3 f-tabs f-tabs-active" style="display:none;">&nbsp;</div>
+            <div id="underline-33" class="col-lg-3 f-tabs">&nbsp;</div>
+            
+            <div id="underline-4" class="col-lg-3 f-tabs f-tabs-active" style="display:none;">&nbsp;</div>
+            <div id="underline-44" class="col-lg-3 f-tabs">&nbsp;</div>
         </div>
     </div>
-</header>
+</header><!-- /.본문 네비게이션 -->
 
-<!-- Portfolio Grid Section -->
-<section id="portfolio">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2>노래방 인기차트</h2>
-                <hr class="star-primary">
+<!-- 노래방 인기 차트 -->
+<section id="most_popular">
+    <div id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>노래방 인기차트</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <% if @ranker.count != 0 %>
+                    <% @ranker.each do |r| %>
+                    <div class="col-sm-4 portfolio-item <%= @ranker.count %>">
+                        <a href="#portfolioModal<%= r.id %>" class="portfolio-link img-ranker-wrap" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="<%= r.jacket %>" class="img-responsive img-ranker" alt="">
+                        </a>
+                    </div>
+                    <% end %>
+                <% else %>
+                    <div class="col-sm-4 portfolio-item <%#= @ranker.count %>">
+                        <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/cake.png" class="img-responsive" alt="">
+                        </a>
+                    </div>
+                    <div class="col-sm-4 portfolio-item">
+                        <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/circus.png" class="img-responsive" alt="">
+                        </a>
+                    </div>
+                    <div class="col-sm-4 portfolio-item">
+                        <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/game.png" class="img-responsive" alt="">
+                        </a>
+                    </div>
+                    <div class="col-sm-4 portfolio-item">
+                        <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/safe.png" class="img-responsive" alt="">
+                        </a>
+                    </div>
+                    <div class="col-sm-4 portfolio-item">
+                        <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/submarine.png" class="img-responsive" alt="">
+                        </a>
+                    </div>
+                <% end %>
             </div>
         </div>
-        <div class="row">
-            <% if @ranker.count != 0 %>
-                <% @ranker.each do |r| %>
-                <div class="col-sm-4 portfolio-item <%= @ranker.count %>">
-                    <a href="#portfolioModal<%= r.id %>" class="portfolio-link img-ranker-wrap" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="<%= r.jacket %>" class="img-responsive img-ranker" alt="">
-                    </a>
+    </div>
+</section><!-- /.노래방 인기 차트 -->
+
+<!-- 이달의 신곡-->
+<section id="monthly_new" style="display:none;">
+    <div id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>이달의 신곡</h2>
+                    <hr class="star-primary">
                 </div>
-                <% end %>
-            <% else %>
-                <div class="col-sm-4 portfolio-item <%#= @ranker.count %>">
-                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/cake.png" class="img-responsive" alt="">
-                    </a>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+                    <h2>이달의 신곡</h2>
+                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+                    <h2>이달의 신곡</h2>
+                    <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+                    <h2>이달의 신곡</h2>
+                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </div>
+</section><!-- /.이달의 신곡-->
+
+<!-- 테마별 선곡표 -->
+<section id="theme_pick" style="display:none;">
+    <div id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>테마별 선곡표</h2>
+                    <hr class="star-primary">
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/circus.png" class="img-responsive" alt="">
-                    </a>
+            </div>
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/game.png" class="img-responsive" alt="">
-                    </a>
+                <div class="col-md-5">
+                    <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/safe.png" class="img-responsive" alt="">
-                    </a>
+            </div>
+            
+            <hr class="featurette-divider">
+            
+            <div class="row featurette">
+                <div class="col-md-7 col-md-push-5">
+                    <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/submarine.png" class="img-responsive" alt="">
-                    </a>
+                <div class="col-md-5 col-md-pull-7">
+                    <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
                 </div>
-            <% end %>
+            </div>
+            
+            <hr class="featurette-divider">
+            
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                </div>
+                <div class="col-md-5">
+                    <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+                </div>
+            </div>
         </div>
     </div>
-</section>
-<!-- Marketing messaging and featurettes
+</section><!-- /.테마별 선곡표 -->
+
+<!-- 카테고리별 노래 -->
+<section id="category" style="display:none;">
+    <div id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>카테고리별 노래</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                </div>
+                <div class="col-md-5">
+                    <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+                </div>
+            </div>
+            
+            <hr class="featurette-divider">
+            
+            <div class="row featurette">
+                <div class="col-md-7 col-md-push-5">
+                    <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                </div>
+                <div class="col-md-5 col-md-pull-7">
+                    <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+                </div>
+            </div>
+            
+            <hr class="featurette-divider">
+            
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                </div>
+                <div class="col-md-5">
+                    <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- /.카테고리별 노래 -->
+
+<script>
+    $("#tab-most_popular").click(function(){
+        $("#most_popular").fadeIn("fast",function(){
+            $("#underline-1").show("fast");
+            $("#underline-11").hide();
+        });
+        
+        $("#monthly_new").hide();
+        $("#underline-2").hide();
+        $("#underline-22").show();
+        
+        $("#theme_pick").hide();
+        $("#underline-3").hide();
+        $("#underline-33").show();
+        
+        $("#category").hide();
+        $("#underline-4").hide();
+        $("#underline-44").show();
+    });
+    
+    $("#tab-monthly_new").click(function(){
+        $("#most_popular").hide();
+        $("#underline-1").hide();
+        $("#underline-11").show();
+        
+        $("#monthly_new").fadeIn("fast",function(){
+            $("#underline-2").show("fast");
+            $("#underline-22").hide();
+        });
+        
+        $("#theme_pick").hide();
+        $("#underline-3").hide();
+        $("#underline-33").show();
+        
+        $("#category").hide();
+        $("#underline-4").hide();
+        $("#underline-44").show();
+    });
+    
+    $("#tab-theme_pick").click(function(){
+        $("#most_popular").hide();
+        $("#underline-1").hide();
+        $("#underline-11").show();
+        
+        $("#monthly_new").hide();
+        $("#underline-2").hide();
+        $("#underline-22").show();
+        
+        $("#theme_pick").fadeIn("fast",function(){
+            $("#underline-3").show("fast");
+            $("#underline-33").hide();
+        });
+        
+        $("#category").hide();
+        $("#underline-4").hide();
+        $("#underline-44").show();
+    });
+    
+    $("#tab-category").click(function(){
+        $("#most_popular").hide();
+        $("#underline-1").hide();
+        $("#underline-11").show();
+        
+        $("#monthly_new").hide();
+        $("#underline-2").hide();
+        $("#underline-22").show();
+        
+        $("#theme_pick").hide();
+        $("#underline-3").hide();
+        $("#underline-33").show();
+        
+        $("#category").fadeIn("fast",function(){
+            $("#underline-4").show("fast");
+            $("#underline-44").hide();
+        });
+    });
+</script>
+
+<%= render partial: "home/home_layouts/home_footer" %>
+
+
+
+
+<!-- Bootstrap core JavaScript
 ================================================== -->
-<!-- Wrap the rest of the page in another container to center all the content. -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<script src="http://bootstrapk.com/assets/js/vendor/holder.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="http://bootstrapk.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 
-<div class="container marketing">
+<!-- Plugin JavaScript -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/classie.js"></script>
+<script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/cbpAnimatedHeader.js"></script>
 
-    <!-- Three columns of text below the carousel -->
-    <div class="row">
-        <div class="col-lg-4">
-            <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-            <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-            <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
-            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-    </div><!-- /.row -->
+<!-- Contact Form JavaScript -->
+<script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/jqBootstrapValidation.js"></script>
+<script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/contact_me.js"></script>
 
-
-    <!-- START THE FEATURETTES -->
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-        <div class="col-md-7">
-            <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-        </div>
-        <div class="col-md-5">
-            <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-        </div>
-    </div>
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-        <div class="col-md-7 col-md-push-5">
-            <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-        </div>
-        <div class="col-md-5 col-md-pull-7">
-            <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-        </div>
-    </div>
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-        <div class="col-md-7">
-            <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-        </div>
-        <div class="col-md-5">
-            <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-        </div>
-    </div>
-
-    <hr class="featurette-divider">
-
-    <!-- /END THE FEATURETTES -->
-
-
-    <!-- FOOTER -->
-    <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-    </footer>
-
-</div><!-- /.container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <script src="http://bootstrapk.com/assets/js/vendor/holder.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://bootstrapk.com/assets/js/ie10-viewport-bug-workaround.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/classie.js"></script>
-    <script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/cbpAnimatedHeader.js"></script>
-
-    <!-- Contact Form JavaScript -->
-    <script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/jqBootstrapValidation.js"></script>
-    <script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/contact_me.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/freelancer.js"></script>
-<div id="content"></div>
-<div id="footer"></div>
+<!-- Custom Theme JavaScript -->
+<script src="http://blackrockdigital.github.io/startbootstrap-freelancer/js/freelancer.js"></script>
