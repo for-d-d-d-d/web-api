@@ -1,13 +1,7 @@
 class CrawlController < ApplicationController
   require 'fuzzystringmatch'
-  require 'sidekiq'
-  require 'sidekiq-status'
-
-  def index
-    @job_id = CrawlSongsJob.perform_async()
-    # num = 123
-    # html_doc = CrawlController.load_page(num, "song_number")
-  end
+  # require 'sidekiq'
+  # require 'sidekiq-status'
 
   def tj_monthly_new
   end
@@ -81,7 +75,7 @@ class CrawlController < ApplicationController
     # Setting( Focus.한번에 몇개 긁어올지 - 권장 20개, 장기크롤링 - 100개 )
     ## 정탐색 갯수 설정(파생탐색 및 탐색 손실은 측정하지 않음)
     # 갯수 지정 안할 시 기본값 1천개(예상 소요시간: 5분)
-    how_many_songs_do_you_want = 100
+    how_many_songs_do_you_want = 1000
     # 지정된 갯수대로 크롤링(속도: 100여개/30초, 200여개/분, 2천여개/10분)
     how_many_songs_do_you_want = params[:id].to_i unless params[:id].nil?
 
@@ -110,10 +104,6 @@ class CrawlController < ApplicationController
 
       # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
       html_doc = load_page(num, "song_number")
-
-      # 이후 작업은 html_doc에 담아온 HTML문서를 파싱하는 과정
-      # @result     = html_doc.css("div#body-content")   # [중간테스트] 여기까지는 잘 가져오는가.
-      # @result1    = html_doc.css("div#body-content//div.info-zone")   # [중간테스트] 여기까지는 잘 가져오는가.
 
       @song_title = html_doc.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip!
       @song_ganre1 = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(3)//span.value").inner_html.to_s.split(' / ').first.to_s
@@ -156,9 +146,7 @@ class CrawlController < ApplicationController
       ## ganre2(장르2)
       song.ganre2 = @song_ganre2
       ## runtime(재생시간)
-      unless error7 == true
-        @runtime = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(4)//span.value").inner_html.to_s unless error7
-      end
+      @runtime = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(4)//span.value").inner_html.to_s unless error7
       song.runtime = @runtime
       ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
       @lyrics = html_doc.css("div#body-content//div.lyrics-area//div.tit-box//pre").inner_html.to_s
@@ -172,18 +160,24 @@ class CrawlController < ApplicationController
 
       # 음원 정보(참조)
       ## artist_num(아티스트 번호)
-      unless == true
-        @artist_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(1)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('artistInfo','","").first(8) unless error7
+      @artist_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(1)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('artistInfo','","").first(8) unless error7
+      # song.artist_num = @artist_num
+      # puts "artist_num : " + @artist_num.to_s
+      artist = crawl_artist(@artist_num)
+
+      if artist.class == "Singer"
+        song.singer_id = artist.id
+      else
+        song.team_id = artist.id
       end
-      song.artist_num = @artist_num
+
       ## album_num(앨범 번호)
-      unless == true
-        @album_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('albumInfo','","").first(8) unless error7
-      end
-      song.album_num = @album_num
-      
+      @album_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('albumInfo','","").first(8) unless error7
+      # song.album_num = @album_num
+
       #**       Album Table Details    **#
-      if Album.where(album_num: @album_num).first.nil?
+      album = Album.where(album_num: @album_num).first
+      if album.nil?
         album = Album.new
         # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
         html_doc_album = load_page(@album_num, "album_number")
@@ -208,23 +202,21 @@ class CrawlController < ApplicationController
         ## jacket(앨범자켓 :: 이미지)
         @jacket = "http:" + html_doc_album.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
         album.jacket = @jacket
-        
-        uri_artist = URI("http://www.genie.co.kr/detail/artistInfo?xxnm=#{@artist_num}")
-        html_doc_artist = Nokogiri::HTML(Net::HTTP.get(uri_artist))
+
+        artist = crawl_artist(@artist_num)
         ## artist_num(아티스트 번호)
-        album.artist_num = @artist_num
-        ## artist_photo(아티스트 사진)
-        @artist_photo = "http:" + html_doc_artist.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
-        album.artist_photo = @artist_photo
-        ## artist_name(아티스트 이름)
-        @artist_name = html_doc_artist.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
-        album.artist_name = @artist_name
+        # album.artist_num = @artist_num
+
+        if artist.class == "Singer"
+          album.singer_id = artist.id
+        else
+          album.team_id = artist.id
+        end
 
         ## album_num(앨범 고유번호)
         album.album_num = @album_num
         album.save #아래 앨범아이디 만들려면 먼저저장해야함.
       else
-        album = Album.where(album_num: @album_num).take
         @album_title    = album.title
         @album_ganre1   = album.ganre1
         @album_ganre2   = album.ganre2
@@ -233,7 +225,7 @@ class CrawlController < ApplicationController
         @released_date  = album.released_date
         @jacket         = album.jacket
         # @artist_num     = album.artist_num
-        @artist_photo   = album.artist_photo
+        # @artist_photo   = album.artist_photo
         # @artist_name    = album.artist_name
         # @album_num      = album.album_num
       end
@@ -241,13 +233,13 @@ class CrawlController < ApplicationController
 
       # 음원 정보(참조추출)
       ## artist_photo(아티스트 사진)
-      song.artist_photo = @artist_photo
+      # song.artist_photo = @artist_photo
       ## jacket(자켓사진)
       song.jacket = @jacket
 
       # 앨범테이블 릴레이션
       ## album_id(앨범아이디)
-      song.album_id = Album.where(album_num: @album_num).take.id
+      song.album_id = album.id
       # 음원 정보(고유값)
       ## song_tjnum(노래방번호 :: 나중에 따로 받아야 할듯)
       song.song_tjnum = nil
@@ -269,16 +261,52 @@ class CrawlController < ApplicationController
     render layout: false
     puts "요청하신 크롤링이 종료되었습니다."
   end
-  
-  
-  ############################################################################################################
-  ############################################################################################################
-  def gini_song_parser(html_doc)
-    
+
+  def crawl_artist(artist_num)
+    html_doc_artist = load_page(artist_num, "artist_number")
+    @is_singer = html_doc_artist.css("div#body-content//div.info-zone//li//span.value").first.to_s
+    puts "crawl_artist called // query : " + artist_num.to_s
+    if @is_singer == "남성/솔로" || @is_singer == "여성/솔로"
+      return crawl_singer(html_doc_artist, artist_num)
+    else
+      return crawl_team(html_doc_artist, artist_num)
+    end
   end
-  
+
+  def crawl_singer(html_doc_singer, artist_num)
+    singer = Singer.new
+    singer = Singer.where(artist_num: artist_num).first unless Singer.where(artist_num: artist_num).first.nil?
+
+    singer.photo = "http:" + html_doc_singer.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
+    singer.name = html_doc_singer.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
+
+    singer.artist_num = artist_num
+    singer.save
+    return singer
+  end
+
+  def crawl_team(html_doc_team, artist_num)
+    team = Team.new
+    team = Team.where(artist_num: artist_num).first unless Team.where(artist_num: artist_num).first.nil?
+
+    team.photo = "http:" + html_doc_team.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
+    team.name = html_doc_team.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
+    team.artist_num = artist_num
+
+    team.save
+    return team
+  end
+
+  ############################################################################################################
+  ############################################################################################################
+
+  def gini_song_parser(html_doc)
+
+  end
+
   def gini_album_parser()
   end
+
   ############################################################################################################
   ############################################################################################################
 
@@ -687,9 +715,10 @@ class CrawlController < ApplicationController
   # album_number:앨범번호로검색
   # )
   # Method Description : 검색을 하고 해당하는 테이블의 데이터 전체를 반환하게됨. 데이터를 받아 활용하기 전에 호출.
-  def self.load_page(searchText, type)
+  def load_page(searchText, type)
     return false if searchText.nil? || type.nil?
     searchText = CGI::escape(searchText.to_s)
+    puts type.to_s + " query : " + searchText
 
     case type
     when "song_title"
