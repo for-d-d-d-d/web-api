@@ -76,13 +76,13 @@
         <div class="row" style="height:10%;margin: 0px;">
             <div id="underline-1" class="col-lg-3 f-tabs f-tabs-active">&nbsp;</div>
             <div id="underline-11" class="col-lg-3 f-tabs" style="display:none;">&nbsp;</div>
-            
+
             <div id="underline-2" class="col-lg-3 f-tabs f-tabs-active" style="display:none;">&nbsp;</div>
             <div id="underline-22" class="col-lg-3 f-tabs">&nbsp;</div>
-            
+
             <div id="underline-3" class="col-lg-3 f-tabs f-tabs-active" style="display:none;">&nbsp;</div>
             <div id="underline-33" class="col-lg-3 f-tabs">&nbsp;</div>
-            
+
             <div id="underline-4" class="col-lg-3 f-tabs f-tabs-active" style="display:none;">&nbsp;</div>
             <div id="underline-44" class="col-lg-3 f-tabs">&nbsp;</div>
         </div>
@@ -100,71 +100,7 @@
                 </div>
             </div>
             <div class="row">
-                <% if @ranker.count != 0 %>
-                    <% @ranker.each do |r| %>
-                    <div class="col-sm-4 portfolio-item <%= @ranker.count %>">
-                        <a href="#portfolioModal<%= r.id %>" class="portfolio-link img-ranker-wrap" data-toggle="modal">
-                            <div class="caption">
-                                <div class="caption-content">
-                                    <i class="fa fa-search-plus fa-3x"></i>
-                                </div>
-                            </div>
-                            <img src="<%= r.jacket %>" class="img-responsive img-ranker" alt="">
-                        </a>
-                    </div>
-                    <% end %>
-                <% else %>
-                    <div class="col-sm-4 portfolio-item <%#= @ranker.count %>">
-                        <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
-                            <div class="caption">
-                                <div class="caption-content">
-                                    <i class="fa fa-search-plus fa-3x"></i>
-                                </div>
-                            </div>
-                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/cake.png" class="img-responsive" alt="">
-                        </a>
-                    </div>
-                    <div class="col-sm-4 portfolio-item">
-                        <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
-                            <div class="caption">
-                                <div class="caption-content">
-                                    <i class="fa fa-search-plus fa-3x"></i>
-                                </div>
-                            </div>
-                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/circus.png" class="img-responsive" alt="">
-                        </a>
-                    </div>
-                    <div class="col-sm-4 portfolio-item">
-                        <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-                            <div class="caption">
-                                <div class="caption-content">
-                                    <i class="fa fa-search-plus fa-3x"></i>
-                                </div>
-                            </div>
-                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/game.png" class="img-responsive" alt="">
-                        </a>
-                    </div>
-                    <div class="col-sm-4 portfolio-item">
-                        <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-                            <div class="caption">
-                                <div class="caption-content">
-                                    <i class="fa fa-search-plus fa-3x"></i>
-                                </div>
-                            </div>
-                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/safe.png" class="img-responsive" alt="">
-                        </a>
-                    </div>
-                    <div class="col-sm-4 portfolio-item">
-                        <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
-                            <div class="caption">
-                                <div class="caption-content">
-                                    <i class="fa fa-search-plus fa-3x"></i>
-                                </div>
-                            </div>
-                            <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/submarine.png" class="img-responsive" alt="">
-                        </a>
-                    </div>
-                <% end %>
+              <%= render partial: 'home/contents' %>
             </div>
         </div>
     </div>
@@ -223,9 +159,9 @@
                     <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
                 </div>
             </div>
-            
+
             <hr class="featurette-divider">
-            
+
             <div class="row featurette">
                 <div class="col-md-7 col-md-push-5">
                     <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
@@ -235,9 +171,9 @@
                     <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
                 </div>
             </div>
-            
+
             <hr class="featurette-divider">
-            
+
             <div class="row featurette">
                 <div class="col-md-7">
                     <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
@@ -270,9 +206,9 @@
                     <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
                 </div>
             </div>
-            
+
             <hr class="featurette-divider">
-            
+
             <div class="row featurette">
                 <div class="col-md-7 col-md-push-5">
                     <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
@@ -282,9 +218,9 @@
                     <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
                 </div>
             </div>
-            
+
             <hr class="featurette-divider">
-            
+
             <div class="row featurette">
                 <div class="col-md-7">
                     <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
@@ -304,71 +240,71 @@
             $("#underline-1").show("fast");
             $("#underline-11").hide();
         });
-        
+
         $("#monthly_new").hide();
         $("#underline-2").hide();
         $("#underline-22").show();
-        
+
         $("#theme_pick").hide();
         $("#underline-3").hide();
         $("#underline-33").show();
-        
+
         $("#category").hide();
         $("#underline-4").hide();
         $("#underline-44").show();
     });
-    
+
     $("#tab-monthly_new").click(function(){
         $("#most_popular").hide();
         $("#underline-1").hide();
         $("#underline-11").show();
-        
+
         $("#monthly_new").fadeIn("fast",function(){
             $("#underline-2").show("fast");
             $("#underline-22").hide();
         });
-        
+
         $("#theme_pick").hide();
         $("#underline-3").hide();
         $("#underline-33").show();
-        
+
         $("#category").hide();
         $("#underline-4").hide();
         $("#underline-44").show();
     });
-    
+
     $("#tab-theme_pick").click(function(){
         $("#most_popular").hide();
         $("#underline-1").hide();
         $("#underline-11").show();
-        
+
         $("#monthly_new").hide();
         $("#underline-2").hide();
         $("#underline-22").show();
-        
+
         $("#theme_pick").fadeIn("fast",function(){
             $("#underline-3").show("fast");
             $("#underline-33").hide();
         });
-        
+
         $("#category").hide();
         $("#underline-4").hide();
         $("#underline-44").show();
     });
-    
+
     $("#tab-category").click(function(){
         $("#most_popular").hide();
         $("#underline-1").hide();
         $("#underline-11").show();
-        
+
         $("#monthly_new").hide();
         $("#underline-2").hide();
         $("#underline-22").show();
-        
+
         $("#theme_pick").hide();
         $("#underline-3").hide();
         $("#underline-33").show();
-        
+
         $("#category").fadeIn("fast",function(){
             $("#underline-4").show("fast");
             $("#underline-44").hide();
