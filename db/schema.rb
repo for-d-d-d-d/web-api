@@ -100,8 +100,6 @@ ActiveRecord::Schema.define(version: 20160512163114) do
     t.integer  "song_num"
     t.string   "lowkey"
     t.string   "highkey"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
