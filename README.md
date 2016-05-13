@@ -12,5 +12,5 @@
 # Welcom to GoraeBang!
 
 ### Todo
-> .... <br/>
+> 이달의 신곡페이지를 jQuery써가지고 구현해 보시오. 밑에 언더바가 잘 보이게! - Yong-Hyun Kim
 > .... <br/>

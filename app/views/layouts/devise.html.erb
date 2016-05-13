@@ -14,9 +14,17 @@
 
         <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
         <%= javascript_include_tag 'bootstrap/bootstrap.js' %>
+
+        <!-- devise용 css -->
+        <link href="/css/devise.css" rel="stylesheet">
     </head>
     <body style="background-color:lightblue;">
         <!-- header 추가!!!!!!! -->
+        <!-- Logo -->
+        <div style="text-align:center;">
+            <%= image_tag 'whale3.png', size: "300" %>
+        </div>
+        <!-- Logo end -->
         <%= yield %>
         <!--footer-->
         <!-- <div class="col-md-12" style="height:55px; background:#3b3a3c; position:fixed; bottom:0px;">

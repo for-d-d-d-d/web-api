@@ -1,34 +1,74 @@
-<h2>Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+<form class="new_user" id="new_user" action="/users" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+    <div class="col-md-4"></div>
+    <div class="col-md-4" >
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style="height:380px; padding:5% 44px 30px 44px; background: rgba(255, 255, 255, 0.7); border-radius: 5px; border: 1px solid #ebebeb; margin: 0% 0% 20% 0%;">
+            <h2 style="margin-top:0px;"> 회원가입 </h2>
+            <div class="field">
+                <label for="user_email">Email</label><br />
+                <input class="input_contents" autofocus="autofocus" type="email" value="" name="user[email]" id="user_email"/>
+            </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+            <div class="field">
+                <label for="user_name">Name</label><br />
+                <input class="input_contents" type="text" value="" name="user[name]" id="user_name" />
+            </div>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name%>
-  </div>
+            <div class="field">
+                <label for="user_password">Password</label>
+                <br />
+                <input class="input_contents" autocomplete="off" type="password" name="user[password]" id="user_password" placeholder="최소 6글자 이상"/>
+            </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+            <div class="field">
+                <label for="user_password_confirmation">Password confirmation</label><br />
+                <input class="input_contents" autocomplete="off" type="password" name="user[password_confirmation]" id="user_password_confirmation" />
+            </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
+            <div class="actions input_contents" style="height:45px;">
+                <button type="submit" class="btn btn-primary" style="float:right; margin-top:5%;" name="commit">가입하기</button>
+                <!-- <input type="submit" name="commit" value="Sign up" /> -->
+            </div>
+            <div>
+                <a href="/users/sign_in" style="float:right;">Log in</a><br/>
+                <a href="/users/auth/facebook" style="float:right;">Sign in with Facebook</a><br/>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="col-md-4"></div>
+</form>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
+<!-- <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= devise_error_messages! %>
 
-<%= render "devise/shared/links" %>
+<div class="field">
+<%= f.label :email %><br />
+<%= f.email_field :email, autofocus: true %>
+</div>
+
+<div class="field">
+<%= f.label :name %><br />
+<%= f.text_field :name%>
+</div>
+
+<div class="field">
+<%= f.label :password %>
+<% if @minimum_password_length %>
+<em>(<%= @minimum_password_length %> characters minimum)</em>
+<% end %><br />
+<%= f.password_field :password, autocomplete: "off" %>
+</div>
+
+<div class="field">
+<%= f.label :password_confirmation %><br />
+<%= f.password_field :password_confirmation, autocomplete: "off" %>
+</div>
+
+<div class="actions">
+<%= f.submit "Sign up" %>
+</div>
+<% end %> -->
+
+<!-- <%= render "devise/shared/links" %> -->
