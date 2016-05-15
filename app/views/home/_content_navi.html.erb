@@ -1,0 +1,77 @@
+<!-- 본문 네비게이션 -->
+<header style="height:117px;">
+    <div class="row" style="height:100%; padding:0% 0%; margin:0%;">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="height:100%;margin: 0px;">
+            <div class="col-lg-3 f-tabs f-tabs-tab" id="tab-most_popular" style="background-color:#ff5951;">
+                <span id="text-most_popular">노래방 인기차트</span>
+            </div>
+            <div class="col-lg-3 f-tabs f-tabs-tab" id="tab-monthly_new">
+                <span id="text-monthly_new">이달의 신곡</span>
+            </div>
+            <div class="col-lg-3 f-tabs f-tabs-tab" id="tab-theme_pick">
+                <span id="text-theme_pick">테마별 선곡표</span>
+            </div>
+            <div class="col-lg-3 f-tabs f-tabs-tab" id="tab-category">
+                <span id="text-category">카테고리별 노래</span>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</header><!-- /.본문 네비게이션 -->
+
+
+
+<script>// 본문 네비게이션바 핸들러
+    $("#tab-most_popular").click(function(){
+        $(this).attr('style',  'background-color:#ff5951');
+        $("#tab-monthly_new").attr('style',  'background-color:none');
+        $("#tab-theme_pick").attr('style',  'background-color:none');
+        $("#tab-category").attr('style',  'background-color:none');
+        
+        $("#most_popular").fadeIn("fast");
+        
+        $("#monthly_new").hide();
+        $("#theme_pick").hide();
+        $("#category").hide();
+    });
+    
+    $("#tab-monthly_new").click(function(){
+        $("#tab-most_popular").attr('style',  'background-color:none');
+        $(this).attr('style',  'background-color:#ff5951');
+        $("#tab-theme_pick").attr('style',  'background-color:none');
+        $("#tab-category").attr('style',  'background-color:none');
+        
+        $("#monthly_new").fadeIn("fast");
+        
+        $("#most_popular").hide();
+        $("#theme_pick").hide();
+        $("#category").hide();
+    });
+    
+    $("#tab-theme_pick").click(function(){
+        $("#tab-most_popular").attr('style',  'background-color:none');
+        $("#tab-monthly_new").attr('style',  'background-color:none');
+        $(this).attr('style',  'background-color:#ff5951');
+        $("#tab-category").attr('style',  'background-color:none');
+        
+        $("#theme_pick").fadeIn("fast");
+        
+        $("#most_popular").hide();
+        $("#monthly_new").hide();
+        $("#category").hide();
+    });
+    
+    $("#tab-category").click(function(){
+        $("#tab-most_popular").attr('style',  'background-color:none');
+        $("#tab-monthly_new").attr('style',  'background-color:none');
+        $("#tab-theme_pick").attr('style',  'background-color:none');
+        $(this).attr('style',  'background-color:#ff5951');
+        
+        $("#category").fadeIn("fast");
+        
+        $("#most_popular").hide();
+        $("#monthly_new").hide();
+        $("#theme_pick").hide();
+    });
+</script>

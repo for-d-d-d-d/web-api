@@ -25,7 +25,7 @@ class HomeController < ApplicationController
 
   def main
       @song = Song.where.not(lowkey: nil).all
-      @carousel = @song.first(7)
+      @carousel = @song.first(1)
 
       @rankers = DailyTjPopularRank.all
 

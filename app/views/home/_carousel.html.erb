@@ -1,0 +1,115 @@
+<!-- 캐러셀 슬라이드 -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <% arr = [
+        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/811/068/80811068_1461316611366_1_600x600.JPG",
+        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/810/919/80810919_1461028312733_1_600x600.JPG",
+        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/796/234/80796234_1456909197595_1_600x600.JPG",
+        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/784/293/80784293_1453884534908_1_600x600.JPG",
+        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/816/994/80816994_1462867790768_1_600x600.JPG"
+        ]%>
+    <!-- Indicators -->
+    <!--<ol class="carousel-indicators">-->
+    <!--    <%# i = 0 %>-->
+    <!--    <%# @carousel.each do |c| %>-->
+    <!--    <li data-target="#myCarousel" data-slide-to="<%#= i %>"></li>-->
+    <!--    <%# i += 1 %>-->
+    <!--    <%# end %>-->
+    <!--</ol>-->
+    <div class="carousel-inner" role="listbox" style="z-index:-1">
+        <% i = 0 %>
+        <% @carousel.each do |song| %>
+        <% album = Album.find(song.album_id) %>
+        <div class="item <%= "active" if i == 0 %>">
+            <div class="first-slide slide-background">
+                <div class="blur" style="background-image: url(<%= album.jacket %>);">
+                    <!--<img class="slide-focus-img" src="<%#= song.jacket %>" alt="Third slide">-->
+                </div>
+                <div class="slide-background-blur">
+                    <img class="slide-focus-img" src="<%= song.jacket %>" alt="Third slide">
+                    <div class="content_box">
+                        <div class="content_box-label">
+                            <span class="label_m">1위</span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="carousel-caption carousel-details">
+                    <p class="c-left carousel-artist">
+                    <% if i == 0 %>
+                        <em>BEST!</em>
+                    <% else %>
+                        <%= i + 1 %>위
+                    <% end %>
+                    </p>
+                    <h1 class="c-left carousel-title"><%= song.title %> <code>번호 <%= song.song_tjnum %></code></h1>
+                    <p class="c-left carousel-artist"><%= album.artist_name %></p>
+                    <p class="c-left carousel-album">앨범명: <%= album.title %></p>
+                    <p class="c-left carousel-getlist"><code><%= 8-i %>,<%= 9-i %><%= 2+i %><%= i %></code>명의 리스트에 라인업<i>!</i></p>
+                    <p class="c-left"><a class="btn btn-lg btn-primary" href="#" role="button"><em>Line up!</em></a></p>
+                </div>
+            </div>
+        </div>
+        <% i += 1 %>
+        <% end %>
+        
+    </div>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+    <div class="search_f">
+        <div class="row">
+            <div class="col-md-4 col-sm-1"></div>
+            <div class="col-md-4 col-sm-10">
+                <div class="col-md-1"></div>
+                <div class="col-md-10 col-sm-12">
+                    <div class="serch_form">
+                        
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="col-md-4 col-sm-1"></div>
+        </div>
+    </div>
+    <style>
+        .search_f{
+            background:rgba(255, 255, 255, 0.4);
+            height:117px;
+            margin-top:-117px;
+            z-index:1000;
+        }
+        .search_form{
+            background-color:blue;
+            height:117px;
+        }
+        .content_box{
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 35%;
+            height: 250px;
+            float: right;
+            margin-top: 4%;
+            margin-right: 4.5%;
+        }
+        .content_box-label{
+            background-image: url('/KakaoTalk_20160514_051643042.png');
+            background-size: 120px 75px; 
+            width: 120px; 
+            height: 75px; 
+            margin-top: 15px;
+            color: #fff;
+            padding-top: 5px;
+        }
+        .label_m{
+            font-size: 35px;
+            margin-left: 15%;
+            font-weight: bold;
+        }
+    </style>
+</div><!-- /.캐러셀 슬라이드 -->

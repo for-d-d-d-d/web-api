@@ -33,8 +33,8 @@
      font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
      text-transform: uppercase;
      font-weight: 700;
-     padding-top: 15px;
-     font-size: 18px;
+     padding-top: 2.5%;
+     font-size: 30px;
      cursor: pointer;
  }
  .f-tabs-active{
@@ -120,7 +120,7 @@ hr.star-primary:after {
 }
 header {
   text-align: center;
-  background: #18bc9c;
+  background: #ff281d;
   color: white;
 }
 header .container {
