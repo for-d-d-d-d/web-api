@@ -80,6 +80,10 @@ class HomeController < ApplicationController
   end
 
   def EvalKey
-      
+
+  end
+
+  def Mylist
+
   end
 end

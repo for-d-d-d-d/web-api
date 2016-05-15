@@ -1,0 +1,103 @@
+<%= render partial: "home/home_layouts/home_header" %>
+
+<style media="screen">
+.mylist_container{
+    border-radius: 10px;
+    width:50%;
+    border-style: solid;
+    border-width: 1px!important;
+    border-color: black!important;
+    padding : 30px 20px 40px 20px;
+}
+
+.mylist_contents{
+    float:left;
+    text-align: left;
+    padding: 10px 0px 10px 0px;
+}
+
+.mylist_contents_container{
+    margin-bottom:0px;
+}
+
+.list_devider{
+    width:100%;
+    margin-bottom: 0px;
+}
+</style>
+
+<!-- 헤더 공간 차지용  -->
+<div style="height:60px; margin-bottom:50px;"></div>
+<!-- 헤더 공간 차지용  -->
+
+<!-- My List Start -->
+<div class="col-md-3"></div>
+<div class="mylist_container col-md-6">
+    <div class="mylist_contents_container" style="text-align:center; margin-bottom:70px;">
+        <img src="/images/icon/profile_photo.png" width="60" height="60" style="background-color:black;"/>
+        <div><h4><%= current_user.name %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
+    </div>
+    <div class="mylilst_contents_container">
+        <div class="col-md-1 mylist_contents"> No </div>
+        <div class="col-md-2 mylist_contents"> 노래방 번호 </div>
+        <div class="col-md-5 mylist_contents"> 제목 </div>
+        <div class="col-md-2 mylist_contents"> 가수 </div>
+        <div class="col-md-2 mylist_contents"> 좋아요 수 </div>
+
+    </div>
+    <hr class="list_devider">
+    <div class="mylilst_contents_container">
+        <div class="col-md-1 mylist_contents"> 1 </div>
+        <div class="col-md-2 mylist_contents"> 54432 </div>
+        <div class="col-md-5 mylist_contents"> 또 다시 사랑 </div>
+        <div class="col-md-2 mylist_contents"> 임창정 </div>
+        <div class="col-md-2 mylist_contents"> 5634명 </div>
+    </div>
+    <hr class="list_devider">
+
+    <div class="mylilst_contents_container">
+        <div class="col-md-1 mylist_contents"> 2 </div>
+        <div class="col-md-2 mylist_contents"> 46009 </div>
+        <div class="col-md-5 mylist_contents"> 어디에도 </div>
+        <div class="col-md-2 mylist_contents"> MC THE MAX </div>
+        <div class="col-md-2 mylist_contents"> 3543명 </div>
+    </div>
+    <hr class="list_devider">
+
+    <div class="mylilst_contents_container">
+        <div class="col-md-1 mylist_contents"> 3 </div>
+        <div class="col-md-2 mylist_contents"> 45592 </div>
+        <div class="col-md-5 mylist_contents"> 걱정말아요그대(응답하라1988 OST) </div>
+        <div class="col-md-2 mylist_contents"> 이적 </div>
+        <div class="col-md-2 mylist_contents"> 4953명 </div>
+    </div>
+    <hr class="list_devider">
+
+    <div class="mylilst_contents_container">
+        <div class="col-md-1 mylist_contents"> 4 </div>
+        <div class="col-md-2 mylist_contents"> 35184 </div>
+        <div class="col-md-5 mylist_contents"> 벛꽃엔딩 </div>
+        <div class="col-md-2 mylist_contents"> 버스커버스커 </div>
+        <div class="col-md-2 mylist_contents"> 5994명 </div>
+    </div>
+    <hr class="list_devider">
+
+    <div class="mylilst_contents_container">
+        <div class="col-md-1 mylist_contents"> 5 </div>
+        <div class="col-md-2 mylist_contents"> 14515 </div>
+        <div class="col-md-5 mylist_contents"> 응급실(쾌걸춘향) </div>
+        <div class="col-md-2 mylist_contents"> 이지(izi) </div>
+        <div class="col-md-2 mylist_contents"> 3245명 </div>
+    </div>
+    <hr class="list_devider">
+
+    <div class="mylilst_contents_container">
+        <div class="col-md-1 mylist_contents"> 6 </div>
+        <div class="col-md-2 mylist_contents"> 11238 </div>
+        <div class="col-md-5 mylist_contents"> 친구라도될걸그랬어 </div>
+        <div class="col-md-2 mylist_contents"> 거미 </div>
+        <div class="col-md-2 mylist_contents"> 4332명 </div>
+    </div>
+    <hr class="list_devider">
+</div>
+<div class="col-md-3"></div>

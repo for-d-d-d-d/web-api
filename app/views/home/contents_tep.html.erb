@@ -1,0 +1,67 @@
+<div class="row">
+    <% if @ranker.count != 0 %>
+        <% @ranker.each do |r| %>
+        <div class="col-sm-4 portfolio-item <%= @ranker.count %>">
+            <a href="#portfolioModal<%= r.id %>" class="portfolio-link img-ranker-wrap" data-toggle="modal">
+                <div class="caption">
+                    <div class="caption-content">
+                        <i class="fa fa-search-plus fa-3x"></i>
+                    </div>
+                </div>
+                <img src="<%= r.jacket %>" class="img-responsive img-ranker" alt="">
+            </a>
+        </div>
+        <% end %>
+    <% else %>
+        <div class="col-sm-4 portfolio-item <%#= @ranker.count %>">
+            <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
+                <div class="caption">
+                    <div class="caption-content">
+                        <i class="fa fa-search-plus fa-3x"></i>
+                    </div>
+                </div>
+                <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/cake.png" class="img-responsive" alt="">
+            </a>
+        </div>
+        <div class="col-sm-4 portfolio-item">
+            <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
+                <div class="caption">
+                    <div class="caption-content">
+                        <i class="fa fa-search-plus fa-3x"></i>
+                    </div>
+                </div>
+                <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/circus.png" class="img-responsive" alt="">
+            </a>
+        </div>
+        <div class="col-sm-4 portfolio-item">
+            <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                <div class="caption">
+                    <div class="caption-content">
+                        <i class="fa fa-search-plus fa-3x"></i>
+                    </div>
+                </div>
+                <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/game.png" class="img-responsive" alt="">
+            </a>
+        </div>
+        <div class="col-sm-4 portfolio-item">
+            <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
+                <div class="caption">
+                    <div class="caption-content">
+                        <i class="fa fa-search-plus fa-3x"></i>
+                    </div>
+                </div>
+                <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/safe.png" class="img-responsive" alt="">
+            </a>
+        </div>
+        <div class="col-sm-4 portfolio-item">
+            <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
+                <div class="caption">
+                    <div class="caption-content">
+                        <i class="fa fa-search-plus fa-3x"></i>
+                    </div>
+                </div>
+                <img src="http://blackrockdigital.github.io/startbootstrap-freelancer/img/portfolio/submarine.png" class="img-responsive" alt="">
+            </a>
+        </div>
+    <% end %>
+</div>

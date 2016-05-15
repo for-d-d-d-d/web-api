@@ -1,0 +1,119 @@
+<div class="col-md-1"></div>
+<div class="col-md-10">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- 1위 -->
+      <div class="song1_card_container">
+        <div class="song1_card_img">
+          <div style="height:10px;"></div>
+          <div class="song1_card_tag"><span class="song1_card_tag_text">1위</span></div>
+          <div class="song1_card_icon"></div>
+        </div>
+        <div class="song1_card_contents">
+          <p class="song1_card_content">시간을 달려서</p>
+          <p class="song1_card_content">여자친구</p>
+          <p class="song1_card_content">번호: 71359955</p>
+        </div>
+      </div>
+
+      <style media="screen">
+        .song1_card_container{
+          border-radius: 0px;
+          padding: 5px;
+          border: 1px solid grey;
+          margin-bottom: 10px;
+        }
+        .song1_card_img{
+          background-image: url('/images/album/GFriend-rough.jpg');
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          width: 100%;
+          height: 332px;
+          border-bottom-right-radius: 100px;
+        }
+        .song1_card_tag{
+          margin-left: 10px;
+          /*margin-top: 10px;*/
+          padding: 20px 5px 20px 5px;
+          vertical-align: middle;
+          background-image: url('/images/tag.png');
+          width: 130px;
+          background-size: cover;
+        }
+        .song1_card_tag_text{
+          margin-left: 22px;
+          color: white;
+          font-size: 30px;
+          font-weight: bold;
+          text-align: center;
+        }
+        .song1_card_icon{
+          background-image: url('/images/view.png');
+          background-size: cover;
+          position: absolute;
+          top:230px;
+          right:60px;
+          width: 60px;
+          height: 60px;
+        }
+        .song1_card_contents{
+          margin-top: 8px;
+          padding: 5px;
+        }
+        .song1_card_content{
+          width: 100%;
+          text-align: center;
+          font-weight: bold;
+          font-size: 16px;
+        }
+      </style>
+
+      <!-- 1위끝 -->
+    </div>
+    <div class="col-md-6" style="padding:0px;">
+      <div class="col-md-6">
+        <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 2, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+      </div>
+      <div class="col-md-6">
+        <%#= render 'home/song_card', :locals => {:img_path => '/images/album/Standing_Egg.jpg', :tag => 3, title: '오래된 노래', singer: '스탠딩 에그', number: '6847906'} %>
+        <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 3, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+      </div>
+      <div class="col-md-6">
+        <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+      </div>
+      <div class="col-md-6">
+        <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+    </div>
+    <div class="col-md-3">
+      <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+    </div>
+    <div class="col-md-3">
+      <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+    </div>
+    <div class="col-md-3">
+      <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+    </div>
+    <div class="col-md-3">
+      <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+    </div>
+    <div class="col-md-3">
+      <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+    </div>
+    <div class="col-md-3">
+      <%= render 'home/song_card', :locals => {:img_path => '/images/album/twice.jpg', :tag => 0, title: '우아하게', singer: 'Twice', number: '1829371'} %>
+    </div>
+  </div>
+</div>
+<div class="col-md-1"></div>

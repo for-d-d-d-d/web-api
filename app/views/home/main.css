@@ -8,7 +8,7 @@
  }
  #header .navbar .container-fluid{
      /*height:80px;*/
-     padding:0px 12%;
+     padding:0px 0px 0px 0px;
  }
  .myaccount-dropdown {
      color: #ffffff;
