@@ -24,8 +24,8 @@ class HomeController < ApplicationController
   end
 
   def main
-      @song = Song.where.not(lowkey: nil).all
-      @carousel = @song.first(1)
+      @song = Song.where.not(lowkey: nil).all.reverse
+      @carousel = @song.first(17)
 
       @rankers = DailyTjPopularRank.all
 
@@ -75,8 +75,8 @@ class HomeController < ApplicationController
   end
 
   def mylist
-
-    render layout: "../gorae_layouts/application.html.erb"
+    @song = Song.where.not(lowkey: nil).all.reverse
+    # render layout: "../gorae_layouts/application.html.erb"
   end
 
   def EvalKey
@@ -84,6 +84,6 @@ class HomeController < ApplicationController
   end
 
   def Mylist
-
+    
   end
 end

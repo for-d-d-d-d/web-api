@@ -1,67 +1,32 @@
-<div class="song_card_container">
-  <div class="song_card_img">
-    <% if locals[:tag] != 0 %>
-      <div style="height:10px;"></div>
-      <div class="song_card_tag"><span class="song_card_tag_text"><%= locals[:tag] %>위</span></div>
-      <div class="song_card_icon"></div>
-    <% end %>
-  </div>
-  <div class="song_card_contents">
-    <p class="song_card_content"><%= locals[:title] %></p>
-    <p class="song_card_content"><%= locals[:singer] %></p>
-    <p class="song_card_content">번호: <%= locals[:number] %></p>
-  </div>
-</div>
-
-<style media="screen">
-  .song_card_container{
-    border-radius: 0px;
-    padding: 3px;
-    border: 1px solid grey;
-    margin-bottom: 10px;
-  }
-  .song_card_img{
-    background-image: url('<%= locals[:img_path] %>');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 140px;
-    border-bottom-right-radius: 75px;
-  }
-  .song_card_tag{
-    margin-left: 10px;
-    /*margin-top: 10px;*/
-    padding: 12px 3px 12px 3px;
-    vertical-align: middle;
-    background-image: url('/images/tag.png');
-    width: 80px;
-    background-size: cover;
-  }
-  .song_card_tag_text{
-    margin-left: 16px;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .song_card_icon{
-    background-image: url('/images/view.png');
-    background-size: cover;
-    position: absolute;
-    top:95px;
-    right:50px;
-    width: 30px;
-    height: 30px;
-  }
-  .song_card_contents{
-    margin-top: 3px;
-    padding: 1px;
-  }
-  .song_card_content{
-    width: 100%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 10px;
-  }
-</style>
+<% if locals[:tag] == 1 %>
+    <!-- 1위 -->
+    <div class="song1_card_container" onclick="$(this).myModal(<%= locals[:id].to_i %>);" data-toggle="modal" data-target="#SongDetailModal">
+        <img src="<%= locals[:img_path] %>" class="song1_card_img-r">
+        <div class="song1_card_img">
+            <div style="height:10px;"></div>
+            <div class="song1_card_tag"><span class="song1_card_tag_text"><em>BEST!</em></span></div>
+        </div>
+        <div class="song1_card_contents">
+            <p class="song1_card_content"><%= locals[:title] %><span class="song1_card_icon"></span></p>
+            <p class="song1_card_content"><%= locals[:singer] %></p>
+            <p class="song1_card_content">번호 <%= locals[:number] %></p>
+        </div>
+    </div>
+    <!-- ./1위 -->
+<% else %>
+    <div class="song_card_container" onclick="$(this).myModal(<%= locals[:id].to_i %>);" data-toggle="modal" data-target="#SongDetailModal">
+        <img src="<%= locals[:img_path] %>" class="song_card_img-r">
+        <div class="song_card_img">
+            <% if locals[:tag] != 0 %>
+                <div style="height:10px;"></div>
+                <div class="song_card_tag"><span class="song_card_tag_text"><%= locals[:tag] %>위</span></div>
+            <% end %>
+        </div>
+        
+        <div class="song_card_contents">
+            <p class="song_card_content"><%= locals[:title] %><span class="song_card_icon"></span></p>
+            <p class="song_card_content"><%= locals[:singer] %></p>
+            <p class="song_card_content">번호 <%= locals[:number] %></p>
+        </div>
+    </div>
+<% end %>

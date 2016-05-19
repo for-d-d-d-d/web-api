@@ -8,10 +8,11 @@
 <!-- 노래방 인기 차트 -->
 <section id="most_popular">
     <div id="portfolio">
-        <div class="container">
+        <div class="">
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>노래방 인기차트</h2>
+                <div class="col-lg-12 text-center" style="margin-bottom: 50px; margin-top: 30px;">
+                    <hr class="star-primary">
+                        <p class="content-title">노래방 인기차트</p>
                     <hr class="star-primary">
                 </div>
             </div>
@@ -22,13 +23,14 @@
     </div>
 </section><!-- /.노래방 인기 차트 -->
 
-<!-- 이달의 신곡-->
+<!-- 이달의 신곡 -->
 <section id="monthly_new" style="display:none;">
     <div id="portfolio">
-        <div class="container">
+        <div class=""><!-- 원래 컨테이너 있던자리 <div class="container">-->
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>이달의 신곡</h2>
+                <div class="col-lg-12 text-center" style="margin-bottom: 50px; margin-top: 30px;">
+                    <hr class="star-primary">
+                        <p class="content-title">이달의 신곡</p>
                     <hr class="star-primary">
                 </div>
             </div>
@@ -59,10 +61,11 @@
 <!-- 테마별 선곡표 -->
 <section id="theme_pick" style="display:none;">
     <div id="portfolio">
-        <div class="container">
+        <div class=""><!-- 원래 컨테이너 있던자리 <div class="container">-->
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>테마별 선곡표</h2>
+                <div class="col-lg-12 text-center" style="margin-bottom: 50px; margin-top: 30px;">
+                    <hr class="star-primary">
+                        <p class="content-title">테마별 선곡표</p>
                     <hr class="star-primary">
                 </div>
             </div>
@@ -106,10 +109,11 @@
 <!-- 카테고리별 노래 -->
 <section id="category" style="display:none;">
     <div id="portfolio">
-        <div class="container">
+        <div class=""><!-- 원래 컨테이너 있던자리 <div class="container">-->
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>카테고리별 노래</h2>
+                <div class="col-lg-12 text-center" style="margin-bottom: 50px; margin-top: 30px;">
+                    <hr class="star-primary">
+                        <p class="content-title">카테고리별 노래</p>
                     <hr class="star-primary">
                 </div>
             </div>
@@ -150,90 +154,27 @@
     </div>
 </section><!-- /.카테고리별 노래 -->
 
-<<<<<<< HEAD
-=======
-<script>
-    $("#tab-most_popular").click(function(){
-        $("#most_popular").fadeIn("fast",function(){
-            $("#underline-1").show("fast");
-            $("#underline-11").hide();
-        });
-
-        $("#monthly_new").hide();
-        $("#underline-2").hide();
-        $("#underline-22").show();
-
-        $("#theme_pick").hide();
-        $("#underline-3").hide();
-        $("#underline-33").show();
-
-        $("#category").hide();
-        $("#underline-4").hide();
-        $("#underline-44").show();
-    });
-
-    $("#tab-monthly_new").click(function(){
-        $("#most_popular").hide();
-        $("#underline-1").hide();
-        $("#underline-11").show();
-
-        $("#monthly_new").fadeIn("fast",function(){
-            $("#underline-2").show("fast");
-            $("#underline-22").hide();
-        });
-
-        $("#theme_pick").hide();
-        $("#underline-3").hide();
-        $("#underline-33").show();
-
-        $("#category").hide();
-        $("#underline-4").hide();
-        $("#underline-44").show();
-    });
-
-    $("#tab-theme_pick").click(function(){
-        $("#most_popular").hide();
-        $("#underline-1").hide();
-        $("#underline-11").show();
-
-        $("#monthly_new").hide();
-        $("#underline-2").hide();
-        $("#underline-22").show();
-
-        $("#theme_pick").fadeIn("fast",function(){
-            $("#underline-3").show("fast");
-            $("#underline-33").hide();
-        });
-
-        $("#category").hide();
-        $("#underline-4").hide();
-        $("#underline-44").show();
-    });
-
-    $("#tab-category").click(function(){
-        $("#most_popular").hide();
-        $("#underline-1").hide();
-        $("#underline-11").show();
-
-        $("#monthly_new").hide();
-        $("#underline-2").hide();
-        $("#underline-22").show();
-
-        $("#theme_pick").hide();
-        $("#underline-3").hide();
-        $("#underline-33").show();
-
-        $("#category").fadeIn("fast",function(){
-            $("#underline-4").show("fast");
-            $("#underline-44").hide();
-        });
-    });
-</script>
->>>>>>> 67077f90f227655ad6198e25d947433e80bb862c
 
 <%= render partial: "home/home_layouts/home_footer" %>
 
-
+<div class="modal fade" id="SongDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal-dialog" style="z-index: 12345;margin: 5% 25%;width: 50%;height: 100%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" style="height: 1200px;">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="dddd" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Bootstrap core JavaScript

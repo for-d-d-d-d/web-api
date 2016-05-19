@@ -3,6 +3,153 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+.content-title{
+    font-size: 25px;
+    letter-spacing: 20px;
+    font-weight: 600;
+    padding-left: 1%;
+}
+
+.song_card_container{
+    border-radius: 0px;
+    padding: 3px;
+    border: 1px solid rgba(128,128,128,0.45);
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.song_card_container:hover{
+    background-color: rgba(0,0,0,0.75);
+    color: #fff !important;
+}
+.song1_card_container{
+    border-radius: 0px;
+    padding: 5px;
+    border: 1px solid rgba(128,128,128,0.45);
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.song1_card_container:hover{
+    background-color: rgba(0,0,0,0.75);
+    color: #fff !important;
+}
+.song_card_img-r{
+    width: 100%;
+    height: auto;
+    position: relative;
+    float: left;
+    z-index: -1 !important;
+    border-bottom-right-radius: 20%;
+    border-bottom: 1px solid #e9e9e9;
+    margin-bottom: 7px;
+}
+.song1_card_img-r{
+    width: 100%;
+    height: auto;
+    position: relative;
+    float: left;
+    z-index: -1 !important;
+    border-bottom-right-radius: 20%;
+    border-bottom: 1px solid #e9e9e9;
+    margin-bottom: 32px;
+}
+.song_card_img{   
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 140px;
+    border-bottom-right-radius: 75px;
+    position: absolute;
+}
+.song1_card_img{
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 332px;
+    border-bottom-right-radius: 100px;
+    position: absolute;
+}
+.song_card_tag{
+    padding: 12px 3px 12px 3px;
+    vertical-align: middle;
+    width: 80px;
+    background-size: cover;
+}
+.song1_card_tag{
+    padding: 20px 5px 20px 5px;
+    vertical-align: middle;
+    width: 130px;
+    background-size: cover;
+}
+.song_card_tag_text{
+    margin-left: 10px;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
+.song1_card_tag_text{
+    margin-left: 5px;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+}
+.song_card_icon{
+    background-size: cover;
+    position: absolute;
+    top: 58%;
+    right: 10%;
+    width: 40px;
+    height: 40px;
+}
+.song1_card_icon{
+    background-size: cover;
+    position: absolute;
+    top: 61%;
+    right: 12%;
+    width: 60px;
+    height: 60px;
+}
+.song_card_contents{
+    margin-top: 3px;
+    padding: 1px;
+}
+.song1_card_contents{
+    margin-top: 8px;
+    padding: 5px;
+    margin-bottom: 12px;
+}
+.song_card_content{
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15.5px;
+    margin-bottom: 5px;
+    font-family: 나눔바른고딕;
+}
+.song1_card_content{
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-family: 나눔바른고딕;
+}
+.song_card_tag{background-image: url('/images/tag.png')}
+.song1_card_tag{background-image: url('/images/tag.png')}
+.song_card_icon{background-image: url('/images/view.png')}
+.song1_card_icon{background-image: url('/images/view.png')}
+
+
+/*=================================================================*/
+/*=================================================================*/
+
+
+
+/*=================================================================*/
+/*=================================================================*/
  #header{
      /*height:80px;*/
  }
@@ -32,9 +179,9 @@
  .f-tabs-tab{
      font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
      text-transform: uppercase;
-     font-weight: 700;
-     padding-top: 2.5%;
-     font-size: 30px;
+     font-weight: 500;
+     padding-top: 1.5%;
+     font-size: 23px;
      cursor: pointer;
  }
  .f-tabs-active{
@@ -86,14 +233,14 @@ hr.star-light,
 hr.star-primary {
   padding: 0;
   border: none;
-  border-top: solid 5px;
+  border-top: solid 3px;
   text-align: center;
-  max-width: 250px;
-  margin: 25px auto 30px;
+  max-width: 22%;
+  margin: 15px auto 15px;
 }
 hr.star-light:after,
 hr.star-primary:after {
-  content: "\f005";
+  /*content: "\f005";*/
   font-family: FontAwesome;
   display: inline-block;
   position: relative;
@@ -109,7 +256,7 @@ hr.star-light:after {
   color: white;
 }
 hr.star-primary {
-  border-color: #2c3e50;
+  border-color: #ff281d;
 }
 hr.star-primary:after {
   background-color: white;
@@ -156,7 +303,7 @@ header .intro-text .skills {
 }
 @media (min-width: 768px) {
   .navbar-fixed-top {
-    padding: 25px 0;
+    padding: 15px 0;
     -webkit-transition: padding 0.3s;
     -moz-transition: padding 0.3s;
     transition: padding 0.3s;
@@ -168,7 +315,7 @@ header .intro-text .skills {
     transition: all 0.3s;
   }
   .navbar-fixed-top.navbar-shrink {
-    padding: 10px 0;
+    padding: 5px 0;
   }
   .navbar-fixed-top.navbar-shrink .navbar-brand {
     font-size: 1.5em;
@@ -193,7 +340,7 @@ header .intro-text .skills {
   border: none;
 }
 section {
-  padding: 100px 0;
+  padding: 50px 0;
 }
 section h2 {
   margin: 0;

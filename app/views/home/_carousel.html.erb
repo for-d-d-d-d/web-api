@@ -28,7 +28,7 @@
                     <img class="slide-focus-img" src="<%= song.jacket %>" alt="Third slide">
                     <div class="content_box">
                         <div class="content_box-label">
-                            <span class="label_m">1위</span>
+                            <span class="label_m">&nbsp;</span>
                         </div>
                         
                     </div>
@@ -36,18 +36,21 @@
             </div>
             <div class="container">
                 <div class="carousel-caption carousel-details">
-                    <p class="c-left carousel-artist">
+                    <span class="c-left carousel-rank" style="<%= "margin-right: 7%;" if i == 0 %><%= "margin-right: 9%;" if i >= 9 %>">
                     <% if i == 0 %>
                         <em>BEST!</em>
                     <% else %>
                         <%= i + 1 %>위
                     <% end %>
-                    </p>
-                    <h1 class="c-left carousel-title"><%= song.title %> <code>번호 <%= song.song_tjnum %></code></h1>
+                    </span>
+                    <% title = song.title.split('(').first.strip %>
+                    <h1 class="c-left carousel-title"><% if title.length > 13 %><%= title.first(13) + " ..." %><% else %><%= title %><% end %></h1>
+                    <!--<h1 class="c-left carousel-title"><%#= title %></h1>-->
                     <p class="c-left carousel-artist"><%= album.artist_name %></p>
-                    <p class="c-left carousel-album">앨범명: <%= album.title %></p>
-                    <p class="c-left carousel-getlist"><code><%= 8-i %>,<%= 9-i %><%= 2+i %><%= i %></code>명의 리스트에 라인업<i>!</i></p>
-                    <p class="c-left"><a class="btn btn-lg btn-primary" href="#" role="button"><em>Line up!</em></a></p>
+                    <!--<p class="c-left carousel-album">앨범명: <%#= album.title %></p>-->
+                    <p class="c-left carousel-getlist"><code><%= i+1 %>,<%= (1..9).to_a.sample %><%= (1..9).to_a.sample %><%= (1..9).to_a.sample %></code>명의 리스트에 라인업<i>!</i></p>
+                    <p class="c-left carousel-singNum">번호 <%= song.song_tjnum %></p>
+                    <a class="btn btn-sm btn-default btn-lineUp-carousel" href="#" role="button"><em>Line<br>up!</em></a>
                 </div>
             </div>
         </div>
@@ -67,49 +70,15 @@
         <div class="row">
             <div class="col-md-4 col-sm-1"></div>
             <div class="col-md-4 col-sm-10">
-                <div class="col-md-1"></div>
+                <div class="col-md-2"></div>
                 <div class="col-md-10 col-sm-12">
-                    <div class="serch_form">
-                        
+                    <div class="search_form">
+                        <input class="main_search_input" type="text">
+                        <input class="main_search_submit" type="submit" value="">
                     </div>
                 </div>
-                <div class="col-md-1"></div>
             </div>
             <div class="col-md-4 col-sm-1"></div>
         </div>
     </div>
-    <style>
-        .search_f{
-            background:rgba(255, 255, 255, 0.4);
-            height:117px;
-            margin-top:-117px;
-            z-index:1000;
-        }
-        .search_form{
-            background-color:blue;
-            height:117px;
-        }
-        .content_box{
-            background-color: rgba(0, 0, 0, 0.5);
-            width: 35%;
-            height: 250px;
-            float: right;
-            margin-top: 4%;
-            margin-right: 4.5%;
-        }
-        .content_box-label{
-            background-image: url('/KakaoTalk_20160514_051643042.png');
-            background-size: 120px 75px; 
-            width: 120px; 
-            height: 75px; 
-            margin-top: 15px;
-            color: #fff;
-            padding-top: 5px;
-        }
-        .label_m{
-            font-size: 35px;
-            margin-left: 15%;
-            font-weight: bold;
-        }
-    </style>
 </div><!-- /.캐러셀 슬라이드 -->

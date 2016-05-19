@@ -7,16 +7,14 @@
         <%= csrf_meta_tags %>
 
         <!-- 합쳐지고 최소화된 최신 CSS -->
-        <% if !(params[:action] == "main" || params[:action] == "EvalKey" || params[:action] == "MyList") %>
+        <% if !(params[:action] == "main" || params[:action] == "EvalKey" || params[:action] == "mylist") %>
             <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
         <% else %> <!-- main 이랑 EvalKey에서 사용 커스텀 된거임 -->
             <link href="freelancer.css" rel="stylesheet">
         <% end %>
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
-        <% if params[:action] == "main" %>
-            <link href="main.css" rel="stylesheet">
-        <% elsif params[:action] == "EvalKey" %>
+        <% if params[:action] == "main" || params[:action] == "mylist" || params[:action] == "EvalKey" %>
             <!-- Custom CSS -->
             <link href="main.css" rel="stylesheet">
         <% else %>
@@ -39,6 +37,21 @@
         <link href="https://blackrockdigital.github.io/startbootstrap-freelancer/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+        
+        <script>
+            (function($) {
+                $.fn.myModal = function(k) {
+                    
+                    var id = k
+                    var title = <%#= eval("Song.find(" + id + ").title") %>
+                    //$("#dddd").attr('style',  'background:#000');
+                    $(".modal-title").empty('');
+                    $(".modal-title").append( id + "번째 노래");
+                    $(".modal-body").empty('');
+                    $(".modal-body").append( id + "번째 컨텐츠");
+                };
+            })(jQuery);
+        </script>
     </head>
     <body id="page-top" class="index">
 

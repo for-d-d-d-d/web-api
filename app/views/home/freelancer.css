@@ -8,7 +8,17 @@
  * Bootstrap v3.3.5 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter,  Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- *//*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */html {
+ *//*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+.navbar-fixed-top.navbar-shrink .navbar-nav>li>a{
+    font-size: 1.1em;
+}
+.navbar-nav>li>a{
+    font-size:1.3em;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%}
@@ -2183,6 +2193,23 @@ textarea.input-lg, select[multiple].input-lg {
 a.btn.disabled, fieldset[disabled] a.btn {
     pointer-events: none;
 }
+
+.btn-lineUp {
+    font-size: 1.4em !important;
+    background: #ff281d;
+    border:none;
+    border-radius:inherit;
+    cursor:pointer;
+    padding: 5px 15px 10px 15px;
+    line-height: 1.2;
+    z-index:100001;
+    /*border-color: #ff5951;*/
+}
+.btn-lineUp:hover {
+    color: #ffffff;
+    background-color: #ff5951;
+    border-color: #ff5951;
+}
 .btn-default {
     color: #ffffff;
     background-color: #95a5a6;
@@ -3208,6 +3235,8 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 .navbar-nav>li>a {
     padding-top: 19.5px;
     padding-bottom: 19.5px;
+    /**/
+    font-weight: 500;
 }
 }.navbar-form {
     margin-left: -15px;

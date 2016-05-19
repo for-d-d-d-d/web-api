@@ -40,7 +40,8 @@ body {
 /* Carousel base class */
 .carousel {
   height: 500px;
-  margin-top: 110px;
+  margin-top: 90px;
+  z-index:0;
 }
 
 .slide-background{
@@ -78,7 +79,7 @@ body {
     float: left;
     position: relative;
     /* border: 15px solid rgba(14, 0, 0, 0.27); */
-    border: 15px solid rgba(0, 0, 0, 0.5);
+    border: 15px solid rgba(0, 0, 0, 0.64);
 }
 
 /* Since positioning the image, we need to help out the caption */
@@ -89,24 +90,59 @@ body {
 .carousel-details{
     width: 100%;
     left: 0%;
-    padding: 0% 11%;
+    padding: 0% 25% 8.8% 46%;
+    text-align: left;
 }
 .c-left{
     text-align: left;
 }
 .carousel-title{
-    font-size: 39px!important;
-    font-weight: bold;
+    font-size: 37px !important;
+    font-weight: 500;
+    margin: 0 !important;
 }
 .carousel-artist{
-    font-size: 28px!important;
-    font-weight: bold;
+    font-size: 24px !important;
+    font-weight: 300;
+    float: inherit;
+    margin-right: 7%;
+    padding: 0.5% 0% 0% 21%;
+}
+.carousel-rank{
+    font-size: 30px !important;
+    font-weight: 300;
+    float: left;
+    margin-right: 11.7%;
+    margin-top: 2%;
 }
 .carousel-album{
-    font-size: 21px!important;
+    font-size: 21px !important;
 }
 .carousel-getlist{
-    font-size: 21px!important;
+    font-size: 21px !important;
+    padding-left: 21%;
+}
+.carousel-singNum{
+    font-size: 3em !important;
+    padding-left: 19.7%;
+    float: left;
+    margin-right: 5%;
+}
+.btn-lineUp-carousel{
+    font-size: 1.4em !important;
+    background: #ff281d;
+    border:none;
+    border-radius:inherit;
+    cursor:pointer;
+    padding: 5px 15px 10px 15px;
+    line-height: 1.2;
+    z-index:100001;
+    /*border-color: #ff5951;*/
+}
+.btn-lineUp-carousel:hover {
+    color: #ffffff;
+    background-color: #ff5951;
+    border-color: #ff5951;
 }
 
 /* Declare heights because of positioning of img element */
@@ -193,4 +229,71 @@ body {
   .featurette-heading {
     margin-top: 120px;
   }
+}
+
+/* UNDER CAROUSEL UI CSS
+-------------------------------------------------- */
+.search_f{
+    background:rgba(255, 255, 255, 0.35);
+    height:90px;
+    margin-top:-90px;
+    z-index:1000;
+}
+.search_form{
+    /*background-color: rgba(104, 104, 104, 0.4);;*/
+    height:90px;
+}
+.main_search_input{
+    width: 90%;
+    height: 50%;
+    border:2px solid #ffffff;
+    -webkit-transition: all 0.15s;
+    -moz-transition: all 0.15s;
+    transition: all 0.15s;
+    border-radius:21px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 5px 20px;
+    margin-top: 5.2%;
+    color: #fff;
+    font-size: 1.4em;
+    float:left;
+    outline: none;
+}
+.main_search_input:active, .main_search_input:focus{
+    border:2px solid #ff281d;
+    box-shadow: 0 0 3pt 2pt #ff281d;
+}
+.main_search_submit{
+    width: 5.6%;
+    height: 45%;
+    margin-left: -10.5%;
+    margin-top: 5.5%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url('/images/view.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.content_box{
+    background-color: rgba(0, 0, 0, 0.64);
+    width: 35%;
+    height: 250px;
+    float: right;
+    margin-top: 4%;
+    margin-right: 4.5%;
+}
+.content_box-label{
+    background-image: url('/KakaoTalk_20160514_051643042.png');
+    background-size: 120px 75px; 
+    width: 120px; 
+    height: 75px; 
+    margin-top: 25px;
+    color: #fff;
+    padding-top: 5px;
+}
+.label_m{
+    font-size: 35px;
+    margin-left: 15%;
+    font-weight: bold;
 }
