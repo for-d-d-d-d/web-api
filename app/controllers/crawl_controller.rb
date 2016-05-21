@@ -355,15 +355,15 @@ class CrawlController < ApplicationController
     all_songs = Song.all
     all_songs.each do |xsong|
       Song.attribute_names.each do |column|
-        next if column == "id" || column == "lowkey" || column == "songwriter" || column == "composer" || column == "highkey" || column == "created_at" || column == "updated_at"
+        next if column == "id" || column == "lowkey" || column == "writer" || column == "composer" || column == "highkey" || column == "created_at" || column == "updated_at"
         if eval("xsong.#{column}") == nil
           songs_array_what_needs_filler << xsong
         end
       end
     end
-
+    
     songs_array_what_needs_filler.each do |song|
-
+    
       # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
       uri = URI("http://www.genie.co.kr/detail/songInfo?xgnm=#{song.song_num}")   # 크롤러가 접속하게 될 주소.
       html_doc = Nokogiri::HTML(Net::HTTP.get(uri))   # 쉽게, {{ 주소창에 uri(주소)를 get방식으로 넣고 return받은 HTML을 전부 html_doc에 담는다 }} 라는 노코기리 문법.
@@ -428,21 +428,17 @@ class CrawlController < ApplicationController
       @lyrics = html_doc.css("div#body-content//div.lyrics-area//div.tit-box//pre").inner_html.to_s
       song.lyrics = @lyrics
       ## songwriter(작사)
-      #@lyrics = html_doc.css("div#body-content//div.lyrics-area//div.tit-box//pre").inner_html.to_s
-      #song.lyrics = @lyrics
+          #..
       ## composer(작곡)
-      #@lyrics = html_doc.css("div#body-content//div.lyrics-area//div.tit-box//pre").inner_html.to_s
-      #song.lyrics = @lyrics
+          #..
 
       # 음원 정보(참조)
       ## artist_num(아티스트 번호)
       @artist_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(1)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('artistInfo','","").first(8)
-      song.artist_num = @artist_num
-      puts "#{@song_title}, #{song.song_num}"
+      
       ## album_num(앨범 번호)
       @album_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('albumInfo','","").first(8)
-      song.album_num = @album_num
-
+      
       #**       Album Table Details    **#
       # if Album.where(album_num: @album_num).count == 0
       if Album.where(album_num: @album_num).count == 0
@@ -477,21 +473,25 @@ class CrawlController < ApplicationController
         ## jacket(앨범자켓 :: 이미지)
         @jacket = "http:" + html_doc_album.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
         album.jacket = @jacket
-
-        uri_artist = URI("http://www.genie.co.kr/detail/artistInfo?xxnm=#{@artist_num}")
-        html_doc_artist = Nokogiri::HTML(Net::HTTP.get(uri_artist))
-
-        ## artist_num(아티스트 번호)
-        album.artist_num = @artist_num
-
-        ## artist_photo(아티스트 사진)
-        @artist_photo = "http:" + html_doc_artist.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
-        album.artist_photo = @artist_photo
-
-        ## artist_name(아티스트 이름)
-        @artist_name = html_doc_artist.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
-        album.artist_name = @artist_name
-
+          
+          uri_artist = URI("http://www.genie.co.kr/detail/artistInfo?xxnm=#{@artist_num}")
+          html_doc_artist = Nokogiri::HTML(Net::HTTP.get(uri_artist))
+          
+          singer = Singer.new
+          ## artist_num(아티스트 번호)
+          singer.artist_num = @artist_num
+          
+          ## artist_photo(아티스트 사진)
+          @artist_photo = "http:" + html_doc_artist.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
+          singer.photo = @artist_photo
+          
+          ## artist_name(아티스트 이름)
+          @artist_name = html_doc_artist.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
+          singer.name = @artist_name
+          singer.save
+          
+        album.singer_id = Singer.where(artist_num: @argist_num).take.id
+        
         ## album_num(앨범 고유번호)
         album.album_num = @album_num
         album.save #아래 앨범아이디 만들려면 먼저저장해야함.
@@ -505,16 +505,16 @@ class CrawlController < ApplicationController
         @released_date  = album.released_date
         @jacket         = album.jacket
         # @artist_num     = album.artist_num
-        @artist_photo   = album.artist_photo
+        # @artist_photo   = album.artist_photo
         # @artist_name    = album.artist_name
         # @album_num      = album.album_num
-
+      
       end
       #**                              **#
 
       # 음원 정보(참조추출)
       ## artist_photo(아티스트 사진)
-      song.artist_photo = @artist_photo
+      #song.artist_photo = @artist_photo ### Singer.photo
       ## jacket(자켓사진)
       song.jacket = @jacket
 
@@ -525,7 +525,7 @@ class CrawlController < ApplicationController
 
       #기타
       ## songwriter(작사)
-      song.songwriter = nil
+      song.writer = nil
       ## composer(작곡)
       song.composer = nil
       #**                              **#
@@ -611,11 +611,11 @@ class CrawlController < ApplicationController
       # 음원 정보(참조)
       ## artist_num(아티스트 번호)
       @artist_num = guess_error.first.gsub('<a href="#" onclick="fnGoMore(\'artistInfo\',\'' , '/////').gsub('\');return false;">' , '/////').split('/////')[1].to_i
-      song2.artist_num = @artist_num
-      puts "#{@song_title}, #{song2.song_num}"
+      #song2.artist_num = @artist_num
+      #puts "#{@song_title}, #{song2.song_num}"
       ## album_num(앨범 번호)
       @album_num = guess_error.second.gsub('<a href="#" onclick="fnGoMore(\'albumInfo\',\'' , '/////').gsub('\');return false;">' , '/////').split('/////')[1].to_i
-      song2.album_num = @album_num
+      #song2.album_num = @album_num
 
       #**       Album Table Details    **#
       # if Album.where(album_num: @album_num).count == 0
@@ -648,13 +648,13 @@ class CrawlController < ApplicationController
         uri_artist = URI("http://www.genie.co.kr/detail/artistInfo?xxnm=#{@artist_num}")
         html_doc_artist = Nokogiri::HTML(Net::HTTP.get(uri_artist))
         ## artist_num(아티스트 번호)
-        album.artist_num = @artist_num
+        #album.artist_num = @artist_num
         ## artist_photo(아티스트 사진)
         @artist_photo = "http:" + html_doc_artist.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
-        album.artist_photo = @artist_photo
+        #album.artist_photo = @artist_photo
         ## artist_name(아티스트 이름)
         @artist_name = html_doc_artist.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
-        album.artist_name = @artist_name
+        #album.artist_name = @artist_name
 
         ## album_num(앨범 고유번호)
         album.album_num = @album_num
