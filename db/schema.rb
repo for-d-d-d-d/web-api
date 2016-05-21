@@ -43,9 +43,8 @@ ActiveRecord::Schema.define(version: 20160512163114) do
     t.string   "agency"
     t.string   "released_date"
     t.text     "jacket"
-    t.integer  "artist_num"
-    t.text     "artist_photo"
-    t.string   "artist_name"
+    t.integer  "team_id"
+    t.integer  "singer_id"
     t.integer  "album_num"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
@@ -64,7 +63,7 @@ ActiveRecord::Schema.define(version: 20160512163114) do
 
   create_table "interval_keys", force: :cascade do |t|
     t.string   "key"
-    t.integer  "keyNum"
+    t.integer  "number"
     t.float    "percent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -78,34 +77,37 @@ ActiveRecord::Schema.define(version: 20160512163114) do
   end
 
   create_table "singers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "photo"
+    t.integer  "artist_num"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "songs", force: :cascade do |t|
     t.integer  "album_id"
+    t.integer  "singer_id"
+    t.integer  "team_id"
     t.string   "title"
     t.string   "ganre1"
     t.string   "ganre2"
     t.string   "runtime"
     t.text     "lyrics"
-    t.string   "songwriter"
+    t.string   "writer"
     t.string   "composer"
-    t.integer  "singer_id"
-    t.integer  "artist_num"
-    t.integer  "team_id"
-    t.integer  "album_num"
-    t.text     "artist_photo"
     t.text     "jacket"
     t.integer  "song_tjnum"
     t.integer  "song_num"
     t.string   "lowkey"
     t.string   "highkey"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "teams", force: :cascade do |t|
+    t.string   "name"
+    t.string   "photo"
+    t.integer  "artist_num"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
