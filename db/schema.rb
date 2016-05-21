@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512163114) do
+ActiveRecord::Schema.define(version: 20160521162427) do
 
   create_table "administers", force: :cascade do |t|
     t.string   "username"
@@ -100,6 +100,13 @@ ActiveRecord::Schema.define(version: 20160512163114) do
     t.integer  "song_num"
     t.string   "lowkey"
     t.string   "highkey"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "team_teams", force: :cascade do |t|
+    t.integer  "team_id"
+    t.integer  "team2_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
