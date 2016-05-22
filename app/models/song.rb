@@ -9,6 +9,13 @@ class Song < ActiveRecord::Base
       return s
     end
 
+    # a = song.artist
+    # if a.is_singer?
+    #   Singer 일때 하고싶은 작업
+    # else
+    #   Team 일때 하고싶은 작업
+    # end
+
     def artist
       if !(self.singer_id.nil?)
         return Singer.where(id: self.singer_id).first
