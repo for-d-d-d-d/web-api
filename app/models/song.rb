@@ -163,7 +163,7 @@ class Song < ActiveRecord::Base
       song.album_id = album.id
       # 음원 정보(고유값)
       ## song_tjnum(노래방번호 :: 나중에 따로 받아야 할듯)
-      song.song_tjnum = nil
+      # song.song_tjnum = nil
       ## song_num(지니뮤직 고뮤번호)
       song.song_num = num
       #**                              **#
