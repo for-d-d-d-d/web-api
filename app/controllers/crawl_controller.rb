@@ -147,6 +147,7 @@ class CrawlController < ApplicationController
 
   def self.crawl_artist(artist_num)
     html_doc_artist = load_page(artist_num, "artist_number")
+    return false if artist_num == 0
     @is_singer = html_doc_artist.css("div#body-content//div.info-zone//li//span.value").first.to_s.gsub('<span class="value">','').gsub('</span>','')
     puts "crawl_artist called // query : " + artist_num.to_s + "is_singer = " + @is_singer
     if @is_singer == "남성/솔로" || @is_singer == "여성/솔로"
@@ -182,12 +183,14 @@ class CrawlController < ApplicationController
     html_doc_team.css("div.artist-member-list//li//a").each do |t|
       artist_num2 = t.to_s.gsub('<a href="#" onclick="fnViewArtist(' , '/////').gsub('\');return false;">' , '/////').split('/////')[1].to_i
       artist = self.crawl_artist(artist_num2)
-      if artist.class == "Singer"
+      next unless artist
+      
+      if artist.class == Singer
         st = SingerTeam.new
         st.team_id = team.id
         st.singer_id = artist.id
         st.save
-      elsif artist.class == "Team"
+      elsif artist.class == Team
         tt = TeamTeam.new
         tt.team_id = team.id
         tt.team2_id = artist.id

@@ -9,6 +9,15 @@ class Song < ActiveRecord::Base
       return s
     end
 
+    def artist
+      unless self.singer_id.nil?
+        return Singer.where(id: self.singer_id).first
+      elsif !(self.team_id.nil?)
+        return Team.where(id: self.team_id).first
+      end
+      return nil
+    end
+
     def fix
       s = crawl_song
       puts self.title
@@ -86,9 +95,9 @@ class Song < ActiveRecord::Base
       # puts "artist_num : " + @artist_num.to_s
       artist = CrawlController.crawl_artist(@artist_num)
 
-      if artist.class == "Singer"
+      if artist.class == Singer
         song.singer_id = artist.id
-      else
+      elsif artist.class == Team
         song.team_id = artist.id
       end
 
@@ -128,9 +137,9 @@ class Song < ActiveRecord::Base
         ## artist_num(아티스트 번호)
         # album.artist_num = @artist_num
 
-        if artist.class == "Singer"
+        if artist.class == Singer
           album.singer_id = artist.id
-        else
+        elsif artist.class == Team
           album.team_id = artist.id
         end
 
