@@ -19,6 +19,14 @@
         <% i = 0 %>
         <% @carousel.each do |song| %>
         <% album = Album.find(song.album_id) %>
+        <%
+            if Team.where(id: song.team_id).count == 0
+                team = Singer.find(song.team_id)
+            else
+                team = Team.find(song.team_id) 
+            end
+        %>
+        
         <div class="item <%= "active" if i == 0 %>">
             <div class="first-slide slide-background">
                 <div class="blur" style="background-image: url(<%= album.jacket %>);">
@@ -46,7 +54,7 @@
                     <% title = song.title.split('(').first.strip %>
                     <h1 class="c-left carousel-title"><% if title.length > 13 %><%= title.first(13) + " ..." %><% else %><%= title %><% end %></h1>
                     <!--<h1 class="c-left carousel-title"><%#= title %></h1>-->
-                    <p class="c-left carousel-artist"><%= album.artist_name %></p>
+                    <p class="c-left carousel-artist"><%= team.name %></p>
                     <!--<p class="c-left carousel-album">앨범명: <%#= album.title %></p>-->
                     <p class="c-left carousel-getlist"><code><%= i+1 %>,<%= (1..9).to_a.sample %><%= (1..9).to_a.sample %><%= (1..9).to_a.sample %></code>명의 리스트에 라인업<i>!</i></p>
                     <p class="c-left carousel-singNum">번호 <%= song.song_tjnum %></p>
