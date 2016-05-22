@@ -9,7 +9,14 @@
         <% if num == 0 %>
             <div class="row">
                 <div class="col-md-6" style="padding:0% 6px;">
-                    <%= render 'home/song_card', :locals => {:img_path => @song[0].jacket, tag: 1, title: @song[0].title, singer: Album.find(@song[0].album_id).artist_name, number: @song[0].song_tjnum, id: @song[0].id} %>
+                    <%
+                        if Team.where(id: @song[0].team_id).count == 0
+                            team0 = Singer.find(@song[0].team_id)
+                        else
+                            team0 = Team.find(@song[0].team_id)
+                        end
+                    %>
+                    <%= render 'home/song_card', :locals => {:img_path => @song[0].jacket, tag: 1, title: @song[0].title, singer: team0.name, number: @song[0].song_tjnum, id: @song[0].id} %>
                 </div>
                 <div class="col-md-6">
                     <% 2.times do |rr_num| %>
@@ -21,13 +28,25 @@
                                 tagNum = 0
                                 tagNum1 = 0
                             end
+                            
+                            if Team.where(id: @song[(rr_num+1)*2-1].team_id).count == 0
+                                team1 = Singer.find(@song[(rr_num+1)*2-1].team_id)
+                            else
+                                team1 = Team.find(@song[(rr_num+1)*2-1].team_id)
+                            end
+                            
+                            if Team.where(id: @song[(rr_num+1)*2].team_id).count == 0
+                                team2 = Singer.find(@song[(rr_num+1)*2].team_id)
+                            else
+                                team2 = Team.find(@song[(rr_num+1)*2].team_id)
+                            end
                         %>
                         <div class="row">
                             <div class="col-md-6" style="padding:0% 5px;">
-                                <%= render 'home/song_card', :locals => {:img_path => @song[(rr_num+1)*2-1].jacket, tag: tagNum, title: @song[(rr_num+1)*2-1].title, singer: Album.find(@song[(rr_num+1)*2-1].album_id).artist_name, number: @song[(rr_num+1)*2-1].song_tjnum, id: @song[(rr_num+1)*2-1].id} %>
+                                <%= render 'home/song_card', :locals => {:img_path => @song[(rr_num+1)*2-1].jacket, tag: tagNum, title: @song[(rr_num+1)*2-1].title, singer: team1.name, number: @song[(rr_num+1)*2-1].song_tjnum, id: @song[(rr_num+1)*2-1].id} %>
                             </div>
                             <div class="col-md-6" style="padding:0% 5px;">
-                                <%= render 'home/song_card', :locals => {:img_path => @song[(rr_num+1)*2].jacket, tag: tagNum1, title: @song[(rr_num+1)*2].title, singer: Album.find(@song[(rr_num+1)*2].album_id).artist_name, number: @song[(rr_num+1)*2].song_tjnum, id: @song[(rr_num+1)*2].id} %>
+                                <%= render 'home/song_card', :locals => {:img_path => @song[(rr_num+1)*2].jacket, tag: tagNum1, title: @song[(rr_num+1)*2].title, singer: team2.name, number: @song[(rr_num+1)*2].song_tjnum, id: @song[(rr_num+1)*2].id} %>
                             </div>
                         </div>
                     <% end %>
@@ -37,7 +56,14 @@
             <div class="row">
                 <% a_row.times do |r_num| %>
                     <div class="col-md-<%= row %> col-sm-<%= row %>" style="padding:0% 5px;">
-                        <%= render 'home/song_card', :locals => {:img_path => @song[c].jacket, tag: 0, title: @song[c].title, singer: Album.find(@song[c].album_id).artist_name, number: @song[c].song_tjnum, id: @song[c].id} %>
+                        <%
+                            if Team.where(id: @song[c].team_id).count == 0
+                                team = Singer.find(@song[c].team_id)
+                            else
+                                team = Team.find(@song[c].team_id)
+                            end
+                        %>
+                        <%= render 'home/song_card', :locals => {:img_path => @song[c].jacket, tag: 0, title: @song[c].title, singer: team.name, number: @song[c].song_tjnum, id: @song[c].id} %>
                     </div>
                     <% c += 1 %>
                 <% end %>
