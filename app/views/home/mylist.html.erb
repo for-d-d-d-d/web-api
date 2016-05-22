@@ -55,11 +55,18 @@
     <% i = 1 %>
     <% @song.each do |myList| %>
         <% album = Album.find(myList.album_id) %>
+        <%
+            if Team.where(id: myList.team_id).count == 0
+                team = Singer.find(myList.team_id)
+            else
+                team = Team.find(myList.team_id)
+            end
+        %>
         <div class="mylilst_contents_container">
             <div class="col-md-1 mylist_contents"> <%= i %> </div>
             <div class="col-md-2 mylist_contents"> <%= myList.song_tjnum %> </div>
             <div class="col-md-5 mylist_contents"> <%= myList.title %> </div>
-            <div class="col-md-2 mylist_contents"> <%= album.artist_name %> </div>
+            <div class="col-md-2 mylist_contents"> <%= team.name %> </div>
             <div class="col-md-2 mylist_contents"> <%= (1000..9999).to_a.sample %>명이 불렀어요! </div>
         </div>
         <hr class="list_devider">
