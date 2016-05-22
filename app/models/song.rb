@@ -10,9 +10,9 @@ class Song < ActiveRecord::Base
     end
 
     def artist
-      unless self.singer_id.nil?
+      if !(self.singer_id.nil?)
         return Singer.where(id: self.singer_id).first
-      elsif !(self.team_id.nil?)
+      elsif self.team_id != nil
         return Team.where(id: self.team_id).first
       end
       return nil
