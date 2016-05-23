@@ -41,7 +41,7 @@
             <div><h4><%= "로그인하셈!" %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
         <% end %>
     </div>
-    
+
     <div class="mylilst_contents_container">
         <div class="col-md-1 mylist_contents"> No </div>
         <div class="col-md-2 mylist_contents"> 노래방 번호 </div>
@@ -51,7 +51,7 @@
 
     </div>
     <hr class="list_devider">
-    
+
     <% i = 1 %>
     <% @song.each do |myList| %>
         <% album = Album.find(myList.album_id) %>
@@ -72,7 +72,7 @@
         <hr class="list_devider">
     <% i += 1 %>
     <% end %>
-    
+
 </div>
 <div class="col-md-3"></div>
 

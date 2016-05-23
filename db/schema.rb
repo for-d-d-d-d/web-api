@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521162427) do
+ActiveRecord::Schema.define(version: 20160521180939) do
 
   create_table "administers", force: :cascade do |t|
     t.string   "username"
@@ -65,6 +65,13 @@ ActiveRecord::Schema.define(version: 20160521162427) do
     t.string   "key"
     t.integer  "number"
     t.float    "percent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "mylists", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "song_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
