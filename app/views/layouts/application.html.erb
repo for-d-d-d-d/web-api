@@ -2,8 +2,8 @@
 <html>
     <head>
         <title>고래방 :: 오늘도 노래방을 부탁해!</title>
-        <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-        <%#= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+        <%= stylesheet_link_tag    'application', media: 'all' %>
+        <%= javascript_include_tag 'application' %>
         <%= csrf_meta_tags %>
 
         <!-- 합쳐지고 최소화된 최신 CSS -->
@@ -12,7 +12,7 @@
         <% else %> <!-- main 이랑 EvalKey에서 사용 커스텀 된거임 -->
             <link href="freelancer.css" rel="stylesheet">
         <% end %>
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
         <% if params[:action] == "main" || params[:action] == "mylist" || params[:action] == "EvalKey" %>
             <!-- Custom CSS -->
@@ -43,14 +43,33 @@
                 $.fn.myModal = function(k) {
                     
                     var id = k
-                    var title = <%#= eval("Song.find(" + id + ").title") %>
+                    //var title = <%#= eval("Song.find(" + id + ").title") %>
                     //$("#dddd").attr('style',  'background:#000');
-                    $(".modal-title").empty('');
-                    $(".modal-title").append( id + "번째 노래");
-                    $(".modal-body").empty('');
-                    $(".modal-body").append( id + "번째 컨텐츠");
+                    
+                    $.ajax({
+                      method: "POST",
+                      url: "/home/this_song",
+                      data: { song_id: id },
+                      dataType: "json"
+                    })
+                      .done(function( msg ) {
+                          var title = msg.title;
+                          var tjnum = msg.song_tjnum;
+                          var jacket = msg.jacket;
+                        //   var artist = msg.artist.name;
+                        //   var mNum = mag.song_tjnum;
+                          
+                          $("#md-song_title").empty('');
+                          $("#md-song_title").append(title);
+                          $("#md-song_tjnum").empty('');
+                          $("#md-song_tjnum").append(tjnum);
+                          $(".modal-body").empty('');
+                          $(".modal-body").append( "<img src=\"" + jacket + "\" style=\"width:30%; height:auto;\">" + "<br>");
+                      });
                 };
             })(jQuery);
+            
+            
         </script>
     </head>
     <body id="page-top" class="index">

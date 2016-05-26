@@ -66,25 +66,26 @@ body {
     background-size: cover;
     background-position: center center;
 }
+.check_grid_layout_box{
+    height:100px;
+    background:rgba(151, 179, 200, 0.5);
+}
 .slide-background-blur{
-    width: 75%;
     height: 100%;
     /*background: rgba(0, 0, 0, 0.6);*/
     z-index: 10;
 }
 .slide-focus-img{
-    width: 250px;
-    height: 250px;
-    margin: 4% 2% 0% 40.5%;
-    float: left;
-    position: relative;
+    width:100%;
+    /*float: left;*/
+    /*position: relative;*/
     /* border: 15px solid rgba(14, 0, 0, 0.27); */
     border: 15px solid rgba(0, 0, 0, 0.64);
 }
 
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
-  z-index: 10;
+    z-index: 10;
 }
 
 .carousel-details{
@@ -98,15 +99,15 @@ body {
 }
 .carousel-title{
     font-size: 37px !important;
+    padding-top: 3.4%;
     font-weight: 500;
+    color: #fff;
     margin: 0 !important;
 }
 .carousel-artist{
     font-size: 24px !important;
     font-weight: 300;
-    float: inherit;
-    margin-right: 7%;
-    padding: 0.5% 0% 0% 21%;
+    color: #fff;
 }
 .carousel-rank{
     font-size: 30px !important;
@@ -120,13 +121,13 @@ body {
 }
 .carousel-getlist{
     font-size: 21px !important;
-    padding-left: 21%;
+    color:#fff;
 }
 .carousel-singNum{
     font-size: 3em !important;
-    padding-left: 19.7%;
     float: left;
     margin-right: 5%;
+    color:#fff;
 }
 .btn-lineUp-carousel{
     font-size: 1.4em !important;
@@ -158,6 +159,32 @@ body {
   height: 500px;
 }
 
+
+.carousel-fade .carousel-inner .item {
+  -webkit-transition-property: opacity;
+  transition-property: opacity;
+}
+.carousel-fade .carousel-inner .item,
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  opacity: 0;
+}
+.carousel-fade .carousel-inner .active,
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
+}
+.carousel-fade .carousel-inner .next,
+.carousel-fade .carousel-inner .prev,
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+.carousel-fade .carousel-control {
+  z-index: 2;
+}
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
@@ -277,23 +304,580 @@ body {
 }
 .content_box{
     background-color: rgba(0, 0, 0, 0.64);
-    width: 35%;
+    width: 100%;
     height: 250px;
     float: right;
-    margin-top: 4%;
-    margin-right: 4.5%;
+    padding-top: 3.3%;
+    /*margin-right: 29.5%;*/
 }
 .content_box-label{
     background-image: url('/KakaoTalk_20160514_051643042.png');
-    background-size: 120px 75px; 
-    width: 120px; 
+    background-size: 100%; 
+    background-repeat: no-repeat;
+    /*width: 25%; */
     height: 75px; 
-    margin-top: 25px;
+    /*margin-top: 25px;*/
     color: #fff;
     padding-top: 5px;
 }
 .label_m{
-    font-size: 35px;
-    margin-left: 15%;
+    font-size: 2em;
+    margin-left: 10%;
     font-weight: bold;
+}
+
+
+
+
+@media (max-width: 1800px) {
+    .label_m{
+        font-size: 1.8em;
+        margin-left: 10%;
+    }
+    .content_box-label{
+        background-size: 100%; 
+        height: 68px;
+    }
+    .carousel-title{
+        font-size: 35px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 23px !important;
+    }
+    .carousel-getlist{
+        font-size: 21px !important;
+    }
+    .carousel-singNum{
+        font-size: 2.8em !important;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1.3em !important;
+        padding: 5px 15px 10px 15px;
+        line-height: 1.2;
+    }
+    .content_box{
+        width: 100%;
+        height: 230px;
+    }
+    .slide-focus-img{
+        width:230px;
+    }
+    .carousel {
+        height: 490px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 490px;
+    }
+    .slide-background{
+        height: 490px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+}
+@media (max-width: 1755px) {
+    .label_m{
+        font-size: 1.5em;
+        margin-left: 10%;
+    }
+    .content_box-label{
+        background-size: 90%; 
+        height: 55px;
+    }
+    .carousel-title{
+        font-size: 32px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 22px !important;
+    }
+    .carousel-getlist{
+        font-size: 20px !important;
+    }
+    .carousel-singNum{
+        font-size: 2.6em !important;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1.3em !important;
+        padding: 5px 15px 10px 15px;
+        line-height: 1.2;
+    }
+    .content_box{
+        width: 100%;
+        height: 225px;
+    }
+    .slide-focus-img{
+        width:225px;
+    }
+    .carousel {
+        height: 480px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 480px;
+    }
+    .slide-background{
+        height: 480px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+}
+@media (max-width: 1700px) {
+    .label_m{
+        font-size: 1.5em;
+        margin-left: 10%;
+    }
+    .content_box-label{
+        background-size: 90%; 
+        height: 55px;
+    }
+    .carousel-title{
+        font-size: 32px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 22px !important;
+    }
+    .carousel-getlist{
+        font-size: 20px !important;
+    }
+    .carousel-singNum{
+        font-size: 2.6em !important;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1.3em !important;
+        padding: 5px 15px 10px 15px;
+        line-height: 1.2;
+    }
+    .content_box{
+        width: 100%;
+        height: 215px;
+    }
+    .slide-focus-img{
+        width:215px;
+    }
+    .carousel {
+        height: 475px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 475px;
+    }
+    .slide-background{
+        height: 475px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+}
+@media (max-width: 1660px) {
+    .carousel-title{
+        font-size: 31px !important;
+        padding-top: 3%;
+    }
+    .content_box{
+        width: 100%;
+        height: 210px;
+    }
+    .slide-focus-img{
+        width:210px;
+    }
+    .carousel {
+        height: 465px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 465px;
+    }
+    .slide-background{
+        height: 465px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+}
+@media (max-width: 1625px) {
+    .label_m{
+        font-size: 1.4em;
+        margin-left: 10%;
+    }
+    .content_box-label{
+        background-size: 90%; 
+        height: 55px;
+    }
+    .carousel-title{
+        font-size: 31px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 21px !important;
+    }
+    .carousel-getlist{
+        font-size: 19px !important;
+    }
+    .carousel-singNum{
+        font-size: 2.4em !important;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1.1em !important;
+        padding: 2px 12px 8px 12px;
+        line-height: 1.2;
+    }
+    .content_box{
+        width: 100%;
+        height: 205px;
+    }
+    .slide-focus-img{
+        width:205px;
+    }
+    .carousel {
+        height: 465px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 465px;
+    }
+    .slide-background{
+        height: 465px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+}
+@media (max-width: 1590px) {
+    .label_m{
+        margin-left: 8%;
+    }
+    .carousel-title{
+        font-size: 30px !important;
+        padding-top: 3%;
+    }
+    .content_box{
+        height: 198px;
+    }
+    .slide-focus-img{
+        width: 198px;
+    }
+    .carousel {
+        height: 455px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 455px;
+    }
+    .slide-background{
+        height: 455px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+}
+@media (max-width: 1540px) {
+    .label_m{
+        font-size: 1.3em;
+        margin-left: 7%;
+    }
+    .content_box-label{
+        background-size: 85%; 
+        height: 48px;
+    }
+    .carousel-title{
+        font-size: 28px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 21px !important;
+    }
+    .carousel-getlist{
+        font-size: 19px !important;
+    }
+    .carousel-singNum{
+        font-size: 2.2em !important;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1.1em !important;
+        padding: 2px 12px 8px 12px;
+        line-height: 1.2;
+    }
+    .content_box{
+        width: 100%;
+        height: 190px;
+    }
+    .slide-focus-img{
+        width:190px;
+    }
+    .carousel {
+        height: 435px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 435px;
+    }
+    .slide-background{
+        height: 435px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+}
+@media (max-width: 1485px) {
+    .label_m{
+        font-size: 1.3em;
+        margin-left: 7%;
+    }
+    .content_box-label{
+        background-size: 85%; 
+        height: 48px;
+    }
+    .carousel-title{
+        font-size: 28px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 21px !important;
+    }
+    .carousel-getlist{
+        font-size: 19px !important;
+    }
+    .carousel-singNum{
+        font-size: 2em !important;
+        margin-right: 8%;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1em !important;
+        padding: 2px 12px 8px 12px;
+        line-height: 1.2;
+    }
+    .content_box{
+        width: 100%;
+        height: 185px;
+    }
+    .slide-focus-img{
+        width: 185px;
+    }
+    .carousel {
+        height: 410px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 410px;
+    }
+    .slide-background{
+        height: 410px;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+}
+@media (max-width: 1450px) {
+    .label_m{
+        font-size: 1.2em;
+        margin-left: 7%;
+    }
+    .content_box-label{
+        background-size: 82%; 
+        height: 45px;
+    }
+    .carousel-title{
+        font-size: 27px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 20px !important;
+    }
+    .carousel-getlist{
+        font-size: 18px !important;
+    }
+    .carousel-singNum{
+        font-size: 1.8em !important;
+        margin-right: 10%;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1em !important;
+        padding: 3px 10px 9px 10px;
+        line-height: 1.1;
+    }
+    .content_box{
+        width: 100%;
+        height: 176px;
+    }
+    .slide-focus-img{
+        width: 176px;
+    }
+    .carousel {
+        height: 410px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 410px;
+    }
+    .slide-background{
+        height: 410px;
+        background-size: cover;
+        background-position: center center;
+    }
+}
+@media (max-width: 1355px) {
+    .label_m{
+        font-size: 1.1em;
+        margin-left: 5%;
+    }
+    .content_box-label{
+        background-size: 80%; 
+        height: 40px;
+    }
+    .carousel-title{
+        font-size: 25px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 19px !important;
+    }
+    .carousel-getlist{
+        font-size: 17px !important;
+    }
+    .carousel-singNum{
+        font-size: 1.7em !important;
+        margin-right: 10%;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1em !important;
+        padding: 2px 8px 8px 8px;
+        line-height: 1.1;
+    }
+    .content_box{
+        width: 100%;
+        height: 173px;
+    }
+    .slide-focus-img{
+        width: 173px;
+    }
+    .carousel {
+        height: 410px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 410px;
+    }
+    .slide-background{
+        height: 410px;
+        background-size: cover;
+        background-position: center center;
+    }
+}
+@media (max-width: 1300px) {
+    .content_box{
+        height: 165px;
+    }
+    .slide-focus-img{
+        width: 165px;
+    }
+    .carousel {
+        height: 390px;
+    }
+    .carousel-inner{
+        height: 390px;
+    }
+    .slide-background{
+        height: 390px;
+    }
+}
+@media (max-width: 1260px) {
+    .label_m{
+        font-size: 1em;
+        margin-left: 5%;
+    }
+    .content_box-label{
+        background-size: 78%; 
+        height: 37px;
+    }
+    .carousel-title{
+        font-size: 23px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 18px !important;
+    }
+    .carousel-getlist{
+        font-size: 15px !important;
+    }
+    .carousel-singNum{
+        font-size: 1.6em !important;
+        margin-right: 10%;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1em !important;
+        padding: 2px 8px 8px 8px;
+        line-height: 1.1;
+    }
+    .content_box{
+        width: 100%;
+        height: 160px;
+    }
+    .slide-focus-img{
+        width: 160px;
+    }
+    .carousel {
+        height: 380px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 380px;
+    }
+    .slide-background{
+        height: 380px;
+        background-size: cover;
+        background-position: center center;
+    }
+}
+@media (max-width: 1020px) {
+    .label_m{
+        font-size: 1em;
+        margin-left: 5%;
+    }
+    .content_box-label{
+        background-size: 85%; 
+        height: 37px;
+    }
+    .carousel-title{
+        font-size: 23px !important;
+        padding-top: 3%;
+    }
+    .carousel-artist{
+        font-size: 18px !important;
+    }
+    .carousel-getlist{
+        font-size: 15px !important;
+    }
+    .carousel-singNum{
+        font-size: 1.6em !important;
+        margin-right: 10%;
+    }
+    .btn-lineUp-carousel{
+        font-size: 1em !important;
+        padding: 2px 8px 8px 8px;
+        line-height: 1.1;
+    }
+    .content_box{
+        width: 100%;
+        height: 155px;
+    }
+    .slide-focus-img{
+        width: 155px;
+    }
+    .carousel {
+        height: 360px;
+        margin-top: 90px;
+    }
+    .carousel-inner{
+        height: 360px;
+    }
+    .slide-background{
+        height: 360px;
+        background-size: cover;
+        background-position: center center;
+    }
 }

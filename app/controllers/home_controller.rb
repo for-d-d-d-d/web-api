@@ -24,7 +24,7 @@ class HomeController < ApplicationController
   end
 
   def main
-      @song = Song.where.not(lowkey: nil).all.reverse
+      @song = Song.where.not(lowkey: nil).all
       @carousel = @song.first(17)
 
       @rankers = DailyTjPopularRank.all
@@ -38,6 +38,12 @@ class HomeController < ApplicationController
       end
 
     #render :layout => false
+  end
+  
+  def this_song
+    #redirect_to :back
+    @song = Song.find(params[:song_id])
+    render json: @song
   end
 
   def login

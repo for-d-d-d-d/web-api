@@ -1,12 +1,5 @@
 <!-- 캐러셀 슬라이드 -->
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <% arr = [
-        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/811/068/80811068_1461316611366_1_600x600.JPG",
-        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/810/919/80810919_1461028312733_1_600x600.JPG",
-        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/796/234/80796234_1456909197595_1_600x600.JPG",
-        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/784/293/80784293_1453884534908_1_600x600.JPG",
-        "http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/816/994/80816994_1462867790768_1_600x600.JPG"
-        ]%>
+<div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
     <!-- Indicators -->
     <!--<ol class="carousel-indicators">-->
     <!--    <%# i = 0 %>-->
@@ -19,52 +12,67 @@
         <% i = 0 %>
         <% @carousel.each do |song| %>
         <% album = Album.find(song.album_id) %>
-        <%
-            if Team.where(id: song.team_id).count == 0
-                team = Singer.find(song.team_id)
-            else
-                team = Team.find(song.team_id) 
-            end
-        %>
         
         <div class="item <%= "active" if i == 0 %>">
             <div class="first-slide slide-background">
                 <div class="blur" style="background-image: url(<%= album.jacket %>);">
-                    <!--<img class="slide-focus-img" src="<%#= song.jacket %>" alt="Third slide">-->
                 </div>
-                <div class="slide-background-blur">
-                    <img class="slide-focus-img" src="<%= song.jacket %>" alt="Third slide">
-                    <div class="content_box">
-                        <div class="content_box-label">
-                            <span class="label_m">&nbsp;</span>
+                <div class="slide-background-blur col-xs-12" style="padding:3.3% 0%;">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-10 col-xs-12">
+                            <div class="col-xs-12">
+                                <div class="col-xs-5">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-8 col-xs-12" style="padding:0;">
+                                        <img class="slide-focus-img" src="<%= song.jacket %>" alt="Third slide">
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <div class="col-xs-7" style="padding:0; margin-left: -1.5%;">
+                                    <div class="col-md-10 col-xs-12" style="padding:0;">
+                                        <div class="col-xs-12 content_box" style="padding:3.3% 0;">
+                                            <div class="col-xs-3 content_box-label" style="padding:2% 0;">
+                                                <span class="label_m">
+                                                    <% if i == 0 %>
+                                                        <em>BEST!</em>
+                                                    <% else %>
+                                                        <%= i + 1 %>위
+                                                    <% end %>
+                                                </span>
+                                            </div>
+                                            <div class="col-xs-9" style="padding:0">
+                                                <% title = song.title.split('(').first.strip %>
+                                                <% name = song.artist.name.split('(').first.strip %>
+                                                <h1 class="carousel-title <%= "marquee" if title.length > 13 %>" style="cursor:pointer;" ready_value="<%= song.id %>">
+                                                    <% if title.length > 13 %>
+                                                        <span id="<%= song.id %>th_carousel_marquee"><%= title.first(13) + ".." %></span>
+                                                        <span id="<%= song.id %>th_carousel_marquee_active" style="display:none;"><marquee scrollamount="25"><%= title %></marquee></span>
+                                                    <% else %>
+                                                        <span id="<%= song.id %>th_carousel"><%= title %></span>
+                                                    <% end %>
+                                                </h1>
+                                                <p class="carousel-artist"><%= name %></p>
+                                                <p class="carousel-getlist"><code><%= i+1 %>,<%= (1..9).to_a.sample %><%= (1..9).to_a.sample %><%= (1..9).to_a.sample %></code>명의 리스트에 라인업<i>!</i></p>
+                                                <p class="carousel-singNum">번호 <%= song.song_tjnum %></p>
+                                                <a class="btn btn-sm btn-default btn-lineUp-carousel" href="#" role="button"><em>Line<br>up!</em></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                            </div>
                         </div>
-                        
+                        <div class="col-lg-1"></div>
                     </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="carousel-caption carousel-details">
-                    <span class="c-left carousel-rank" style="<%= "margin-right: 7%;" if i == 0 %><%= "margin-right: 9%;" if i >= 9 %>">
-                    <% if i == 0 %>
-                        <em>BEST!</em>
-                    <% else %>
-                        <%= i + 1 %>위
-                    <% end %>
-                    </span>
-                    <% title = song.title.split('(').first.strip %>
-                    <h1 class="c-left carousel-title"><% if title.length > 13 %><%= title.first(13) + " ..." %><% else %><%= title %><% end %></h1>
-                    <!--<h1 class="c-left carousel-title"><%#= title %></h1>-->
-                    <p class="c-left carousel-artist"><%= team.name %></p>
-                    <!--<p class="c-left carousel-album">앨범명: <%#= album.title %></p>-->
-                    <p class="c-left carousel-getlist"><code><%= i+1 %>,<%= (1..9).to_a.sample %><%= (1..9).to_a.sample %><%= (1..9).to_a.sample %></code>명의 리스트에 라인업<i>!</i></p>
-                    <p class="c-left carousel-singNum">번호 <%= song.song_tjnum %></p>
-                    <a class="btn btn-sm btn-default btn-lineUp-carousel" href="#" role="button"><em>Line<br>up!</em></a>
+                    <div class="col-md-2"></div>
                 </div>
             </div>
         </div>
+        
         <% i += 1 %>
         <% end %>
-        
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -90,3 +98,15 @@
         </div>
     </div>
 </div><!-- /.캐러셀 슬라이드 -->
+<script>
+    $(".marquee").hover(function(){
+        var id = $(this).attr("ready_value"); 
+        $("#" + id + "th_carousel_marquee").hide(); 
+        $("#" + id + "th_carousel_marquee_active").show();
+    }, function(){
+        var id = $(this).attr("ready_value");
+        $("#" + id + "th_carousel_marquee_active").hide();
+        $("#" + id + "th_carousel_marquee").show();
+        
+    });
+</script>
