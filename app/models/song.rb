@@ -3,10 +3,10 @@ class Song < ActiveRecord::Base
     belongs_to :singer
     belongs_to :team
 
-    def self.clip(num)
+    def self.crawl(num)
       s = Song.new
       s.song_number = num
-      return s
+      return s.crawl_song
     end
 
     # a = song.artist
