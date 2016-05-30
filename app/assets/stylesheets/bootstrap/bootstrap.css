@@ -6564,3 +6564,38 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+
+
+.col-xs_5,
+.col-sm_5,
+.col-md_5,
+.col-lg_5 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.col-xs_5 {
+    width: 20%;
+    float: left;
+}
+@media (min-width: 768px) {
+.col-sm_5 {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md_5 {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg_5 {
+        width: 20%;
+        float: left;
+    }
+}
