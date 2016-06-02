@@ -256,7 +256,7 @@ class CrawlController < ApplicationController
         #변수를 초기화하고 load_page메소드를 이용하여 크롤링
         a = Array.new
         strText = s.title
-        @songs = load_page(strText, "song_title")
+        @songs = CrawlController.load_page(strText, "song_title")
 
         i += 1
         singer = Album.where(album_num: s.album_num).first.artist_name
