@@ -12,10 +12,24 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
+
   config.mailer_sender = 'goraebang.com <no-reply@example.com>'
 
+  # Start omniauth facebook, google
+
+  # Facebook Login
   config.omniauth :facebook, "781195762014960", "8fdd8091ca6900a2109746f9831ac035",
   scope: 'email', info_fields: 'email, name,first_name, last_name, gender'
+
+  # Google Login#
+  # require 'omniauth-google-oauth2'
+  config.omniauth :google_oauth2, "447293847405-stauf2p98vu9fg5232sfrrlm123tqg3h.apps.googleusercontent.com",
+  "tF0i1AGOxQIW7g_bpQ--eGCt", { access_type: "offline", approval_prompt: "" }
+
+  # config.omniauth :google_oauth2, ENV["447293847405-stauf2p98vu9fg5232sfrrlm123tqg3h.apps.googleusercontent.com"],
+  #                                   ENV["tF0i1AGOxQIW7g_bpQ--eGCt"], {
+  #     scope: "email"
+  # }
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'

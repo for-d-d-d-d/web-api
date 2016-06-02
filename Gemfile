@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'coffee-script-source', '1.8.0'
 # gem 'sidekiq'

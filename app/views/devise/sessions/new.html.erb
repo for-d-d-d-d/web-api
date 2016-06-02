@@ -21,10 +21,8 @@
 
                 <div style="margin:15px 0px 25px 0px;">
                     <a href="/users/password/new" class="else_sign_match_btn" style="float:right;">비밀번호 찾기</a>
-
                 </div>
                 <br>
-
 
                 <div style="border-top:1px solid rgba(125, 125, 125, 0.5); border-bottom:1px solid rgba(125, 125, 125, 0.5); padding:10px 0px 10px 0px;">
                     <!-- <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %> <br/> -->
@@ -32,9 +30,10 @@
                         <button type="button" class="btn btn-primary btn-lg active" style="width:100%; font-size:16px;">Login with Facebook</button>
                     </a>
                     <br/><br/>
-                    <button type="button" class="btn btn-warning btn-lg active" style="color:black; width:100%; background-color:yellow; font-size:16px;">Login with KakaoTalk</button>
+                    <a href="/users/auth/google_oauth2">
+                        <button type="button" class="btn btn-primary btn-lg active" style="width:100%; font-size:16px;">Login with Google</button>
+                    </a>
                 </div>
-
             </div>
 
             <div class="col-md-2 col-lg-2"></div>

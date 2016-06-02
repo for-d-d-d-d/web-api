@@ -8,7 +8,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
             # t.string :birthdate,          null: false, default: ""
             # t.string :gender,             null: false, default: ""
 
-            ## for omniauth-facebook
+            ## for omniauth
             t.string :provider
             t.string :uid
 
