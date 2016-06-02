@@ -30,7 +30,7 @@
 <script src="/js/demo.js"></script>
 
 <!--<script src="/nouislider/nouislider.min.js"></script>-->
-<script src="/nouislider/nouislider.js"></script>
+<script src="/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.js"></script>
 
 <!-- Data Table -->
 
@@ -96,7 +96,7 @@
                         <% @song.each do |song| %>
                             <div style="margin: 10px 0px;">
                                 <div class="btn bgm-green waves-effect" style="width:15%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.title %></div>
-                                <div class="btn bgm-lightgreen waves-effect" style="width:10%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.artist %></div>
+                                <div class="btn bgm-lightgreen waves-effect" style="width:10%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.artist.name %></div>
                                 <div style="width:74%; float:right;" id="song_<%= song.id %>"></div><br><br><br>
                             </div>
                         <% end %>
@@ -105,7 +105,7 @@
                         <% @song.each do |song| %>
                             <div style="margin: 10px 0px;">
                                 <div class="btn bgm-green waves-effect" style="width:15%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.title %></div>
-                                <div class="btn bgm-lightgreen waves-effect" style="width:10%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.artist %></div>
+                                <div class="btn bgm-lightgreen waves-effect" style="width:10%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.artist.name %></div>
                                 <div style="width:74%; float:right;" id="song_<%= song.id %>"></div><br><br><br>
                             </div>
                         <% end %>
@@ -121,12 +121,12 @@
 
 
 <script>
-<% Song.all.each do |song| %>
+<% Song.where.not(lowkey: nil).each do |song| %>
 
 var slider<%= song.id %> = document.getElementById("song_<%= song.id %>");
 
 noUiSlider.create(slider<%= song.id %>, {
-	start: [<%= IntervalKey.where(key: song.lowkey).take.keyNum %>, <%= IntervalKey.where(key: song.highkey).take.keyNum %>],
+	start: [<%= IntervalKey.where(key: song.lowkey).take.number %>, <%= IntervalKey.where(key: song.highkey).take.number %>],
 	connect: true,
 	range: {
 		'min': 0,
@@ -136,7 +136,7 @@ noUiSlider.create(slider<%= song.id %>, {
 });
 
 slider<%= song.id %>.noUiSlider.on('set', function(){
-  slider<%= song.id %>.noUiSlider.set([<%= IntervalKey.where(key: song.lowkey).take.keyNum %>, <%= IntervalKey.where(key: song.highkey).take.keyNum %>]);
+  slider<%= song.id %>.noUiSlider.set([<%= IntervalKey.where(key: song.lowkey).take.number %>, <%= IntervalKey.where(key: song.highkey).take.number %>]);
 });
 <% end %>
 </script>
