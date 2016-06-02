@@ -62,9 +62,8 @@
                         <tr>
                             <td><%= song.song_num %></td>
                             <td><%= song.title %></td>
-                            <% a = Album.find(song.album_id) %>
-                            <td><%= a.artist_name %></td>
-                            <td><%= a.title %></td>
+                            <td><%= song.artist.name %></td>
+                            <td><%= song.album.title %></td>
                         </tr>
                         <% end %>
                     </tbody>

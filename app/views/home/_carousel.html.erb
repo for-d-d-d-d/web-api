@@ -45,9 +45,9 @@
                                             <div class="col-xs-9" style="padding:0">
                                                 <% title = song.title.split('(').first.strip %>
                                                 <% name = song.artist.name.split('(').first.strip %>
-                                                <h1 class="carousel-title <%= "marquee" if title.length > 13 %>" style="cursor:pointer;" ready_value="<%= song.id %>">
-                                                    <% if title.length > 13 %>
-                                                        <span id="<%= song.id %>th_carousel_marquee"><%= title.first(13) + ".." %></span>
+                                                <h1 class="carousel-title <%= "marquee" if title.length > 11 %>" style="cursor:pointer;" ready_value="<%= song.id %>">
+                                                    <% if title.length > 11 %>
+                                                        <span id="<%= song.id %>th_carousel_marquee"><%= title.first(11) + ".." %></span>
                                                         <span id="<%= song.id %>th_carousel_marquee_active" style="display:none;"><marquee scrollamount="25"><%= title %></marquee></span>
                                                     <% else %>
                                                         <span id="<%= song.id %>th_carousel"><%= title %></span>
