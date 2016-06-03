@@ -2,7 +2,6 @@ class AdminController < ApplicationController
     layout "admin"
 
     def admin_login
-
         render layout: false
     end
 
@@ -43,6 +42,10 @@ class AdminController < ApplicationController
     end
 
     def index
+    end
+
+    def team_list
+        @team = Team.all
     end
 
     def songs_info

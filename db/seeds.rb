@@ -161,7 +161,7 @@ Singer.create!([
   {name: "이하이", photo: "http://image.genie.co.kr/Y/IMAGE/IMG_ARTIST/080/158/970/80158970_9_600x600.JPG", artist_num: 80158970},
   {name: "김범수", photo: "http://image.genie.co.kr/Y/IMAGE/IMG_ARTIST/014/945/137/14945137_9_600x600.JPG", artist_num: 14945137}
 ])
-SingerTeam.create!([
+SingersTeam.create!([
   {singer_id: 1, team_id: 1},
   {singer_id: 2, team_id: 1},
   {singer_id: 3, team_id: 1},

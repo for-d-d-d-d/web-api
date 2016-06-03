@@ -1,10 +1,4 @@
 class HomeController < ApplicationController
-    # before_action :layout, :except => [:entering, :login, :main, :mylist, :EvalKey, :content_navi, :carousel, :contents]
-
-    def layout
-        render layout: "../gorae_layouts/application.html.erb"
-    end
-
     def entering
         @bg_img = [
             "http://www.todayjournal.co.kr/news/photo/201509/2786_6024_2539.JPG",
@@ -76,6 +70,12 @@ class HomeController < ApplicationController
                 @song_lyrics << s if flag3 == true
             end
         end
+    end
+
+    def this_song
+        #redirect_to :back
+        @song = Song.find(params[:song_id])
+        render json: @song
     end
 
     def rank
