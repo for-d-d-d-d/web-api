@@ -21,6 +21,8 @@
 
 <!-- Table -->
 
+<center> <p style="color:red;"><%= flash[:error] %></p> </center>
+
 <div style="padding:0px 200px 0px 200px">
     <!-- 곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span> <br> -->
     <% unless @song_title.empty? %>
@@ -67,6 +69,7 @@
                 <td>
                 </td>
                 <td>
+                    <a href="/mylist/add/<%= s.id %>"><button> 추가 </button></a>
                 </td>
             </tr>
             <% end %>
