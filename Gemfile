@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'delayed_job_active_record'
+
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'

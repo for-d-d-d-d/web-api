@@ -4,9 +4,11 @@ class Song < ActiveRecord::Base
     belongs_to :team
 
     def self.crawl(num)
+
         s = Song.new
         s.song_number = num
         return s.crawl_song
+
     end
 
     def artist
