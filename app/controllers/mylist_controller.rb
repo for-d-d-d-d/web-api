@@ -20,4 +20,6 @@ class MylistController < ApplicationController
         Mylist.find(params[:id]).destroy
         redirect_to :back
     end
+
+    
 end

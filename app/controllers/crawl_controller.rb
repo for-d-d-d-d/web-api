@@ -134,7 +134,6 @@ class CrawlController < ApplicationController
     puts "요청하신 크롤링이 종료되었습니다."
   end
 
-
   def self.crawl_artist(artist_num)
     html_doc_artist = load_page(artist_num, "artist_number")
     return false if artist_num == 0

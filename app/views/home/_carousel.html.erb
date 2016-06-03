@@ -9,10 +9,14 @@
     <!--    <%# end %>-->
     <!--</ol>-->
     <div class="carousel-inner" role="listbox" style="z-index:-1">
-        <% i = 0 %>
+        <%
+            i = 0
+            @song = Song.where.not(lowkey: nil).all
+            @carousel = @song.first(17)
+        %>
         <% @carousel.each do |song| %>
         <% album = Album.find(song.album_id) %>
-        
+
         <div class="item <%= "active" if i == 0 %>">
             <div class="first-slide slide-background">
                 <div class="blur" style="background-image: url(<%= album.jacket %>);">
@@ -70,7 +74,7 @@
                 </div>
             </div>
         </div>
-        
+
         <% i += 1 %>
         <% end %>
     </div>
@@ -100,13 +104,13 @@
 </div><!-- /.캐러셀 슬라이드 -->
 <script>
     $(".marquee").hover(function(){
-        var id = $(this).attr("ready_value"); 
-        $("#" + id + "th_carousel_marquee").hide(); 
+        var id = $(this).attr("ready_value");
+        $("#" + id + "th_carousel_marquee").hide();
         $("#" + id + "th_carousel_marquee_active").show();
     }, function(){
         var id = $(this).attr("ready_value");
         $("#" + id + "th_carousel_marquee_active").hide();
         $("#" + id + "th_carousel_marquee").show();
-        
+
     });
 </script>

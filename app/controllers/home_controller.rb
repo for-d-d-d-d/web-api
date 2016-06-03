@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-    before_action :layout, :except => [:entering, :main, :login, :mylist, :EvalKey]
+    # before_action :layout, :except => [:entering, :login, :main, :mylist, :EvalKey, :content_navi, :carousel, :contents]
 
     def layout
         render layout: "../gorae_layouts/application.html.erb"
@@ -46,23 +46,6 @@ class HomeController < ApplicationController
         #render :layout => false
     end
 
-    def this_song
-        #redirect_to :back
-        @song = Song.find(params[:song_id])
-        render json: @song
-    end
-
-    def login
-        # 비밀번호 일치하면 main2로
-        redirect_to '/gorae/main2'
-
-        # 비밀번호 안맞으면
-        # 다시 entering으로
-    end
-
-    def main2
-    end
-
     def search
         if params[:query].nil?
             @query = "검색어를 찾을 수 없습니다."
@@ -82,5 +65,4 @@ class HomeController < ApplicationController
     def mylist
         @song = Song.where.not(lowkey: nil).all.reverse
     end
-
 end
