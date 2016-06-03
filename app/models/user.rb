@@ -7,6 +7,17 @@ class User < ActiveRecord::Base
 
     has_many :mylists
 
+    def my_songs
+        sa = Array.new
+        self.mylists.each do |ml|
+            ml.mylist_songs.each do |s|
+                s = s.song
+                sa << s
+            end
+        end
+        sa
+    end
+
     def self.from_omniauth(auth)
         where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
             user.email = auth.info.email
