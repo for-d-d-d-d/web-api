@@ -103,4 +103,9 @@ class AdminController < ApplicationController
 
     # render layout: "../admin_layouts/application.html.erb"
   end
+  
+  def crawler_manager
+      
+    render layout: "../admin_layouts/application.html.erb"
+  end
 end
