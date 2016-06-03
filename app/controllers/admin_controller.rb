@@ -7,7 +7,6 @@ class AdminController < ApplicationController
   end
 
   def admin_login
-
     render layout: false
   end
 
@@ -103,9 +102,9 @@ class AdminController < ApplicationController
 
     # render layout: "../admin_layouts/application.html.erb"
   end
-  
+
   def crawler_manager
-      
+
     render layout: "../admin_layouts/application.html.erb"
   end
 end

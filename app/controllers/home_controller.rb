@@ -39,7 +39,7 @@ class HomeController < ApplicationController
 
     #render :layout => false
   end
-  
+
   def this_song
     #redirect_to :back
     @song = Song.find(params[:song_id])
@@ -90,6 +90,6 @@ class HomeController < ApplicationController
   end
 
   def Mylist
-    
+
   end
 end
