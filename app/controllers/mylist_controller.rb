@@ -41,7 +41,7 @@ class MylistController < ApplicationController
             flash[:error] = "추가 완료 추가된 곡 :" + m.song.title
             redirect_to :back
         end
-        
+
         def delete
             MylistSong.find(params[:id]).destroy
             redirect_to :back
@@ -53,3 +53,4 @@ class MylistController < ApplicationController
         end
 
     end
+end
