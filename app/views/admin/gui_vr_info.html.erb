@@ -5,7 +5,7 @@
 <script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
 <script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-<script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>  
+<script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
 <!--<script src="../vendors/bootgrid/jquery.bootgrid.updated.min.js"></script>-->
 
 
@@ -32,20 +32,11 @@
 <!--<script src="/nouislider/nouislider.min.js"></script>-->
 <script src="/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.js"></script>
 
-<!-- Data Table -->
-
-
-
-
-<section id="main">
-    <%= render partial: 'admin/feature_layouts/sidebar' %>
-    <%= render partial: 'admin/feature_layouts/chat' %>
-    
     <section id="content">
         <div class="container">
             <div class="block-header">
                 <h2>음역대 분포도</h2>
-                
+
                 <ul class="actions">
                     <li>
                         <a href="">
@@ -61,7 +52,7 @@
                         <a href="" data-toggle="dropdown">
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
-                        
+
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>
                                 <a href="">Refresh</a>
@@ -77,16 +68,16 @@
                 </ul>
             </div>
             <!--음역대 입-출력 Table-->
-            
+
             <div class="card">
                 <div class="card-header">
                     <h2>음역대 분포도 <small>곡별 음역대 분포</small></h2>
                 </div>
-                
+
                 <div class="card-body card-padding">
-                    
+
                     <p class="f-500 c-black m-b-20">내 목소리의 음역대와 유사한 곡을 비교해보세요!</p>
-                    
+
                     <div class="m-b-20 clearfix">
                         <div class="input-slider-values m-b-15"></div>
                         <strong class="pull-left text-muted" id="value-upper"></strong>

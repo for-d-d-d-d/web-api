@@ -1,18 +1,3 @@
-<%
-@song = Song.where(ganre1: "가요")
-@top100 = DailyTjPopularRank.all
-@mod_song = Song.find(params[:mod]) unless params[:mod] == nil
-@song_miss = Array.new
-@song.each do |song|
-    if song.song_tjnum == nil
-        @song_miss << song
-    end
-end
-%>
-<section id="main">
-    <%= render partial: 'admin/feature_layouts/sidebar' %>
-    <%= render partial: 'admin/feature_layouts/chat' %>
-
     <section id="content">
         <div class="container">
             <div class="block-header">
@@ -69,7 +54,7 @@ end
                                 <div class="input-group fg-float">
                                     <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
                                     <div class="fg-line">
-                                        <input type="text" name="artist" class="form-control" value="<%= @mod_song.artist_num if params[:mod] != nil %>">
+                                        <input type="text" name="artist" class="form-control" value="<%= @mod_song.artist.artist_num if params[:mod] != nil %>">
                                         <label class="fg-label" style="color:#fff;">아티스트</label>
                                     </div>
                                 </div>
@@ -163,7 +148,7 @@ end
                                 <form action="/song/song_num_save/<%= miss.id %>" method="POST">
                                 <td><%= miss.id %></td>
                                 <td><%= miss.title %></td>
-                                <th><%= miss.artist_num %></th>
+                                <th><%= miss.artist.artist_num %></th>
 
                                 <% if miss.song_tjnum.nil? %>
                                     <td><a href="<%= miss.song_tjnum %>" target="_blank" class="btn bgm-green waves-effect">노래방 찾기!</a></td>
@@ -228,131 +213,9 @@ end
                     </tbody>
                 </table>
             </div>
-
-
-
-            <!--<div class="card">-->
-            <!--    <div class="card-header">-->
-            <!--        <h2>Selection Example <small>Ensure that the data attribute [data-identifier="true"] is set on one column header.</small></h2>-->
-            <!--    </div>-->
-
-            <!--    <div class="table-responsive">-->
-            <!--        <table id="data-table-selection" class="table table-striped">-->
-            <!--            <thead>-->
-            <!--                <tr>-->
-            <!--                    <th data-column-id="id" data-type="numeric" data-identifier="true">ID</th>-->
-            <!--                    <th data-column-id="sender">Sender</th>-->
-            <!--                    <th data-column-id="received" data-order="desc">Received</th>-->
-            <!--                </tr>-->
-            <!--            </thead>-->
-            <!--            <tbody>-->
-            <!--                <tr>-->
-            <!--                    <td>10238</td>-->
-            <!--                    <td>eduardo@pingpong.com</td>-->
-            <!--                    <td>14.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10243</td>-->
-            <!--                    <td>eduardo@pingpong.com</td>-->
-            <!--                    <td>19.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10248</td>-->
-            <!--                    <td>eduardo@pingpong.com</td>-->
-            <!--                    <td>24.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10253</td>-->
-            <!--                    <td>eduardo@pingpong.com</td>-->
-            <!--                    <td>29.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10234</td>-->
-            <!--                    <td>lila@google.com</td>-->
-            <!--                    <td>10.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10239</td>-->
-            <!--                    <td>lila@google.com</td>-->
-            <!--                    <td>15.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10244</td>-->
-            <!--                    <td>lila@google.com</td>-->
-            <!--                    <td>20.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10249</td>-->
-            <!--                    <td>lila@google.com</td>-->
-            <!--                    <td>25.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10237</td>-->
-            <!--                    <td>robert@bingo.com</td>-->
-            <!--                    <td>13.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10242</td>-->
-            <!--                    <td>robert@bingo.com</td>-->
-            <!--                    <td>18.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10247</td>-->
-            <!--                    <td>robert@bingo.com</td>-->
-            <!--                    <td>23.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10252</td>-->
-            <!--                    <td>robert@bingo.com</td>-->
-            <!--                    <td>28.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10236</td>-->
-            <!--                    <td>simon@yahoo.com</td>-->
-            <!--                    <td>12.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10241</td>-->
-            <!--                    <td>simon@yahoo.com</td>-->
-            <!--                    <td>17.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10246</td>-->
-            <!--                    <td>simon@yahoo.com</td>-->
-            <!--                    <td>22.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10251</td>-->
-            <!--                    <td>simon@yahoo.com</td>-->
-            <!--                    <td>27.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10235</td>-->
-            <!--                    <td>tim@microsoft.com</td>-->
-            <!--                    <td>11.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10240</td>-->
-            <!--                    <td>tim@microsoft.com</td>-->
-            <!--                    <td>16.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10245</td>-->
-            <!--                    <td>tim@microsoft.com</td>-->
-            <!--                    <td>21.10.2013</td>-->
-            <!--                </tr>-->
-            <!--                <tr>-->
-            <!--                    <td>10250</td>-->
-            <!--                    <td>tim@microsoft.com</td>-->
-            <!--                    <td>26.10.2013</td>-->
-            <!--                </tr>-->
-            <!--            </tbody>-->
-            <!--        </table>-->
-            <!--    </div>-->
-            <!--</div>-->
         </div>
     </section>
-</section>
+
 
 <!-- Javascript Libraries -->
 <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
