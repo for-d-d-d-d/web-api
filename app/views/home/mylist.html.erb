@@ -1,5 +1,11 @@
 <%= render partial: "home/home_layouts/home_header" %>
 
+<% if params[:id].nil? %>
+    <% ml = current_user.mylists.where(title: "Default").first %>
+<% else %>
+    <% ml = Mylist.find(params[:id]) %>
+<% end %>
+
 <style media="screen">
     .mylist_container{
         border-radius: 10px;
@@ -36,7 +42,7 @@
     <div class="mylist_contents_container" style="text-align:center; margin-bottom:70px;">
         <img src="/images/icon/profile_photo.png" width="60" height="60" style="background-color:black;"/>
         <% if user_signed_in? %>
-            <div><h4><%= current_user.name %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
+            <div><h4><%= current_user.name %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트 : <%= ml.title %></span></h4></div>
         <% else %>
             <div><h4><%= "로그인하셈!" %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
         <% end %>
@@ -53,11 +59,12 @@
     <hr class="list_devider">
 
     <% i = 1 %>
-    <% current_user.mylists.each do |ml| %>
+    <%# current_user.mylists.each do |ml| %>
         <!-- <div class="mylilst_contents_container">
             <div class="col-md-3 mylist_contents"> Mylist : </div>
             <div class="col-md-9 mylist_contents"> <%= ml.title %> </div>
         </div> -->
+
         <% ml.songs.each do |s| %>
             <% s = s.song %>
             <div class="mylilst_contents_container">
@@ -70,7 +77,7 @@
             <hr class="list_devider">
             <% i += 1 %>
         <% end %>
-    <% end %>
+    <%# end %>
 
 </div>
 <div class="col-md-3"></div>

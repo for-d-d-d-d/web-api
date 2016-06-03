@@ -1,5 +1,13 @@
 class MylistController < ApplicationController
 
+    def add_list
+        m = Mylist.new
+        m.title = params[:title]
+        m.user_id = current_user.id
+        m.save
+        redirect_to :back
+    end
+
     def add
         id = params[:id]
 
@@ -9,7 +17,6 @@ class MylistController < ApplicationController
             redirect_to :back
             return false
         end
-
 
         if current_user.mylists.where(title: "Default").first.nil?
             a = Mylist.new
@@ -30,7 +37,6 @@ class MylistController < ApplicationController
         m.mylist_id = Mylist.where(title: "Default").first.id
         m.save
 
-        # render text: "추가 완료 추가된 곡 :" + m.song.title
         flash[:error] = "추가 완료 추가된 곡 :" + m.song.title
         redirect_to :back
     end
@@ -40,5 +46,9 @@ class MylistController < ApplicationController
         redirect_to :back
     end
 
+    def list
+        t = params[:title]
+
+    end
 
 end
