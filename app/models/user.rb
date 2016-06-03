@@ -5,8 +5,6 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable,
     :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
-
-
     has_many :mylists
 
     def self.from_omniauth(auth)
