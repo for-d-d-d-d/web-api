@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20160603124604) do
 
   create_table "mylists", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "song_id"
+    t.string   "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

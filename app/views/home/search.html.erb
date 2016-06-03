@@ -1,33 +1,306 @@
-title<br>
-<% unless @song_title.empty?
-    @song_title.each do |s| %>
-        song : <%= s.title %> - <%= s.artist.name %><br>
+<%= render partial: "home/home_layouts/home_header" %>
+
+<style>
+
+.search_border{
+    border-width:1px;
+    border-color:red;
+}
+
+.table_left{
+    text-align:left;
+}
+</style>
+<!-- header 가리는 부분 -->
+<div style="height:120px;">
+</div>
+
+
+<!-- Default panel contents -->
+
+
+<!-- Table -->
+
+<div style="padding:0px 200px 0px 200px">
+    <!-- 곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span> <br> -->
+    <% unless @song_title.empty? %>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span></div>
+
+        <table class="table">
+            <tr style="border-bottom: solid 1px;">
+                <th class="table_left" style="width:5%">
+                    No
+                </th>
+
+                <th class="table_left" style="width:30%">
+                    곡명
+                </th>
+
+                <th class="table_left" style="width:20%">
+                    아티스트
+                </th>
+                <th class="table_left" style="width:5%">
+                    좋아요
+                </th>
+                <th class="table_left" style="width:5%">
+                    추가하기
+                </th>
+            </tr>
+
+            <% i = 1 %>
+            <% @song_title.each do |s| %>
+            <tr>
+                <td>
+                    <%= i %>
+                    <% i += 1 %>
+                </td>
+
+                <td>
+                    <%= s.title %>
+                </td>
+
+                <td>
+                    <%= s.artist.name %>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <% end %>
+        </table>
+    </div>
+
+    <% i = 1 %>
+
+    <% else %>
+    <div class="panel panel-default">
+        <div class="panel-heading">곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span></div>
+
+        <table class="table">
+            <tr style="border-bottom: solid 1px;">
+                <th class="table_left" style="width:5%">
+                    No
+                </th>
+
+                <th class="table_left" style="width:30%">
+                    곡명
+                </th>
+
+                <th class="table_left" style="width:20%">
+                    아티스트
+                </th>
+                <th class="table_left" style="width:5%">
+                    좋아요
+                </th>
+                <th class="table_left" style="width:5%">
+                    추가하기
+                </th>
+            </tr>
+
+            <% i = 1 %>
+
+            <tr>
+                <td colspan="5">
+                    곡명 검색 결과가 없습니다
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
     <% end %>
-<% else %>
-검색 결과가 없습니다.<br>
-<% end %>
-<br>
-<hr>
-<br>
-artist<br>
-<% unless @song_artist.empty?
-    @song_artist.each do |s| %>
-        song : <%= s.title %> - <%= s.artist.name %><br>
+
+    <hr class="search_border">
+    <br>
+
+    <% unless @song_artist.empty? %>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">아티스트명으로 검색 <span style="color:red;"> (<%= @song_artist.count %>) </span></div>
+
+        <table class="table">
+            <tr style="border-bottom: solid 1px;">
+                <th class="table_left" style="width:5%">
+                    No
+                </th>
+
+                <th class="table_left" style="width:30%">
+                    곡명
+                </th>
+
+                <th class="table_left" style="width:20%">
+                    아티스트
+                </th>
+                <th class="table_left" style="width:5%">
+                    좋아요
+                </th>
+                <th class="table_left" style="width:5%">
+                    추가하기
+                </th>
+            </tr>
+
+            <% i = 1 %>
+            <% @song_artist.each do |s| %>
+            <tr>
+                <td>
+                    <%= i %>
+                    <% i += 1 %>
+                </td>
+
+                <td>
+                    <%= s.title %>
+                </td>
+
+                <td>
+                    <%= s.artist.name %>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <% end %>
+        </table>
+    </div>
+
+    <% i = 1 %>
+
+    <% else %>
+    <div class="panel panel-default">
+        <div class="panel-heading">아티스트명으로 검색 <span style="color:red;"> (<%= @song_artist.count %>) </span></div>
+
+        <table class="table">
+            <tr style="border-bottom: solid 1px;">
+                <th class="table_left" style="width:5%">
+                    No
+                </th>
+
+                <th class="table_left" style="width:30%">
+                    곡명
+                </th>
+
+                <th class="table_left" style="width:20%">
+                    아티스트
+                </th>
+                <th class="table_left" style="width:5%">
+                    좋아요
+                </th>
+                <th class="table_left" style="width:5%">
+                    추가하기
+                </th>
+            </tr>
+
+            <% i = 1 %>
+
+            <tr>
+                <td colspan="5">
+                    아티스트 검색 결과가 없습니다
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
     <% end %>
-<% else %>
-검색 결과가 없습니다.<br>
-<% end %>
-<br>
-<hr>
-<br>
-lyrics<br>
-<% unless @song_lyrics.empty?
-    @song_lyrics.each do |s| %>
-        song : <%= s.title %> - <%= s.artist.name %><br>
+
+
+    <hr class="search_border">
+    <br>
+
+    <% unless @song_lyrics.empty? %>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">가사로 검색 <span style="color:red;"> (<%= @song_lyrics.count %>) </span></div>
+        <table class="table">
+            <tr style="border-bottom: solid 1px;">
+                <th class="table_left" style="width:5%">
+                    No
+                </th>
+
+                <th class="table_left" style="width:30%">
+                    곡명
+                </th>
+
+                <th class="table_left" style="width:20%">
+                    아티스트
+                </th>
+                <th class="table_left" style="width:5%">
+                    좋아요
+                </th>
+                <th class="table_left" style="width:5%">
+                    추가하기
+                </th>
+            </tr>
+
+            <% i = 1 %>
+            <% @song_lyrics.each do |s| %>
+            <tr>
+                <td>
+                    <%= i %>
+                    <% i += 1 %>
+                </td>
+
+                <td>
+                    <%= s.title %>
+                </td>
+
+                <td>
+                    <%= s.artist.name %>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <% end %>
+        </table>
+    </div>
+
+    <% i = 1 %>
+
+    <% else %>
+    <div class="panel panel-default">
+        <div class="panel-heading">가사로 검색 <span style="color:red;"> (<%= @song_lyrics.count %>) </span></div>
+
+        <table class="table">
+            <tr style="border-bottom: solid 1px;">
+                <th class="table_left" style="width:5%">
+                    No
+                </th>
+
+                <th class="table_left" style="width:30%">
+                    곡명
+                </th>
+
+                <th class="table_left" style="width:20%">
+                    아티스트
+                </th>
+                <th class="table_left" style="width:5%">
+                    좋아요
+                </th>
+                <th class="table_left" style="width:5%">
+                    추가하기
+                </th>
+            </tr>
+
+            <% i = 1 %>
+
+            <tr>
+                <td colspan="5">
+                    가사 검색 결과가 없습니다.
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
     <% end %>
-<% else %>
-검색 결과가 없습니다.<br>
-<% end %>
-<br>
-<hr>
-<br>
+
+
+    <hr class="search_border">
+    <br>
+
+</div>
