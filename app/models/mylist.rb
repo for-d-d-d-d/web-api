@@ -1,4 +1,8 @@
 class Mylist < ActiveRecord::Base
   belongs_to :user
-  belongs_to :song
+  has_many :mylist_songs
+
+  def songs
+      return self.mylist_songs
+  end
 end
