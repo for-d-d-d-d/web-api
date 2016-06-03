@@ -29,12 +29,57 @@
         <link href="/vendors/bower_components/nouislider/src/jquery.nouislider.css" rel="stylesheet">
     </head>
     <body>
-        <%= render partial: 'admin_layouts/admin_header' %>
+        <!-- scripts -->
+
+        <!-- Javascript Libraries -->
+        <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+        <script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
+        <script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
+        <script src="/vendors/bootgrid/jquery.bootgrid.updated.min.js"></script>
+
+        <script src="/vendors/bower_components/moment/min/moment.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+        <script src="/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
+        <script src="/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="/vendors/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
+        <script src="/vendors/summernote/dist/summernote-updated.min.js"></script>
+
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+        <script src="../vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+
+        <script src="/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
+        <script src="/vendors/fileinput/fileinput.min.js"></script>
+        <script src="/vendors/input-mask/input-mask.min.js"></script>
+        <script src="/vendors/farbtastic/farbtastic.min.js"></script>
+
+        <!--<script src="/nouislider/nouislider.min.js"></script>-->
+        <script src="/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.js"></script>
+
+        <script src="/js/functions.js"></script>
+        <script src="/js/demo.js"></script>
+
+        <script src="/js/flot-charts/curved-line-chart.js"></script>
+        <script src="/js/flot-charts/line-chart.js"></script>
+        <script src="/js/charts.js"></script>
+
+        <!-- scripts end -->
+
+        <%= render partial: 'admin/feature_layouts/header' %>
+
         <section id="main">
             <%= render partial: 'admin/feature_layouts/sidebar' %>
             <%= render partial: 'admin/feature_layouts/chat' %>
-            <%= yield %>
+            <section id="content">
+                <%= yield %>
+            </section>
         </section>
-        <%= render partial: 'admin_layouts/admin_footer' %>
+
+        <%= render partial: 'admin/feature_layouts/footer' %>
     </body>
 </html>

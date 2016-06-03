@@ -1,115 +1,77 @@
-<!-- Javascript Libraries -->
-<script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<div class="container">
+    <div class="block-header">
+        <h2>음역대 분포도</h2>
 
-<script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
-<script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-<script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
-<!--<script src="../vendors/bootgrid/jquery.bootgrid.updated.min.js"></script>-->
+        <ul class="actions">
+            <li>
+                <a href="">
+                    <i class="zmdi zmdi-trending-up"></i>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="zmdi zmdi-check-all"></i>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="" data-toggle="dropdown">
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
 
-
-<script src="/vendors/bower_components/moment/min/moment.min.js"></script>
-<script src="/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<script src="/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
-<script src="/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/vendors/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
-<script src="/vendors/summernote/dist/summernote-updated.min.js"></script>
-
-<!-- Placeholder for IE9 -->
-<!--[if IE 9 ]>
-    <script src="../vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
-<![endif]-->
-
-<script src="/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
-<script src="/vendors/fileinput/fileinput.min.js"></script>
-<script src="/vendors/input-mask/input-mask.min.js"></script>
-<script src="/vendors/farbtastic/farbtastic.min.js"></script>
-
-<script src="/js/functions.js"></script>
-<script src="/js/demo.js"></script>
-
-<!--<script src="/nouislider/nouislider.min.js"></script>-->
-<script src="/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.js"></script>
-
-    <section id="content">
-        <div class="container">
-            <div class="block-header">
-                <h2>음역대 분포도</h2>
-
-                <ul class="actions">
+                <ul class="dropdown-menu dropdown-menu-right">
                     <li>
-                        <a href="">
-                            <i class="zmdi zmdi-trending-up"></i>
-                        </a>
+                        <a href="">Refresh</a>
                     </li>
                     <li>
-                        <a href="">
-                            <i class="zmdi zmdi-check-all"></i>
-                        </a>
+                        <a href="">Manage Widgets</a>
                     </li>
-                    <li class="dropdown">
-                        <a href="" data-toggle="dropdown">
-                            <i class="zmdi zmdi-more-vert"></i>
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li>
-                                <a href="">Refresh</a>
-                            </li>
-                            <li>
-                                <a href="">Manage Widgets</a>
-                            </li>
-                            <li>
-                                <a href="">Widgets Settings</a>
-                            </li>
-                        </ul>
+                    <li>
+                        <a href="">Widgets Settings</a>
                     </li>
                 </ul>
-            </div>
-            <!--음역대 입-출력 Table-->
+            </li>
+        </ul>
+    </div>
+    <!--음역대 입-출력 Table-->
 
-            <div class="card">
-                <div class="card-header">
-                    <h2>음역대 분포도 <small>곡별 음역대 분포</small></h2>
-                </div>
-
-                <div class="card-body card-padding">
-
-                    <p class="f-500 c-black m-b-20">내 목소리의 음역대와 유사한 곡을 비교해보세요!</p>
-
-                    <div class="m-b-20 clearfix">
-                        <div class="input-slider-values m-b-15"></div>
-                        <strong class="pull-left text-muted" id="value-upper"></strong>
-                        <strong class="pull-right text-muted" id="value-lower"></strong>
-                    </div>
-                    <div id="range_accuracy" style="padding:0; margin:0;">
-                        <% @song.each do |song| %>
-                            <div style="margin: 10px 0px;">
-                                <div class="btn bgm-green waves-effect" style="width:15%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.title %></div>
-                                <div class="btn bgm-lightgreen waves-effect" style="width:10%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.artist.name %></div>
-                                <div style="width:74%; float:right;" id="song_<%= song.id %>"></div><br><br><br>
-                            </div>
-                        <% end %>
-                    </div>
-                    <div id="range_general" style="padding:0; margin:0; display:none;">
-                        <% @song.each do |song| %>
-                            <div style="margin: 10px 0px;">
-                                <div class="btn bgm-green waves-effect" style="width:15%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.title %></div>
-                                <div class="btn bgm-lightgreen waves-effect" style="width:10%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.artist.name %></div>
-                                <div style="width:74%; float:right;" id="song_<%= song.id %>"></div><br><br><br>
-                            </div>
-                        <% end %>
-                    </div>
-                    <br/>
-                    <br/>
-                    <br/>
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-header">
+            <h2>음역대 분포도 <small>곡별 음역대 분포</small></h2>
         </div>
-    </section>
-</section>
 
+        <div class="card-body card-padding">
+
+            <p class="f-500 c-black m-b-20">내 목소리의 음역대와 유사한 곡을 비교해보세요!</p>
+
+            <div class="m-b-20 clearfix">
+                <div class="input-slider-values m-b-15"></div>
+                <strong class="pull-left text-muted" id="value-upper"></strong>
+                <strong class="pull-right text-muted" id="value-lower"></strong>
+            </div>
+            <div id="range_accuracy" style="padding:0; margin:0;">
+                <% @song.each do |song| %>
+                <div style="margin: 10px 0px;">
+                    <div class="btn bgm-green waves-effect" style="width:15%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.title %></div>
+                    <div class="btn bgm-lightgreen waves-effect" style="width:10%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.artist.name %></div>
+                    <div style="width:74%; float:right;" id="song_<%= song.id %>"></div><br><br><br>
+                </div>
+                <% end %>
+            </div>
+            <div id="range_general" style="padding:0; margin:0; display:none;">
+                <% @song.each do |song| %>
+                <div style="margin: 10px 0px;">
+                    <div class="btn bgm-green waves-effect" style="width:15%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.title %></div>
+                    <div class="btn bgm-lightgreen waves-effect" style="width:10%; float:left; color:#000; font-size:13px; font-weight:bold;"><%= song.artist.name %></div>
+                    <div style="width:74%; float:right;" id="song_<%= song.id %>"></div><br><br><br>
+                </div>
+                <% end %>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+    </div>
+</div>
 
 <script>
 <% Song.where.not(lowkey: nil).each do |song| %>
@@ -117,17 +79,17 @@
 var slider<%= song.id %> = document.getElementById("song_<%= song.id %>");
 
 noUiSlider.create(slider<%= song.id %>, {
-	start: [<%= IntervalKey.where(key: song.lowkey).take.number %>, <%= IntervalKey.where(key: song.highkey).take.number %>],
-	connect: true,
-	range: {
-		'min': 0,
-		'max': 73
-	},
-	keynotes: ['<%= song.lowkey %>', '<%= song.highkey %>']
+    start: [<%= IntervalKey.where(key: song.lowkey).take.number %>, <%= IntervalKey.where(key: song.highkey).take.number %>],
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 73
+    },
+    keynotes: ['<%= song.lowkey %>', '<%= song.highkey %>']
 });
 
 slider<%= song.id %>.noUiSlider.on('set', function(){
-  slider<%= song.id %>.noUiSlider.set([<%= IntervalKey.where(key: song.lowkey).take.number %>, <%= IntervalKey.where(key: song.highkey).take.number %>]);
+    slider<%= song.id %>.noUiSlider.set([<%= IntervalKey.where(key: song.lowkey).take.number %>, <%= IntervalKey.where(key: song.highkey).take.number %>]);
 });
 <% end %>
 </script>

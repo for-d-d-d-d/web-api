@@ -1,402 +1,100 @@
-<section id="main">
-    <%= render partial: 'admin/feature_layouts/sidebar' %>
-    <%= render partial: 'admin/feature_layouts/chat' %>
 
-    <section id="content">
-        <div class="container">
-            <div class="block-header">
-                <h1 style="color:#777">Crawler Manager</h1>
+<div class="container">
+    <div class="block-header">
+        <h1 style="color:#777">Crawler Manager</h1>
 
-                <ul class="actions">
+        <ul class="actions">
+            <li>
+                <a href="">
+                    <i class="zmdi zmdi-trending-up"></i>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="zmdi zmdi-check-all"></i>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="" data-toggle="dropdown">
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right">
                     <li>
-                        <a href="">
-                            <i class="zmdi zmdi-trending-up"></i>
-                        </a>
+                        <a href="">Refresh</a>
                     </li>
                     <li>
-                        <a href="">
-                            <i class="zmdi zmdi-check-all"></i>
+                        <a href="">Manage Widgets</a>
+                    </li>
+                    <li>
+                        <a href="">Widgets Settings</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    <div class="col-sm-12">
+        <!-- Tabs 네비바-->
+        <div class="card">
+
+            <div class="card-body">
+                <ul class="tab-nav tn-justified tn-icon" role="tablist">
+                    <li role="presentation" class="active">
+                        <a class="col-sx-4" href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">
+                            <i class="zmdi zmdi-album icon-tab"></i>
                         </a>
                     </li>
-                    <li class="dropdown">
-                        <a href="" data-toggle="dropdown">
-                            <i class="zmdi zmdi-more-vert"></i>
+                    <li role="presentation">
+                        <a class="col-xs-4" href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">
+                            <i class="zmdi zmdi-audio icon-tab"></i>
                         </a>
-
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li>
-                                <a href="">Refresh</a>
-                            </li>
-                            <li>
-                                <a href="">Manage Widgets</a>
-                            </li>
-                            <li>
-                                <a href="">Widgets Settings</a>
-                            </li>
-                        </ul>
+                    </li>
+                    <li role="presentation">
+                        <a class="col-xs-4" href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">
+                            <i class="zmdi zmdi-mic-setting icon-tab"></i>
+                        </a>
                     </li>
                 </ul>
 
-            </div>
-            <div class="col-sm-12">
-                <!-- Tabs 네비바-->
-                <div class="card">
-
-                    <div class="card-body">
-                        <ul class="tab-nav tn-justified tn-icon" role="tablist">
-                            <li role="presentation" class="active">
-                                <a class="col-sx-4" href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">
-                                    <i class="zmdi zmdi-album icon-tab"></i>
-                                </a>
-                            </li>
-                            <li role="presentation">
-                                <a class="col-xs-4" href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">
-                                    <i class="zmdi zmdi-audio icon-tab"></i>
-                                </a>
-                            </li>
-                            <li role="presentation">
-                                <a class="col-xs-4" href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">
-                                    <i class="zmdi zmdi-mic-setting icon-tab"></i>
-                                </a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content p-20" style="padding:0 !important; margin-top: 25px;">
-                            <div role="tabpanel" class="tab-pane animated fadeIn in active" id="tab-1">
-                                <div class="col-sm-7">
-                                    <!-- Rating 전체 완성률 -->
-                                    <div class="card rating-list">
-                                        <div class="listview">
-                                            <div class="lv-header bgm-teal" style="color:#fff;">
-                                                <div class="m-t-5">
-                                                    Whole Complete (static)
-                                                </div>
-
-                                                <div class="clearfix"></div>
-
-                                                <div class="rl-star">
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star"></i>
-                                                    <i class="zmdi zmdi-star"></i>
-                                                </div>
-                                            </div>
-
-                                            <div class="lv-body">
-                                                <div class="p-15">
-                                                    <div class="lv-item">
-                                                        <div class="media">
-                                                            <div class="pull-left">
-                                                                1 <i class="zmdi zmdi-star"></i>
-                                                            </div>
-
-                                                            <div class="pull-right">20</div>
-
-                                                            <div class="media-body">
-                                                                <div class="progress">
-                                                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Tasks 잡스-->
-                                    <div class="card">
-                                        <div class="listview">
-                                            <div class="lv-header bgm-indigo" style="color:#fff;">
-                                                Job-Lists (dinamic)
-                                            </div>
-                                            <div class="lv-body">
-                                                <div class="lv-item">
-                                                    <div class="lv-title m-b-5">HTML5 Validation Report</div>
-
-                                                    <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
-                                                            <span class="sr-only">95% Complete (success)</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="lv-item">
-                                                    <div class="lv-title m-b-5">Google Chrome Extension</div>
-
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                                            <span class="sr-only">80% Complete (success)</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <a class="lv-footer" href="">모두 보기</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-5">
-                                    <!-- Todo Lists -->
-                                    <div id="todo-lists" class="bgm-green">
-                                        <div class="tl-header">
-                                            <h2>Todo Lists</h2>
-                                            <small>당신의 할 일을 추가,편집 그리고 관리하세요!</small>
-
-                                            <ul class="actions actions-alt">
-                                                <li class="dropdown">
-                                                    <a href="" data-toggle="dropdown">
-                                                        <i class="zmdi zmdi-more-vert"></i>
-                                                    </a>
-
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a href="">Refresh</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="">Manage Widgets</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="">Widgets Settings</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
+                <div class="tab-content p-20" style="padding:0 !important; margin-top: 25px;">
+                    <div role="tabpanel" class="tab-pane animated fadeIn in active" id="tab-1">
+                        <div class="col-sm-7">
+                            <!-- Rating 전체 완성률 -->
+                            <div class="card rating-list">
+                                <div class="listview">
+                                    <div class="lv-header bgm-teal" style="color:#fff;">
+                                        <div class="m-t-5">
+                                            Whole Complete (static)
                                         </div>
 
                                         <div class="clearfix"></div>
 
-                                        <div class="tl-body" style="min-height: 150px;">
-                                            <div id="add-tl-item">
-                                                <i class="add-new-item zmdi zmdi-plus"></i>
-
-                                                <div class="add-tl-body">
-                                                    <textarea placeholder="What you want to do..."></textarea>
-
-                                                    <div class="add-tl-actions">
-                                                        <a href="" data-tl-action="dismiss"><i class="zmdi zmdi-close"></i></a>
-                                                        <a href="" data-tl-action="save"><i class="zmdi zmdi-check"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="checkbox media">
-                                                <div class="pull-right">
-                                                    <ul class="actions actions-alt">
-                                                        <li class="dropdown">
-                                                            <a href="" data-toggle="dropdown">
-                                                                <i class="zmdi zmdi-more-vert"></i>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                                <li><a href="">Delete</a></li>
-                                                                <li><a href="">Archive</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="media-body">
-                                                    <label>
-                                                        <input type="checkbox">
-                                                        <i class="input-helper"></i>
-                                                        <span>Duis vitae nibh molestie pharetra augue vitae</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="checkbox media">
-                                                <div class="pull-right">
-                                                    <ul class="actions actions-alt">
-                                                        <li class="dropdown">
-                                                            <a href="" data-toggle="dropdown">
-                                                                <i class="zmdi zmdi-more-vert"></i>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                                <li><a href="">Delete</a></li>
-                                                                <li><a href="">Archive</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="media-body">
-                                                    <label>
-                                                        <input type="checkbox">
-                                                        <i class="input-helper"></i>
-                                                        <span>In vel imperdiet leoorbi mollis leo sit amet quam fringilla varius mauris orci turpis</span>
-                                                    </label>
-                                                </div>
-
-                                            </div>
+                                        <div class="rl-star">
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star"></i>
+                                            <i class="zmdi zmdi-star"></i>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <!-- Do card first -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/genie01-1.png" alt="">
 
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
+                                    <div class="lv-body">
+                                        <div class="p-15">
+                                            <div class="lv-item">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        1 <i class="zmdi zmdi-star"></i>
+                                                    </div>
+
+                                                    <div class="pull-right">20</div>
+
+                                                    <div class="media-body">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
                                                             </div>
                                                         </div>
-
                                                     </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card second -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/tjMedia01.jpg" alt="" style="height:188px;">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card third -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/melon02.png" alt="">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card fourth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/bugs02.jpg" alt="">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card fifth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/naverMusic01.jpg" alt="">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card sixth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/soribada01.jpg" alt="">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
                                                 </div>
                                             </div>
                                         </div>
@@ -404,89 +102,84 @@
                                 </div>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane animated fadeIn" id="tab-2">
-                                <div class="col-sm-7">
-                                    <!-- Rating 전체 완성률 -->
-                                    <div class="card rating-list">
-                                        <div class="listview">
-                                            <div class="lv-header bgm-teal" style="color:#fff;">
-                                                <div class="m-t-5">
-                                                    Whole Complete (static)
-                                                </div>
+                            <!-- Tasks 잡스-->
+                            <div class="card">
+                                <div class="listview">
+                                    <div class="lv-header bgm-indigo" style="color:#fff;">
+                                        Job-Lists (dinamic)
+                                    </div>
+                                    <div class="lv-body">
+                                        <div class="lv-item">
+                                            <div class="lv-title m-b-5">HTML5 Validation Report</div>
 
-                                                <div class="clearfix"></div>
-
-                                                <div class="rl-star">
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star"></i>
-                                                    <i class="zmdi zmdi-star"></i>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
+                                                    <span class="sr-only">95% Complete (success)</span>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="lv-item">
+                                            <div class="lv-title m-b-5">Google Chrome Extension</div>
 
-                                            <div class="lv-body">
-                                                <div class="p-15">
-                                                    <div class="lv-item">
-                                                        <div class="media">
-                                                            <div class="pull-left">
-                                                                1 <i class="zmdi zmdi-star"></i>
-                                                            </div>
-
-                                                            <div class="pull-right">20</div>
-
-                                                            <div class="media-body">
-                                                                <div class="progress">
-                                                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                                    <span class="sr-only">80% Complete (success)</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Tasks 잡스-->
-                                    <div class="card">
-                                        <div class="listview">
-                                            <div class="lv-header bgm-indigo" style="color:#fff;">
-                                                Job-Lists (dinamic)
-                                            </div>
-                                            <div class="lv-body">
-                                                <div class="lv-item">
-                                                    <div class="lv-title m-b-5">HTML5 Validation Report</div>
+                                    <a class="lv-footer" href="">모두 보기</a>
+                                </div>
+                            </div>
+                        </div>
 
-                                                    <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
-                                                            <span class="sr-only">95% Complete (success)</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="lv-item">
-                                                    <div class="lv-title m-b-5">Google Chrome Extension</div>
+                        <div class="col-sm-5">
+                            <!-- Todo Lists -->
+                            <div id="todo-lists" class="bgm-green">
+                                <div class="tl-header">
+                                    <h2>Todo Lists</h2>
+                                    <small>당신의 할 일을 추가,편집 그리고 관리하세요!</small>
 
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                                            <span class="sr-only">80% Complete (success)</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
 
-                                            <a class="lv-footer" href="">모두 보기</a>
-                                        </div>
-                                    </div>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>
+                                                    <a href="">Refresh</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">Manage Widgets</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">Widgets Settings</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
 
-                                <div class="col-sm-5">
-                                    <!-- Todo Lists -->
-                                    <div id="todo-lists" class="bgm-green">
-                                        <div class="tl-header">
-                                            <h2>Todo Lists</h2>
-                                            <small>당신의 할 일을 추가,편집 그리고 관리하세요!</small>
+                                <div class="clearfix"></div>
 
+                                <div class="tl-body" style="min-height: 150px;">
+                                    <div id="add-tl-item">
+                                        <i class="add-new-item zmdi zmdi-plus"></i>
+
+                                        <div class="add-tl-body">
+                                            <textarea placeholder="What you want to do..."></textarea>
+
+                                            <div class="add-tl-actions">
+                                                <a href="" data-tl-action="dismiss"><i class="zmdi zmdi-close"></i></a>
+                                                <a href="" data-tl-action="save"><i class="zmdi zmdi-check"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox media">
+                                        <div class="pull-right">
                                             <ul class="actions actions-alt">
                                                 <li class="dropdown">
                                                     <a href="" data-toggle="dropdown">
@@ -494,251 +187,256 @@
                                                     </a>
 
                                                     <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a href="">Refresh</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="">Manage Widgets</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="">Widgets Settings</a>
-                                                        </li>
+                                                        <li><a href="">Delete</a></li>
+                                                        <li><a href="">Archive</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
                                         </div>
+                                        <div class="media-body">
+                                            <label>
+                                                <input type="checkbox">
+                                                <i class="input-helper"></i>
+                                                <span>Duis vitae nibh molestie pharetra augue vitae</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox media">
+                                        <div class="pull-right">
+                                            <ul class="actions actions-alt">
+                                                <li class="dropdown">
+                                                    <a href="" data-toggle="dropdown">
+                                                        <i class="zmdi zmdi-more-vert"></i>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a href="">Delete</a></li>
+                                                        <li><a href="">Archive</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="media-body">
+                                            <label>
+                                                <input type="checkbox">
+                                                <i class="input-helper"></i>
+                                                <span>In vel imperdiet leoorbi mollis leo sit amet quam fringilla varius mauris orci turpis</span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Do card first -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/genie01-1.png" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card second -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/tjMedia01.jpg" alt="" style="height:188px;">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card third -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/melon02.png" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card fourth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/bugs02.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card fifth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/naverMusic01.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card sixth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/soribada01.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane animated fadeIn" id="tab-2">
+                        <div class="col-sm-7">
+                            <!-- Rating 전체 완성률 -->
+                            <div class="card rating-list">
+                                <div class="listview">
+                                    <div class="lv-header bgm-teal" style="color:#fff;">
+                                        <div class="m-t-5">
+                                            Whole Complete (static)
+                                        </div>
 
                                         <div class="clearfix"></div>
 
-                                        <div class="tl-body" style="min-height: 150px;">
-                                            <div id="add-tl-item">
-                                                <i class="add-new-item zmdi zmdi-plus"></i>
-
-                                                <div class="add-tl-body">
-                                                    <textarea placeholder="What you want to do..."></textarea>
-
-                                                    <div class="add-tl-actions">
-                                                        <a href="" data-tl-action="dismiss"><i class="zmdi zmdi-close"></i></a>
-                                                        <a href="" data-tl-action="save"><i class="zmdi zmdi-check"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="checkbox media">
-                                                <div class="pull-right">
-                                                    <ul class="actions actions-alt">
-                                                        <li class="dropdown">
-                                                            <a href="" data-toggle="dropdown">
-                                                                <i class="zmdi zmdi-more-vert"></i>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                                <li><a href="">Delete</a></li>
-                                                                <li><a href="">Archive</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="media-body">
-                                                    <label>
-                                                        <input type="checkbox">
-                                                        <i class="input-helper"></i>
-                                                        <span>Duis vitae nibh molestie pharetra augue vitae</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="checkbox media">
-                                                <div class="pull-right">
-                                                    <ul class="actions actions-alt">
-                                                        <li class="dropdown">
-                                                            <a href="" data-toggle="dropdown">
-                                                                <i class="zmdi zmdi-more-vert"></i>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                                <li><a href="">Delete</a></li>
-                                                                <li><a href="">Archive</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="media-body">
-                                                    <label>
-                                                        <input type="checkbox">
-                                                        <i class="input-helper"></i>
-                                                        <span>In vel imperdiet leoorbi mollis leo sit amet quam fringilla varius mauris orci turpis</span>
-                                                    </label>
-                                                </div>
-
-                                            </div>
+                                        <div class="rl-star">
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star"></i>
+                                            <i class="zmdi zmdi-star"></i>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <!-- Do card first -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/genie01-1.png" alt="">
 
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
+                                    <div class="lv-body">
+                                        <div class="p-15">
+                                            <div class="lv-item">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        1 <i class="zmdi zmdi-star"></i>
+                                                    </div>
+
+                                                    <div class="pull-right">20</div>
+
+                                                    <div class="media-body">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
                                                             </div>
                                                         </div>
-
                                                     </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card second -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/tjMedia01.jpg" alt="" style="height:188px;">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card third -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/melon02.png" alt="">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card fourth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/bugs02.jpg" alt="">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card fifth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/naverMusic01.jpg" alt="">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Do card sixth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/soribada01.jpg" alt="">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
                                                 </div>
                                             </div>
                                         </div>
@@ -746,89 +444,84 @@
                                 </div>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane animated fadeIn" id="tab-3">
-                                <div class="col-sm-7">
-                                    <!-- Rating 전체 완성률 -->
-                                    <div class="card rating-list">
-                                        <div class="listview">
-                                            <div class="lv-header bgm-teal" style="color:#fff;">
-                                                <div class="m-t-5">
-                                                    Whole Complete (static)
-                                                </div>
+                            <!-- Tasks 잡스-->
+                            <div class="card">
+                                <div class="listview">
+                                    <div class="lv-header bgm-indigo" style="color:#fff;">
+                                        Job-Lists (dinamic)
+                                    </div>
+                                    <div class="lv-body">
+                                        <div class="lv-item">
+                                            <div class="lv-title m-b-5">HTML5 Validation Report</div>
 
-                                                <div class="clearfix"></div>
-
-                                                <div class="rl-star">
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star active"></i>
-                                                    <i class="zmdi zmdi-star"></i>
-                                                    <i class="zmdi zmdi-star"></i>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
+                                                    <span class="sr-only">95% Complete (success)</span>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="lv-item">
+                                            <div class="lv-title m-b-5">Google Chrome Extension</div>
 
-                                            <div class="lv-body">
-                                                <div class="p-15">
-                                                    <div class="lv-item">
-                                                        <div class="media">
-                                                            <div class="pull-left">
-                                                                1 <i class="zmdi zmdi-star"></i>
-                                                            </div>
-
-                                                            <div class="pull-right">20</div>
-
-                                                            <div class="media-body">
-                                                                <div class="progress">
-                                                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                                    <span class="sr-only">80% Complete (success)</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Tasks 잡스-->
-                                    <div class="card">
-                                        <div class="listview">
-                                            <div class="lv-header bgm-indigo" style="color:#fff;">
-                                                Job-Lists (dinamic)
-                                            </div>
-                                            <div class="lv-body">
-                                                <div class="lv-item">
-                                                    <div class="lv-title m-b-5">HTML5 Validation Report</div>
+                                    <a class="lv-footer" href="">모두 보기</a>
+                                </div>
+                            </div>
+                        </div>
 
-                                                    <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
-                                                            <span class="sr-only">95% Complete (success)</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="lv-item">
-                                                    <div class="lv-title m-b-5">Google Chrome Extension</div>
+                        <div class="col-sm-5">
+                            <!-- Todo Lists -->
+                            <div id="todo-lists" class="bgm-green">
+                                <div class="tl-header">
+                                    <h2>Todo Lists</h2>
+                                    <small>당신의 할 일을 추가,편집 그리고 관리하세요!</small>
 
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                                            <span class="sr-only">80% Complete (success)</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
 
-                                            <a class="lv-footer" href="">모두 보기</a>
-                                        </div>
-                                    </div>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>
+                                                    <a href="">Refresh</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">Manage Widgets</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">Widgets Settings</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
 
-                                <div class="col-sm-5">
-                                    <!-- Todo Lists -->
-                                    <div id="todo-lists" class="bgm-green">
-                                        <div class="tl-header">
-                                            <h2>Todo Lists</h2>
-                                            <small>당신의 할 일을 추가,편집 그리고 관리하세요!</small>
+                                <div class="clearfix"></div>
 
+                                <div class="tl-body" style="min-height: 150px;">
+                                    <div id="add-tl-item">
+                                        <i class="add-new-item zmdi zmdi-plus"></i>
+
+                                        <div class="add-tl-body">
+                                            <textarea placeholder="What you want to do..."></textarea>
+
+                                            <div class="add-tl-actions">
+                                                <a href="" data-tl-action="dismiss"><i class="zmdi zmdi-close"></i></a>
+                                                <a href="" data-tl-action="save"><i class="zmdi zmdi-check"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox media">
+                                        <div class="pull-right">
                                             <ul class="actions actions-alt">
                                                 <li class="dropdown">
                                                     <a href="" data-toggle="dropdown">
@@ -836,253 +529,554 @@
                                                     </a>
 
                                                     <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a href="">Refresh</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="">Manage Widgets</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="">Widgets Settings</a>
-                                                        </li>
+                                                        <li><a href="">Delete</a></li>
+                                                        <li><a href="">Archive</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
                                         </div>
+                                        <div class="media-body">
+                                            <label>
+                                                <input type="checkbox">
+                                                <i class="input-helper"></i>
+                                                <span>Duis vitae nibh molestie pharetra augue vitae</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox media">
+                                        <div class="pull-right">
+                                            <ul class="actions actions-alt">
+                                                <li class="dropdown">
+                                                    <a href="" data-toggle="dropdown">
+                                                        <i class="zmdi zmdi-more-vert"></i>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a href="">Delete</a></li>
+                                                        <li><a href="">Archive</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="media-body">
+                                            <label>
+                                                <input type="checkbox">
+                                                <i class="input-helper"></i>
+                                                <span>In vel imperdiet leoorbi mollis leo sit amet quam fringilla varius mauris orci turpis</span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Do card first -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/genie01-1.png" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card second -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/tjMedia01.jpg" alt="" style="height:188px;">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card third -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/melon02.png" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card fourth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/bugs02.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card fifth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/naverMusic01.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card sixth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/soribada01.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane animated fadeIn" id="tab-3">
+                        <div class="col-sm-7">
+                            <!-- Rating 전체 완성률 -->
+                            <div class="card rating-list">
+                                <div class="listview">
+                                    <div class="lv-header bgm-teal" style="color:#fff;">
+                                        <div class="m-t-5">
+                                            Whole Complete (static)
+                                        </div>
 
                                         <div class="clearfix"></div>
 
-                                        <div class="tl-body" style="min-height: 150px;">
-                                            <div id="add-tl-item">
-                                                <i class="add-new-item zmdi zmdi-plus"></i>
+                                        <div class="rl-star">
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star active"></i>
+                                            <i class="zmdi zmdi-star"></i>
+                                            <i class="zmdi zmdi-star"></i>
+                                        </div>
+                                    </div>
 
-                                                <div class="add-tl-body">
-                                                    <textarea placeholder="What you want to do..."></textarea>
+                                    <div class="lv-body">
+                                        <div class="p-15">
+                                            <div class="lv-item">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        1 <i class="zmdi zmdi-star"></i>
+                                                    </div>
 
-                                                    <div class="add-tl-actions">
-                                                        <a href="" data-tl-action="dismiss"><i class="zmdi zmdi-close"></i></a>
-                                                        <a href="" data-tl-action="save"><i class="zmdi zmdi-check"></i></a>
+                                                    <div class="pull-right">20</div>
+
+                                                    <div class="media-body">
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="checkbox media">
-                                                <div class="pull-right">
-                                                    <ul class="actions actions-alt">
-                                                        <li class="dropdown">
-                                                            <a href="" data-toggle="dropdown">
-                                                                <i class="zmdi zmdi-more-vert"></i>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                                <li><a href="">Delete</a></li>
-                                                                <li><a href="">Archive</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="media-body">
-                                                    <label>
-                                                        <input type="checkbox">
-                                                        <i class="input-helper"></i>
-                                                        <span>Duis vitae nibh molestie pharetra augue vitae</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="checkbox media">
-                                                <div class="pull-right">
-                                                    <ul class="actions actions-alt">
-                                                        <li class="dropdown">
-                                                            <a href="" data-toggle="dropdown">
-                                                                <i class="zmdi zmdi-more-vert"></i>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                                <li><a href="">Delete</a></li>
-                                                                <li><a href="">Archive</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="media-body">
-                                                    <label>
-                                                        <input type="checkbox">
-                                                        <i class="input-helper"></i>
-                                                        <span>In vel imperdiet leoorbi mollis leo sit amet quam fringilla varius mauris orci turpis</span>
-                                                    </label>
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <!-- Do card first -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/genie01-1.png" alt="">
+                                </div>
+                            </div>
 
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
+                            <!-- Tasks 잡스-->
+                            <div class="card">
+                                <div class="listview">
+                                    <div class="lv-header bgm-indigo" style="color:#fff;">
+                                        Job-Lists (dinamic)
+                                    </div>
+                                    <div class="lv-body">
+                                        <div class="lv-item">
+                                            <div class="lv-title m-b-5">HTML5 Validation Report</div>
 
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
+                                                    <span class="sr-only">95% Complete (success)</span>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="lv-item">
+                                            <div class="lv-title m-b-5">Google Chrome Extension</div>
 
-                                        <!-- Do card second -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/tjMedia01.jpg" alt="" style="height:188px;">
-
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
-
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                                    <span class="sr-only">80% Complete (success)</span>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Do card third -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/melon02.png" alt="">
+                                    <a class="lv-footer" href="">모두 보기</a>
+                                </div>
+                            </div>
+                        </div>
 
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
+                        <div class="col-sm-5">
+                            <!-- Todo Lists -->
+                            <div id="todo-lists" class="bgm-green">
+                                <div class="tl-header">
+                                    <h2>Todo Lists</h2>
+                                    <small>당신의 할 일을 추가,편집 그리고 관리하세요!</small>
 
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
 
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>
+                                                    <a href="">Refresh</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">Manage Widgets</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">Widgets Settings</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="tl-body" style="min-height: 150px;">
+                                    <div id="add-tl-item">
+                                        <i class="add-new-item zmdi zmdi-plus"></i>
+
+                                        <div class="add-tl-body">
+                                            <textarea placeholder="What you want to do..."></textarea>
+
+                                            <div class="add-tl-actions">
+                                                <a href="" data-tl-action="dismiss"><i class="zmdi zmdi-close"></i></a>
+                                                <a href="" data-tl-action="save"><i class="zmdi zmdi-check"></i></a>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Do card fourth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/bugs02.jpg" alt="">
+                                    <div class="checkbox media">
+                                        <div class="pull-right">
+                                            <ul class="actions actions-alt">
+                                                <li class="dropdown">
+                                                    <a href="" data-toggle="dropdown">
+                                                        <i class="zmdi zmdi-more-vert"></i>
+                                                    </a>
 
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a href="">Delete</a></li>
+                                                        <li><a href="">Archive</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="media-body">
+                                            <label>
+                                                <input type="checkbox">
+                                                <i class="input-helper"></i>
+                                                <span>Duis vitae nibh molestie pharetra augue vitae</span>
+                                            </label>
+                                        </div>
+                                    </div>
 
-                                                    </div>
-                                                    <!--</a>-->
-                                                </div>
+                                    <div class="checkbox media">
+                                        <div class="pull-right">
+                                            <ul class="actions actions-alt">
+                                                <li class="dropdown">
+                                                    <a href="" data-toggle="dropdown">
+                                                        <i class="zmdi zmdi-more-vert"></i>
+                                                    </a>
 
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
-                                            </div>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a href="">Delete</a></li>
+                                                        <li><a href="">Archive</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="media-body">
+                                            <label>
+                                                <input type="checkbox">
+                                                <i class="input-helper"></i>
+                                                <span>In vel imperdiet leoorbi mollis leo sit amet quam fringilla varius mauris orci turpis</span>
+                                            </label>
                                         </div>
 
-                                        <!-- Do card fifth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/naverMusic01.jpg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Do card first -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/genie01-1.png" alt="">
 
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
-
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
                                                     </div>
-                                                    <!--</a>-->
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
                                                 </div>
 
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
                                             </div>
+                                            <!--</a>-->
                                         </div>
 
-                                        <!-- Do card sixth -->
-                                        <div class="col-sm-6">
-                                            <div class="card blog-post">
-                                                <div class="bp-header">
-                                                    <img src="/images/compets/soribada01.jpg" alt="">
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                    <!--<a href="" class="bp-title">-->
-                                                    <div class="form-group bp-title fg-float" style="margin:0 !important;">
-                                                        <div class="fg-line">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" class="form-control input-sm" style="color:#fff;">
-                                                                <label class="fg-label" style="color:#fff;">Sth Input Text</label>
-                                                            </div>
-                                                            <div class="col-sm-4" style="text-align: right;">
-                                                                <button class="btn bgm-orange">GO</button>
-                                                            </div>
-                                                        </div>
+                                <!-- Do card second -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/tjMedia01.jpg" alt="" style="height:188px;">
 
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
                                                     </div>
-                                                    <!--</a>-->
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
                                                 </div>
 
-                                                <div class="p-20">
-                                                    열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
-                                                </div>
                                             </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card third -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/melon02.png" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card fourth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/bugs02.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card fifth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/naverMusic01.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Do card sixth -->
+                                <div class="col-sm-6">
+                                    <div class="card blog-post">
+                                        <div class="bp-header">
+                                            <img src="/images/compets/soribada01.jpg" alt="">
+
+                                            <!--<a href="" class="bp-title">-->
+                                            <div class="form-group bp-title fg-float" style="margin:0 !important;">
+                                                <div class="fg-line">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control input-sm" style="color:#fff;">
+                                                        <label class="fg-label" style="color:#fff;">Sth Input Text</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="text-align: right;">
+                                                        <button class="btn bgm-orange">GO</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--</a>-->
+                                        </div>
+
+                                        <div class="p-20">
+                                            열락의 영원히 피가 있는 피어나기 열락의 인생에 것이다. 작고 가지에 힘차게 굳세게 구하지 가치를 우리의 열락의 것이다. 피부가 반짝이는 하는 뜨거운지라, 쓸쓸한 부패뿐이다. 공자는 과실이 열락의 부패뿐이다. 놀이 할지니, 시들어 현저하게 있을 것은 부패를 얼마나 봄바람이다. 속에서 이상은 이상 이것이야말로 인간의 뼈 스며들어 있으랴?
                                         </div>
                                     </div>
                                 </div>
@@ -1091,10 +1085,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
-    </section>
-</section>
+    </div>
+</div>
 
 <!-- Page Loader -->
 <div class="page-loader">
@@ -1106,71 +1099,3 @@
         <p>Please wait...</p>
     </div>
 </div>
-
-<!-- Older IE warning message -->
-<!--[if lt IE 9]>
-    <div class="ie-warning">
-        <h1 class="c-white">Warning!!</h1>
-        <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
-        <div class="iew-container">
-            <ul class="iew-download">
-                <li>
-                    <a href="http://www.google.com/chrome/">
-                        <img src="img/browsers/chrome.png" alt="">
-                        <div>Chrome</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.mozilla.org/en-US/firefox/new/">
-                        <img src="img/browsers/firefox.png" alt="">
-                        <div>Firefox</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.opera.com">
-                        <img src="img/browsers/opera.png" alt="">
-                        <div>Opera</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.apple.com/safari/">
-                        <img src="img/browsers/safari.png" alt="">
-                        <div>Safari</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                        <img src="img/browsers/ie.png" alt="">
-                        <div>IE (New)</div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <p>Sorry for the inconvenience!</p>
-    </div>
-<![endif]-->
-
-
-<!-- Javascript Libraries -->
-<script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
-<script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-<script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
-
-<script src="/vendors/bower_components/moment/min/moment.min.js"></script>
-<script src="/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
-<script src="/vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js"></script>
-<script src="/vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
-<script src="/vendors/bower_components/autosize/dist/autosize.min.js"></script>
-<script src="/vendors/bower_components/mediaelement/build/mediaelement-and-player.js"></script>
-
-<!-- Placeholder for IE9 -->
-<!--[if IE 9 ]>
-    <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
-<![endif]-->
-
-<script src="/js/functions.js"></script>
-<script src="/js/demo.js"></script>
