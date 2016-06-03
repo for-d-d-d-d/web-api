@@ -148,7 +148,7 @@ class CrawlController < ApplicationController
 
   def self.crawl_singer(html_doc_singer, artist_num)
     singer = Singer.new
-    singer = Singer.where(artist_num: artist_num).first unless Singer.where(artist_num: artist_num).first.nil?
+    return false unless Singer.where(artist_num: artist_num).first.nil?
 
     singer.photo = "http:" + html_doc_singer.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
     singer.name = html_doc_singer.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
@@ -160,7 +160,7 @@ class CrawlController < ApplicationController
 
   def self.crawl_team(html_doc_team, artist_num)
     team = Team.new
-    team = Team.where(artist_num: artist_num).first unless Team.where(artist_num: artist_num).first.nil?
+    return false unless Team.where(artist_num: artist_num).first.nil?
 
     team.photo = "http:" + html_doc_team.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
     team.name = html_doc_team.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
@@ -175,7 +175,7 @@ class CrawlController < ApplicationController
       next unless artist
 
       if artist.class == Singer
-        st = SingerTeam.new
+        st = SingersTeam.new
         st.team_id = team.id
         st.singer_id = artist.id
         st.save
@@ -194,7 +194,6 @@ class CrawlController < ApplicationController
   ############################################################################################################
 
   def gini_song_parser(html_doc)
-
   end
 
   def gini_album_parser()
@@ -202,7 +201,6 @@ class CrawlController < ApplicationController
 
   ############################################################################################################
   ############################################################################################################
-
 
   ############################################################################################################
 
