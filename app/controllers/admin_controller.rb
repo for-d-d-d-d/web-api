@@ -23,14 +23,6 @@ class AdminController < ApplicationController
         end
     end
 
-  def admin_login
-    render layout: false
-  end
-
-    def admin_signout
-        redirect_to '/'
-    end
-
     def admin_signup
         a = Administer.new
         a.username  = params[:username]
@@ -72,45 +64,6 @@ class AdminController < ApplicationController
                 @song_miss << song
             end
         end
-<<<<<<< HEAD
-      end
-
-    # render layout: "../admin_layouts/application.html.erb"
-  end
-
-  def songs_info2
-    @song = Song.all
-    @top100 = DailyTjPopularRank.all
-    @mod_song = Song.find(params[:mod]) unless params[:mod] == nil
-    ### 노래방 번호 또는 지니뮤직 노래번호가 입력되지 않은 노래는
-    ### SongController에서 TJ 와 Ginnie 의 노래링크로 저장했으므로
-    ### 저장된 링크를 버튼으로 출력하여 이동 후 찾아서 저장하도록 한다.
-      # @song_miss = Array.new
-      # @song.each do |song|
-      #   if song.song_tjnum.to_s.length > 10 || song.song_num.to_s.length > 10
-      #     @song_miss << song
-      #   end
-      # end
-
-    # render layout: "../admin_layouts/application.html.erb"
-  end
-
-  def gui_vr_info
-    @song = Song.all
-
-    # render layout: "../admin_layouts/application.html.erb"
-  end
-
-  def list_range
-
-    # render layout: "../admin_layouts/application.html.erb"
-  end
-
-  def crawler_manager
-
-    render layout: "../admin_layouts/application.html.erb"
-  end
-=======
     end
 
     def songs_info2
@@ -137,5 +90,4 @@ class AdminController < ApplicationController
 
     def crawler_manager
     end
->>>>>>> 35614d5d444ceabd5b3f422314d1326d54b5e3b3
 end

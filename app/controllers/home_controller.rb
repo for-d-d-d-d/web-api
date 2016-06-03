@@ -51,50 +51,6 @@ class HomeController < ApplicationController
         @song = Song.find(params[:song_id])
         render json: @song
     end
-  end
-
-  def main
-      @song = Song.where.not(lowkey: nil).all
-      @carousel = @song.first(17)
-
-      @rankers = DailyTjPopularRank.all
-
-      @ranker = Array.new
-      @rankers.each do |r|
-          aa = Song.where(song_tjnum: r.song_num).take
-          if aa != nil
-              @ranker << aa
-          end
-      end
-
-    #render :layout => false
-  end
-
-  def this_song
-    #redirect_to :back
-    @song = Song.find(params[:song_id])
-    render json: @song
-  end
-
-  def login
-    # 비밀번호 일치하면 main2로
-    redirect_to '/gorae/main2'
-
-    # 비밀번호 안맞으면
-    # 다시 entering으로
-  end
-
-  def main2
-
-    render layout: "../gorae_layouts/application.html.erb"
-  end
-
-  def search
-    if params[:query].nil?
-      @query = "검색어를 찾을 수 없습니다."
-    else
-      @query = "검색어를 찾을 수 없습니다." if params[:query].length == 0
-      @query = params[:query] if params[:query].length != 0
 
     def login
         # 비밀번호 일치하면 main2로
@@ -127,14 +83,4 @@ class HomeController < ApplicationController
         @song = Song.where.not(lowkey: nil).all.reverse
     end
 
-    def EvalKey
-
-    end
-
-<<<<<<< HEAD
-  def Mylist
-
-  end
-=======
->>>>>>> 35614d5d444ceabd5b3f422314d1326d54b5e3b3
 end
