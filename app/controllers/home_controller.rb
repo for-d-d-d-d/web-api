@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-    # before_action :layout, :except => [:entering, :login, :main, :mylist, :EvalKey, :content_navi, :carousel, :contents]
 
     def entering
         @bg_img = [
@@ -50,17 +49,34 @@ class HomeController < ApplicationController
                 flash[:error] = "검색어를 찾을 수 없습니다."
                 return
             end
-            q = params[:query]
+
+            q = params[:query].split
             @song_artist = Array.new
             @song_title = Array.new
             @song_lyrics = Array.new
 
             Song.all.each do |s|
-                @song_artist << s if s.artist.name.include?(q)
-                @song_title << s if s.title.include?(q)
-                @song_lyrics << s if s.lyrics.include?(q)
+                flag1 = true
+                flag2 = true
+                flag3 = true
+
+                q.each do |qq|
+                    flag1 = false unless s.artist.name.include?(qq)
+                    flag2 = false unless s.title.include?(qq)
+                    flag3 = false unless s.lyrics.include?(qq)
+                end
+
+                @song_artist << s if flag1 == true
+                @song_title << s if flag2 == true
+                @song_lyrics << s if flag3 == true
             end
         end
+    end
+
+    def this_song
+        #redirect_to :back
+        @song = Song.find(params[:song_id])
+        render json: @song
     end
 
     def rank

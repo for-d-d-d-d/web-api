@@ -11,26 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160603124604) do
+ActiveRecord::Schema.define(version: 20160603162717) do
 
   create_table "administers", force: :cascade do |t|
     t.string   "username"
     t.string   "email"
     t.string   "password"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "album_singers", force: :cascade do |t|
-    t.integer  "singer_id"
-    t.integer  "album_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "album_teams", force: :cascade do |t|
-    t.integer  "album_id"
-    t.integer  "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -48,6 +34,20 @@ ActiveRecord::Schema.define(version: 20160603124604) do
     t.integer  "album_num"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "albums_singers", force: :cascade do |t|
+    t.integer  "singer_id"
+    t.integer  "album_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "albums_teams", force: :cascade do |t|
+    t.integer  "album_id"
+    t.integer  "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "daily_tj_popular_ranks", force: :cascade do |t|
@@ -83,17 +83,17 @@ ActiveRecord::Schema.define(version: 20160603124604) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "singer_teams", force: :cascade do |t|
-    t.integer  "singer_id"
-    t.integer  "team_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "singers", force: :cascade do |t|
     t.string   "name"
     t.string   "photo"
     t.integer  "artist_num"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "singers_teams", force: :cascade do |t|
+    t.integer  "singer_id"
+    t.integer  "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

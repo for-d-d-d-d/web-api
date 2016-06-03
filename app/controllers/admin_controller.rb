@@ -1,13 +1,7 @@
 class AdminController < ApplicationController
-    before_action :layout, :except => [:awesome_4d]
-    # before_action :layout "template_name", :only => [:action, :action], :except => [:action, :action]
-
-    def layout
-        render layout: "../admin_layouts/application.html.erb"
-    end
+    layout "admin"
 
     def admin_login
-
         render layout: false
     end
 
@@ -48,6 +42,10 @@ class AdminController < ApplicationController
     end
 
     def index
+    end
+
+    def team_list
+        @team = Team.all
     end
 
     def songs_info
