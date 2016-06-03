@@ -52,7 +52,7 @@ class AdminController < ApplicationController
 
     def songs_info
         # @song = Song.all
-        @song = Song.where(ganre1: "가요").all
+        @song = Song.where(ganre1: "가요")
         @top100 = DailyTjPopularRank.all
         @mod_song = Song.find(params[:mod]) unless params[:mod] == nil
         ### 노래방 번호 또는 지니뮤직 노래번호가 입력되지 않은 노래는
@@ -64,6 +64,7 @@ class AdminController < ApplicationController
                 @song_miss << song
             end
         end
+        # render layout: "../admin_layouts/application.html.erb"
     end
 
     def songs_info2

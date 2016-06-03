@@ -1,3 +1,14 @@
+<%
+@song = Song.where(ganre1: "가요")
+@top100 = DailyTjPopularRank.all
+@mod_song = Song.find(params[:mod]) unless params[:mod] == nil
+@song_miss = Array.new
+@song.each do |song|
+    if song.song_tjnum == nil
+        @song_miss << song
+    end
+end
+%>
 <section id="main">
     <%= render partial: 'admin/feature_layouts/sidebar' %>
     <%= render partial: 'admin/feature_layouts/chat' %>
