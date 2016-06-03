@@ -10,14 +10,22 @@ class MylistController < ApplicationController
             return false
         end
 
-        m = MylistSong.new
-        m.song_id = s.id
+
         if current_user.mylists.where(title: "Default").first.nil?
             a = Mylist.new
             a.user_id = current_user.id
             a.title = "Default"
             a.save
         end
+
+        if current_user.mylists.where(title: "Default").first.mylist_songs.where(id: s.id).exists?
+            flash[:error] ="이미 추가된 곡입니다"
+            redirect_to :back
+            return
+        end
+
+        m = MylistSong.new
+        m.song_id = s.id
 
         m.mylist_id = Mylist.where(title: "Default").first.id
         m.save
