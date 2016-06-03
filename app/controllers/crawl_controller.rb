@@ -1,5 +1,5 @@
 class CrawlController < ApplicationController
-    require 'fuzzystringmatch'
+    # require 'fuzzystringmatch'
 
     # Method Name : load_page
     # Method Parameter : searchText=검색어
@@ -92,7 +92,6 @@ class CrawlController < ApplicationController
     end
 
     ############################################################################################################
-
     # Method Name : songs_do
     # Method Procedure :
     # Method Description : 최초 크롤러 from 지니 , 2가지 테이블을 채운다.
@@ -138,7 +137,7 @@ class CrawlController < ApplicationController
         html_doc_artist = load_page(artist_num, "artist_number")
         return false if artist_num == 0
         @is_singer = html_doc_artist.css("div#body-content//div.info-zone//li//span.value").first.to_s.gsub('<span class="value">','').gsub('</span>','')
-        puts "crawl_artist called // query : " + artist_num.to_s + "is_singer = " + @is_singer
+        puts "crawl_artist called // query : " + artist_num.to_s + " is_singer = " + @is_singer
         if @is_singer == "남성/솔로" || @is_singer == "여성/솔로"
             return self.crawl_singer(html_doc_artist, artist_num)
         else
@@ -148,7 +147,7 @@ class CrawlController < ApplicationController
 
     def self.crawl_singer(html_doc_singer, artist_num)
         singer = Singer.new
-        return false unless Singer.where(artist_num: artist_num).first.nil?
+        singer = Singer.where(artist_num: artist_num).first unless Singer.where(artist_num: artist_num).first.nil?
 
         singer.photo = "http:" + html_doc_singer.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
         singer.name = html_doc_singer.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
@@ -160,7 +159,7 @@ class CrawlController < ApplicationController
 
     def self.crawl_team(html_doc_team, artist_num)
         team = Team.new
-        return false unless Team.where(artist_num: artist_num).first.nil?
+        team = Team.where(artist_num: artist_num).first unless Team.where(artist_num: artist_num).first.nil?
 
         team.photo = "http:" + html_doc_team.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
         team.name = html_doc_team.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
@@ -175,15 +174,19 @@ class CrawlController < ApplicationController
             next unless artist
 
             if artist.class == Singer
-                st = SingersTeam.new
-                st.team_id = team.id
-                st.singer_id = artist.id
-                st.save
+                if SingersTeam.where(team_id: team.id, singer_id: artist.id).first.nil?
+                    st = SingersTeam.new
+                    st.team_id = team.id
+                    st.singer_id = artist.id
+                    st.save
+                end
             elsif artist.class == Team
-                tt = TeamTeam.new
-                tt.team_id = team.id
-                tt.team2_id = artist.id
-                tt.save
+                if TeamTeam.where(team_id: team.id, team2_id: artist.id).first.nil?
+                    tt = TeamTeam.new
+                    tt.team_id = team.id
+                    tt.team2_id = artist.id
+                    tt.save
+                end
             end
         end
 
@@ -283,6 +286,7 @@ class CrawlController < ApplicationController
             end
             puts ""
         end
+        render text: "Finished"
     end
-    render text: "Finished"
+
 end
