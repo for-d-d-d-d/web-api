@@ -1,0 +1,33 @@
+title<br>
+<% unless @song_title.empty?
+    @song_title.each do |s| %>
+        song : <%= s.title %> - <%= s.artist.name %><br>
+    <% end %>
+<% else %>
+검색 결과가 없습니다.<br>
+<% end %>
+<br>
+<hr>
+<br>
+artist<br>
+<% unless @song_artist.empty?
+    @song_artist.each do |s| %>
+        song : <%= s.title %> - <%= s.artist.name %><br>
+    <% end %>
+<% else %>
+검색 결과가 없습니다.<br>
+<% end %>
+<br>
+<hr>
+<br>
+lyrics<br>
+<% unless @song_lyrics.empty?
+    @song_lyrics.each do |s| %>
+        song : <%= s.title %> - <%= s.artist.name %><br>
+    <% end %>
+<% else %>
+검색 결과가 없습니다.<br>
+<% end %>
+<br>
+<hr>
+<br>

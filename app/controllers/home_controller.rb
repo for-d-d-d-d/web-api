@@ -48,10 +48,22 @@ class HomeController < ApplicationController
 
     def search
         if params[:query].nil?
-            @query = "검색어를 찾을 수 없습니다."
+            flash[:error] = "검색어를 찾을 수 없습니다."
         else
-            @query = "검색어를 찾을 수 없습니다." if params[:query].length == 0
-            @query = params[:query] if params[:query].length != 0
+            if params[:query].length == 0
+                flash[:error] = "검색어를 찾을 수 없습니다."
+                return
+            end
+            q = params[:query]
+            @song_artist = Array.new
+            @song_title = Array.new
+            @song_lyrics = Array.new
+
+            Song.all.each do |s|
+                @song_artist << s if s.artist.name.include?(q)
+                @song_title << s if s.title.include?(q)
+                @song_lyrics << s if s.lyrics.include?(q)
+            end
         end
     end
 
