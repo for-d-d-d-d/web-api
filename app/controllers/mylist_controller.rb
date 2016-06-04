@@ -8,6 +8,12 @@ class MylistController < ApplicationController
         redirect_to :back
     end
 
+    def delete_list
+        m = Mylist.find(params[:id])
+        m.delete
+        redirect_to :back
+    end
+
     def add
         id = params[:id]
 
@@ -40,15 +46,14 @@ class MylistController < ApplicationController
             flash[:error] = "추가 완료 추가된 곡 :" + m.song.title
             redirect_to :back
         end
+    end
 
-        def delete
-            MylistSong.find(params[:id]).destroy
-            redirect_to :back
-        end
+    def delete
+        MylistSong.find(params[:id]).destroy
+        redirect_to :back
+    end
 
-        def list
-            t = params[:title]
-        end
-
+    def list
+        t = params[:title]
     end
 end

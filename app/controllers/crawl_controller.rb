@@ -88,7 +88,8 @@ class CrawlController < ApplicationController
         Song.all.each do |s|
             s.fix
         end
-        render text: "finished"
+        # render text: "finished"
+        redirect_to :back
     end
 
     ############################################################################################################
@@ -102,7 +103,7 @@ class CrawlController < ApplicationController
         # 갯수 지정 안할 시 기본값 1천개(예상 소요시간: 5분)
         how_many_songs_do_you_want = 10
         # 지정된 갯수대로 크롤링(속도: 100여개/30초, 200여개/분, 2천여개/10분)
-        # how_many_songs_do_you_want = params[:id].to_i unless params[:id].nil?
+        how_many_songs_do_you_want = params[:count].to_i unless params[:count].nil?
 
         ## 언제부터
         if Song.last == nil
@@ -127,9 +128,10 @@ class CrawlController < ApplicationController
         end
 
         # Start debugger
-        @message = how_many_songs_do_you_want.to_s + "개 저장완료! 확인하셈!"
+        # @message = how_many_songs_do_you_want.to_s + "개 저장완료! 확인하셈!"
         # End debugger
-        render layout: false
+        # render layout: false
+        redirect_to :back
         puts "요청하신 크롤링이 종료되었습니다."
     end
 
