@@ -58,7 +58,6 @@ class MylistController < ApplicationController
     def delete
         id = params[:id]
         MylistSong.find(id).destroy
-        MylistSong.find(params[:id]).destroy
         redirect_to :back
     end
 
