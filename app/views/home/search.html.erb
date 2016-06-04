@@ -2,6 +2,7 @@
 
 <style>
 
+
 .search_border{
     border-width:1px;
     border-color:red;
@@ -20,6 +21,8 @@
 
 
 <!-- Table -->
+
+<center> <p style="color:red;"><%= flash[:error] %></p> </center>
 
 <div style="padding:0px 200px 0px 200px">
     <% unless @song_title.empty? %>
@@ -63,8 +66,10 @@
                     <%= s.artist.name %>
                 </td>
                 <td>
+                    <%= (0..4000).to_a.sample %>
                 </td>
                 <td>
+                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
                 </td>
             </tr>
             <% end %>
@@ -153,8 +158,10 @@
                     <%= s.artist.name %>
                 </td>
                 <td>
+                    <%= (0..4000).to_a.sample %>
                 </td>
                 <td>
+                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
                 </td>
             </tr>
             <% end %>
@@ -244,8 +251,10 @@
                     <%= s.artist.name %>
                 </td>
                 <td>
+                    <%= (0..4000).to_a.sample %>
                 </td>
                 <td>
+                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
                 </td>
             </tr>
             <% end %>

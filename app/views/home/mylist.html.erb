@@ -1,44 +1,59 @@
 <%= render partial: "home/home_layouts/home_header" %>
 
+<% if params[:id].nil? %>
+<% ml = current_user.mylists.where(title: "Default").first %>
+<% else %>
+<% ml = Mylist.find(params[:id]) %>
+<% end %>
+
 <style media="screen">
-    .mylist_container{
-        border-radius: 10px;
-        width:50%;
-        border-style: solid;
-        border-width: 1px!important;
-        border-color: black!important;
-        padding : 30px 20px 40px 20px;
-    }
-    
-    .mylist_contents{
-        float:left;
-        text-align: left;
-        padding: 10px 0px 10px 0px;
-    }
-    
-    .mylist_contents_container{
-        margin-bottom:0px;
-    }
-    
-    .list_devider{
-        width:100%;
-        margin-bottom: 0px;
-    }
+.mylist_container{
+    border-radius: 10px;
+    width:50%;
+    border-style: solid;
+    border-width: 1px!important;
+    border-color: black!important;
+    padding : 30px 20px 40px 20px;
+}
+
+.mylist_contents{
+    float:left;
+    text-align: left;
+    padding: 10px 0px 10px 0px;
+}
+
+.mylist_contents_container{
+    margin-bottom:0px;
+}
+
+.list_devider{
+    width:100%;
+    margin-bottom: 0px;
+}
 </style>
 
 <!-- 헤더 공간 차지용  -->
 <div style="height:60px; margin-bottom:50px;"></div>
 <!-- 헤더 공간 차지용  -->
 
-<!-- My List Start -->
-<div class="col-md-3"></div>
+
+<% i = 1 %>
+<div class="col-md-3">
+    <% current_user.mylists.each do |m| %>
+    <a href="/home/mylist/<%= m.id %>"><h1> <%= i %> <%= m.title %> </h1></a> <br>
+    <a href="/mylist/delete_list?id=<%= m.id %>"> 삭제 </a>
+    <% i += 1 %>
+    <% end %>
+</div>
+
+
 <div class="mylist_container col-md-6">
     <div class="mylist_contents_container" style="text-align:center; margin-bottom:70px;">
         <img src="/images/icon/profile_photo.png" width="60" height="60" style="background-color:black;"/>
         <% if user_signed_in? %>
-            <div><h4><%= current_user.name %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
+        <div><h4><%= current_user.name %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트 : <%= ml.title %></span></h4></div>
         <% else %>
-            <div><h4><%= "로그인하셈!" %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
+        <div><h4><%= "로그인하셈!" %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
         <% end %>
     </div>
 
@@ -53,18 +68,33 @@
     <hr class="list_devider">
 
     <% i = 1 %>
-    <% @song.each do |myList| %>
-        <% album = Album.find(myList.album_id) %>
-        <div class="mylilst_contents_container">
-            <div class="col-md-1 mylist_contents"> <%= i %> </div>
-            <div class="col-md-2 mylist_contents"> <%= myList.song_tjnum %> </div>
-            <div class="col-md-5 mylist_contents"> <%= myList.title %> </div>
-            <div class="col-md-2 mylist_contents"> <%= myList.artist.name %> </div>
-            <div class="col-md-2 mylist_contents"> <%= (1000..9999).to_a.sample %>명이 불렀어요! </div>
+    <%# current_user.mylists.each do |ml| %>
+    <!-- <div class="mylilst_contents_container">
+    <div class="col-md-3 mylist_contents"> Mylist : </div>
+    <div class="col-md-9 mylist_contents"> <%= ml.title %> </div>
+</div> -->
+
+<% ml.songs.each do |s| %>
+<% ss = s.song %>
+<div class="mylilst_contents_container">
+    <div class="col-md-1 mylist_contents"> <%= i %> </div>
+    <div class="col-md-2 mylist_contents"> <%= ss.song_tjnum %> </div>
+    <div class="col-md-5 mylist_contents"> <%= ss.title %> </div>
+    <div class="col-md-2 mylist_contents"> <%= ss.artist.name %> </div>
+    <div class="col-md-2 mylist_contents">
+        <div class="col-md-6">
+            <%= (1000..9999).to_a.sample %>
         </div>
-        <hr class="list_devider">
-    <% i += 1 %>
-    <% end %>
+        <div class="col-md-6">
+            <a href="/mylist/delete?id=<%= s.id %>"> 삭제 </a>
+        </div>
+    </div>
+
+</div>
+<hr class="list_devider">
+<% i += 1 %>
+<% end %>
+<%# end %>
 
 </div>
 <div class="col-md-3"></div>

@@ -111,6 +111,6 @@ class HomeController < ApplicationController
     end
 
     def mylist
-        @song = Song.where.not(lowkey: nil).all.reverse
+
     end
 end

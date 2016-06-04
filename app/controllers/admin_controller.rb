@@ -48,6 +48,10 @@ class AdminController < ApplicationController
         @team = Team.all
     end
 
+    def singer_list
+        @singer = Singer.all
+    end
+
     def songs_info
         # @song = Song.all
         @song = Song.where(ganre1: "가요")
