@@ -9,7 +9,8 @@ class MylistController < ApplicationController
     end
 
     def add
-        id = params[:id]
+        id = params[:song_id]
+        list_id = params[:list_id]
 
         s = Song.where(id: id).first
         if s.nil?
@@ -18,7 +19,7 @@ class MylistController < ApplicationController
             return false
         end
 
-        a = current_user.mylists.where(title: "Default").first
+        a = current_user.mylists.where(id: list_id).first
         if a.nil?
             a = Mylist.new
             a.user_id = current_user.id
@@ -34,14 +35,14 @@ class MylistController < ApplicationController
             m = MylistSong.new
             m.song_id = s.id
 
-            m.mylist_id = Mylist.where(title: "Default").first.id
+            m.mylist_id = Mylist.where(id: list_id).first.id
             m.save
 
 
             flash[:error] = "추가 완료 추가된 곡 :" + m.song.title
             redirect_to :back
         end
-        
+
         def delete
             MylistSong.find(params[:id]).destroy
             redirect_to :back
@@ -53,3 +54,4 @@ class MylistController < ApplicationController
         end
 
     end
+end
