@@ -6,7 +6,7 @@ class Song < ActiveRecord::Base
     def self.crawl(num)
 
         s = Song.new
-        s.song_number = num
+        s.song_num = num
         return s.crawl_song
 
     end

@@ -9,6 +9,12 @@ class MylistController < ApplicationController
     end
 
     def delete_list
+        m = Mylist.find(params[:id])
+        m.delete
+        redirect_to :back
+    end
+
+    def add
         id = params[:id]
         Mylist.find(id).destroy
         redirect_to :back
@@ -52,6 +58,7 @@ class MylistController < ApplicationController
     def delete
         id = params[:id]
         MylistSong.find(id).destroy
+        MylistSong.find(params[:id]).destroy
         redirect_to :back
     end
 
