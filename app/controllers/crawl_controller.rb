@@ -135,7 +135,7 @@ class CrawlController < ApplicationController
 
     def self.crawl_artist(artist_num)
         html_doc_artist = load_page(artist_num, "artist_number")
-        return false if artist_num == 0
+        return false if artist_num <= 0
         @is_singer = html_doc_artist.css("div#body-content//div.info-zone//li//span.value").first.to_s.gsub('<span class="value">','').gsub('</span>','')
         puts "crawl_artist called // query : " + artist_num.to_s + " is_singer = " + @is_singer
         if @is_singer == "남성/솔로" || @is_singer == "여성/솔로"

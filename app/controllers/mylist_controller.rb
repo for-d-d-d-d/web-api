@@ -38,7 +38,6 @@ class MylistController < ApplicationController
             m.mylist_id = Mylist.where(id: list_id).first.id
             m.save
 
-
             flash[:error] = "추가 완료 추가된 곡 :" + m.song.title
             redirect_to :back
         end
@@ -50,7 +49,6 @@ class MylistController < ApplicationController
 
         def list
             t = params[:title]
-
         end
 
     end

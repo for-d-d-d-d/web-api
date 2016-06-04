@@ -32,10 +32,11 @@
             </li>
         </ul>
     </div>
+
     <!--음역대 입-출력 Table-->
     <div class="card">
         <div class="card-header">
-            <h2> 팀 목록 <small>노래별 음역대를 입력하고 등록된 노래를 확인하는 테이블 입니다.(임시로 장르 "가요" 만 출력)</small></h2>
+            <h2> 가수 목록 <small>노래별 음역대를 입력하고 등록된 노래를 확인하는 테이블 입니다.(임시로 장르 "가요" 만 출력)</small></h2>
         </div>
 
         <table id="data-table-command" class="table table-striped table-vmiddle">
@@ -45,37 +46,27 @@
                     <th data-column-id="sender">Name</th>
                     <th data-column-id="artist">Photo</th>
                     <th data-column-id="lowkey">artist_num</th>
-                    <th data-column-id="highkey">Singers</th>
-                    <th data-column-id="song_tjnum">Teams</th>
+                    <th data-column-id="highkey">Teams</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
                 </tr>
             </thead>
             <tbody>
-                <% @team.each do |t| %>
-                <tr>
-                    <td><%= t.id %></td>
-                    <td><%= t.name %></td>
-                    <td><img src="<%= t.photo %>" style="width:100px;"/></td>
-                    <td><%= t.artist_num %></td>
-                    <td>
-                        <% if t.singers.empty? %>
-                            이 팀에 소속된 Singer들이 없습니다.
-                        <% else %>
-                            <% t.singers.each do |ss| %>
-                                <%= ss.name %> <br>
+                <% @singer.each do |t| %>
+                    <tr>
+                        <td><%= t.id %></td>
+                        <td><%= t.name %></td>
+                        <td><img src="<%= t.photo %>" style="width:100px;"/></td>
+                        <td><%= t.artist_num %></td>
+                        <td>
+                            <% if t.teams.empty? %>
+                                소속된 team이 없습니다.
+                            <% else %>
+                                <% t.teams.each do |ss| %>
+                                    <%= ss.name %> <br>
+                                <% end %>
                             <% end %>
-                        <% end %>
-                    </td>
-                    <td>
-                        <% if t.teams.empty? %>
-                            이 팀에 소속된 팀이 없습니다.
-                        <% else %>
-                            <% t.teams.each do |tt| %>
-                                <%= tt.name %> <br>
-                            <% end %>
-                        <% end %>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 <% end %>
             </tbody>
         </table>
