@@ -41,6 +41,7 @@
 <div class="col-md-3">
     <% current_user.mylists.each do |m| %>
     <a href="/home/mylist/<%= m.id %>"><h1> <%= i %> <%= m.title %> </h1></a> <br>
+    <a href="/mylist/delete_list?id=<%= m.id %>"> 삭제 </a>
     <% i += 1 %>
     <% end %>
 </div>
@@ -74,13 +75,21 @@
 </div> -->
 
 <% ml.songs.each do |s| %>
-<% s = s.song %>
+<% ss = s.song %>
 <div class="mylilst_contents_container">
     <div class="col-md-1 mylist_contents"> <%= i %> </div>
-    <div class="col-md-2 mylist_contents"> <%= s.song_tjnum %> </div>
-    <div class="col-md-5 mylist_contents"> <%= s.title %> </div>
-    <div class="col-md-2 mylist_contents"> <%= s.artist.name %> </div>
-    <div class="col-md-2 mylist_contents"> <%= (1000..9999).to_a.sample %>명이 불렀어요! </div>
+    <div class="col-md-2 mylist_contents"> <%= ss.song_tjnum %> </div>
+    <div class="col-md-5 mylist_contents"> <%= ss.title %> </div>
+    <div class="col-md-2 mylist_contents"> <%= ss.artist.name %> </div>
+    <div class="col-md-2 mylist_contents">
+        <div class="col-md-6">
+            <%= (1000..9999).to_a.sample %>
+        </div>
+        <div class="col-md-6">
+            <a href="/mylist/delete?id=<%= s.id %>"> 삭제 </a>
+        </div>
+    </div>
+
 </div>
 <hr class="list_devider">
 <% i += 1 %>

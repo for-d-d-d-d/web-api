@@ -68,34 +68,10 @@
                     <%= s.artist.name %>
                 </td>
                 <td>
+                    <%= (0..4000).to_a.sample %>
                 </td>
                 <td>
-                    <!-- <a href="/mylist/add?song_id=<%= s.id %>&<%= current_user.mylists.first %>"></a> -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            Action <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            Action <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <% current_user.mylists.each do |m| %>
-                            <li><a href="/mylist/add?song_id=<%= s.id %>&<%= m.id %>"><%= m.title %></a></li>
-                            <% end %>
-                            <!-- <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li> -->
-                        </ul>
-                    </div>
+                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
                 </td>
             </tr>
             <% end %>
@@ -187,8 +163,10 @@
                     <%= s.artist.name %>
                 </td>
                 <td>
+                    <%= (0..4000).to_a.sample %>
                 </td>
                 <td>
+                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
                 </td>
             </tr>
             <% end %>
@@ -280,8 +258,10 @@
                     <%= s.artist.name %>
                 </td>
                 <td>
+                    <%= (0..4000).to_a.sample %>
                 </td>
                 <td>
+                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
                 </td>
             </tr>
             <% end %>

@@ -87,6 +87,6 @@ class HomeController < ApplicationController
     end
 
     def mylist
-        
+
     end
 end
