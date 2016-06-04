@@ -15,12 +15,6 @@ class MylistController < ApplicationController
     end
 
     def add
-        id = params[:id]
-        Mylist.find(id).destroy
-        redirect_to :back
-    end
-
-    def add
         id = params[:song_id]
         list_id = params[:list_id]
 

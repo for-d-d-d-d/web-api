@@ -1,5 +1,5 @@
 class CrawlController < ApplicationController
-    # require 'fuzzystringmatch'
+    require 'fuzzystringmatch'
 
     # Method Name : load_page
     # Method Parameter : searchText=검색어
@@ -136,8 +136,19 @@ class CrawlController < ApplicationController
     end
 
     def self.crawl_artist(artist_num)
+
+        if artist_num == '14958011'
+            s = Singer.where(name: "Various Artist").first
+            if s.nil?
+                s = Singer.new
+                s.name = "Various Artist"
+                s.save
+            end
+            return s
+        end
+
         html_doc_artist = load_page(artist_num, "artist_number")
-        return false if artist_num <= 0
+        return false if artist_num.to_i <= 0
         @is_singer = html_doc_artist.css("div#body-content//div.info-zone//li//span.value").first.to_s.gsub('<span class="value">','').gsub('</span>','')
         puts "crawl_artist called // query : " + artist_num.to_s + " is_singer = " + @is_singer
         if @is_singer == "남성/솔로" || @is_singer == "여성/솔로"
@@ -268,7 +279,7 @@ class CrawlController < ApplicationController
                 j += 1
                 # next if j == 1
                 title = x.css("td:nth-child(2)").inner_html.gsub('</span>','').gsub("<span class=\"txt\">",'')
-                f.puts s.title + " 과 " + title + " 비교 " + string_difference_percent(s.title, title).to_s + "% 일치"
+                puts s.title + " 과 " + title + " 비교 " + string_difference_percent(s.title, title).to_s + "% 일치"
                 if s.title == title # && singer == x.css("td:nth-child(3)")
                     a << x.css("td:nth-child(1)").inner_html
                 end

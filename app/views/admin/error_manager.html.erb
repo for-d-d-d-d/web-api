@@ -42,30 +42,30 @@
                 <ul class="tab-nav tn-justified tn-icon" role="tablist">
                     <li role="presentation" class="active">
                         <a class="col-sx-4" href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">
-                            <i class="zmdi zmdi-album icon-tab"></i>Errors
+                            <i class="zmdi zmdi-home zmdi-hc-fw icon-tab"></i>General
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="col-xs-4" href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">
-                            <i class="zmdi zmdi-audio icon-tab"></i>
+                            <i class="zmdi zmdi-dns zmdi-hc-fw icon-tab"></i>Issues
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="col-xs-4" href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">
-                            <i class="zmdi zmdi-mic-setting icon-tab"></i>
+                            <i class="zmdi zmdi-wrench zmdi-hc-fw icon-tab"></i>Configure
                         </a>
                     </li>
                 </ul>
 
                 <div class="tab-content p-20" style="padding:0 !important; margin-top: 25px;">
                     <!-- Tab1 -->
-                    <%= render partial: 'admin/crawler_manager/tab1' %>
+                    <%= render partial: 'admin/error_manager/tab1' %>
 
                     <!-- Tab2 -->
-                    <%= render partial: 'admin/crawler_manager/tab2' %>
+                    <%= render partial: 'admin/error_manager/tab2' %>
 
                     <!-- Tab3 -->
-                    <%= render partial: 'admin/crawler_manager/tab3' %>
+                    <%= render partial: 'admin/error_manager/tab3' %>
 
                 </div>
             </div>
