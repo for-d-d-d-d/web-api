@@ -1,0 +1,786 @@
+<div class="modal fade" id="SongDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal-dialog" style="z-index: 12345;margin: 5% 25%;width: 50%;">
+        <div class="modal-content" style="border-radius:0">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="myModalLabel" style="padding-left:15px"><span style="font-size:20px; font-weight:bold; font-family: 나눔바른고딕;">노래방 번호 <span id="md-song_tjnum"></span>번</span> </h3>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <div id="md_bg_img_container"></div>
+                <div id="md_content_upside_wrapper" style="text-align: center;">
+                    <div class="md_song_artist_wrapper">
+                        <div class="col-sm-4 col-xs-1"></div>
+                        <div class="col-sm-4 col-xs-10" style="padding">
+                            <div id="md_song_artist">가수명</div>
+                        </div>
+                        <div class="col-sm-4 col-xs-1"></div>
+                    </div>
+                    <div class="col-md-12"><span id="md-song_title"></span></div>
+                    <div class="col-md-12"><span id="md-song_album">앨범이름</span></div>
+                </div>
+                <div id="md_content_main_wrapper">
+                    <div class="col-sm-12">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div id="md_vocal_range_me">
+                                
+                            </div>
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8 col-xs-12">
+                            <div id="md_vocal_range_song">
+                                <p class="f-500 c-black m-b-20" id="md_vr_songName">Me</p>
+                                <div class="m-b-20 clearfix" style="margin-bottom: 0px !important;">
+                                    <div class="aaaa input-slider-values m-b-15 noUi-target noUi-rtl noUi-horizontal noUi-background">
+                                        <div class="aaab noUi-base">
+                                            <div class="aaac noUi-origin noUi-connect noUi-dragable" style="left: 20%;">
+                                                <div class="aaad noUi-handle noUi-handle-upper">도3</div>
+                                            </div>
+                                            <div class="aabc noUi-origin noUi-background" style="left: 55%;">
+                                                <div class="aabd noUi-handle noUi-handle-lower">레4</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8 col-xs-12">
+                            <div id="md_vocal_range_song">
+                                <p class="f-500 c-black m-b-20" id="md_vr_songName">Song</p>
+                                <div class="m-b-20 clearfix" style="margin-bottom: 0px !important;">
+                                    <div class="aaaa input-slider-values m-b-15 noUi-target noUi-rtl noUi-horizontal noUi-background">
+                                        <div class="aaab noUi-base">
+                                            <div class="aaac noUi-origin noUi-connect noUi-dragable" style="left: 16%;">
+                                                <div class="aaad noUi-handle noUi-handle-upper">라2</div>
+                                            </div>
+                                            <div class="aabc noUi-origin noUi-background" style="left: 60%;">
+                                                <div class="aabd noUi-handle noUi-handle-lower">파4</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="col-sm-12" style="margin-top:30px;">
+                        <div class="col-md-7" style="padding:0">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header ch-alt">
+                                        <h2>뮤직비디오</h2>
+                                    </div>
+                                    <div class="card-body">
+                                        <iframe style="width:100%; height: 177px; margin-bottom: -5px;" src="https://www.youtube.com/embed/aE0eV2YR51k" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="padding:0px 10px 0px 0px">
+                                    <div class="card">
+                                        <div class="card-header ch-alt">
+                                            <h2>앨범</h2>
+                                        </div>
+                                        <div class="card-body card-padding">
+                                            <div class="pmo-contact">
+                                                <p class="md_card-album">발매일 : <span id="md_song_released"></span></p>
+                                                <p class="md_card-album">기획사 : <span id="md_song_agency"></span></p>
+                                                <p class="md_card-album">배급사 : <span id="md_song_publisher"></span></p>
+                                            </div>
+                                            <a class="pmo-map" href=""></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding:0px 0px 0px 10px">
+                                    <div class="card">
+                                        <div class="card-header ch-alt">
+                                            <h2>수록곡 (<span id="count_count"></span>)</h2>
+                                        </div>
+                                        <div class="card-body card-padding" style="min-height: 147px;">
+                                            <div class="pmo-contact">
+                                                <p class="md_card-album2"><span id="md_song_album_in_title1"></span> <span class="album2_span" id="md_song_album_in_atrist1"></span></p>
+                                                <p class="md_card-album2"><span id="md_song_album_in_title2"></span> <span class="album2_span" id="md_song_album_in_atrist2"></span></p>
+                                                <p class="md_card-album2"><span id="md_song_album_in_title3"></span> <span class="album2_span" id="md_song_album_in_atrist3"></span></p>
+                                                <p class="md_card-album2"><span id="md_song_album_in_title4"></span> <span class="album2_span" id="md_song_album_in_atrist4"></span></p>
+                                            </div>
+                                            <a class="pmo-map" href=""></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="listview">
+                                        <div class="card-header" style="background:#e9e9e9;">
+                                            <h2>코멘트</h2>
+                                        </div>
+                                        <div class="lv-body">
+                                            <a class="lv-item" href="">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        <img class="lv-img-sm" src="/images/profile-pics/1.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="lv-title">김다혜</div>
+                                                        <small class="lv-small">Cum sociis natoque penatibus et magnis dis parturient montes</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a class="lv-item" href="">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        <img class="lv-img-sm" src="/images/profile-pics/2.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="lv-title">박현민</div>
+                                                        <small class="lv-small"><marquee>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</marquee></small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a class="lv-item" href="">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        <img class="lv-img-sm" src="/images/profile-pics/3.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="lv-title">노혜빈</div>
+                                                        <small class="lv-small"><marquee>Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</marquee></small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a class="lv-item" href="">
+                                                <div class="media">
+                                                    <div class="pull-left">
+                                                        <img class="lv-img-sm" src="/images/profile-pics/4.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="lv-title">손대근</div>
+                                                        <small class="lv-small"><marquee>Ut vitae lacus sem ellentesque maximus, nunc sit amet varius dignissim, dui est consectetur neque</marquee></small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <a class="lv-footer" href="">더 보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="col-md-12" style="padding:0">
+                                <div class="card">
+                                    <div class="card-header ch-alt">
+                                        <h2>가사</h2>
+                                    </div>
+                                    <div class="card-body card-padding" style="padding-top: 0;padding-right: 0px;padding-bottom: 1px;font-family:나눔바른고딕;">
+                                        <div class="pmo-contact" id="md_song_lyrics">이상, 맺어, 고동을 인생에 동산에는 능히 시들어 그들은 있는가? 싹이 원대하고, 보배를 반짝이는 길지 칼이다. 뛰노는 광야에서 것은 작고 것이다. 영락과 같이, 어디 가치를 우리의 뭇 것이다.보라, 열매를 사막이다. 피어나기 때에, 방지하는 보는 이것이다. 풍부하게 뜨거운지라, 곧 사랑의 이것이다. 있을 예가 이 것이다. 이상의 귀는 없으면 청춘을 되는 힘있다. 있는 웅대한 위하여 기쁘며, 싹이 것이다. 실로 인간에 무한한 찬미를 바로 피가 바이며, 봄바람이다. 보이는 생의 있으며, 사막이다.</div>
+                                        
+                                        <a class="pmo-map" href=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--    <button type="button" id="dddd" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            <!--    <button type="button" class="btn btn-primary">Save changes</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<link href="/css/mediaelementplayer.css" rel="stylesheet">
+
+<style>
+    
+    #lyrics_tag{
+        background:none;
+        border:none;
+        max-height: 750px;
+    }
+    #lyrics_tag > div{
+        font-size:15px;
+        font-family: initial;
+        margin-left: -5px;
+    }
+    #pLyrics{
+        font-size: 15px;
+        font-family: initial;
+    }
+    
+    .md_card-album{
+        font-size:14px;
+        color: #000;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    
+    .md_card-album > span{
+        font-size:13px;
+        color: #5a5a5a;
+    }
+    
+    .md_card-album2{
+        font-size:14px;
+        color: #000;
+        font-weight: bold;
+        margin-bottom: 7px;
+    }
+    
+    .md_card-album2 > .album2_span{
+        font-size:13px;
+        color: #5a5a5a;
+    }
+    /* app.min.1.css < card-define
+    ======================*/
+    .card{
+        position: relative;
+        background: #fff;
+        box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.15);
+        margin-bottom: 23px;
+    }
+    .card-body .lv-item {
+      padding: 12px 20px;
+    }
+    .card .card-header {
+      position: relative;
+    }
+    
+    @media screen and (min-width: 768px) {
+      .card .card-header:not(.ch-alt) {
+        padding: 18px 25px;
+      }
+    }
+    
+    @media screen and (max-width: 991px) {
+      .card .card-header:not(.ch-alt) {
+        padding: 18px;
+      }
+    }
+    
+    .card .card-header h2 {
+      margin: 0;
+      line-height: 100%;
+      font-size: 17px;
+      font-weight: bold;
+    }
+    
+    .card .card-header h2 small {
+      display: block;
+      margin-top: 8px;
+      color: #AEAEAE;
+      line-height: 160%;
+    }
+    
+    @media screen and (min-width: 768px) {
+      .card .card-header.ch-alt {
+        padding: 18px 15px;
+      }
+    }
+    
+    @media screen and (max-width: 991px) {
+      .card .card-header.ch-alt {
+        padding: 18px 18px 28px;
+      }
+    }
+    
+    .card .card-header.ch-alt:not([class*="bgm-"]) {
+      background-color: #e9e9e9;
+    }
+    
+    .card .card-header[class*="bgm-"] h2,
+    .card .card-header[class*="bgm-"] h2 small {
+      color: #fff;
+    }
+    
+    .card .card-header .actions {
+      position: absolute;
+      right: 10px;
+      z-index: 2;
+      top: 15px;
+    }
+    
+    .card .card-header .btn-float {
+      right: 25px;
+      bottom: -23px;
+      z-index: 1;
+    }
+    
+    @media screen and (min-width: 768px) {
+      .card .card-body.card-padding {
+        padding: 23px 15px;
+      }
+    }
+    
+    @media screen and (max-width: 991px) {
+      .card .card-body.card-padding {
+        padding: 18px;
+      }
+    }
+    
+    .card .card-body.card-padding-sm {
+      padding: 15px;
+    }
+    
+    .card-header:not(.ch-alt):not([class*="bgm-"]) + .card-padding {
+      padding-top: 0;
+    }
+    
+    /* app.min.1.css < listview-define
+    ======================*/
+    .listview {
+      position: relative;
+    }
+    
+    .listview:not(.lv-lg):not(.lv-message) .lv-item {
+      padding: 10px 20px;
+    }
+    
+    @media (min-width: 480px) {
+      .listview.lv-lg .lv-item {
+        padding: 17px 35px 17px 25px;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .listview.lv-lg .lv-item {
+        padding: 17px 35px 17px 20px;
+      }
+    }
+    
+    .listview.lv-lg .lv-item:hover {
+      background-color: #FFFFDB;
+    }
+    
+    .listview .lv-item {
+      position: relative;
+      display: block;
+      -webkit-transition: background-color;
+      -o-transition: background-color;
+      transition: background-color;
+      -webkit-transition-duration: 300ms;
+      transition-duration: 300ms;
+    }
+    
+    .listview .lv-item .lv-small {
+      font-size: 12px;
+      color: #A9A9A9;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+      width: 100%;
+    }
+    
+    .listview .lv-item .checkbox,
+    .listview .lv-item.media {
+      margin: 0;
+    }
+    
+    .listview .lv-item .lv-actions {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+    }
+    
+    @media (max-width: 480px) {
+      .listview .lv-item .lv-actions {
+        right: 7px;
+      }
+    }
+    
+    .listview .lv-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+    
+    .listview a.lv-item:hover {
+      background: #ECF9FF;
+    }
+    
+    .listview [class*="lv-img"] {
+      border-radius: 50%;
+    }
+    
+    .listview .lv-img {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .listview .lv-img-sm {
+      width: 35px;
+      height: 35px;
+    }
+    
+    .listview.lv-bordered .lv-item:not(:last-child) {
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .listview .lv-attrs {
+      list-style: none;
+      padding: 0;
+      margin: 5px 0 0 0;
+    }
+    
+    .listview .lv-attrs > li {
+      display: inline-block;
+      padding: 2px 10px 3px;
+      font-size: 12px;
+      margin-top: 5px;
+      margin-right: 2px;
+    }
+    
+    .listview .lv-attrs > li:not(.info):not(.primary):not(.warning):not(.danger) {
+      border: 1px solid #dedede;
+      background: #ffffff;
+      color: #5e5e5e;
+    }
+    
+    .listview .lv-attrs > li.info {
+      border: 1px solid #00bcd4;
+      background: #00bcd4;
+      color: #ffffff;
+    }
+    
+    .listview .lv-attrs > li.primary {
+      border: 1px solid #2196f3;
+      background: #2196f3;
+      color: #ffffff;
+    }
+    
+    .listview .lv-attrs > li.warning {
+      border: 1px solid #ff9800;
+      background: #ff9800;
+      color: #ffffff;
+    }
+    
+    .listview .lv-attrs > li.danger {
+      border: 1px solid #f44336;
+      background: #f44336;
+      color: #ffffff;
+    }
+    
+    .listview .lv-attrs > li > a {
+      display: block;
+    }
+    
+    .listview:not(.lv-message) .lv-title {
+      color: #000;
+    }
+    
+    [class*="lv-img"] {
+      border-radius: 50%;
+    }
+    
+    .lv-img {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .lv-img-sm {
+      width: 35px;
+      height: 35px;
+    }
+    
+    .lv-header {
+      text-align: center;
+      padding: 15px 10px 13px;
+      line-height: 100%;
+      text-transform: uppercase;
+      border-bottom: 1px solid #F0F0F0;
+      font-weight: 500;
+      color: #4C4C4C;
+      margin-bottom: 10px;
+    }
+    
+    .lv-header .actions {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      z-index: 10;
+    }
+    
+    .lvh-search {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 4;
+      background: #fff;
+      display: none;
+    }
+    
+    .lvh-search:before {
+      content: "\f1c3";
+      font-family: 'Material-Design-Iconic-Font';
+      position: absolute;
+      left: 24px;
+      top: 17px;
+      font-size: 22px;
+    }
+    
+    .lvhs-input {
+      border: 0;
+      padding: 0 26px 0 55px;
+      height: 63px;
+      font-size: 18px;
+      width: 100%;
+      font-weight: 100;
+      background: #fff;
+      border-bottom: 1px solid #EEE;
+    }
+    
+    .lvh-search-close {
+      font-style: normal;
+      position: absolute;
+      top: 23px;
+      right: 22px;
+      font-size: 17px;
+      width: 18px;
+      height: 18px;
+      background-color: #ADADAD;
+      line-height: 100%;
+      color: #fff;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+    
+    .lvh-search-close:hover {
+      background: #333;
+    }
+    
+    .lv-header-alt {
+      position: relative;
+      background: #f8f8f8;
+      padding: 15px;
+    }
+    
+    .lv-header-alt .lv-actions {
+      z-index: 3;
+      float: right;
+      margin-top: 3px;
+      position: relative;
+    }
+    
+    .lv-header-alt .lv-actions > li > a {
+      margin: 0 3px;
+    }
+    
+    .lvh-label {
+      color: #818181;
+      display: inline-block;
+      margin: 0;
+      font-size: 14px;
+      font-weight: normal;
+      padding: 0 6px;
+      line-height: 33px;
+      vertical-align: middle;
+      float: left;
+    }
+    
+    .lv-footer {
+      display: block;
+      text-align: center;
+      padding: 7px 10px 8px;
+      border-top: 1px solid #F0F0F0;
+      line-height: 100%;
+      font-size: 11px;
+      /*margin-top: 20px;*/
+      background:#f0f0f0;
+      color: #828282;
+    }
+    
+    a.lv-footer:hover {
+      color: #050505;
+    }
+    
+    
+    /*===================*/
+    .aaaa{
+        height: 3px;
+        background: #d4d4d4;
+        box-shadow: none;
+        border-radius: 0;
+        box-shadow: none;
+        border: 0;
+        margin-bottom: 15px !important;
+    }
+    .aaab{
+        transform: translate3d(0,0,0);
+        width: 100%;
+        height: 100%;
+        position: relative;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -ms-touch-action: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .aaac{
+        left: 20%;
+        background: #009688 !important;
+        cursor: w-resize;
+        border-radius: 2px;
+        background: #3FB8AF;
+        box-shadow: inset 0 0 3px rgba(51,51,51,.45);
+        -webkit-transition: background 450ms;
+        transition: background 450ms;
+        position: absolute;
+        right: 0;
+        top: 0;
+        /* left: 0; */
+        bottom: 0;
+        direction: ltr;
+    }
+    .aaad{
+        font-size: 14.5px;
+        color: #fff;
+        padding: 4px 0px 0px 2px;
+        background: #009688 !important;
+        width: 29px;
+        height: 29px;
+        border: 0;
+        border-radius: 100%;
+        box-shadow: none;
+        -webkit-transition: box-shadow;
+        -o-transition: box-shadow;
+        transition: box-shadow;
+        -webkit-transition-duration: 200ms;
+        transition-duration: 200ms;
+        cursor: pointer;
+        position: relative;
+        top: -13px;
+        /* width: 34px; */
+        /* height: 28px; */
+        left: -17px;
+        /* top: -6px; */
+        z-index: 1;
+    }
+    .aabc{
+        left: 55%;
+        background: #d4d4d4;
+        box-shadow: none;
+        border-radius: 2px;
+        /* background: #FAFAFA; */
+        /* box-shadow: inset 0 1px 1px #f0f0f0; */
+        position: absolute;
+        right: 0;
+        top: 0;
+        /* left: 0; */
+        bottom: 0;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -ms-touch-action: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .aabd{
+        font-size: 13.5px;
+        color: #fff;
+        padding: 4.4px 0px 0px 3px;
+        background: #009688 !important;
+        width: 29px;
+        height: 29px;
+        border: 0;
+        border-radius: 100%;
+        box-shadow: none;
+        -webkit-transition: box-shadow;
+        -o-transition: box-shadow;
+        transition: box-shadow;
+        -webkit-transition-duration: 200ms;
+        transition-duration: 200ms;
+        cursor: pointer;
+        position: relative;
+        top: -13px;
+        left: -17px;
+        z-index: 1;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -ms-touch-action: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    
+    #md-song_tjnum{
+        color:rgb(244, 67, 54);
+    }
+    
+    #md_bg_img_container{
+        width:100%;
+        height:400px;
+        background:url("http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/797/320/80797320_1456999961311_1_600x600.JPG");
+        background-size: cover;
+        background-position: center 30%;
+        
+    }
+    
+    #md_content_upside_wrapper{
+        width:100%;
+        height:200px;
+        margin-top: -200px;
+        /*background-color:#fff;*/
+        background: linear-gradient(rgba(244, 67, 54, 0), rgba(245, 85, 73, 1));
+        background-size: cover;
+    }
+    
+    #md_content_main_wrapper{
+        width:100%;
+        min-height:1000px;
+        background:rgb(245, 85, 73);
+    }
+    
+    .md_song_artist_wrapper{
+        width:100%;
+        text-align:center;
+    }
+    
+    #md_song_artist{
+        border: 1px solid #fff;
+        padding: 3px 7px;
+        color: #fff;
+        margin: 25% 17% 5% 17%;
+        font-size: medium;
+    }
+    
+    #md-song_title{
+        font-size: 40px;
+        font-weight: bold;
+        color: rgb(255, 255, 255);
+    }
+    
+    #md-song_album{
+        font-size: 16px;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 400;
+    }
+    
+    #md_vr_songName{
+        font-weight: 500 !important;
+        color: #d4d4d4 !important;
+        margin-bottom: 5px !important;
+        margin: 0 0 9px;
+    }
+    #md_vr_songName:active, #md_vr_songName:hover{
+        outline: none !important;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+    }
+</style>

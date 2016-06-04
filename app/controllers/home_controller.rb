@@ -75,7 +75,31 @@ class HomeController < ApplicationController
 
     def this_song
         #redirect_to :back
-        @song = Song.find(params[:song_id])
+        @song = []
+        song = Song.find(params[:song_id])
+        song.attribute_names.each do |x|
+            @song << eval("song.#{x}") unless x == "created_at" || x == "updated_at"
+        end
+        
+        @song << song.artist.name
+        @song << song.artist.photo
+        
+        @song << song.album.title
+        @song << song.album.jacket
+        @song << song.album.released_date
+        @song << song.album.publisher
+        @song << song.album.agency
+        arr = []
+        i = 0
+        song.album.songs.each do |y|
+            arr << y.title.split("(").first.strip
+            arr << y.artist.name
+            arr << y.album.title
+            i += 1
+        end
+        @song << arr
+        @song << i
+        
         render json: @song
     end
 

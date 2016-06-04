@@ -22,12 +22,10 @@
 <!-- Table -->
 
 <div style="padding:0px 200px 0px 200px">
-    <!-- 곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span> <br> -->
     <% unless @song_title.empty? %>
 
     <div class="panel panel-default">
         <div class="panel-heading">곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span></div>
-
         <table class="table">
             <tr style="border-bottom: solid 1px;">
                 <th class="table_left" style="width:5%">
@@ -48,7 +46,7 @@
                     추가하기
                 </th>
             </tr>
-
+        
             <% i = 1 %>
             <% @song_title.each do |s| %>
             <tr>
@@ -78,7 +76,6 @@
     <% else %>
     <div class="panel panel-default">
         <div class="panel-heading">곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span></div>
-
         <table class="table">
             <tr style="border-bottom: solid 1px;">
                 <th class="table_left" style="width:5%">
@@ -106,7 +103,6 @@
                 <td colspan="5">
                     곡명 검색 결과가 없습니다
                 </td>
-
             </tr>
 
         </table>
@@ -120,7 +116,6 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">아티스트명으로 검색 <span style="color:red;"> (<%= @song_artist.count %>) </span></div>
-
         <table class="table">
             <tr style="border-bottom: solid 1px;">
                 <th class="table_left" style="width:5%">
@@ -171,7 +166,6 @@
     <% else %>
     <div class="panel panel-default">
         <div class="panel-heading">아티스트명으로 검색 <span style="color:red;"> (<%= @song_artist.count %>) </span></div>
-
         <table class="table">
             <tr style="border-bottom: solid 1px;">
                 <th class="table_left" style="width:5%">
@@ -199,7 +193,6 @@
                 <td colspan="5">
                     아티스트 검색 결과가 없습니다
                 </td>
-
             </tr>
 
         </table>
@@ -264,7 +257,6 @@
     <% else %>
     <div class="panel panel-default">
         <div class="panel-heading">가사로 검색 <span style="color:red;"> (<%= @song_lyrics.count %>) </span></div>
-
         <table class="table">
             <tr style="border-bottom: solid 1px;">
                 <th class="table_left" style="width:5%">
