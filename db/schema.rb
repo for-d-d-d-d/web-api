@@ -21,20 +21,6 @@ ActiveRecord::Schema.define(version: 20160603162717) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "album_singers", force: :cascade do |t|
-    t.integer  "singer_id"
-    t.integer  "album_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "album_teams", force: :cascade do |t|
-    t.integer  "album_id"
-    t.integer  "team_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "albums", force: :cascade do |t|
     t.string   "title"
     t.string   "ganre1"
@@ -92,14 +78,7 @@ ActiveRecord::Schema.define(version: 20160603162717) do
 
   create_table "mylists", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "song_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "singer_teams", force: :cascade do |t|
-    t.integer  "singer_id"
-    t.integer  "team_id"
+    t.string   "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

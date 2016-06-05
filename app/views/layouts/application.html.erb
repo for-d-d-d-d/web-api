@@ -22,7 +22,7 @@
         <% end %>
 
         <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-        <%= javascript_include_tag 'bootstrap/bootstrap.js' %>
+        <script src="/js/bootstrap.js"></script>
 
 
         <!-- Custom styles for this template -->
@@ -145,7 +145,20 @@
                         //   $("#md_bg_img_container").append( "<img src=\"" + jacket + "\" style=\"width:30%; height:auto;\">" + "<br>");
                       });
                 };
+                
+                
             })(jQuery);
+            
+            // (function($) {
+            //     $(".modal-header").click(function(){
+            //         alert("ok");
+            //     // },function(){
+            //     //     $(".modal-backdrop").attr("style", "z-index:20000;");
+            //     //     $(".modal-backdrop").click(function(){
+            //     //         $(this).remove();
+            //     //     });
+            //     });
+            // })(jQuery);
 
 
         </script>

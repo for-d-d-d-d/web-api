@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>고래방 Admin</title>
+        
+        <!-- Vendor CSS -->
+        <link href="/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
+        <link href="/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">        
+        
+        <link href="/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+        <!--<link href="/vendors/bower_components/nouislider/distribute/jquery.nouislider.min.css" rel="stylesheet">-->
+        <link href="/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <link href="/vendors/farbtastic/farbtastic.css" rel="stylesheet">
+        <link href="/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
+        <link href="/vendors/summernote/dist/summernote.css" rel="stylesheet">
+        
+        <!-- CSS -->
+        <link href="/css/app.min.1.css" rel="stylesheet">
+        <link href="/css/app.min.2.css" rel="stylesheet">
+        
+        <!--<link href="/nouislider/nouislider.min.css" rel="stylesheet">-->
+        <link href="/vendors/bower_components/nouislider/src/jquery.nouislider.css" rel="stylesheet">
+    </head>
+    <body>
+        <%= render partial: 'admin_layouts/admin_header' %>
+        <%= yield %>
+        <%= render partial: 'admin_layouts/admin_footer' %>
+    </body>
+</html>
+
