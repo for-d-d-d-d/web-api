@@ -1,3 +1,5 @@
+<!-- tag, title, singer, number, img_path -->
+
 <% if locals[:tag] == 1 %>
     <!-- 1위 -->
     <div class="song1_card_container" onclick="$(this).myModal(<%= locals[:id].to_i %>);" data-toggle="modal" data-target="#SongDetailModal">
@@ -22,7 +24,7 @@
                 <div class="song_card_tag"><span class="song_card_tag_text"><%= locals[:tag] %>위</span></div>
             <% end %>
         </div>
-        
+
         <div class="song_card_contents">
             <p class="song_card_content"><%= locals[:title] %><span class="song_card_icon"></span></p>
             <p class="song_card_content"><%= locals[:singer] %></p>
