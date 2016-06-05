@@ -1,0 +1,16 @@
+<!--a_row : 한 줄에 몇 개 보여주고 싶은가 ( 1,2,3,4,6,12 )-->
+<% @song = Song.all %>
+<% a_row = 5 %>
+<% row = 12/a_row %>
+<% c = 5 %>
+<% 6.times do |num| %>
+    <div class="row">
+        <% a_row.times do |r_num| %>
+            <% break if @song[c].nil? %>
+            <div class="col-md_5 col-sm_5" style="padding:0% 5px;">
+                <%= render 'home/song_card', layout: false, :locals => {:img_path => @song[c].jacket, tag: 0, title: @song[c].title, singer: @song[c].artist.name, number: @song[c].song_tjnum, id: @song[c].id} %>
+            </div>
+            <% c += 1 %>
+        <% end %>
+    </div>
+<% end %>
