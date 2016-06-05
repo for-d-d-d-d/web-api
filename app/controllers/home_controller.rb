@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+    layout 'home'
 
     def entering
         @bg_img = [
@@ -37,8 +38,6 @@ class HomeController < ApplicationController
                 @ranker << aa
             end
         end
-
-        #render :layout => false
     end
 
     def search
@@ -56,34 +55,25 @@ class HomeController < ApplicationController
             @song_lyrics = Array.new
 
             Song.all.each do |s|
-                flag1 = true
-                flag2 = true
-                flag3 = true
-
                 q.each do |qq|
-                    flag1 = false unless s.artist.name.include?(qq)
-                    flag2 = false unless s.title.include?(qq)
-                    flag3 = false unless s.lyrics.include?(qq)
+                    @song_artist << s unless s.artist.name.include?(qq)
+                    @song_title << s unless s.title.include?(qq)
+                    @song_lyrics << s unless s.lyrics.include?(qq)
                 end
-
-                @song_artist << s if flag1 == true
-                @song_title << s if flag2 == true
-                @song_lyrics << s if flag3 == true
             end
         end
     end
 
     def this_song
-        #redirect_to :back
         @song = []
         song = Song.find(params[:song_id])
         song.attribute_names.each do |x|
             @song << eval("song.#{x}") unless x == "created_at" || x == "updated_at"
         end
-        
+
         @song << song.artist.name
         @song << song.artist.photo
-        
+
         @song << song.album.title
         @song << song.album.jacket
         @song << song.album.released_date
@@ -99,7 +89,7 @@ class HomeController < ApplicationController
         end
         @song << arr
         @song << i
-        
+
         render json: @song
     end
 

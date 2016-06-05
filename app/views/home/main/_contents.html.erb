@@ -12,7 +12,7 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-6" style="padding:0% 6px;">
-                        <%= render 'home/song_card', :locals => {:img_path => @song[0].jacket, tag: 1, title: @song[0].title, singer: @song[0].artist.name, number: @song[0].song_tjnum, id: @song[0].id} %>
+                        <%= render 'home/song_card', layout: false, :locals => {:img_path => @song[0].jacket, tag: 1, title: @song[0].title, singer: @song[0].artist.name, number: @song[0].song_tjnum, id: @song[0].id} %>
                     </div>
                     <div class="col-md-6">
                         <% 2.times do |rr_num| %>
@@ -27,10 +27,10 @@
                             %>
                             <div class="row">
                                 <div class="col-md-6" style="padding:0% 5px;">
-                                    <%= render 'home/song_card', :locals => {:img_path => @song[(rr_num+1)*2-1].jacket, tag: tagNum, title: @song[(rr_num+1)*2-1].title, singer: @song[(rr_num+1)*2-1].artist.name, number: @song[(rr_num+1)*2-1].song_tjnum, id: @song[(rr_num+1)*2-1].id} %>
+                                    <%= render 'home/song_card', layout: false, :locals => {:img_path => @song[(rr_num+1)*2-1].jacket, tag: tagNum, title: @song[(rr_num+1)*2-1].title, singer: @song[(rr_num+1)*2-1].artist.name, number: @song[(rr_num+1)*2-1].song_tjnum, id: @song[(rr_num+1)*2-1].id} %>
                                 </div>
                                 <div class="col-md-6" style="padding:0% 5px;">
-                                    <%= render 'home/song_card', :locals => {:img_path => @song[(rr_num+1)*2].jacket, tag: tagNum1, title: @song[(rr_num+1)*2].title, singer: @song[(rr_num+1)*2].artist.name, number: @song[(rr_num+1)*2].song_tjnum, id: @song[(rr_num+1)*2].id} %>
+                                    <%= render 'home/song_card', layout: false, :locals => {:img_path => @song[(rr_num+1)*2].jacket, tag: tagNum1, title: @song[(rr_num+1)*2].title, singer: @song[(rr_num+1)*2].artist.name, number: @song[(rr_num+1)*2].song_tjnum, id: @song[(rr_num+1)*2].id} %>
                                 </div>
                             </div>
                         <% end %>
@@ -47,7 +47,7 @@
                     <% a_row.times do |r_num| %>
                         <% break if @song[c].nil? %>
                         <div class="col-md_5<%#= row %> col-sm_5<%#= row %>" style="padding:0% 5px;">
-                            <%= render 'home/song_card', :locals => {:img_path => @song[c].jacket, tag: 0, title: @song[c].title, singer: @song[c].artist.name, number: @song[c].song_tjnum, id: @song[c].id} %>
+                            <%= render 'home/song_card', layout: false, :locals => {:img_path => @song[c].jacket, tag: 0, title: @song[c].title, singer: @song[c].artist.name, number: @song[c].song_tjnum, id: @song[c].id} %>
                         </div>
                         <% c += 1 %>
                     <% end %>
