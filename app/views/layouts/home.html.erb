@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>고래방 :: 오늘도 노래방을 부탁해!</title>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
+
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <% if !(params[:action] == "main" || params[:action] == "EvalKey" || params[:action] == "mylist" || params[:action] == "search") %>
+        <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
+    <% else %> <!-- main 이랑 EvalKey에서 사용 커스텀 된거임 -->
+        <link href="/css/freelancer.css" rel="stylesheet">
+    <% end %>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+
+    <% if params[:action] == "main" || params[:action] == "mylist" || params[:action] == "EvalKey" || params[:action] == "search" %>
+    <!-- Custom CSS -->
+        <link href="/css/main.css" rel="stylesheet">
+    <% else %>
+        <%= stylesheet_link_tag 'bootstrap/bootstrap-theme.css' %>
+    <% end %>
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="/js/bootstrap.js"></script>
+
+
+    <!-- Custom styles for this template -->
+    <link href="/css/carousel.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <!-- Custom Fonts -->
+    <link href="https://blackrockdigital.github.io/startbootstrap-freelancer/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+</head>
+<body id="page-top" class="index">
+    <!--홈 헤더 : 최 상단 네비게이셔닝-->
+    <%= render partial: "home/home_layouts/navbar", layout: false %>
+
+    <%= yield %>
+
+    <%= render partial: "home/home_layouts/footer", layout: false %>
+
+</body>
+</html>

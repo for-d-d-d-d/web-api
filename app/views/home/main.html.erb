@@ -1,9 +1,130 @@
-<!--홈 헤더 : 최 상단 네비게이셔닝-->
-<%= render partial: "home/home_layouts/home_header" %>
 <!--메인페이지 캐러셀-->
-<%= render partial: "home/carousel" %>
+<%= render partial: "home/main/carousel", layout: false %>
 <!--본문 네비게이션 바-->
-<%= render partial: "home/content_navi" %>
+<%= render partial: "home/main/content_navi", layout: false %>
+
+<script>
+(function($) {
+    $.fn.myModal = function(k) {
+
+        var id = k
+        //var title = <%#= eval("Song.find(" + id + ").title") %>
+        //$("#dddd").attr('style',  'background:#000');
+
+        $.ajax({
+            method: "POST",
+            url: "/home/this_song",
+            data: { song_id: id },
+            dataType: "json"
+        })
+        .done(function( msg ) {
+            var title         = msg[4];
+            var tjnum         = msg[12];
+            var jacket        = msg[11];
+            var artistName    = msg[16];
+            var albumName     = msg[18];
+            var release       = msg[20];
+            var agency        = msg[22];
+            var publisher     = msg[21];
+
+            var i = msg[24];
+            //   for(k=0, k<i, k++){
+            //       var eval("in_song" + k+1) = msg[23][0];
+            //       var eval("in_artist" + k+1) = msg[23][1];
+            //   }
+            var in_song1 = msg[23][0];
+            var in_artist1 = msg[23][1];
+            var in_song2 = msg[23][3];
+            var in_artist2 = msg[23][4];
+            var in_song3 = msg[23][6];
+            var in_artist3 = msg[23][7];
+            var in_song4 = msg[23][9];
+            var in_artist4 = msg[23][10];
+
+            var lyrics = msg[8];
+
+            // jacket
+            $("#md_bg_img_container").empty('');
+            $("#md_bg_img_container").attr("style", "background:url(" + jacket + ");background-size: cover;background-position: center 30%;");
+
+            // title
+            $("#md-song_title").empty('');
+            $("#md-song_title").append(title);
+
+            // tjNum
+            $("#md-song_tjnum").empty('');
+            $("#md-song_tjnum").append(tjnum);
+
+            // artist.name
+            $("#md_song_artist").empty('');
+            $("#md_song_artist").append(artistName);
+
+            // album.title
+            $("#md-song_album").empty('');
+            $("#md-song_album").append("Vol. " + albumName);
+
+            // album.released_date
+            $("#md_song_released").empty('');
+            $("#md_song_released").append(release);
+
+            // album.agency
+            $("#md_song_agency").empty('');
+            $("#md_song_agency").append(agency);
+
+            // album.publisher
+            $("#md_song_publisher").empty('');
+            $("#md_song_publisher").append(publisher);
+
+            // album.songs.count
+            $("#count_count").empty('');
+            $("#count_count").append(i);
+
+            // album.songs.artist.name (1)
+            $("#md_song_album_in_title1").empty('');
+            $("#md_song_album_in_title1").append("1 " + in_song1);
+            $("#md_song_album_in_atrist1").empty('');
+            $("#md_song_album_in_atrist1").append("| " + in_artist1);
+
+            // album.songs.artist.name (2)
+            $("#md_song_album_in_title2").empty('');
+            $("#md_song_album_in_title2").append(in_song2);
+            $("md_song_album_in_atrist2").empty('');
+            $("md_song_album_in_atrist2").append("| " + in_artist2);
+
+            // album.songs.artist.name (3)
+            $("#md_song_album_in_title3").empty('');
+            $("#md_song_album_in_title3").append(in_song3);
+            $("md_song_album_in_atrist3").empty('');
+            $("md_song_album_in_atrist3").append("| " + in_artist3);
+
+            // album.songs.artist.name (4)
+            $("#md_song_album_in_title4").empty('');
+            $("#md_song_album_in_title4").append(in_song4);
+            $("md_song_album_in_atrist4").empty('');
+            $("md_song_album_in_atrist4").append("| " + in_artist4);
+
+            // lyrics
+            $("#md_song_lyrics").empty('');
+            $("#md_song_lyrics").append("<pre id=\"lyrics_tag\">" + lyrics + "</pre>");
+            //   $("#md_bg_img_container").empty('');
+            //   $("#md_bg_img_container").append( "<img src=\"" + jacket + "\" style=\"width:30%; height:auto;\">" + "<br>");
+        });
+    };
+
+
+})(jQuery);
+
+// (function($) {
+//     $(".modal-header").click(function(){
+//         alert("ok");
+//     // },function(){
+//     //     $(".modal-backdrop").attr("style", "z-index:20000;");
+//     //     $(".modal-backdrop").click(function(){
+//     //         $(this).remove();
+//     //     });
+//     });
+// })(jQuery);
+</script>
 
 <!-- 노래방 인기 차트 -->
 <section id="most_popular">
@@ -17,7 +138,7 @@
                 </div>
             </div>
             <div class="row">
-              <%= render partial: 'home/contents' %>
+              <%= render partial: 'home/main/contents', layout: false %>
             </div>
         </div>
     </div>
@@ -155,10 +276,7 @@
     </div>
 </section><!-- /.카테고리별 노래 -->
 
-
-<%= render partial: "home/home_layouts/home_footer" %>
-
-<%= render partial: "home/home_layouts/song_card_modal" %>
+<%= render partial: "home/home_layouts/song_card_modal", layout: false %>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
