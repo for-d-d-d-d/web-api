@@ -26,7 +26,6 @@ class HomeController < ApplicationController
     end
 
     def main
-        # render layout: 'home'
         @song = Song.where.not(lowkey: nil).all
         @carousel = @song.first(17)
 
@@ -39,8 +38,6 @@ class HomeController < ApplicationController
                 @ranker << aa
             end
         end
-
-        #render :layout => false
     end
 
     def search
@@ -68,7 +65,6 @@ class HomeController < ApplicationController
     end
 
     def this_song
-        #redirect_to :back
         @song = []
         song = Song.find(params[:song_id])
         song.attribute_names.each do |x|
