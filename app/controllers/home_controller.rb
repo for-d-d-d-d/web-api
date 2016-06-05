@@ -111,6 +111,9 @@ class HomeController < ApplicationController
     end
 
     def mylist
+        unless user_signed_in?
+            redirect_to "/"
+        end
 
     end
 end
