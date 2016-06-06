@@ -31,7 +31,134 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
+    <script>
+        (function($) {
+            $.fn.myModal = function(k) {
+        
+                var id = k
+                //var title = <%#= eval("Song.find(" + id + ").title") %>
+                //$("#dddd").attr('style',  'background:#000');
+        
+                $.ajax({
+                    method: "POST",
+                    url: "/home/this_song",
+                    data: { song_id: id },
+                    dataType: "json"
+                })
+                .done(function( msg ) {
+                    var title         = msg[4];
+                    var tjnum         = msg[12];
+                    var songJacket    = msg[11];
+                    var artistName    = msg[16];
+                    var albumName     = msg[18];
+                    var albumJacket   = msg[19];
+                    var release       = msg[20];
+                    var agency        = msg[22];
+                    var publisher     = msg[21];
+        
+                    var i = msg[24];
+                    //   for(k=0, k<i, k++){
+                    //       var eval("in_song" + k+1) = msg[23][0];
+                    //       var eval("in_artist" + k+1) = msg[23][1];
+                    //   }
+                    var in_song1 = msg[23][0];
+                    var in_artist1 = msg[23][1];
+                    var in_song2 = msg[23][3];
+                    var in_artist2 = msg[23][4];
+                    var in_song3 = msg[23][6];
+                    var in_artist3 = msg[23][7];
+                    var in_song4 = msg[23][9];
+                    var in_artist4 = msg[23][10];
+        
+                    var lyrics = msg[8];
+        
+                    // jacket-background
+                    $("#md_bg_img_container").empty('');
+                    $("#md_bg_img_container").attr("style", "background:url(" + albumJacket + ");background-size: cover;background-position: center 50%;");
+                    
+                    // jacket-album
+                    $("#md-header_albumImg").empty('');
+                    $("#md-header_albumImg").attr("src", songJacket);
+                    
+                    // title
+                    $("#md-song_title").empty('');
+                    $("#md-song_title").append(title);
+        
+                    // tjNum
+                    $("#md-song_tjnum").empty('');
+                    $("#md-song_tjnum").append(tjnum);
+        
+                    // artist.name
+                    $("#md_song_artist").empty('');
+                    $("#md_song_artist").append('<img src="/images/icon/inModalSingerIcon.png" class="header_icon-singer">' + artistName);
+        
+                    // album.title
+                    $("#md-song_album").empty('');
+                    $("#md-song_album").append('<img src="/images/icon/inModalAlbumIcon.png" class="header_icon-album">' + "Vol. " + albumName);
+        
+                    // album.released_date
+                    $("#md_song_released").empty('');
+                    $("#md_song_released").append(release);
+        
+                    // album.agency
+                    $("#md_song_agency").empty('');
+                    $("#md_song_agency").append(agency);
+        
+                    // album.publisher
+                    $("#md_song_publisher").empty('');
+                    $("#md_song_publisher").append(publisher);
+        
+                    // album.songs.count
+                    $("#count_count").empty('');
+                    $("#count_count").append(i);
+                    
+                    var t1 = $("#md_song_album_in_title1"); var a1 = $("#md_song_album_in_artist1");
+                    var t2 = $("#md_song_album_in_title2"); var a2 = $("#md_song_album_in_artist2");
+                    var t3 = $("#md_song_album_in_title3"); var a3 = $("#md_song_album_in_artist3");
+                    var t4 = $("#md_song_album_in_title4"); var a4 = $("#md_song_album_in_artist4");
+                    // album.songs.artist.name (1)
+                    t1.empty(''); t1.append("1. " + in_song1);
+                    a1.empty(''); a1.append("| " + in_artist1);
+        
+                    // album.songs.artist.name (2)
+                    if ( in_song2 != undefined){
+                        t2.empty(''); t2.append("2. " + in_song2);
+                        a2.empty(''); a2.append("| " + in_artist2);
+                        if ( in_song3 != undefined){
+                            // album.songs.artist.name (3)
+                            t3.empty(''); t3.append("3. " + in_song3);
+                            a3.empty(''); a3.append("| " + in_artist3);
+                            if ( in_song4 != undefined){
+                                // album.songs.artist.name (4)
+                                t4.empty(''); t4.append("4. " + in_song4);
+                                a4.empty(''); a4.append("| " + in_artist4);  
+                            } else {
+                                t4.empty(''); t4.append('');
+                                a4.empty(''); a4.append("<center>더 이상 곡이 없다고래!</center>");  
+                            };
+                        } else {
+                            t3.empty(''); t3.append(''); t4.empty(''); a4.empty('');
+                            a3.empty(''); a3.append("<center>더 이상 곡이 없다고래!</center>");
+                        };
+                    } else {
+                        t2.empty(''); t2.append(''); t3.empty(''); a3.empty(''); t4.empty(''); a4.empty('');
+                        a2.empty(''); a2.append("<center>더 이상 곡이 없다고래!</center>");
+                    };
+                    
+        
+                    
+        
+                    // lyrics
+                    $("#md_song_lyrics").empty('');
+                    $("#md_song_lyrics").append("<pre id=\"lyrics_tag\">" + lyrics + "</pre>");
+                    //   $("#md_bg_img_container").empty('');
+                    //   $("#md_bg_img_container").append( "<img src=\"" + jacket + "\" style=\"width:30%; height:auto;\">" + "<br>");
+                });
+            };
+        
+        
+        })(jQuery);
+    </script>
     <!-- Custom Fonts -->
     <link href="https://blackrockdigital.github.io/startbootstrap-freelancer/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">

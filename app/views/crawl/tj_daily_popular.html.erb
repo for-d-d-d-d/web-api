@@ -22,8 +22,8 @@
     </thead>
     <tbody>
         <% (1..100).to_a.each do |i| %>
-            <% symd = @syy + @smm + @sdd %>
-            <% eymd = @eyy + @emm + @edd %>
+            <% symd = @syy.to_s + @smm.to_s + @sdd.to_s %>
+            <% eymd = @eyy.to_s + @emm.to_s + @edd.to_s %>
             <% db = DailyTjPopularRank.where(:symd => symd, :eymd => eymd) %>
             <%# song_num = eval("@result#{i}_2") %>
             <% if db.all.count != 0 %>
