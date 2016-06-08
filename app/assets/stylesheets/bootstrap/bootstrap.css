@@ -6567,10 +6567,10 @@ button.close {
 
 
 
-.col-xs_5,
-.col-sm_5,
-.col-md_5,
-.col-lg_5 {
+.col-xs_5, .col-xs_10, .col-xs_15, .col-xs_20, .col-xs_25,
+.col-sm_5, .col-sm_10, .col-sm_15, .col-sm_20, .col-sm_25, 
+.col-md_5, .col-md_10, .col-md_15, .col-md_20, .col-md_25, 
+.col-lg_5, .col-lg_10, .col-lg_15, .col-lg_20, .col-lg_25 {
     position: relative;
     min-height: 1px;
     padding-right: 10px;
@@ -6581,9 +6581,41 @@ button.close {
     width: 20%;
     float: left;
 }
+.col-xs_10 {
+    width: 40%;
+    float: left;
+}
+.col-xs_15 {
+    width: 60%;
+    float: left;
+}
+.col-xs_20 {
+    width: 80%;
+    float: left;
+}
+.col-xs_25 {
+    width: 100%;
+    float: left;
+}
 @media (min-width: 768px) {
-.col-sm_5 {
+    .col-sm_5 {
         width: 20%;
+        float: left;
+    }
+    .col-sm_10 {
+        width: 40%;
+        float: left;
+    }
+    .col-sm_15 {
+        width: 60%;
+        float: left;
+    }
+    .col-sm_20 {
+        width: 80%;
+        float: left;
+    }
+    .col-sm_25 {
+        width: 100%;
         float: left;
     }
 }
@@ -6592,10 +6624,42 @@ button.close {
         width: 20%;
         float: left;
     }
+    .col-md_10 {
+        width: 40%;
+        float: left;
+    }
+    .col-md_15 {
+        width: 60%;
+        float: left;
+    }
+    .col-md_20 {
+        width: 80%;
+        float: left;
+    }
+    .col-md_25 {
+        width: 100%;
+        float: left;
+    }
 }
 @media (min-width: 1200px) {
     .col-lg_5 {
         width: 20%;
+        float: left;
+    }
+    .col-lg_10 {
+        width: 40%;
+        float: left;
+    }
+    .col-lg_15 {
+        width: 60%;
+        float: left;
+    }
+    .col-lg_20 {
+        width: 80%;
+        float: left;
+    }
+    .col-lg_25 {
+        width: 100%;
         float: left;
     }
 }

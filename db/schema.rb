@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20160603162717) do
     t.text     "lyrics"
     t.string   "writer"
     t.string   "composer"
+    t.string   "youtube"
     t.text     "jacket"
     t.integer  "song_tjnum"
     t.integer  "song_num"

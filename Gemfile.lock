@@ -144,6 +144,8 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails-observers (0.1.2)
+      activemodel (~> 4.0)
     railties (4.2.5)
       actionpack (= 4.2.5)
       activesupport (= 4.2.5)
@@ -195,6 +197,8 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    yt (0.25.37)
+      activesupport
 
 PLATFORMS
   ruby
@@ -215,6 +219,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-google-oauth2
   rails (= 4.2.5)
+  rails-observers
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   seed_dump
@@ -224,6 +229,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+  yt (~> 0.25.5)
 
 BUNDLED WITH
    1.12.5

@@ -27,7 +27,17 @@ class Song < ActiveRecord::Base
             puts "성공!"
         end
     end
-
+    
+    def fix2
+        s = youtube
+        puts self.title
+        if s == false
+            puts "실패!"
+        else
+            puts "성공!"
+        end
+    end
+    
     def crawl_song
         num = self.song_num
         puts "song_num = " + self.song_num.to_s

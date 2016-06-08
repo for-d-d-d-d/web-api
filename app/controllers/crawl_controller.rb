@@ -91,6 +91,22 @@ class CrawlController < ApplicationController
         # render text: "finished"
         redirect_to :back
     end
+    
+    def youtube
+        videos = Yt::Collections::Videos.new
+        
+        Song.all.each do |s|
+            a = videos.where(q: "[MV] " + s.title + s.artist.name).first
+            unless a.nil?
+                s.youtube = a.id
+            else
+                s.youtube = ""
+            end
+            s.save
+        end
+        
+        redirect_to :back
+    end
 
     ############################################################################################################
     # Method Name : songs_do

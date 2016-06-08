@@ -93,6 +93,25 @@ class HomeController < ApplicationController
         render json: @song
     end
 
+    def this_song2
+        @song = Song.find(params[:song_id])
+        @songs = @song.album.songs
+        artistName = Array.new
+        @songs.each do |s|
+            # @songs << s.artist.name
+            artistName << s.artist.name
+            # s = s.to_json
+            # s['artistname'] = artistName.to_s
+        end
+        
+        render json: {Song: @song, 
+                    Album: @song.album, 
+                    Artist: @song.artist,
+                    Songs: @songs,
+                    Artists: artistName
+                    }
+    end
+
     def rank
     end
 
@@ -106,4 +125,19 @@ class HomeController < ApplicationController
         end
 
     end
+    
+    def old_mylist
+        # @mylists
+        @songs = Song.all
+        @song = @songs
+        
+    end
+    
+    def youtube
+        videos = Yt::Collections::Videos.new
+        a = videos.where(q: "시간을 달려서").first.id
+        render text: a
+    end
+    
+    
 end

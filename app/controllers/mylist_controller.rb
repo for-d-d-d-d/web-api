@@ -7,6 +7,14 @@ class MylistController < ApplicationController
         m.save
         redirect_to :back
     end
+    
+    def add_song_ajax
+        m = Mylist.new
+        m.title = params[:title]
+        m.user_id = current_user.id
+        m.save
+        flash[:mylist_save] = "저장했다고래! ><"
+    end
 
     def delete_list
         m = Mylist.find(params[:id])

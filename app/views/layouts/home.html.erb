@@ -32,6 +32,8 @@
 
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script>
+        
+        
         (function($) {
             $.fn.myModal = function(k) {
         
@@ -41,36 +43,36 @@
         
                 $.ajax({
                     method: "POST",
-                    url: "/home/this_song",
+                    url: "/home/this_song2",
                     data: { song_id: id },
                     dataType: "json"
                 })
-                .done(function( msg ) {
-                    var title         = msg[4];
-                    var tjnum         = msg[12];
-                    var songJacket    = msg[11];
-                    var artistName    = msg[16];
-                    var albumName     = msg[18];
-                    var albumJacket   = msg[19];
-                    var release       = msg[20];
-                    var agency        = msg[22];
-                    var publisher     = msg[21];
+                .done(function( json ) {
+                    var song = json.Song
+                    var songs = json.Songs
+                    var artist = json.Artist
+                    var artists = json.Artists
+                    var album = json.Album
+                    
+                    var title         = song.title;
+                    var tjnum         = song.song_tjnum;
+                    var songJacket    = song.jacket;
+                    var artistName    = artist.name;
+                    var albumName     = album.title;
+                    var albumJacket   = album.jacket;
+                    var release       = album.released_date;
+                    var agency        = album.agency;
+                    var publisher     = album.publisher;
+                    var youtube     = song.youtube;
         
-                    var i = msg[24];
+                    var i = songs.length;
+                    var j = 0;
                     //   for(k=0, k<i, k++){
                     //       var eval("in_song" + k+1) = msg[23][0];
                     //       var eval("in_artist" + k+1) = msg[23][1];
                     //   }
-                    var in_song1 = msg[23][0];
-                    var in_artist1 = msg[23][1];
-                    var in_song2 = msg[23][3];
-                    var in_artist2 = msg[23][4];
-                    var in_song3 = msg[23][6];
-                    var in_artist3 = msg[23][7];
-                    var in_song4 = msg[23][9];
-                    var in_artist4 = msg[23][10];
         
-                    var lyrics = msg[8];
+                    var lyrics = song.lyrics;
         
                     // jacket-background
                     $("#md_bg_img_container").empty('');
@@ -79,6 +81,10 @@
                     // jacket-album
                     $("#md-header_albumImg").empty('');
                     $("#md-header_albumImg").attr("src", songJacket);
+                    
+                    // youtube
+                    $("#md_song_youtube").empty('');
+                    $("#md_song_youtube").attr("src", "https://www.youtube.com/embed/" + youtube);
                     
                     // title
                     $("#md-song_title").empty('');
@@ -112,42 +118,16 @@
                     $("#count_count").empty('');
                     $("#count_count").append(i);
                     
-                    var t1 = $("#md_song_album_in_title1"); var a1 = $("#md_song_album_in_artist1");
-                    var t2 = $("#md_song_album_in_title2"); var a2 = $("#md_song_album_in_artist2");
-                    var t3 = $("#md_song_album_in_title3"); var a3 = $("#md_song_album_in_artist3");
-                    var t4 = $("#md_song_album_in_title4"); var a4 = $("#md_song_album_in_artist4");
-                    // album.songs.artist.name (1)
-                    t1.empty(''); t1.append("1. " + in_song1);
-                    a1.empty(''); a1.append("| " + in_artist1);
-        
-                    // album.songs.artist.name (2)
-                    if ( in_song2 != undefined){
-                        t2.empty(''); t2.append("2. " + in_song2);
-                        a2.empty(''); a2.append("| " + in_artist2);
-                        if ( in_song3 != undefined){
-                            // album.songs.artist.name (3)
-                            t3.empty(''); t3.append("3. " + in_song3);
-                            a3.empty(''); a3.append("| " + in_artist3);
-                            if ( in_song4 != undefined){
-                                // album.songs.artist.name (4)
-                                t4.empty(''); t4.append("4. " + in_song4);
-                                a4.empty(''); a4.append("| " + in_artist4);  
-                            } else {
-                                t4.empty(''); t4.append('');
-                                a4.empty(''); a4.append("<center>더 이상 곡이 없다고래!</center>");  
-                            };
-                        } else {
-                            t3.empty(''); t3.append(''); t4.empty(''); a4.empty('');
-                            a3.empty(''); a3.append("<center>더 이상 곡이 없다고래!</center>");
-                        };
-                    } else {
-                        t2.empty(''); t2.append(''); t3.empty(''); a3.empty(''); t4.empty(''); a4.empty('');
-                        a2.empty(''); a2.append("<center>더 이상 곡이 없다고래!</center>");
-                    };
+                    $("#md_song_album_in_title1").empty('')
                     
-        
+                    $.each(songs, function(index, item) {
+                        // alert(item.title);
+                        j = index + 1;
+                        //  $("#md_song_album_in_title1").empty('');
+                         $("#md_song_album_in_title1").append(j + '. ' + item.title + '<span class="album_singer">' + artists[index] + '</span><br>'); 
+                        //  $("#md_song_album_in_artist" + j).empty(''); $("#md_song_album_in_title" + j).append();
+                    });
                     
-        
                     // lyrics
                     $("#md_song_lyrics").empty('');
                     $("#md_song_lyrics").append("<pre id=\"lyrics_tag\">" + lyrics + "</pre>");
@@ -158,6 +138,7 @@
         
         
         })(jQuery);
+        
     </script>
     <!-- Custom Fonts -->
     <link href="https://blackrockdigital.github.io/startbootstrap-freelancer/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">

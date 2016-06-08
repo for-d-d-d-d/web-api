@@ -25,7 +25,7 @@
             <% symd = @syy.to_s + @smm.to_s + @sdd.to_s %>
             <% eymd = @eyy.to_s + @emm.to_s + @edd.to_s %>
             <% db = DailyTjPopularRank.where(:symd => symd, :eymd => eymd) %>
-            <%# song_num = eval("@result#{i}_2") %>
+            <% num = eval("@result#{i}_2") %>
             <% if db.all.count != 0 %>
                 <% if db.where(:song_rank => i).take != nil %>
                     <% song = db.where(:song_rank => i).take %>

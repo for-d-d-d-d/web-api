@@ -1,19 +1,250 @@
-<%= render partial: "home/home_layouts/home_header" %>
+<%= render partial: "home/home_layouts/navbar" %>
 
 <% if params[:id].nil? %>
-<% ml = current_user.mylists.where(title: "Default").first %>
+<%# ml = current_user.mylists.where(title: "Default").first %>
 <% else %>
-<% ml = Mylist.find(params[:id]) %>
+<%# ml = Mylist.find(params[:id]) %>
 <% end %>
 
+<!-- 헤더 공간 차지용  -->
+<div style="height:60px; margin-bottom:50px;"></div>
+<!-- //헤더 공간 차지용  -->
+<div class="container header_wrap">
+    <div class="col-sm-12 img_background"></div>
+    <div class="container non_img_background">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8" style="margin-top: -500px;">
+            <div class="col-sm-12" style="height:400px">
+                <div id="profile_box" class="col-sm-12" style="padding:7% 0% 0% 0%; height:60%">
+                    <center>
+                        <img id="my_profile" src="/images/profile-pics/temp_profile.jpg">
+                        <div>
+                            <p>노혜빈</p>
+                        </div>
+                    </center>
+                </div>
+                <div class="col-sm-12" style="padding:1% 15%; height:28%;">
+                    <div class="col-sm-4" style="border-right: 1px solid rgba(255, 255, 255, 0.75);">
+                        <center>
+                            <p class="profile_count">34</p>
+                            <p class="profile_counter">불러보고 싶은 곡</p>
+                        </center>
+                    </div>
+                    <div class="col-sm-4" style="border-right: 1px solid rgba(255, 255, 255, 0.75);">
+                        <center>
+                            <p class="profile_count">99</p>
+                            <p class="profile_counter">활동 레벨</p>
+                        </center>
+                    </div>
+                    <div class="col-sm-4">
+                        <center>
+                            <p class="profile_count">34</p>
+                            <p class="profile_counter">인기 댓글</p>
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 tab_wrapper">
+                <div class="col-sm-3 active_tab">
+                    <center><p id="tab_mydata">선곡분석통계</p></center>
+                </div>
+                <div class="col-sm-3">
+                    <center><p id="tab_mylists">마이리스트 <span>(10)</span></p></center>
+                </div>
+                <div class="col-sm-3">
+                    <center><p id="tab_myrates">불러봤어요</p></center>
+                </div>
+                <div class="col-sm-3">
+                    <center><p id="tab_mycomments">코멘트</p></center>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+<div style="background:#f9f9f9; margin-top: -6px;">
+    <div class="container">
+        <div class="col-sm-12">
+            <div class="col-md_5"></div>
+            <div class="col-md_20">
+                <div class="col-md-12">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
+                        
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-11">
+                        <div id="seleted_filter_area"></div>
+                    </div>
+                    <div class="col-md-1">
+                        <img id="rower_list" class="rower" src="">
+                        <img id="rower_card" class="rower" src="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="col-md_5 show_box">
+                <% i = 1 %>
+                <%# current_user.mylists.each do |m| %>
+                <a href="/home/mylist/<%#= m.id %>"><h1> <%= i %> <%#= m.title %><%= "default" %> </h1></a> <br>
+                <a href="/mylist/delete_list?id=<%#= m.id %>"> 삭제 </a>
+                <% i += 1 %>
+                <%# end %>
+            </div>
+            <div class="mylist_container col-md_20">
+                <% 25.times.each do |x| %>
+                <% is_row = x+1 %>
+                <%= "<div class=\"row\">" if is_row % 5 == 1 %>
+                <div class="col-md_5">
+                    <%= render 'home/song_card_general', layout: false, :locals => {:img_path => Song.first.jacket, tag: 0, title: Song.first.title, singer: Song.first.artist.name, number: Song.first.song_tjnum, id: Song.first.id} %>
+                </div>
+                <%= "</div>" if is_row % 5 == 0 %>
+                <% x += 1 %>
+                <% end %>
+            </div>
+            <!--<div class="mylist_container col-md_20">-->
+            <!--    <div class="mylist_contents_container" style="text-align:center; margin-bottom:70px;">-->
+            <!--        <img src="/images/icon/profile_photo.png" width="60" height="60" style="background-color:black;"/>-->
+            <!--        <% if user_signed_in? %>-->
+            <!--        <div><h4><%= current_user.name %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트 : <%= ml.title %></span></h4></div>-->
+            <!--        <% else %>-->
+            <!--        <div><h4><%= "로그인하셈!" %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>-->
+            <!--        <% end %>-->
+            <!--    </div>-->
+            
+            <!--    <div class="mylilst_contents_container">-->
+            <!--        <div class="col-md-1 mylist_contents"> No </div>-->
+            <!--        <div class="col-md-2 mylist_contents"> 노래방 번호 </div>-->
+            <!--        <div class="col-md-5 mylist_contents"> 제목 </div>-->
+            <!--        <div class="col-md-2 mylist_contents"> 가수 </div>-->
+            <!--        <div class="col-md-2 mylist_contents"> 고래 카운트 </div>-->
+            
+            <!--    </div>-->
+            <!--    <hr class="list_devider">-->
+            
+            <!--    <% i = 1 %>-->
+                <%# current_user.mylists.each do |ml| %>
+                <!-- <div class="mylilst_contents_container">
+            <!--    <div class="col-md-3 mylist_contents"> Mylist : </div>-->
+                <div class="col-md-9 mylist_contents"> <%#= ml.title %> </div>
+            <!--</div> -->
+            
+            <!--    <% @song.each do |s| %>-->
+                <% ss = s#.song %>
+            <!--    <div class="mylilst_contents_container">-->
+            <!--        <div class="col-md-1 mylist_contents"> <%= i %> </div>-->
+            <!--        <div class="col-md-2 mylist_contents"> <%= ss.song_tjnum %> </div>-->
+            <!--        <div class="col-md-5 mylist_contents"> <%= ss.title %> </div>-->
+            <!--        <div class="col-md-2 mylist_contents"> <%= ss.artist.name %> </div>-->
+            <!--        <div class="col-md-2 mylist_contents">-->
+            <!--            <div class="col-md-6"><%= (1000..9999).to_a.sample %></div>-->
+            <!--            <div class="col-md-6">-->
+            <!--                <a href="/mylist/delete?id=<%= s.id %>"> 삭제 </a>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--    </div>-->
+            <!--    <hr class="list_devider">-->
+            <!--    <% i += 1 %>-->
+            <!--    <% end %>-->
+                <%# end %>
+            
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
 <style media="screen">
+.show_box{
+    border:3px solid;
+    /*padding:0;*/
+    /*height:100px;*/
+}
+.header_wrap{
+    width:100%;
+    padding:0;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+}
+.img_background{
+    width:100%;
+    height:500px;
+    background-image:url('http://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/080/810/919/80810919_1461028312733_1_600x600.JPG');
+    background-size:cover;
+    background-position:center;
+    z-index: -1;
+    filter: blur(10px);
+    -ms-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -webkit-filter: blur(10px);
+}
+.non_img_background{
+    height:500px;
+}
+#my_profile{
+    width: 130px;
+    height: auto;
+    border: 3px solid #fff;
+    border-radius: 100%;
+    box-shadow: 2px 2px 6px;
+}
+#profile_box p{
+    font-size: 20px;
+    font-family: 나눔바른고딕;
+    color: #fff;
+    text-shadow: 1px 1px 5px #000;
+    margin-top: 10px;
+}
+.profile_count{
+    font-size: 25px;
+    font-family: 나눔바른고딕;
+    color: #fff;
+    text-shadow: 1px 1px 5px #000;
+    margin-top: 10px;
+}
+.profile_counter{
+    font-size: 15px;
+    font-family: 나눔바른고딕;
+    text-shadow: 1px 1px 5px #000;
+    color: #fff;
+    margin-bottom: 5px;
+}
+.tab_wrapper{
+    padding-top: 43px;
+}
+.tab_wrapper > div{
+    /*border-bottom: 3px solid red;*/
+    padding-top: 10px;
+    /*background: rgba(255, 255, 255, 0.3);*/
+}
+.tab_wrapper p{
+    font-size: 20px;
+    font-family: 나눔바른고딕;
+    color: #fff;
+    text-shadow: 1px 1px 5px #000;
+}
+.active_tab{
+    /*background: rgba(0, 0, 0, 0.3) !important;*/
+    border-bottom: 7px solid red !important;
+}
+.active_tab p{
+    color: #fff !important;
+    margin-bottom: 7px !important;
+}
+
+
+
+
+
+
 .mylist_container{
+    padding : 0px 0px 40px 5px;
+    border:1px solid black !important;
     border-radius: 10px;
-    width:50%;
-    border-style: solid;
-    border-width: 1px!important;
-    border-color: black!important;
-    padding : 30px 20px 40px 20px;
+    /*width:50%;*/
+    /*border-style: solid;*/
+    /*border-width: 1px!important;*/
+    /*border-color: black!important;*/
 }
 
 .mylist_contents{
@@ -32,72 +263,7 @@
 }
 </style>
 
-<!-- 헤더 공간 차지용  -->
-<div style="height:60px; margin-bottom:50px;"></div>
-<!-- 헤더 공간 차지용  -->
 
-
-<% i = 1 %>
-<div class="col-md-3">
-    <% current_user.mylists.each do |m| %>
-    <a href="/home/mylist/<%= m.id %>"><h1> <%= i %> <%= m.title %> </h1></a> <br>
-    <a href="/mylist/delete_list?id=<%= m.id %>"> 삭제 </a>
-    <% i += 1 %>
-    <% end %>
-</div>
-
-
-<div class="mylist_container col-md-6">
-    <div class="mylist_contents_container" style="text-align:center; margin-bottom:70px;">
-        <img src="/images/icon/profile_photo.png" width="60" height="60" style="background-color:black;"/>
-        <% if user_signed_in? %>
-        <div><h4><%= current_user.name %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트 : <%= ml.title %></span></h4></div>
-        <% else %>
-        <div><h4><%= "로그인하셈!" %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
-        <% end %>
-    </div>
-
-    <div class="mylilst_contents_container">
-        <div class="col-md-1 mylist_contents"> No </div>
-        <div class="col-md-2 mylist_contents"> 노래방 번호 </div>
-        <div class="col-md-5 mylist_contents"> 제목 </div>
-        <div class="col-md-2 mylist_contents"> 가수 </div>
-        <div class="col-md-2 mylist_contents"> 고래 카운트 </div>
-
-    </div>
-    <hr class="list_devider">
-
-    <% i = 1 %>
-    <%# current_user.mylists.each do |ml| %>
-    <!-- <div class="mylilst_contents_container">
-    <div class="col-md-3 mylist_contents"> Mylist : </div>
-    <div class="col-md-9 mylist_contents"> <%= ml.title %> </div>
-</div> -->
-
-<% ml.songs.each do |s| %>
-<% ss = s.song %>
-<div class="mylilst_contents_container">
-    <div class="col-md-1 mylist_contents"> <%= i %> </div>
-    <div class="col-md-2 mylist_contents"> <%= ss.song_tjnum %> </div>
-    <div class="col-md-5 mylist_contents"> <%= ss.title %> </div>
-    <div class="col-md-2 mylist_contents"> <%= ss.artist.name %> </div>
-    <div class="col-md-2 mylist_contents">
-        <div class="col-md-6">
-            <%= (1000..9999).to_a.sample %>
-        </div>
-        <div class="col-md-6">
-            <a href="/mylist/delete?id=<%= s.id %>"> 삭제 </a>
-        </div>
-    </div>
-
-</div>
-<hr class="list_devider">
-<% i += 1 %>
-<% end %>
-<%# end %>
-
-</div>
-<div class="col-md-3"></div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->

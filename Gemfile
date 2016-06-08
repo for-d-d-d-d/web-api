@@ -1,5 +1,13 @@
 source 'https://rubygems.org'
 
+gem 'rails-observers'
+# gem 'autoprefixer-rails'
+# gem 'google-api-client', '0.9'
+# gem 'trollop'
+gem 'yt', '~> 0.25.5'
+# gem 'youtube_it'
+# gem 'youtube_search'
+
 gem 'delayed_job_active_record'
 
 gem 'omniauth'
