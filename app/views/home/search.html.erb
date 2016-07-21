@@ -1,305 +1,191 @@
+<%= render partial: "home/song_card_generate_renewel_css", layout: false %>
 <style>
-
-
+body{
+    background-color:#313234 !important;
+}
 .search_border{
     border-width:1px;
     border-color:red;
 }
-
 .table_left{
     text-align:left;
 }
+.sort_group{
+    font-size:20px;
+    font-family: 나눔바른고딕;
+}
+.sort_group-span{
+    margin-right:3%;
+}
+.sort_group-tab{
+    margin: 0% 1%;
+    padding: 0% 2%;
+    text-decoration: none !important;
+    cursor: pointer;
+    display: inline-block;
+}
+.selected{
+    width: 0px;
+    height: 0px;
+    margin-top: 6px;
+    margin-left: 35%;
+    margin-bottom: -8px;
+    border-right: 13px solid transparent;
+    border-bottom: 13px solid #DD1A1E;
+    transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+}
+.select_underline{
+    width: 230%;
+    margin-left: -65%;
+    height: 5px;
+    background-color: #DD1A1E;
+}
+.baseline{
+    width: 230%;
+    margin-top: 11px;
+    margin-left: -65%;
+    height: 0px;
+    background-color: #DD1A1E;
+    -webkit-transition: height 0.3s;
+    -moz-transition: height 0.3s;
+    transition: height 0.12s ease;
+}
+.sort_group-tab:hover > .baseline{
+    height: 5px;
+}
+#divide_section-hr{
+    margin-top: 0px;
+    border-color: #5a5a5a;
+    margin-bottom: 15px;
+}
+.result_counter{
+    font-size: 55px;
+    font-family: 나눔바른고딕;
+    color:#999999;
+    margin-left: -15px;
+}
 </style>
+
 <!-- header 가리는 부분 -->
 <div style="height:120px;">
 </div>
 
-
 <!-- Default panel contents -->
+<div class="container" style="padding:0">
+    <p style="font-size:22px;font-family: 나눔바른고딕;"><span style="font-size:24px; color:#989898;"><%= params[:query] %></span>에 대한 검색결과 입니다.</p>
+    <br>
+    <span class="sort_group sort_group-span">Sorted by</span>
+    <a id="tab-resultTitle" class="sort_group sort_group-tab">곡명<div id="rtTriangle" class="sort_group-triangle selected"></div><div id="rtUnderline" class="sort_group-underline select_underline"></div></a>
+    <a id="tab-resultArtist" class="sort_group sort_group-tab">가수<div id="raTriangle" class="sort_group-triangle"></div><div id="raUnderline" class="sort_group-underline baseline"></div></a>
+    <a id="tab-resultLyrics" class="sort_group sort_group-tab">가사<div id="rlTriangle" class="sort_group-triangle"></div><div id="rlUnderline" class="sort_group-underline baseline"></div></a>
+    <!--<br><br>-->
+    <hr id="divide_section-hr">
+    
+</div>
 
+<div class="container" id="show_box-resultTitle">
+    <span class="result_counter"><%= @song_searched_By_title.count %></span>
+    <div class="row">
+        <% @song_searched_By_title.each do |s| %>
+            <% next if s.artist.name == "Various Artist" %>
+            <div class="col-md_5" id="card-<%= s.id %>" style="margin-bottom:30px;">
+                <%= render 'home/song_card_general_0707', layout: false, :locals => {:img_path => s.jacket, tag: 0, title: s.title, singer: s.artist.name, number: s.song_tjnum, id: s.id} %>
+            </div>
+        <% end %>
+    </div>
+</div>
 
+<div class="container" id="show_box-resultArtist" style="display:none;">
+    <span class="result_counter"><%= @song_searched_By_artist.count %></span>
+    <div class="row">
+        <% @song_searched_By_artist.each do |s| %>
+            <% next if s.artist.name == "Various Artist" %>
+            <div class="col-md_5" id="card-<%= s.id %>" style="margin-bottom:30px;">
+                <%= render 'home/song_card_general_0707', layout: false, :locals => {:img_path => s.jacket, tag: 0, title: s.title, singer: s.artist.name, number: s.song_tjnum, id: s.id} %>
+            </div>
+        <% end %>
+    </div>
+</div>
+
+<div class="container" id="show_box-resultLyrics" style="display:none;">
+    <span class="result_counter"><%= @song_searched_By_lyrics.count %></span>
+    <div class="row">
+        <% @song_searched_By_lyrics.each do |s| %>
+            <% next if s.artist.name == "Various Artist" %>
+            <div class="col-md_5" id="card-<%= s.id %>" style="margin-bottom:30px;">
+                <%= render 'home/song_card_general_0707', layout: false, :locals => {:img_path => s.jacket, tag: 0, title: s.title, singer: s.artist.name, number: s.song_tjnum, id: s.id} %>
+            </div>
+        <% end %>
+    </div>
+</div>
+
+<script>
+    $("#tab-resultTitle").click(function(){
+        //alert("tab-resultTitle");
+        $(".sort_group-triangle").removeClass("selected");
+        $("#rtTriangle").addClass("selected");
+        
+        $(".sort_group-underline").removeClass("select_underline");
+        $(".sort_group-underline").addClass("baseline");
+        $("#rtUnderline").removeClass("baseline");
+        $("#rtUnderline").addClass("select_underline");
+        
+        $("#show_box-resultArtist").hide();
+        $("#show_box-resultLyrics").hide();
+        $("#show_box-resultTitle").show();
+        
+    });
+    
+    $("#tab-resultArtist").click(function(){
+        //alert("tab-resultArtist");
+        $(".sort_group-triangle").removeClass("selected");
+        $("#raTriangle").addClass("selected");
+        
+        $(".sort_group-underline").removeClass("select_underline");
+        $(".sort_group-underline").addClass("baseline");
+        $("#raUnderline").removeClass("baseline");
+        $("#raUnderline").addClass("select_underline");
+        
+        $("#show_box-resultTitle").hide();
+        $("#show_box-resultLyrics").hide();
+        $("#show_box-resultArtist").show();
+        
+    });
+    
+    $("#tab-resultLyrics").click(function(){
+        //alert("tab-resultLyrics");
+        $(".sort_group-triangle").removeClass("selected");
+        $("#rlTriangle").addClass("selected");
+        
+        $(".sort_group-underline").removeClass("select_underline");
+        $(".sort_group-underline").addClass("baseline");
+        $("#rlUnderline").removeClass("baseline");
+        $("#rlUnderline").addClass("select_underline");
+        
+        $("#show_box-resultTitle").hide();
+        $("#show_box-resultArtist").hide();
+        $("#show_box-resultLyrics").show();
+        
+    });
+</script>
 <!-- Table -->
 
 <center> <p style="color:red;"><%= flash[:error] %></p> </center>
 
-<div style="padding:0px 200px 0px 200px">
-    <% unless @song_title.empty? %>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span></div>
-        <table class="table">
-            <tr style="border-bottom: solid 1px;">
-                <th class="table_left" style="width:5%">
-                    No
-                </th>
-
-                <th class="table_left" style="width:30%">
-                    곡명
-                </th>
-
-                <th class="table_left" style="width:20%">
-                    아티스트
-                </th>
-                <th class="table_left" style="width:5%">
-                    좋아요
-                </th>
-                <th class="table_left" style="width:5%">
-                    추가하기
-                </th>
-            </tr>
-
-            <% i = 1 %>
-            <% @song_title.each do |s| %>
-            <tr>
-                <td>
-                    <%= i %>
-                    <% i += 1 %>
-                </td>
-
-                <td>
-                    <%= s.title %>
-                </td>
-
-                <td>
-                    <%= s.artist.name %>
-                </td>
-                <td>
-                    <%= (0..4000).to_a.sample %>
-                </td>
-                <td>
-                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
-                </td>
-            </tr>
-            <% end %>
-        </table>
-    </div>
-
-    <% i = 1 %>
-
-    <% else %>
-    <div class="panel panel-default">
-        <div class="panel-heading">곡명으로 검색 <span style="color:red;"> (<%= @song_title.count %>) </span></div>
-        <table class="table">
-            <tr style="border-bottom: solid 1px;">
-                <th class="table_left" style="width:5%">
-                    No
-                </th>
-
-                <th class="table_left" style="width:30%">
-                    곡명
-                </th>
-
-                <th class="table_left" style="width:20%">
-                    아티스트
-                </th>
-                <th class="table_left" style="width:5%">
-                    좋아요
-                </th>
-                <th class="table_left" style="width:5%">
-                    추가하기
-                </th>
-            </tr>
-
-            <% i = 1 %>
-
-            <tr>
-                <td colspan="5">
-                    곡명 검색 결과가 없습니다
-                </td>
-            </tr>
-
-        </table>
-    </div>
-    <% end %>
-
-    <hr class="search_border">
-    <br>
-
-    <% unless @song_artist.empty? %>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">아티스트명으로 검색 <span style="color:red;"> (<%= @song_artist.count %>) </span></div>
-        <table class="table">
-            <tr style="border-bottom: solid 1px;">
-                <th class="table_left" style="width:5%">
-                    No
-                </th>
-
-                <th class="table_left" style="width:30%">
-                    곡명
-                </th>
-
-                <th class="table_left" style="width:20%">
-                    아티스트
-                </th>
-                <th class="table_left" style="width:5%">
-                    좋아요
-                </th>
-                <th class="table_left" style="width:5%">
-                    추가하기
-                </th>
-            </tr>
-
-            <% i = 1 %>
-            <% @song_artist.each do |s| %>
-            <tr>
-                <td>
-                    <%= i %>
-                    <% i += 1 %>
-                </td>
-
-                <td>
-                    <%= s.title %>
-                </td>
-
-                <td>
-                    <%= s.artist.name %>
-                </td>
-                <td>
-                    <%= (0..4000).to_a.sample %>
-                </td>
-                <td>
-                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
-                </td>
-            </tr>
-            <% end %>
-        </table>
-    </div>
-
-    <% i = 1 %>
-
-    <% else %>
-    <div class="panel panel-default">
-        <div class="panel-heading">아티스트명으로 검색 <span style="color:red;"> (<%= @song_artist.count %>) </span></div>
-        <table class="table">
-            <tr style="border-bottom: solid 1px;">
-                <th class="table_left" style="width:5%">
-                    No
-                </th>
-
-                <th class="table_left" style="width:30%">
-                    곡명
-                </th>
-
-                <th class="table_left" style="width:20%">
-                    아티스트
-                </th>
-                <th class="table_left" style="width:5%">
-                    좋아요
-                </th>
-                <th class="table_left" style="width:5%">
-                    추가하기
-                </th>
-            </tr>
-
-            <% i = 1 %>
-
-            <tr>
-                <td colspan="5">
-                    아티스트 검색 결과가 없습니다
-                </td>
-            </tr>
-
-        </table>
-    </div>
-    <% end %>
+<style>
+    .card_img_cover{
+        margin-top: -181px !important;
+        height: 181px !important;
+    }
+    .card_img_cover2{
+        margin-top: -181px !important;
+        height: 181px !important;
+    }
+</style>
 
 
-    <hr class="search_border">
-    <br>
-
-    <% unless @song_lyrics.empty? %>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">가사로 검색 <span style="color:red;"> (<%= @song_lyrics.count %>) </span></div>
-        <table class="table">
-            <tr style="border-bottom: solid 1px;">
-                <th class="table_left" style="width:5%">
-                    No
-                </th>
-
-                <th class="table_left" style="width:30%">
-                    곡명
-                </th>
-
-                <th class="table_left" style="width:20%">
-                    아티스트
-                </th>
-                <th class="table_left" style="width:5%">
-                    좋아요
-                </th>
-                <th class="table_left" style="width:5%">
-                    추가하기
-                </th>
-            </tr>
-
-            <% i = 1 %>
-            <% @song_lyrics.each do |s| %>
-            <tr>
-                <td>
-                    <%= i %>
-                    <% i += 1 %>
-                </td>
-
-                <td>
-                    <%= s.title %>
-                </td>
-
-                <td>
-                    <%= s.artist.name %>
-                </td>
-                <td>
-                    <%= (0..4000).to_a.sample %>
-                </td>
-                <td>
-                    <a href="/mylist/add?song_id=<%= s.id %>&list_id=<%= current_user.mylists.first.id %>">추가하기</a>
-                </td>
-            </tr>
-            <% end %>
-        </table>
-    </div>
-
-    <% i = 1 %>
-
-    <% else %>
-    <div class="panel panel-default">
-        <div class="panel-heading">가사로 검색 <span style="color:red;"> (<%= @song_lyrics.count %>) </span></div>
-        <table class="table">
-            <tr style="border-bottom: solid 1px;">
-                <th class="table_left" style="width:5%">
-                    No
-                </th>
-
-                <th class="table_left" style="width:30%">
-                    곡명
-                </th>
-
-                <th class="table_left" style="width:20%">
-                    아티스트
-                </th>
-                <th class="table_left" style="width:5%">
-                    좋아요
-                </th>
-                <th class="table_left" style="width:5%">
-                    추가하기
-                </th>
-            </tr>
-
-            <% i = 1 %>
-
-            <tr>
-                <td colspan="5">
-                    가사 검색 결과가 없습니다.
-                </td>
-
-            </tr>
-
-        </table>
-    </div>
-    <% end %>
-
-
-    <hr class="search_border">
-    <br>
-
-</div>
+<%= render partial: "home/home_layouts/song_card_modal_black", layout: false %>

@@ -1,0 +1,9 @@
+<div class="layerWrapper" onclick="$(this).myModal(<%= locals[:id].to_i %>);" data-toggle="modal" data-target="#SongDetailModal">
+    <img src="<%= locals[:img_path] %>" class="" style="width: 100%; height: auto;">
+    <div class="cardLayer cardLayer_gradient"></div>
+    <div class="cardLayer cardLayer_txt">
+        <div class="overflowCutter"><p class="artist"><%= locals[:singer] %></p></div>
+        <div class="overflowCutter"><p class="title"><%= locals[:title] %></p></div>
+    </div>
+    <div class="cardLayer cardLayer_hoverRed"><%#= locals[:number] %></div>
+</div>

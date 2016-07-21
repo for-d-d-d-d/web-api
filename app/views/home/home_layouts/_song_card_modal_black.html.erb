@@ -96,7 +96,7 @@
                     <div class="col-sm-12" style="margin-top:30px;">
                         <div class="col-md-7" style="padding:0">
                             <div class="col-md-12">
-                                <div class="card">
+                                <div class="card" id="js_cd">
                                     <div class="card-header ch-alt">
                                         <h2>뮤직비디오</h2>
                                     </div>
@@ -127,7 +127,7 @@
                                         <div class="card-header ch-alt">
                                             <h2>수록곡 (<span id="count_count"></span>)</h2>
                                         </div>
-                                        <div class="card-body card-padding" style="overflow:auto;height:171px;//min-height: 171px; max-height:">
+                                        <div class="card-body card-padding album_card_body" style="overflow:auto;height:171px;//min-height: 171px;">
                                             <div class="pmo-contact">
                                                 <p class="md_card-album2"><span id="md_song_album_in_title1"></span> <span class="album2_span" id="md_song_album_in_artist1"></span></p>
                                                 <p class="md_card-album2"><span id="md_song_album_in_title2"></span> <span class="album2_span" id="md_song_album_in_artist2"></span></p>
@@ -227,7 +227,7 @@
 </div>
 <link href="/css/mediaelementplayer.css" rel="stylesheet">
 <script>
-    $(".card").hover(function(){
+    $("#jscd").hover(function(){
         var head = $(this).children(".ch-alt");
         head.attr("style","background-color:rgb(244, 67, 54) !important; -webkit-transition: all 0.25s; -moz-transition: all 0.25s; transition: all 0.25s;");
         head.children("h2").attr("style","color:#ffffff; -webkit-transition: all 0.25s; -moz-transition: all 0.25s; transition: all 0.25s;");
@@ -888,10 +888,26 @@
     }
 </style>
 <style>
+    .album_card_body{
+        overflow: auto !important;
+        height: 171px !important;
+        padding-right: 0px !important;
+        padding-left: 15px !important;
+    }
+    .album_song{
+        width:160px;
+        height:17px;
+        overflow:hidden;
+        display: inline-block;
+    }
     .album_singer{
+        width:45px;
+        height:17px;
+        overflow:hidden;
+        display:inline-block;
         color:#a9a9a9 !important;
-        float:right;
         font-size: 13px;
+        vertical-align: top;
     }
     .button_group{
         width: 75px;

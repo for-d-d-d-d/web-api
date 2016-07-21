@@ -1,20 +1,22 @@
 <div class="song_card_container" onclick="$(this).myModal(<%= locals[:id].to_i %>);" data-toggle="modal" data-target="#SongDetailModal">
-    <img src="<%= locals[:img_path] %>" class="song_card_img-q">
-    <div class="song_card_img">
-        <% if locals[:tag] != 0 %>
-            <div style="height:10px;"></div>
-            <div class="song_card_tag"><span class="song_card_tag_text"><%= locals[:tag] %>위</span></div>
-        <% end %>
-    </div>
-
-    <div class="song_card_contents">
-        <p class="song_card_content"><%= locals[:title] %><span class="song_card_icon"></span></p>
-        <p class="song_card_content"><%= locals[:singer] %></p>
-        <p class="song_card_content">번호 <%= locals[:number] %></p>
+    <div class="card song_card">
+        <div class="card-header ch-alt song_card_header"><h2>번호 <span style="font-size:23px !important;"><%= locals[:number] %></span></h2></div>
+        <img src="<%= locals[:img_path] %>" class="song_card_img-q">
+        <div class="card_img_cover"></div>
+        <div class="card_img_cover2"></div>
+        <div class="card-body card-padding song_card-padding">
+            <div class="">
+                <% if locals[:tag] != 0 %>
+                    <div style="height:10px;"></div>
+                    <div class="song_card_tag"><span class="song_card_tag_text"><%= locals[:tag] %>위</span></div>
+                <% end %>
+            </div>
+        
+            <div class="song_card_contents">
+                <p class="song_card_content" style="color:#595959;"><%= locals[:title] %><!--<span class="song_card_icon"></span>--></p>
+                <p class="song_card_content" style="color:#afafaf;"><%= locals[:singer] %></p>
+                <p class="song_card_content" style="color:#afafaf;">번호 <%= locals[:number] %></p>
+            </div>
+        </div>
     </div>
 </div>
-<style>
-    .song_card_img-q{
-        
-    }
-</style>

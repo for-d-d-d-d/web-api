@@ -8,7 +8,11 @@ class Song < ActiveRecord::Base
         s.song_num = num
         return s.crawl_song
     end
-
+    
+    def self.ok
+        return self.where.not(lowkey: nil)
+    end
+    
     def artist
         if !(self.singer_id.nil?)
             return Singer.where(id: self.singer_id).first
@@ -34,6 +38,7 @@ class Song < ActiveRecord::Base
         if s == false
             puts "실패!"
         else
+            print s
             puts "성공!"
         end
     end

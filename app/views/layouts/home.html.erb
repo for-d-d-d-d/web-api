@@ -7,14 +7,14 @@
     <%= csrf_meta_tags %>
 
     <!-- 합쳐지고 최소화된 최신 CSS -->
-    <% if !(params[:action] == "main" || params[:action] == "EvalKey" || params[:action] == "mylist" || params[:action] == "search") %>
+    <% if !(params[:action] == "main" || params[:action] == "main_temp" || params[:action] == "EvalKey" || params[:action] == "mylist" || params[:action] == "search" || params[:action] == "search2") %>
         <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
     <% else %> <!-- main 이랑 EvalKey에서 사용 커스텀 된거임 -->
         <link href="/css/freelancer.css" rel="stylesheet">
     <% end %>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
-    <% if params[:action] == "main" || params[:action] == "mylist" || params[:action] == "EvalKey" || params[:action] == "search" %>
+    <% if params[:action] == "main" || params[:action] == "main_temp" || params[:action] == "mylist" || params[:action] == "EvalKey" || params[:action] == "search" || params[:action] == "search2" %>
     <!-- Custom CSS -->
         <link href="/css/main.css" rel="stylesheet">
     <% else %>
@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!--Modal Ajax script-->
     <script>
         
         
@@ -40,7 +41,7 @@
                 var id = k
                 //var title = <%#= eval("Song.find(" + id + ").title") %>
                 //$("#dddd").attr('style',  'background:#000');
-        
+                
                 $.ajax({
                     method: "POST",
                     url: "/home/this_song2",
@@ -63,7 +64,7 @@
                     var release       = album.released_date;
                     var agency        = album.agency;
                     var publisher     = album.publisher;
-                    var youtube     = song.youtube;
+                    var youtube       = song.youtube;
         
                     var i = songs.length;
                     var j = 0;
@@ -124,7 +125,7 @@
                         // alert(item.title);
                         j = index + 1;
                         //  $("#md_song_album_in_title1").empty('');
-                         $("#md_song_album_in_title1").append(j + '. ' + item.title + '<span class="album_singer">' + artists[index] + '</span><br>'); 
+                         $("#md_song_album_in_title1").append('<div class="album_song">' + j + '. ' + item.title + '</div>' + '<div class="album_singer">' + artists[index] + '</div><br>'); 
                         //  $("#md_song_album_in_artist" + j).empty(''); $("#md_song_album_in_title" + j).append();
                     });
                     
@@ -140,6 +141,8 @@
         })(jQuery);
         
     </script>
+    <!--song card general css-->
+    <link href="/home/song_card_general.css" rel="stylesheet" type="text/css">
     <!-- Custom Fonts -->
     <link href="https://blackrockdigital.github.io/startbootstrap-freelancer/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">

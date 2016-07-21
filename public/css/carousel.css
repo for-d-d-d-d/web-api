@@ -39,7 +39,7 @@ body {
 
 /* Carousel base class */
 .carousel {
-  height: 500px;
+  height: 400px;
   margin-top: 90px;
   z-index:0;
 }
@@ -49,7 +49,7 @@ body {
     top: 0;
     left: 0;
     min-width: 100%;
-    height: 500px;
+    height: 400px;
     background-size: cover;
     background-position: center center;
 }
@@ -148,7 +148,7 @@ body {
 
 /* Declare heights because of positioning of img element */
 .carousel .item {
-  height: 500px;
+  height: 400px;
   background-color: #777;
 }
 .carousel-inner > .item > img {

@@ -26,7 +26,7 @@ class HomeController < ApplicationController
     end
 
     def main
-        @song = Song.where.not(lowkey: nil).all
+        @song = Song.ok.all
         @carousel = @song.first(17)
 
         @rankers = DailyTjPopularRank.all
@@ -39,8 +39,8 @@ class HomeController < ApplicationController
             end
         end
     end
-
-    def search
+    
+    def search2
         if params[:query].nil?
             flash[:error] = "검색어를 찾을 수 없습니다."
         else
@@ -63,7 +63,35 @@ class HomeController < ApplicationController
             end
         end
     end
+    
+    def search
+        if params[:query].nil?
+            flash[:error] = "검색어를 찾을 수 없습니다."
+        else
+            if params[:query].length == 0
+                flash[:error] = "검색어를 찾을 수 없습니다."
+                return
+            end
 
+            q = params[:query].split
+            @song_searched_By_artist = Array.new
+            @song_searched_By_title = Array.new
+            @song_searched_By_lyrics = Array.new
+
+            Song.ok.all.each do |s|
+                q.each do |qq|
+                    @song_searched_By_artist << s if s.artist.name.include?(qq)
+                    @song_searched_By_title << s if s.title.include?(qq)
+                    @song_searched_By_lyrics << s if s.lyrics.include?(qq)
+                end
+            end
+            
+            @song_searched_By_artist = @song_searched_By_artist.uniq
+            @song_searched_By_title = @song_searched_By_title.uniq
+            @song_searched_By_lyrics = @song_searched_By_lyrics.uniq
+        end
+    end
+    
     def this_song
         @song = []
         song = Song.find(params[:song_id])
@@ -98,18 +126,14 @@ class HomeController < ApplicationController
         @songs = @song.album.songs
         artistName = Array.new
         @songs.each do |s|
-            # @songs << s.artist.name
             artistName << s.artist.name
-            # s = s.to_json
-            # s['artistname'] = artistName.to_s
         end
         
-        render json: {Song: @song, 
-                    Album: @song.album, 
-                    Artist: @song.artist,
-                    Songs: @songs,
-                    Artists: artistName
-                    }
+        render json: {  Song:    @song, 
+                        Album:   @song.album, 
+                        Artist:  @song.artist,
+                        Songs:   @songs,
+                        Artists: artistName }
     end
 
     def rank
@@ -120,22 +144,20 @@ class HomeController < ApplicationController
     end
 
     def mylist
-        unless user_signed_in?
-            redirect_to "/"
-        end
-
+        # @mylists
+        @songs = Song.all
+        @song = @songs.where.not(lowkey: nil).all
+        @header_BG_img = @song.sample.jacket
     end
     
     def old_mylist
-        # @mylists
-        @songs = Song.all
-        @song = @songs
+        
         
     end
     
     def youtube
         videos = Yt::Collections::Videos.new
-        a = videos.where(q: "시간을 달려서").first.id
+        a = videos.where(q: "[MV] 시간을 달려서").first.id
         render text: a
     end
     

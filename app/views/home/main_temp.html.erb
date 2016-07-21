@@ -1,18 +1,13 @@
-<style>body{background-color: #000 !important;}</style>
 <!--메인페이지 캐러셀-->
 <%= render partial: "home/main/carousel", layout: false %>
 <!--본문 네비게이션 바-->
 <%= render partial: "home/main/content_navi", layout: false %>
 
-<!--
-Card type renewel CSS
--------------------------->
-<%= render partial: "home/song_card_generate_renewel_css", layout: false %>
 
 <!-- 노래방 인기 차트 -->
 <section id="most_popular">
     <div id="portfolio">
-        <div class="container">
+        <div class="">
             <div class="row">
                 <div class="col-lg-12 text-center" style="margin-bottom: 50px; margin-top: 30px;">
                     <hr class="star-primary">
@@ -20,15 +15,8 @@ Card type renewel CSS
                     <hr class="star-primary">
                 </div>
             </div>
-            <!--<div class="row">-->
-            <!--  <%#= render partial: 'home/main/contents', layout: false %>-->
-            <!--</div>-->
             <div class="row">
-                <% @song.each do |s| %>
-                    <div class="col-md-3" id="card-<%= s.id %>" style="margin-bottom:30px;">
-                        <%= render 'home/song_card_general_0707', layout: false, :locals => {:img_path => s.jacket, tag: 0, title: s.title, singer: s.artist.name, number: s.song_tjnum, id: s.id} %>
-                    </div>
-                <% end %>
+              <%= render partial: 'home/main/contents', layout: false %>
             </div>
         </div>
     </div>

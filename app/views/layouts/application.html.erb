@@ -7,14 +7,14 @@
         <%= csrf_meta_tags %>
 
         <!-- 합쳐지고 최소화된 최신 CSS -->
-        <% if !(params[:action] == "main" || params[:action] == "EvalKey" || params[:action] == "mylist" || params[:action] == "search") %>
+        <% if !(params[:action] == "main" || params[:action] == "main_temp" || params[:action] == "EvalKey" || params[:action] == "mylist" || params[:action] == "search") %>
             <%= stylesheet_link_tag 'bootstrap/bootstrap.css' %>
         <% else %> <!-- main 이랑 EvalKey에서 사용 커스텀 된거임 -->
             <link href="freelancer.css" rel="stylesheet">
         <% end %>
             <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
-        <% if params[:action] == "main" || params[:action] == "mylist" || params[:action] == "EvalKey" || params[:action] == "search" %>
+        <% if params[:action] == "main" || params[:action] == "main_temp" || params[:action] == "mylist" || params[:action] == "EvalKey" || params[:action] == "search" %>
             <!-- Custom CSS -->
             <link href="main.css" rel="stylesheet">
         <% else %>

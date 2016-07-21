@@ -1,0 +1,120 @@
+<%
+    divide = Array.new
+    current_action = Array.new
+    
+    
+    # 각 페이지에서 카드를 나열하는 방식이 몇 등분 그리드에 속하는지 넣으세요
+    divide = [['main',4],['search',5]]
+    
+    divide.each do |arr|
+        if arr[0] == params[:action]
+            current_action << arr[0]
+            current_action << arr[1]
+            break
+        end
+    end
+%>
+<% if current_action[1] == 4 %>
+<style>
+.layerWrapper{
+    width:100%;
+    box-shadow: 2px 2px 5px #000;
+}
+.cardLayer{
+    /*
+    4등분할 때
+    ****************/
+    width: 262.5px;
+    height: 263px;
+    margin-top: -263px;
+}
+.cardLayer_gradient{
+    background: linear-gradient(rgba(0, 0, 0, 0.05),rgba(0, 0, 0, 0.65));
+    position: absolute;
+}
+.cardLayer_txt{
+    height: 92px;
+    margin-top: -92px;
+    position: relative;
+    
+    padding: 7% 7% 0%;    /* 4등분 */
+    
+    color:#E3E3E3;
+    font-family:나눔바른고딕;
+    font-weight: 400;
+}
+.overflowCutter{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.cardLayer_txt > .overflowCutter > .artist{
+    font-size: 19px;
+    margin: 0;
+}
+.cardLayer_txt > .overflowCutter > .title{
+    font-size: 27px;
+}
+.cardLayer_hoverRed{
+    display:none;
+    background: linear-gradient(rgba(255, 0, 0, 0.65),rgba(255, 0, 0, 0.5));    /* main page */
+    /*background: linear-gradient(rgba(255, 0, 0, 0.8),rgba(0, 0, 0, 0.45));*/    /* search page */
+    position:absolute;
+}
+.layerWrapper:hover > .cardLayer_hoverRed{
+    display:block;
+}
+</style>
+
+<% elsif current_action[1] == 5 %>
+<style>
+.layerWrapper{
+    width:100%;
+    box-shadow: 2px 2px 5px #000;
+}
+.cardLayer{
+    /*
+    5등분할 때
+    ****************/
+    width: 214px;
+    height: 214px;
+    margin-top: -214px;
+}
+.cardLayer_gradient{
+    background: linear-gradient(rgba(0, 0, 0, 0.05),rgba(0, 0, 0, 0.65));
+    position: absolute;
+}
+.cardLayer_txt{
+    height: 92px;
+    margin-top: -92px;
+    position: relative;
+    
+    padding: 10% 9% 0%;    /* 5등분 */
+    
+    color:#E3E3E3;
+    font-family:나눔바른고딕;
+    font-weight: 400;
+}
+.overflowCutter{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.cardLayer_txt > .overflowCutter > .artist{
+    font-size: 19px;
+    margin: 0;
+}
+.cardLayer_txt > .overflowCutter > .title{
+    font-size: 27px;
+}
+.cardLayer_hoverRed{
+    display:none;
+    /*background: linear-gradient(rgba(255, 0, 0, 0.65),rgba(255, 0, 0, 0.5));*/    /* main page */
+    background: linear-gradient(rgba(255, 0, 0, 0.8),rgba(0, 0, 0, 0.45));      /* search page */
+    position:absolute;
+}
+.layerWrapper:hover > .cardLayer_hoverRed{
+    display:block;
+}
+</style>
+<% end %>

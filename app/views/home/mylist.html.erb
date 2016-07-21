@@ -1,19 +1,594 @@
 <%= render partial: "home/home_layouts/navbar" %>
 
 <% if params[:id].nil? %>
-<% ml = current_user.mylists.where(title: "Default").first %>
+<%# ml = current_user.mylists.where(title: "Default").first %>
 <% else %>
-<% ml = Mylist.find(params[:id]) %>
+<%# ml = Mylist.find(params[:id]) %>
 <% end %>
 
+<!-- 헤더 공간 차지용  -->
+<div style="height:60px; margin-bottom:50px;"></div>
+<!-- //헤더 공간 차지용  -->
+<div class="container header_wrap">
+    <div class="col-sm-12 img_background"></div>
+    <div class="container non_img_background">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8" style="margin-top: -494px;">
+            <% if user_signed_in? %>
+            <div class="col-sm-12" style="height:400px">
+                <div id="profile_box" class="col-sm-12" style="padding: 112px 0% 0% 0%;height: 73%;">
+                    <center>
+                        <img id="my_profile" src="/images/profile-pics/temp_profile2.jpg">
+                        <div>
+                            <p><%= current_user.name %></p>
+                        </div>
+                    </center>
+                </div>
+                <div class="col-sm-12" style="padding:1% 15%; height:28%;">
+                    <div class="col-sm-4" style="border-right: 1px solid rgba(255, 255, 255, 0.75);">
+                        <center>
+                            <p class="profile_count">34</p>
+                            <p class="profile_counter">불러보고 싶은 곡</p>
+                        </center>
+                    </div>
+                    <div class="col-sm-4" style="border-right: 1px solid rgba(255, 255, 255, 0.75);">
+                        <center>
+                            <p class="profile_count">99</p>
+                            <p class="profile_counter">활동 레벨</p>
+                        </center>
+                    </div>
+                    <div class="col-sm-4">
+                        <center>
+                            <p class="profile_count">34</p>
+                            <p class="profile_counter">인기 댓글</p>
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <% else %>
+            <div class="col-sm-12" style="height:400px">
+                <div id="profile_box" class="col-sm-12" style="padding: 112px 0% 0% 0%;height: 73%;">
+                    <center>
+                        <img id="my_profile" src="/images/profile-pics/temp_profile2.jpg">
+                        <div>
+                            <p>이지은</p>
+                        </div>
+                    </center>
+                </div>
+                <div class="col-sm-12" style="padding:1% 15%; height:28%;">
+                    <div class="col-sm-4" style="border-right: 1px solid rgba(255, 255, 255, 0.75);">
+                        <center>
+                            <p class="profile_count">34</p>
+                            <p class="profile_counter">불러보고 싶은 곡</p>
+                        </center>
+                    </div>
+                    <div class="col-sm-4" style="border-right: 1px solid rgba(255, 255, 255, 0.75);">
+                        <center>
+                            <p class="profile_count">99</p>
+                            <p class="profile_counter">활동 레벨</p>
+                        </center>
+                    </div>
+                    <div class="col-sm-4">
+                        <center>
+                            <p class="profile_count">34</p>
+                            <p class="profile_counter">인기 댓글</p>
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <% end %>
+            <div class="col-sm-12 tab_wrapper">
+                <div class="col-sm-3">
+                    <center><p id="tab_mydata">선곡분석통계</p></center>
+                </div>
+                <div class="col-sm-3 active_tab">
+                    <center><p id="tab_mylists">마이리스트 <span>(10)</span></p></center>
+                </div>
+                <div class="col-sm-3">
+                    <center><p id="tab_myrates">불러봤어요</p></center>
+                </div>
+                <div class="col-sm-3">
+                    <center><p id="tab_mycomments">코멘트</p></center>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+<div style="background:#f9f9f9; margin-top: -6px;">
+    <div class="col-sm-12" style="padding:0; background: #eeeeee;">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8" style="padding:0">
+            <!--sorting control block-->
+            <div class="col-sm-12" style="padding:0">
+                <div class="col-md_5"></div>
+                <!--sorting control buttons-->
+                <div class="col-md_20" style="padding:0">
+                    <div class="col-md-12" style="padding:0">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4" style="padding:0">
+                            <div id="filter_3" class="filter_control dropdown" style="border:none; color:#636363;">
+                                <a id="filter_3btn" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">담은 순서 <span class="caret"></span></a>
+                                <div class="dropdown-menu" role="menu" aria-labelledby="filter_3btn" >
+                                    <div class="col-md-6">
+                                        <div>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                                        <div>b</div>
+                                        <div>c</div>
+                                        <div>d</div>
+                                        <div>e</div>
+                                        <div>f</div>
+                                        <div>g</div>
+                                        <div>h</div>
+                                        <div>i</div>
+                                        <div>j</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</div>
+                                        <div>b</div>
+                                        <div>c</div>
+                                        <div>d</div>
+                                        <div>e</div>
+                                        <div>f</div>
+                                        <div>g</div>
+                                        <div>h</div>
+                                        <div>i</div>
+                                        <div>j</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="filter_2" class="filter_control dropdown" style="padding: 0px 0px 0px 0px;width: 70px;">
+                                <a id="filter_2btn" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">국가 <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="filter_2btn">
+                                    <li>1</li>
+                                    <li>2</li>
+                                    <li>3</li>
+                                    <li>4</li>
+                                    <li>5</li>
+                                    <li>6</li>
+                                    <li>7</li>
+                                    <li>8</li>
+                                    <li>9</li>
+                                    <li>10</li>
+                                </ul>
+                            </div>
+                            <div id="filter_1" class="filter_control dropdown" style="padding: 0px 0px 0px 0px;width: 70px;">
+                                <a id="filter_1btn" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">장르 <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="filter_1btn">
+                                    <li>ㄱ</li>
+                                    <li>ㄴ</li>
+                                    <li>ㄷ</li>
+                                    <li>ㄹ</li>
+                                    <li>ㅁ</li>
+                                    <li>ㅂ</li>
+                                    <li>ㅅ</li>
+                                    <li>ㅇ</li>
+                                    <li>ㅈ</li>
+                                    <li>ㅊ</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="padding:0">
+                        <div class="col-md-11">
+                            <div id="seleted_filter_area"></div>
+                        </div>
+                        <div class="col-md-1" style="padding:0">
+                            <div class="sorter_wrapper">
+                                <img id="sort_card" class="sorter" src="/images/icon/sort_card.png">
+                            </div>
+                            <div class="sorter_wrapper">
+                                <img id="sort_list" class="sorter" src="/images/icon/sort_list.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--theme card & song cards section-->
+            <div class="col-sm-12" style="padding:0">
+                <!--theme card-->
+                <div class="col-md_5" style="padding-left: 0; padding-right: 5px;">
+                    <div class="card">
+                        <div class="card-header ch-alt theme_card-header">
+                            <h2>이럴 땐 이런 테마</h2>
+                        </div>
+                        <div class="card-body card-padding theme" style="padding:0 !important">
+                            <!-- <a href="/home/mylist/<%#= m.id %>"> -->
+                            <!-- <a href="/mylist/delete_list?id="> 삭제 </a>-->
+                            <div class="theme_each active_theme" id="theme_tab-1">
+                                <img class="theme_photo" src="https://i.ytimg.com/vi/VX6NwulA1x4/hqdefault.jpg">
+                                <p class="theme_title">친구랑 막 놀기 좋은 노래</p>
+                                <p class="theme_title in_count" style="font-size: 13px !important;">368곡</p>
+                            </div>
+                            <!--<hr>-->
+                            <div class="theme_each" id="theme_tab-2">
+                                <img class="theme_photo" src="https://i.ytimg.com/vi/VX6NwulA1x4/hqdefault.jpg">
+                                <p class="theme_title">친구랑 막 놀기 좋은 노래</p>
+                                <p class="theme_title in_count" style="font-size: 13px !important;">31곡</p>
+                            </div>
+                            <hr>
+                            <div class="theme_each" id="theme_tab-3">
+                                <img class="theme_photo" src="https://i.ytimg.com/vi/VX6NwulA1x4/hqdefault.jpg">
+                                <p class="theme_title">친구랑 막 놀기 좋은 노래</p>
+                                <p class="theme_title in_count" style="font-size: 13px !important;">31곡</p>
+                            </div>
+                            <!--<hr>-->
+                            <div class="theme_plus" id="">
+                                <p class="theme_title"><span>+</span> 테마 플러스</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--song cards-->
+                <div class="mylist_container col-md_20">
+                    <% unless user_signed_in? %>
+                        <% @song.each do |s| %>
+                        <div class="col-md-3 card_wrapper" id="card-<%= s.id %>">
+                            <%= render 'home/song_card_general', layout: false, :locals => {:img_path => s.jacket, tag: 0, title: s.title, singer: s.artist.name, number: s.song_tjnum, id: s.id} %>
+                        </div>
+                        <% end %>
+                    <% else %>
+                        <div class="col-md_25 card_wrapper" id="card-0">
+                            <div class="col-md_10"></div>
+                            <div class="col-md_5">
+                                <div>
+                                    <div class="noCard">
+                                        <p style="color:#aaaaaa;">아직 아무 노래도 없다고래~</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md_10"></div>
+                        </div>
+                        <style>
+                            .noCard{
+                                width:100%;
+                                margin:25% 0px;
+                                height:320px;
+                                background-image:url('/images/profile-pics/profile-gorae.png');
+                                background-size:80%;
+                                background-repeat: no-repeat;
+                                background-position: center 45%;
+                            }
+                        </style>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="labels">
+                <div class="label_0 label-1">
+                    <a class="btn">곡 추가</a>
+                </div>
+                <div class="label_0 label-2">
+                    <a class="btn">곡 뭐뭐</a>
+                </div>
+                <div class="label_0 label-3">
+                    <a class="btn">곡 뭐뭐</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%= render partial: "home/home_layouts/song_card_modal_black", layout: false %>
+<script>
+    var Scroll = $( document ).scrollTop();
+    $( window ).scroll(function(){
+        var nowScroll = $( document ).scrollTop();
+        
+        if (nowScroll >= 475) {
+            $(".labels").addClass("labels-fixed");
+        } else if (nowScroll < 475) {
+            $(".labels").removeClass("labels-fixed");
+        } else {
+            
+        }
+    })
+</script>
+<style>
+.label-1:hover{
+    width: 200%;
+    margin-left: -100%;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.label-1 > a:hover{
+    width: 87%;
+    font-size: 19px;
+    padding-top: 6px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.label-2:hover{
+    width: 200%;
+    margin-left: -100%;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.label-2 > a:hover{
+    width: 87%;
+    font-size: 19px;
+    padding-top: 6px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.label-3:hover{
+    width: 200%;
+    margin-left: -100%;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.label-3 > a:hover{
+    width: 87%;
+    font-size: 19px;
+    padding-top: 6px;
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    transition: all 0.1s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.labels-fixed{
+    position:fixed !important;
+    width:100px;
+    float: right;
+    right: 0;
+    top: 100px;
+    margin-top: 60px !important;
+    margin-right: 0px !important;
+}
+.labels{
+    position:initial;
+    width:100px;
+    float: right;
+    margin-right: -15px;
+    margin-top: 100px;
+}
+.label_0{
+    width: 100%;
+    height: 40px;
+    background:#f44336;
+    position: relative;
+    margin-bottom: 10px;
+    border-bottom-left-radius: 25px;
+}
+.label_0 > a{
+    width: 64%;
+    height: 40px;
+    background: #f44336;
+    border-left: 2px solid #f44336;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 나눔바른고딕;
+    color: #fff;
+    border-radius: 0px;
+    float: right;
+}
+</style>
 <style media="screen">
+.tab_wrapper > div{
+    cursor:pointer;
+}
+.card-body > hr{
+    margin: 0 28%;
+    border-top: 1px solid #d7d7d7;
+    width: 44%;
+}
+.theme_card-header{
+    text-align: center;
+    background: #f44336 !important;
+}
+.theme_card-header > h2{
+    color: #fff !important;
+    font-size: 20px !important;
+}
+.theme > div{
+    padding:18px 0px 18px 15px;
+    cursor:pointer;
+}
+#theme_tab-1:hover, #theme_tab-2:hover, #theme_tab-3:hover{
+    background: #e7e7e7 !important;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.active_theme{
+    background: #e7e7e7 !important;
+}
+.theme_photo{
+    width:50px;
+    height:50px;
+}
+.theme_title{
+    font-size: 17px;
+    font-family: 나눔바른고딕;
+    color: #767676;
+    font-weight: 400;
+}
+.theme_each > .theme_title{
+    font-size: 15px !important;
+    width: 74%;
+    float:right;
+    margin-top: 5px;
+}
+.in_count{
+    color:#bababa !important;
+    margin-top: -22px !important;
+}
+.theme_plus{
+    text-align:center;
+    padding: 10px 0px;
+    font-size: 15px;
+    margin: 0px 0px;
+    border-top: 1px solid #d7d7d7;
+}
+.theme_plus > p{
+    margin:0;
+    color: #7d7d7d !important;
+}
+.theme_plus > p > span{
+    font-weight:bold;
+    font-size: 25px;
+}
+
+
+
+.sorter{
+    width:20px;
+    height:auto;
+}
+.sorter_wrapper{
+    display:inline;
+    right: 0;
+    float: right;
+    margin: 15px 5px 15px 7px;
+}
+.show_box{
+    border:3px solid;
+    /*padding:0;*/
+    /*height:100px;*/
+}
+.header_wrap{
+    width:100%;
+    padding:0;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+    margin-top: -25px;
+}
+.img_background{
+    width:100%;
+    height:450px;
+    background-image:url('<%= @header_BG_img %>');
+    background-size:cover;
+    background-position:center;
+    z-index: -1;
+    filter: blur(10px);
+    -ms-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -webkit-filter: blur(10px);
+}
+.non_img_background{
+    height:450px;
+}
+#my_profile{
+    width: 130px;
+    height: auto;
+    border: 3px solid #fff;
+    border-radius: 100%;
+    box-shadow: 2px 2px 6px;
+}
+#profile_box p{
+    font-size: 20px;
+    font-family: 나눔바른고딕;
+    color: #fff;
+    text-shadow: 1px 1px 5px #000;
+    margin-top: 10px;
+}
+.profile_count{
+    font-size: 25px;
+    font-family: 나눔바른고딕;
+    color: #fff;
+    text-shadow: 1px 1px 5px #000;
+    margin-top: 10px;
+}
+.profile_counter{
+    font-size: 15px;
+    font-family: 나눔바른고딕;
+    text-shadow: 1px 1px 5px #000;
+    color: #fff;
+    margin-bottom: 5px;
+}
+.tab_wrapper{
+    padding-top: 43px;
+}
+.tab_wrapper > div{
+    /*border-bottom: 3px solid red;*/
+    padding-top: 10px;
+    /*background: rgba(255, 255, 255, 0.3);*/
+}
+.tab_wrapper p{
+    font-size: 20px;
+    font-family: 나눔바른고딕;
+    color: #8f8c8b;
+    text-shadow: 1px 1px 5px #000;
+}
+.tab_wrapper p:hover{
+    color: #fff;
+    font-size: 21px;
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    transition: all 0.1s;
+}
+.active_tab{
+    /*background: rgba(0, 0, 0, 0.3) !important;*/
+    border-bottom: 7px solid red !important;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.active_tab p{
+    font-size: 20px !important;
+    color: #fff !important;
+    margin-bottom: 7px !important;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.filter_control{
+    font-size:16px;
+    display: inline-block;
+    float: right;
+    font-family: 나눔바른고딕;
+    color: #b2b2b2;
+    font-weight: 500;
+    padding: 0px 5px 0px 5px;
+    border-right: 2px solid rgba(178, 178, 178, 0.4);
+    margin-top: 30px;
+    width: 95px;
+    text-align: center;
+    cursor: pointer;
+}
+.filter_control > a{
+    text-decoration: none;
+    font-size: 16px;
+    color: #b2b2b2;
+}
+.filter_control > a > span{
+    /*font-size:12px;*/
+}
+#filter_1:after{
+    color: #636363 !important;
+}
+#filter_2:after{
+    color: #636363 !important;
+}
+#filter_3:after{
+    color: #636363 !important;
+}
+
+
+
+
+
 .mylist_container{
-    border-radius: 10px;
-    width:50%;
-    border-style: solid;
-    border-width: 1px!important;
-    border-color: black!important;
-    padding : 30px 20px 40px 20px;
+    padding : 0px 0px 40px 5px;
+    /*border-radius: 10px;*/
+    /*width:50%;*/
+    /*border-style: solid;*/
+    /*border-width: 1px!important;*/
+    /*border-color: black!important;*/
 }
 
 .mylist_contents{
@@ -32,72 +607,7 @@
 }
 </style>
 
-<!-- 헤더 공간 차지용  -->
-<div style="height:60px; margin-bottom:50px;"></div>
-<!-- 헤더 공간 차지용  -->
 
-
-<% i = 1 %>
-<div class="col-md-3">
-    <% current_user.mylists.each do |m| %>
-    <a href="/home/mylist/<%= m.id %>"><h1> <%= i %> <%= m.title %> </h1></a> <br>
-    <a href="/mylist/delete_list?id=<%= m.id %>"> 삭제 </a>
-    <% i += 1 %>
-    <% end %>
-</div>
-
-
-<div class="mylist_container col-md-6">
-    <div class="mylist_contents_container" style="text-align:center; margin-bottom:70px;">
-        <img src="/images/icon/profile_photo.png" width="60" height="60" style="background-color:black;"/>
-        <% if user_signed_in? %>
-        <div><h4><%= current_user.name %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트 : <%= ml.title %></span></h4></div>
-        <% else %>
-        <div><h4><%= "로그인하셈!" %><span style="color:red;">&nbsp;&nbsp;님의 마이리스트</span></h4></div>
-        <% end %>
-    </div>
-
-    <div class="mylilst_contents_container">
-        <div class="col-md-1 mylist_contents"> No </div>
-        <div class="col-md-2 mylist_contents"> 노래방 번호 </div>
-        <div class="col-md-5 mylist_contents"> 제목 </div>
-        <div class="col-md-2 mylist_contents"> 가수 </div>
-        <div class="col-md-2 mylist_contents"> 고래 카운트 </div>
-
-    </div>
-    <hr class="list_devider">
-
-    <% i = 1 %>
-    <%# current_user.mylists.each do |ml| %>
-    <!-- <div class="mylilst_contents_container">
-    <div class="col-md-3 mylist_contents"> Mylist : </div>
-    <div class="col-md-9 mylist_contents"> <%= ml.title %> </div>
-</div> -->
-
-<% ml.songs.each do |s| %>
-<% ss = s.song %>
-<div class="mylilst_contents_container">
-    <div class="col-md-1 mylist_contents"> <%= i %> </div>
-    <div class="col-md-2 mylist_contents"> <%= ss.song_tjnum %> </div>
-    <div class="col-md-5 mylist_contents"> <%= ss.title %> </div>
-    <div class="col-md-2 mylist_contents"> <%= ss.artist.name %> </div>
-    <div class="col-md-2 mylist_contents">
-        <div class="col-md-6">
-            <%= (1000..9999).to_a.sample %>
-        </div>
-        <div class="col-md-6">
-            <a href="/mylist/delete?id=<%= s.id %>"> 삭제 </a>
-        </div>
-    </div>
-
-</div>
-<hr class="list_devider">
-<% i += 1 %>
-<% end %>
-<%# end %>
-
-</div>
-<div class="col-md-3"></div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
