@@ -11,7 +11,18 @@
 
 # Welcom to GoraeBang!
 
+## API Index
+  1. 회원가입
+  1. 로그인
+  1. 로그아웃
+
+## API Info
+  1. 회원가입
+
 ### Todo
+  1. 로그인
+  2. 로그아웃
+
 > 이달의 신곡페이지를 jQuery써가지고 구현해 보시오. 밑에 언더바가 잘 보이게! - Yong-Hyun Kim
 > .... <br/>
 
