@@ -6,8 +6,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
             ## 이메일, 패스워드, 이름, 성별, 생년월일(나이)
             t.string :name,               null: false, default: ""
             # t.string :birthdate,          null: false, default: ""
-            # t.string :gender,             null: false, default: ""
-
+            t.integer :gender,             null: false, default: 0
+            
             ## for omniauth
             t.string :provider
             t.string :uid
