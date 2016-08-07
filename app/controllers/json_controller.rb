@@ -66,4 +66,22 @@ class JsonController < ApplicationController
     
     render :json => user
   end
+  #여기부터는 유선우가 짜본것들임
+  def user_data ##회원데이터 
+    user                      = params[:user]
+    u                         = User.find(params[:id])
+    u.email                   = user[:email]
+    u.gender                  = user[:gender]
+    u.name                    = user[:name]
+    
+    render :json => user
+  end
+  
+  def logout ##따로 API로 정보를 던져줄게 있나??
+  
+  end
+  
+  def main
+  
+  end
 end
