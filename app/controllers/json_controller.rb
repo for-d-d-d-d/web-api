@@ -10,6 +10,15 @@ class JsonController < ApplicationController
     @check = "ERROR"
     @id    = "ERROR"
     
+    
+    user = params[:user]
+    user[:name]
+    
+    "<input type='text' name='user[name]'"
+    params[:user] # => user{"user_id":"1", "user_name":"김용현"}
+    params[:id]
+    
+    
     user                      = params[:user]
     u = User.new
     u.email                   = user[:email]
@@ -69,6 +78,44 @@ class JsonController < ApplicationController
     render :json => user
   end
   
+  def search
+    artist = []
+    title = []
+    lyrics = []
+    homeC = HomeController.new
+    artist, title, lyrics = homeC.search3(params[:query])
+    result = {"artist": artist, "title": title, "lyrics": lyrics}
+    render json: result
+  end
+  
+  def search_filter
+      searched_by_genre = []
+      genre = params[:genre]
+      puts "장르는 #{genre}"
+      searched_by_since.each do |song|
+        puts "반복 잘 되니 #{song.genre1}, #{song.genre2}, #{song.album.genre1}, #{song.album.genre2}"
+        if song.genre1 == genre || song.genre2 == genre || song.album.genre1 == genre || song.album.genre2 == genre
+          searched_by_genre << song
+          puts "현재 genre 개수 : #{searched_by_genre.count}" 
+        end
+      end
+      
+      searched_by_genre = searched_by_genre.uniq
+    end
+    
+    unless params[:nation].nil? || params[:nation].length == 0
+      #searched_by_genre
+    end
+    
+    result = []
+    # result << searched_by_since
+    # result << searched_by_gender
+    result << searched_by_genre
+    # result << searched_by_nation
+    render :json => result  
+  end
+  
+  # 검색창(검색결과)
   def search
     artist = []
     title  = []
@@ -267,4 +314,5 @@ class JsonController < ApplicationController
     render json: it_looks_like_your_favorite_song
   end
   
+
 end
