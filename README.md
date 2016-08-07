@@ -13,7 +13,7 @@
 
 # ﻿■ Server API Index
 #### ver.0.0.2
-( _2nd_ // updated_at: 2016-07-27 20:30:05 )
+( _2nd_ // updated_at: 2016-08-08 04:35:05 )
 - (0.0.1) 회원가입 (Finished_at: 2016-07-29)
 - (0.0.2) 로그인 (Finished_at: 2016-07-29)
 - (0.0.3-0) 회원데이터
@@ -21,14 +21,14 @@
 - (0.0.5-0) 실행 시 첫 화면 
 - (0.0.6-0) 이 달의 신규 등록
 - (0.0.7-0) 검색(검색 엔진 연구)
-- (0.0.8-0) 마이리스트 create
-- (0.0.9-0) 마이리스트 read
-- (0.0.10-0) 마이리스트 update
-- (0.0.11-0) 마이리스트 delete
-- (0.0.12-0) 마이리스트 내부 노래 create
-- (0.0.13-0) 마이리스트 내부 노래 read
-- (0.0.14-0) 마이리스트 내부 노래 update
-- (0.0.15-0) 마이리스트 내부 노래 delete
+- (0.0.8-1) 마이리스트 create
+- (0.0.9-1) 마이리스트 read
+- (0.0.10-1) 마이리스트 update
+- (0.0.11-1) 마이리스트 delete
+- (0.0.12-1) 마이리스트 내부 노래 create
+- (0.0.13-1) 마이리스트 내부 노래 read
+- (0.0.14-1) 마이리스트 내부 노래 update
+- (0.0.15-1) 마이리스트 내부 노래 delete
 - (0.0.16-0) 노래 차단
 - (0.0.17-0) 차단된 노래 read
 - (0.0.18-0) 차단된 노래 delete(차단해제)
@@ -128,6 +128,310 @@ authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
 
 
 ## __| 회원데이터(0.0.3-0) |__
+
+
+---
+
+
+## __| 마이리스트 CREATE(0.0.8-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/myList_create__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/myList_create?id=회원ID&title=myList타이틀&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+title | myList 타이틀 | 필수, <br>조건없음
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json'__
+- Read : ``{"id": 가입한 회원 id(고유식별자), "message" : 성공여부}``
+  - 성공 ex) ``{"id":"1", "message":"SUCCESS"}``
+  - 실패 ex) ``{"id":"ERROR", "message":"ERROR"}``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+
+
+---
+
+
+## __| 마이리스트 READ(0.0.9-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/myList_read__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/myList_read?id=회원ID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json DATA-SET'__
+- Read : ``[{"id": 마이리스트 id(고유식별자), "title": 마이리스트 타이틀}...{}]``
+- __성공 요건__
+  1. 가입된 회원
+
+
+---
+
+
+## __| 마이리스트 UPDATE(0.0.10-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/myList_update__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/myList_update?id=회원ID&myList_id=수정할myListID&title=수정할myList타이틀&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+myList_id | myList id값 |  필수
+title | 수정할 타이틀 | 필수, <br>조건없음
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json'__
+- Read : ``{"id": 변경된 myList id(고유식별자), "message" : 성공여부}``
+  - 성공 ex) ``{"id":"1", "message":"SUCCESS"}``
+  - 실패 ex) ``{"id":"1", "message":"ERROR"}``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+  2. 요청한 리스트가 내 계정에 존재하는 리스트가 맞을 때
+
+
+---
+
+
+## __| 마이리스트 DELETE(0.0.11-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/myList_delete__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/myList_delete?id=회원ID&myList_id=삭제하려는myListID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+myList_id | 삭제하려는myList ID | 필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json DATA-SET'__
+- Read : ``[{"id": 마이리스트 id(고유식별자), "title": 마이리스트 타이틀}...{}]``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+  2. 요청한 리스트가 내 계정에 존재하는 리스트가 맞을 때
+
+
+---
+
+
+## __| 마이리스트 내부 노래 CREATE(0.0.12-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/mySong_create__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/mySong_create?id=회원ID&myList_id=소속될myListID&song_id=추가할songID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+myList_id | 소속될myListID | 필수
+song_id | 추가할songID | 필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json'__
+- Read : ``{"id": 생성된 레코드 id(고유식별자), "message" : 성공여부}``
+  - 성공 ex) ``{"id":"1", "message":"SUCCESS"}``
+  - 실패 ex) ``{"id":"", "message":"ERROR"}``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+
+
+---
+
+
+## __| 마이리스트 내부 노래 READ(0.0.13-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/mySong_read__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/mySong_read?id=회원ID&myList_id=읽어들일myListID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+myList_id | 읽어들일 myList ID | 필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json DATA-SET'__
+- Read : ``[{"id": mySong 레코드 id(고유식별자), "mylist_id": 소속된 myList레코드 외래 키, "song_id": Song레코드의 외래 키}...{}]``
+- __성공 요건__
+  1. 가입된 회원
+
+
+---
+
+
+## __| 마이리스트 내부 노래 UPDATE(0.0.14-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/mySong_update__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/mySong_update?id=회원ID&myList_id=현재소속된myListID&targetList_id=이동할myListID&mySong_id=수정하려는mySongID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+myList_id | 현재소속된 myList ID |  필수
+targetList_id | 이동할 myList ID |  필수
+mySong_id | 수정하려는 mySong ID | 필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json'__
+- Read : ``{"id": 변경된 mySong_id(고유식별자), "message" : 성공여부}``
+  - 성공 ex) ``{"id":"1", "message":"SUCCESS"}``
+  - 실패 ex) ``{"id":"1", "message":"ERROR"}``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+  2. 현재 소속 리스트와 이동할 타겟 리스트가 서로 다를 때
+
+
+---
+
+
+## __| 마이리스트 내부 노래 DELETE(0.0.15-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/mySong_delete__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/mySong_delete?id=회원ID&mySong_id=삭제하려는mySongID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+mySong_id | 삭제하려는 mySong ID | 필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json DATA-SET'__
+- Read : ``[{"id": mySong 레코드 id(고유식별자), "mylist_id": 소속된 myList레코드 외래 키, "song_id": Song레코드의 외래 키}...{}]``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+  2. 요청한 노래의 소속 리스트가 내 계정에 존재하는 리스트가 맞을 때
+
 
 ---
 

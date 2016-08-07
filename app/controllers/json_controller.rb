@@ -99,7 +99,7 @@ class JsonController < ApplicationController
   # myList CRUD > READ
   # method : POST
   # Input   > id: 회원 id
-  # Output  > id: 내 myList.all
+  # Output  > 내 myList.all
   def myList_read
     me = User.find(params[:id])
     result = me.mylists
