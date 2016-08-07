@@ -3,12 +3,14 @@ class CreateAlbums < ActiveRecord::Migration
     create_table :albums do |t|
       # 앨범 정보(보통)
       t.string  :title            # =>제목
-      t.string  :ganre1           # =>장르1
-      t.string  :ganre2           # =>장르2
+      t.string  :genre1           # =>장르1
+      t.string  :genre2           # =>장르2
       t.string  :publisher        # =>발매사
       t.string  :agency           # =>기획사
       t.string  :released_date    # =>발매일
       t.text    :jacket           # =>자켓사진(이미지)
+      t.text    :jacket_middle
+      t.text    :jacket_small
 
       # 앨범 정보(참조)
       # t.integer :artist_num       # =>아티스트 번호(Default : 팀 단위)

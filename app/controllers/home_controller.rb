@@ -64,6 +64,36 @@ class HomeController < ApplicationController
         end
     end
     
+    def search3(query)
+        if query.nil?
+            flash[:error] = "검색어를 찾을 수 없습니다."
+        else
+            if query.length == 0
+                flash[:error] = "검색어를 찾을 수 없습니다."
+                return
+            end
+
+            q = query.split
+            @song_searched_By_artist = Array.new
+            @song_searched_By_title = Array.new
+            @song_searched_By_lyrics = Array.new
+
+            Song.ok.all.each do |s|
+                q.each do |qq|
+                    @song_searched_By_artist << s if s.artist.name.include?(qq)
+                    @song_searched_By_title << s if s.title.include?(qq)
+                    @song_searched_By_lyrics << s if s.lyrics.include?(qq)
+                end
+            end
+            
+            @song_searched_By_artist = @song_searched_By_artist.uniq
+            @song_searched_By_title = @song_searched_By_title.uniq
+            @song_searched_By_lyrics = @song_searched_By_lyrics.uniq
+        end
+        
+        return @song_searched_By_artist, @song_searched_By_title, @song_searched_By_lyrics
+    end
+    
     def search
         if params[:query].nil?
             flash[:error] = "검색어를 찾을 수 없습니다."
