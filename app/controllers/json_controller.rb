@@ -188,10 +188,41 @@ class JsonController < ApplicationController
     render json: result
   end
   
-  def search_filter
+  def search_by_filter
+    searched_by_since   = Song.ok.all
+    searched_by_gender  = Song.ok.all
+    searched_by_genre   = Song.ok.all
+    searched_by_nation  = Song.ok.all
+    
+    unless params[:since].nil? || params[:since].length == 0
+      searched_by_since = []
+      since = params[:since]
+      since_start = since.first(4).to_i
+      since_end   = since.last(4).to_i
+      
+      since_start.upto(since_end) do |year|
+        puts year
+        Song.ok.all.each do |song|
+          if song.album.released_date.to_s.first(4).to_i == year
+            searched_by_since << song
+            puts "현재 since 개수 : #{searched_by_since.count}\n"
+          end
+        end
+      end
+    end
+    
+    unless params[:gender].nil? || params[:gender].length == 0
+      searched_by_gender = []
+      gender = params[:gender]
+      
+      #searched_by_since.each do ||
+    end
+    
+    unless params[:genre].nil? || params[:genre].length == 0
       searched_by_genre = []
       genre = params[:genre]
       puts "장르는 #{genre}"
+    
       searched_by_since.each do |song|
         puts "반복 잘 되니 #{song.genre1}, #{song.genre2}, #{song.album.genre1}, #{song.album.genre2}"
         if song.genre1 == genre || song.genre2 == genre || song.album.genre1 == genre || song.album.genre2 == genre
@@ -199,7 +230,6 @@ class JsonController < ApplicationController
           puts "현재 genre 개수 : #{searched_by_genre.count}" 
         end
       end
-      
       searched_by_genre = searched_by_genre.uniq
     end
     
