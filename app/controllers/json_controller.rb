@@ -188,8 +188,171 @@ class JsonController < ApplicationController
     render json: result
   end
   
-  def recom
+  def search_filter
+      searched_by_genre = []
+      genre = params[:genre]
+      puts "장르는 #{genre}"
+      searched_by_since.each do |song|
+        puts "반복 잘 되니 #{song.genre1}, #{song.genre2}, #{song.album.genre1}, #{song.album.genre2}"
+        if song.genre1 == genre || song.genre2 == genre || song.album.genre1 == genre || song.album.genre2 == genre
+          searched_by_genre << song
+          puts "현재 genre 개수 : #{searched_by_genre.count}" 
+        end
+      end
+      
+      searched_by_genre = searched_by_genre.uniq
+    end
     
+    unless params[:nation].nil? || params[:nation].length == 0
+      #searched_by_genre
+    end
+    
+    result = []
+    # result << searched_by_since
+    # result << searched_by_gender
+    result << searched_by_genre
+    # result << searched_by_nation
+    render :json => result  
+  end
+  
+  # 검색창(검색결과)
+  def search
+    artist = []
+    title  = []
+    lyrics = []
+    homeC  = HomeController.new
+    artist, title, lyrics = homeC.search3(params[:query])
+    result = {"artist": artist, "title": title, "lyrics": lyrics}
+    render json: result
+  end
+  
+  # myList CRUD > CREATE
+  # method : POST
+  # Input   > id: 회원 id (+) title: myList 타이틀
+  # Output  > id: 생성된 myList id (+) message: SUCCESS or ERROR
+  def myList_create
+    @check = "ERROR"
+    unless params[:id].nil? || params[:title].nil?
+      ml = Mylist.new
+      ml.user_id  = params[:id]
+      ml.title    = params[:title]
+      ml.save
+      @check = "SUCCESS"
+    end
+    result = {"id": ml.id, "message": @check}
+    render json: result
+  end
+  
+  # myList CRUD > READ
+  # method : POST
+  # Input   > id: 회원 id
+  # Output  > 내 myList.all
+  def myList_read
+    me = User.find(params[:id])
+    result = me.mylists
+    render json: result
+  end
+  
+  # myList CRUD > UPDATE
+  # method : POST
+  # Input   > id: 회원 id (+) myList_id: 수정하려는 myList ID (+) title: 수정하려는 myList 타이틀
+  # Output  > id: 변경된 myList id (+) message: SUCCESS or ERROR
+  def myList_update
+    @check = "ERROR"
+    unless params[:id].nil? || params[:myList_id].nil? || params[:title].nil?
+      ml = Mylist.find(params[:myList_id])
+      if ml.user_id == params[:id]          # => 안전성 검사. 내 계정의 ID와 요청한 myList의 user_id가 같은지 확인.
+        ml.title  = params[:title]
+        ml.save
+        @check = "SUCCESS"
+      end
+    end
+    result = {"id": ml.id, "message": @check}
+    render json: result
+  end
+  
+  # myList CRUD > DELETE
+  # method : POST
+  # Input   > id: 회원 id (+) myList_id: 삭제하려는 myList ID
+  # Output  > id: 내 myList.all
+  def myList_delete
+    me = User.find(params[:id])
+    unless params[:myList_id].nil?
+      ml = Mylist.find(params[:myList_id])
+      if ml.user_id == me.id
+        ml.delete
+      end
+    end
+    result = me.mylists
+    render json: result
+  end
+  
+  # mySong CRUD > CREATE
+  # method : POST
+  # Input   > id: 회원 id (+) myList_id: 추가될 myList ID (+) song_id: 추가할 song ID
+  # Output  > id: 추가된 mySong ID (+) message: SUCCESS or ERROR
+  def mySong_create
+    @check = "ERROR"
+    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil?
+      ms = MylistSong.new
+      ms.mylist_id  = params[:myList_id]
+      ms.song_id    = params[:song_id]
+      ms.save
+      @check = "SUCCESS"
+    end
+    result = {"id": ms.id, "message": @check}
+    render json: result
+  end
+  
+  # mySong CRUD > READ
+  # method : POST
+  # Input   > id: 회원 id (+) myList_id: 읽어들일 myList ID
+  # Output  > 내 mySong.all
+  def mySong_read
+    me = User.find(params[:id])
+    ml = Mylist.find(params[:myList_id])
+    if ml.user_id == me.id
+      mySongs = ml.mylist_songs
+    end
+    result = mySongs
+    render json: result
+  end
+  
+  # mySong CRUD > UPDATE
+  # method : POST
+  # Input   > id: 회원 id (+) myList_id: myList ID (+) targetList_id: TARGET list ID (+) mySong_id: 수정하려는 mySong ID
+  # Output  > id: 변경된 mySong id (+) message: SUCCESS or ERROR
+  def mySong_update
+    @check = "ERROR"
+    if params[:myList_id] != params[:targetList_id]
+      ms = MylistSong.find(params[:mySong_id])
+      ms.mylist_id = params[:targetList_id]
+      ms.save
+      @check = "SUCCESS"
+    end
+    result = {"id": ms.id, "message": @check}
+    render json: result
+  end
+  
+  # mySong CRUD > DELETE
+  # method : POST
+  # Input   > id: 회원 id (+) mySong_id: 삭제하려는 mySong ID
+  # Output  > 내 mySong.all
+  def mySong_delete
+    me = User.find(params[:id])
+    unless params[:mySong_id].nil?
+      ms = MylistSong.find(params[:mySong_id])
+      ml = ms.mylist
+      if ms.mylist.user_id == me.id
+        ms.delete
+      end
+    end
+    mySongs = ml.mylist_songs
+    result = mySongs
+    render json: result
+  end
+  
+  def recom
     #
     # => Initailizer SET
     ##########################
