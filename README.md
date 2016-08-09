@@ -463,7 +463,7 @@ authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
 
 ### 반환(RETURN)
 
-- Type: __'json DATA-SET'__
+- Type: __'json'__
 - Read : ``[{"id": 차단할 blacklistsong id(고유식별자), "message": 성공여부}...{}]``
 - __성공 요건__
   1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
@@ -543,15 +543,6 @@ authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
   
 
 ---
-
-
-
-
-
-
-
-
-
 
 
 
