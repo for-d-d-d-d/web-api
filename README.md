@@ -436,6 +436,127 @@ authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
 ---
 
 
+## __| 노래 차단(0.0.16-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/blacklist_song_create__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/blacklist_song_create?id=회원ID&song_id=차단하려는songID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+song_id | 차단하려는song ID | 필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json DATA-SET'__
+- Read : ``[{"id": 차단할 blacklistsong id(고유식별자), "message": 성공여부}...{}]``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+  2. 유저가 login 되어 있을 때
+  
+
+---
+
+## __| 차단된 노래 READ(0.0.17-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/blacklist_song_read__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/blacklist_song_read?id=회원ID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json DATA-SET'__
+- Read : ``[{"result": 해당유저의 차단된 노래목록}...{}]``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+  2. 유저가 login 되어 있을 때
+  
+
+---
+
+
+## __| 차단된 노래 DELETE(차단해제) (0.0.18-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/blacklist_song_delete__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/blacklist_song_delete?id=회원ID&id=blacklistsongID&authNum=인증코드'
+
+
+### 매개변수(Parameters)
+
+key | value | desc
+------ | ------ | ---
+id | 사용자 레코드 id값 |  필수
+id | blacklistsong id값 |  필수
+authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
+
+
+### 반환(RETURN)
+
+- Type: __'json DATA-SET'__
+- Read : ``[{"result": 해당유저의 차단된 노래목록}...{}]``
+- __성공 요건__
+  1. 파라미터가 전부 존재할 때 (__통신상태만 CHECK__)
+  2. 유저가 login 되어 있을 때
+  
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Todo
   - [x]로그인
   - [ ]로그아웃
