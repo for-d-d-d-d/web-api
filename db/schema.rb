@@ -23,12 +23,14 @@ ActiveRecord::Schema.define(version: 20160603162717) do
 
   create_table "albums", force: :cascade do |t|
     t.string   "title"
-    t.string   "ganre1"
-    t.string   "ganre2"
+    t.string   "genre1"
+    t.string   "genre2"
     t.string   "publisher"
     t.string   "agency"
     t.string   "released_date"
     t.text     "jacket"
+    t.text     "jacket_middle"
+    t.text     "jacket_small"
     t.integer  "team_id"
     t.integer  "singer_id"
     t.integer  "album_num"
@@ -103,20 +105,22 @@ ActiveRecord::Schema.define(version: 20160603162717) do
     t.integer  "singer_id"
     t.integer  "team_id"
     t.string   "title"
-    t.string   "ganre1"
-    t.string   "ganre2"
+    t.string   "genre1"
+    t.string   "genre2"
     t.string   "runtime"
     t.text     "lyrics"
     t.string   "writer"
     t.string   "composer"
     t.string   "youtube"
     t.text     "jacket"
+    t.text     "jacket_middle"
+    t.text     "jacket_small"
     t.integer  "song_tjnum"
     t.integer  "song_num"
     t.string   "lowkey"
     t.string   "highkey"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "team_teams", force: :cascade do |t|
@@ -136,6 +140,7 @@ ActiveRecord::Schema.define(version: 20160603162717) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   default: "", null: false
+    t.integer  "gender",                 default: 0,  null: false
     t.string   "provider"
     t.string   "uid"
     t.string   "email",                  default: "", null: false

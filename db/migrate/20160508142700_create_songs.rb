@@ -9,8 +9,8 @@ class CreateSongs < ActiveRecord::Migration
 
       # 음원 정보(보통)
       t.string  :title          # =>제목
-      t.string  :ganre1         # =>장르1
-      t.string  :ganre2         # =>장르2
+      t.string  :genre1         # =>장르1
+      t.string  :genre2         # =>장르2
       t.string  :runtime        # =>재생시간
       t.text    :lyrics         # =>가사
       t.string  :writer         # =>작사
@@ -23,7 +23,9 @@ class CreateSongs < ActiveRecord::Migration
 
       # 음원 정보(참조추출)
       # t.text    :artist_photo   # =>아티스트 사진(아티스트테이블로부터 불러와 저장)
-      t.text    :jacket         # =>자켓사진(앨범테이블로부터 불러와 저장)
+      t.text    :jacket           # =>자켓사진(앨범테이블로부터 불러와 저장)
+      t.text    :jacket_middle
+      t.text    :jacket_small
 
       # 음원 정보(고유값)
       t.integer :song_tjnum     # =>TJ미디어 기준, 노래방번호
