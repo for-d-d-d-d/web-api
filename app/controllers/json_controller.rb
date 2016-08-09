@@ -485,10 +485,46 @@ class JsonController < ApplicationController
     bs = BlacklistSong.find(params[:blacklist_songs.id])
     unless params[:blacklist_songs.id].nil? || params[:user_id].nil?
         delete bs
-      end
     end
     result = me.blacklist_songs.all
     render json: result
-  
   end
+  
+  # 개인정보변경(devise문제로 비밀번호 변경은 추후에 추가예정) 
+  # method : POST
+  # Input   > id: 회원 id 
+  # Output  > 수정된 닉네임, 수정된 성별, 수정된 생일
+  def modify_userdata
+    @check = "ERROR"
+    client = params[:user]
+                                                          # "paramethers" :  
+                                                          #   {
+                                                          #     
+                                                          #     "user" : {
+                                                          #       "id" : "some number",
+                                                          #       "modified_name" : "something",
+                                                          #       "modified_birthdate" : "something",
+                                                          #       "modified_gender" : "something"
+                                                          #     }
+                                                          #     "authNum" : ""
+                                                          #   }
+    me = User.find(client[:id])
+    me.name = client[:modified_name]
+    me.gender = client[:modified_gender]
+    me.birthdate = client[:modified_birthdate]
+    me.save
+    @check = "SUCCESS"
+                                                          # user[id]
+                                                          # user[modified_name]
+                                                          # user[modified_gender]
+                                                          # user[modified_birthdate]
+                                                          # authNum
+    
+    
+    result = {"message": @check}
+     
+    render json: result 
+  end
+  
+
 end
