@@ -77,7 +77,7 @@ class JsonController < ApplicationController
     
     render :json => user
   end
-  #여기부터는 유선우가 짜본것들임
+  
   def user_data ##회원데이터 
     user                      = params[:user]
     u                         = User.find(params[:id])
@@ -444,5 +444,51 @@ class JsonController < ApplicationController
     render json: it_looks_like_your_favorite_song
   end
   
-
+  
+  # blacklistsong CRUD > CREATE
+  # method : POST
+  # Input   > id: 회원 id (+) Song_id: 차단하려는 Song ID
+  # Output  > id: 차단할 song의 id, "SUCCESS" 메시지
+  
+  def blacklist_song_create
+    @check = "ERROR"
+    unless params[:id].nil? || params[:song_id].nil? || params[:user_id].nil?
+      bs = BlacklistSong.new
+      bs.song_id  = params[:song_id]
+      bs.user_id  = params[:user_id]
+      bs.save
+      @check = "SUCCESS"
+    end
+    result = {"id": bs.id, "message": @check}
+    render json: result 
+  end
+  
+  # blacklistsong CRUD > READ
+  # method : POST
+  # Input   > id: 회원 id 
+  # Output  > blacklist_songs: 해당 회원의 차단된 노래들
+  
+  def blacklist_song_read
+    me = User.find(params[:id])
+    my_bs = me.blacklist_songs.all
+    result = my_bs
+    
+    render json: result
+  end
+  
+  # blacklistsong CRUD > DELETE
+  # method : POST
+  # Input   > id: 회원 id, 차단해지 하려는 노래의 blacklist_songs.id
+  # Output  > blacklist_songs: 해당 회원의 차단된 노래들
+  def blacklist_song_delete
+    me = User.find(params[:id]) 
+    bs = BlacklistSong.find(params[:blacklist_songs.id])
+    unless params[:blacklist_songs.id].nil? || params[:user_id].nil?
+        delete bs
+      end
+    end
+    result = me.blacklist_songs.all
+    render json: result
+  
+  end
 end
