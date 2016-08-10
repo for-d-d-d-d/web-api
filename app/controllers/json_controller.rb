@@ -206,56 +206,38 @@ class JsonController < ApplicationController
   end
   
   def recom
-    #
-    # => Initailizer SET
-    ##########################
+    RECOM = RecommendationController.new
     
-    users = []
-    me = []
-    it_looks_like_your_favorite_song = []
-    low_limit = 4   #    N 개
-    high_limit = 10 #    N 개
-    favor_rate = 50 #    N %
+    # Initailizer SET
+    sample_users, 
+    me, 
+    it_looks_like_your_favorite_song, 
+    fold_minimum,     # low_limit 
+    count_of_recom,   # high_limit 
+    favor_percentage  # favor_rate 
+      = RECOM.init()
     
-    
-    #
-    # => TEMP USER SET
-    ##########################
-    
-    user1 = ('1'..'20').to_a
-    user2 = ['1','2','3','4','5','6','7','8','9','10']
-    user3 = ['1',    '3',    '5',    '7',    '9']
-    user4 = ['1','2','3','4','5','6','95']
-    user5 = [                    '6','7','8','9','10']
-    user6 = [    '2',    '4',    '6',    '8',    '10']
-    user7 = ['1','2','3',    '5','6','7','8',        '11','12','90','91','92','93','94']
-    users = [user1, user2, user3, user4, user5, user6, user7]
-    
-    
-    me    = ['1','2','3',        '6',    '8',        '11','12']
     
     #
     # => RECOMMENDATION !!!
     ##########################
     
-    users.each do |someone|
-      state = false
-      state_limit = false
-      state_favor = false
-      potential_recom = someone - me
-      how_many_equal = (someone - (someone - me)).count
+    sample_users.each do |somebody|
+      state           = false
+      state_limit     = false
+      state_favor     = false
+      difference      = somebody - me
+      how_many_equal  = (somebody - (somebody - me)).count
       
-      if how_many_equal >= low_limit
+      if how_many_equal >= fold_minimum
         state_limit = true
       end
-      # puts "#{how_many_equal}, #{someone.count}, #{how_many_equal.to_f/someone.count.to_f}"
-      if (how_many_equal.to_f/someone.count.to_f) * 100 >= favor_rate
+      if (how_many_equal.to_f/somebody.count.to_f) * 100 >= favor_rate
         state_favor = true
       end
-      #puts state_favor
       
       if state_favor == true && state_limit == true
-        potential_recom.each do |song|
+        difference.each do |song|
           it_looks_like_your_favorite_song << song
           break if it_looks_like_your_favorite_song.uniq.count == high_limit
         end

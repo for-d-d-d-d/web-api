@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
             end
         end
         if sa.count == 0
-            sa << Song.where.not(lowkey: nil).first(12)
+            sa = Song.ok.first(12)
         end
         sa
     end
