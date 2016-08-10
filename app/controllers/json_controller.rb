@@ -526,5 +526,14 @@ class JsonController < ApplicationController
     render json: result 
   end
   
+  def delete_account
+    client = params[:user]
+    me = User.find(client[:id])
+    
+    me.delete
+    
+  end
+    
+  
 
 end
