@@ -205,48 +205,14 @@ class JsonController < ApplicationController
     render json: result
   end
   
+  # Recommender
+  # method : POST, GET
+  # Input   > id: 회원 id
+  # Output  > 추천 Song Data
   def recom
-    RECOM = RecommendationController.new
-    
-    # Initailizer SET
-    sample_users, 
-    me, 
-    it_looks_like_your_favorite_song, 
-    fold_minimum,     # low_limit 
-    count_of_recom,   # high_limit 
-    favor_percentage  # favor_rate 
-      = RECOM.init()
-    
-    
-    #
-    # => RECOMMENDATION !!!
-    ##########################
-    
-    sample_users.each do |somebody|
-      state           = false
-      state_limit     = false
-      state_favor     = false
-      difference      = somebody - me
-      how_many_equal  = (somebody - (somebody - me)).count
-      
-      if how_many_equal >= fold_minimum
-        state_limit = true
-      end
-      if (how_many_equal.to_f/somebody.count.to_f) * 100 >= favor_rate
-        state_favor = true
-      end
-      
-      if state_favor == true && state_limit == true
-        difference.each do |song|
-          it_looks_like_your_favorite_song << song
-          break if it_looks_like_your_favorite_song.uniq.count == high_limit
-        end
-      end
-    end
-    it_looks_like_your_favorite_song.uniq!
-    
-    print "#{it_looks_like_your_favorite_song}\n"
-    render json: it_looks_like_your_favorite_song
+    recomC = RecommendationController.new
+    sing_it = recomC.recommend(params[:id])
+    render json: sing_it
   end
   
 end
