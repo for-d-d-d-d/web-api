@@ -424,6 +424,7 @@ class JsonController < ApplicationController
       
       if how_many_equal >= low_limit
         state_limit = true
+        
       end
       # puts "#{how_many_equal}, #{someone.count}, #{how_many_equal.to_f/someone.count.to_f}"
       if (how_many_equal.to_f/someone.count.to_f) * 100 >= favor_rate
@@ -442,6 +443,63 @@ class JsonController < ApplicationController
     
     print "#{it_looks_like_your_favorite_song}\n"
     render json: it_looks_like_your_favorite_song
+  end
+  
+  def recom2
+    RECOM = RecommendationController.new
+    
+    # Initailizer SET
+    sample_users, 
+    me, 
+    it_looks_like_your_favorite_song, 
+    fold_minimum,     # low_limit 
+    count_of_recom,   # high_limit 
+    favor_percentage  # favor_rate 
+     = RECOM.init()
+    
+    
+    #
+    # => RECOMMENDATION !!!
+    ##########################
+    
+    sample_users.each do |somebody|
+      state           = false
+      state_limit     = false
+      state_favor     = false
+      difference      = somebody - me
+      how_many_equal  = (somebody - (somebody - me)).count
+      
+      if how_many_equal >= fold_minimum
+        state_limit = true
+      end
+      if (how_many_equal.to_f/somebody.count.to_f) * 100 >= favor_rate
+        state_favor = true
+      end
+      
+      if state_favor == true && state_limit == true
+        difference.each do |song|
+          
+          it_looks_like_your_favorite_song << song
+          break if it_looks_like_your_favorite_song.uniq.count == high_limit
+            
+        end
+      
+      end
+    end
+    
+    if it_looks_like_your_favorite_song.uniq.count < high_limit
+      {
+        
+        
+        
+      }
+   
+   
+    it_looks_like_your_favorite_song.uniq!
+    
+    print "#{it_looks_like_your_favorite_song}\n"
+    render json: it_looks_like_your_favorite_song
+    
   end
   
   
