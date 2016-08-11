@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
     :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
     has_many :mylists
+    has_many :blacklist_songs
 
     def my_songs
         sa = Array.new

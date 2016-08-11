@@ -103,10 +103,17 @@ class RecommendationController < ApplicationController
         lose_count = 0
         sample_users.each do |somebody|
             check, difference = user_validation(somebody, me, fold_minimum, favor_percentage)
+<<<<<<< HEAD
             # puts "\n\nUSER Number #{i}"
             i += 1
             # puts "(user_validation) check :=>\n #{check}\n"
             # puts "(user_validation) difference :=>\n #{difference}\n"
+=======
+            puts "\n\nUSER Number #{i}"
+            i += 1
+            puts "(user_validation) check :=>\n #{check}\n"
+            puts "(user_validation) difference :=>\n #{difference}\n"
+>>>>>>> upstream/development
             
             if check == false || difference.count == 0
                 lose_count += 1
@@ -132,6 +139,7 @@ class RecommendationController < ApplicationController
         
         # GET Initailized Resource
         sample_users, me, sing_it, fold_minimum, count_of_recom, favor_percentage = init(my_id)
+<<<<<<< HEAD
         
         # DEBUGGER for init()
         # puts "(inits) sample_users :=>\n #{sample_users.count}\n"
@@ -140,6 +148,14 @@ class RecommendationController < ApplicationController
         # puts "(inits) fold_minimum :=>\n #{fold_minimum}\n"
         # puts "(inits) count_of_recom :=>\n #{count_of_recom}\n"
         # puts "(inits) favor_percentage :=>\n #{favor_percentage}\n\n"
+=======
+        puts "(inits) sample_users :=>\n #{sample_users.count}\n"
+        puts "(inits) me :=>\n #{me}\n"
+        puts "(inits) sing_it :=>\n #{sing_it}\n"
+        puts "(inits) fold_minimum :=>\n #{fold_minimum}\n"
+        puts "(inits) count_of_recom :=>\n #{count_of_recom}\n"
+        puts "(inits) favor_percentage :=>\n #{favor_percentage}\n\n"
+>>>>>>> upstream/development
         
         # Can Recycle
         i = 0
@@ -164,7 +180,10 @@ class RecommendationController < ApplicationController
             i += 1
         end
         
+<<<<<<< HEAD
         # READY to send API
+=======
+>>>>>>> upstream/development
         sing_it = from_id_to_songs(sing_it)
         #puts "\n\n\n(result) lose_count :=>\n #{lose_count}\n"
         puts "\n(result) result_count :=>\n #{sing_it.count}\n"
