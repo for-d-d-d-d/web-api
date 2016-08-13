@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'figaro'
 gem 'rails-observers'
 # gem 'autoprefixer-rails'
 # gem 'google-api-client', '0.9'
