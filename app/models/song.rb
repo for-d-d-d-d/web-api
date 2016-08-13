@@ -13,6 +13,26 @@ class Song < ActiveRecord::Base
         return self.where.not(lowkey: nil)
     end
     
+    # 크롤링이 전부 종료된 이후의 데이터에 대하여 jacke IMG를 크기별로 리사이징 해서 저장합니다.
+    # return: "SUCCESS"
+    def self.jacket_resizing(size)
+        song = Song.all
+        song.each do |s|
+            jacket = s.jacket
+            if size == "all"
+                s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
+                s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" if s.jacket_small == nil || s.jacket_middle.length < 20
+            else
+                if size == "middle"
+                    s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
+                elsif size == "small"
+                    s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" if s.jacket_small == nil || s.jacket_middle.length < 20
+                end
+            end
+            s.save
+        end
+    end
+    
     def artist
         if !(self.singer_id.nil?)
             return Singer.where(id: self.singer_id).first
