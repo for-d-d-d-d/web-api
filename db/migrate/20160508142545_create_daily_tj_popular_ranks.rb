@@ -4,6 +4,7 @@ class CreateDailyTjPopularRanks < ActiveRecord::Migration
       t.string :symd
       t.string :eymd
       t.integer :song_rank
+      t.integer :song_id
       t.integer :song_num
       t.string :song_title
       t.string :song_singer

@@ -432,7 +432,7 @@ class JsonController < ApplicationController
     me = User.find(params[:id]) 
     bs = BlacklistSong.find(params[:blacklist_songs.id])
     unless params[:blacklist_songs.id].nil? || params[:user_id].nil?
-        delete bs
+      bs.delete
     end
     result = me.blacklist_songs.all
     render json: result
