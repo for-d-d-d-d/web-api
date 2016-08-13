@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'whenever', :require => false
 gem 'rails-observers'
 # gem 'autoprefixer-rails'
 # gem 'google-api-client', '0.9'
