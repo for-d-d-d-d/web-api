@@ -31,7 +31,7 @@ class CrawlController < ApplicationController
 
     # Method Name : tj_daily_popular
     # Method Procedure :
-    # Method Description :
+    # Method Description : 인기차트(연월일 부터 ~ 연월일 까지)
     def tj_daily_popular
         #-----------------------------------------------------------------------------------------------------
         # Parameter Mapping(TJ와 같은 방식으로) : 설정기간 {'언제부터' '언제까지' 기간 중에 인기 Top100 보기}
