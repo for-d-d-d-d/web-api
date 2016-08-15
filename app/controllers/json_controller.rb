@@ -338,12 +338,11 @@ class JsonController < ApplicationController
   # method : POST
   # Input   > id: 회원 id (+) myList_id: 읽어들일 myList ID
   # Output  > 내 mySong.all
-  def mySong_read
+  def mySong_read ##id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
     me = User.find(params[:id])
     ml = Mylist.find(params[:myList_id])
     if ml.user_id == me.id
       mySongs = ml.mylist_songs
-    end
     result = mySongs
     render json: result
   end
@@ -382,126 +381,35 @@ class JsonController < ApplicationController
     render json: result
   end
   
+  # Recommender
+  # method : POST, GET
+  # Input   > id: 회원 id
+  # Output  > 추천 Song Data
   def recom
-    #
-    # => Initailizer SET
-    ##########################
-    
-    users = []
-    me = []
-    it_looks_like_your_favorite_song = []
-    low_limit = 4   #    N 개
-    high_limit = 10 #    N 개
-    favor_rate = 50 #    N %
-    
-    
-    #
-    # => TEMP USER SET
-    ##########################
-    
-    user1 = ('1'..'20').to_a
-    user2 = ['1','2','3','4','5','6','7','8','9','10']
-    user3 = ['1',    '3',    '5',    '7',    '9']
-    user4 = ['1','2','3','4','5','6','95']
-    user5 = [                    '6','7','8','9','10']
-    user6 = [    '2',    '4',    '6',    '8',    '10']
-    user7 = ['1','2','3',    '5','6','7','8',        '11','12','90','91','92','93','94']
-    users = [user1, user2, user3, user4, user5, user6, user7]
-    
-    
-    me    = ['1','2','3',        '6',    '8',        '11','12']
-    
-    #
-    # => RECOMMENDATION !!!
-    ##########################
-    
-    users.each do |someone|
-      state = false
-      state_limit = false
-      state_favor = false
-      potential_recom = someone - me
-      how_many_equal = (someone - (someone - me)).count
-      
-      if how_many_equal >= low_limit
-        state_limit = true
-        
-      end
-      # puts "#{how_many_equal}, #{someone.count}, #{how_many_equal.to_f/someone.count.to_f}"
-      if (how_many_equal.to_f/someone.count.to_f) * 100 >= favor_rate
-        state_favor = true
-      end
-      #puts state_favor
-      
-      if state_favor == true && state_limit == true
-        potential_recom.each do |song|
-          it_looks_like_your_favorite_song << song
-          break if it_looks_like_your_favorite_song.uniq.count == high_limit
-        end
-      end
-    end
-    it_looks_like_your_favorite_song.uniq!
-    
-    print "#{it_looks_like_your_favorite_song}\n"
-    render json: it_looks_like_your_favorite_song
+
+    recomC = RecommendationController.new
+    sing_it = recomC.recommend(params[:id])
+    render json: sing_it
   end
   
-  def recom2
-    RECOM = RecommendationController.new
-    
-    # Initailizer SET
-    sample_users, 
-    me, 
-    it_looks_like_your_favorite_song, 
-    fold_minimum,     # low_limit 
-    count_of_recom,   # high_limit 
-    favor_percentage  # favor_rate 
-     = RECOM.init()
-    
-    
-    #
-    # => RECOMMENDATION !!!
-    ##########################
-    
-    sample_users.each do |somebody|
-      state           = false
-      state_limit     = false
-      state_favor     = false
-      difference      = somebody - me
-      how_many_equal  = (somebody - (somebody - me)).count
-      
-      if how_many_equal >= fold_minimum
-        state_limit = true
-      end
-      if (how_many_equal.to_f/somebody.count.to_f) * 100 >= favor_rate
-        state_favor = true
-      end
-      
-      if state_favor == true && state_limit == true
-        difference.each do |song|
-          
-          it_looks_like_your_favorite_song << song
-          break if it_looks_like_your_favorite_song.uniq.count == high_limit
-            
-        end
-      
-      end
-    end
-    
-    if it_looks_like_your_favorite_song.uniq.count < high_limit
-      {
-        
-        
-        
-      }
-   
-   
-    it_looks_like_your_favorite_song.uniq!
-    
-    print "#{it_looks_like_your_favorite_song}\n"
-    render json: it_looks_like_your_favorite_song
-    
-  end
   
+  # blacklistsong CRUD > CREATE
+  # method : POST
+  # Input   > id: 회원 id (+) Song_id: 차단하려는 Song ID
+  # Output  > id: 차단할 song의 id, "SUCCESS" 메시지
+  
+  def blacklist_song_create
+    @check = "ERROR"
+    unless params[:id].nil? || params[:song_id].nil? || params[:user_id].nil?
+      bs = BlacklistSong.new
+      bs.song_id  = params[:song_id]
+      bs.user_id  = params[:user_id]
+      bs.save
+      @check = "SUCCESS"
+    end
+    result = {"id": bs.id, "message": @check}
+    render json: result 
+  end
   
   # blacklistsong CRUD > CREATE
   # method : POST
@@ -592,6 +500,5 @@ class JsonController < ApplicationController
     
   end
     
-  
 
 end
