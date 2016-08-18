@@ -32,12 +32,10 @@
 - (0.0.16-1) 노래 차단
 - (0.0.17-1) 차단된 노래 read
 - (0.0.18-1) 차단된 노래 delete(차단해제)
-<<<<<<< HEAD
-- (0.0.19-1) 개인정보 변경
-=======
 - (0.0.19-0) 개인정보 변경
->>>>>>> upstream/development
 - (0.0.20-0) 회원 탈퇴
+- (0.0.21-1) 음역검증된 노래 READ(임시적으로 만듬)
+
 
 
 ```ruby
@@ -549,47 +547,35 @@ authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
 ---
 
 
-<<<<<<< HEAD
-## __| 개인정보변경 (0.0.19-1) |__
+## __|  (0.0.21-1) |__
 
 
 
 ### 요청(Request)
   - Method: '__POST__'
-  - Url: "__/json/modify_userdata__"
+  - Url: "__/json/song__"
 
 
 ### 예제(Example)
   - to GET method example
 
 
-    http://api.goraebang.com/json/modify_userdata?id=회원ID&authNum=인증코드'
+    http://api.goraebang.com/json/song'
 
 
 ### 매개변수(Parameters)
-
-key | value | desc
------- | ------ | ---
-id | 사용자 레코드 id값 |  필수
-name | user의 name |  선택
-gender | user의 name |  선택
-birthdate | user의 birthdate |  선택
-authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
 
 
 ### 반환(RETURN)
 
 - Type: __'json DATA-SET'__
-- Read : ``[{"result": 회원의 수정된 개인정보}...{}]``
+- Read : ``[{"result": 음역대 측정이 완료된 노래목록}...{}]``
 - __성공 요건__
-  1. 유저가 login 되어 있을 때 (userID가 존재 할 때)
+  
   
 
 ---
 
-
-=======
->>>>>>> upstream/development
 
 
 
