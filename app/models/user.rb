@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
     :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
     has_many :mylists
+    has_many :blacklist_songs
 
     def my_songs
         sa = Array.new
@@ -16,7 +17,7 @@ class User < ActiveRecord::Base
             end
         end
         if sa.count == 0
-            sa << Song.where.not(lowkey: nil).first(12)
+            sa = Song.ok.first(12)
         end
         sa
     end

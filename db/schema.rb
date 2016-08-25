@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160603162717) do
+ActiveRecord::Schema.define(version: 20160808080349) do
 
   create_table "administers", force: :cascade do |t|
     t.string   "username"
@@ -23,12 +23,14 @@ ActiveRecord::Schema.define(version: 20160603162717) do
 
   create_table "albums", force: :cascade do |t|
     t.string   "title"
-    t.string   "ganre1"
-    t.string   "ganre2"
+    t.string   "genre1"
+    t.string   "genre2"
     t.string   "publisher"
     t.string   "agency"
     t.string   "released_date"
     t.text     "jacket"
+    t.text     "jacket_middle"
+    t.text     "jacket_small"
     t.integer  "team_id"
     t.integer  "singer_id"
     t.integer  "album_num"
@@ -50,10 +52,18 @@ ActiveRecord::Schema.define(version: 20160603162717) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "blacklist_songs", force: :cascade do |t|
+    t.integer  "song_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "daily_tj_popular_ranks", force: :cascade do |t|
     t.string   "symd"
     t.string   "eymd"
     t.integer  "song_rank"
+    t.integer  "song_id"
     t.integer  "song_num"
     t.string   "song_title"
     t.string   "song_singer"
@@ -86,6 +96,8 @@ ActiveRecord::Schema.define(version: 20160603162717) do
   create_table "singers", force: :cascade do |t|
     t.string   "name"
     t.string   "photo"
+    t.integer  "gender"
+    t.string   "typee"
     t.integer  "artist_num"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -103,20 +115,22 @@ ActiveRecord::Schema.define(version: 20160603162717) do
     t.integer  "singer_id"
     t.integer  "team_id"
     t.string   "title"
-    t.string   "ganre1"
-    t.string   "ganre2"
+    t.string   "genre1"
+    t.string   "genre2"
     t.string   "runtime"
     t.text     "lyrics"
     t.string   "writer"
     t.string   "composer"
     t.string   "youtube"
     t.text     "jacket"
+    t.text     "jacket_middle"
+    t.text     "jacket_small"
     t.integer  "song_tjnum"
     t.integer  "song_num"
     t.string   "lowkey"
     t.string   "highkey"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "team_teams", force: :cascade do |t|
@@ -129,6 +143,8 @@ ActiveRecord::Schema.define(version: 20160603162717) do
   create_table "teams", force: :cascade do |t|
     t.string   "name"
     t.string   "photo"
+    t.integer  "gender"
+    t.string   "typee"
     t.integer  "artist_num"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -136,6 +152,7 @@ ActiveRecord::Schema.define(version: 20160603162717) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   default: "", null: false
+    t.integer  "gender",                 default: 0,  null: false
     t.string   "provider"
     t.string   "uid"
     t.string   "email",                  default: "", null: false

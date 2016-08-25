@@ -13,11 +13,35 @@ class Song < ActiveRecord::Base
         return self.where.not(lowkey: nil)
     end
     
+    def self.empty_tj
+        return Song.where(song_tjnum: nil)
+    end
+    
+    # 크롤링이 전부 종료된 이후의 데이터에 대하여 jacke IMG를 크기별로 리사이징 해서 저장합니다.
+    # return: "SUCCESS"
+    def self.jacket_resizing(size)
+        song = Song.all
+        song.each do |s|
+            jacket = s.jacket
+            if size == "all"
+                s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
+                s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" if s.jacket_small == nil || s.jacket_middle.length < 20
+            else
+                if size == "middle"
+                    s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
+                elsif size == "small"
+                    s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" if s.jacket_small == nil || s.jacket_middle.length < 20
+                end
+            end
+            s.save
+        end
+    end
+    
     def artist
-        if !(self.singer_id.nil?)
-            return Singer.where(id: self.singer_id).first
+        if self.singer_id != nil
+            return Singer.find(self.singer_id)
         elsif self.team_id != nil
-            return Team.where(id: self.team_id).first
+            return Team.find(self.team_id)
         end
         return nil
     end
@@ -46,156 +70,117 @@ class Song < ActiveRecord::Base
     def crawl_song
         num = self.song_num
         puts "song_num = " + self.song_num.to_s
-        # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
+        
+        # GET 타겟 문서
         html_doc = CrawlController.load_page(num, "song_number")
-
-        @song_title = html_doc.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip!
-        @song_ganre1 = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(3)//span.value").inner_html.to_s.split(' / ').first.to_s
-        @song_ganre2 = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(3)//span.value").inner_html.to_s.split(' / ').last.to_s
-
-        # 다음 상황에서는 루프를 스킵한다.
-        # =>유형1. @song_title = "제목이 발견되지 않는다"
-        return false if @song_title.length == 0
-        # =>유형2. @song_ganre1 == "CCM"
-        # =>유형3. @song_ganre1 == "클래식"
-        # =>유형4. @song_ganre2 == "불교음악"
-        # =>유형5. @song_ganre2 == "뮤직테라피"
-        # =>유형6. @song_ganre2 == "뉴에이지"
-        return false if @song_ganre1 == "CCM" || @song_ganre1 == "클래식" || @song_ganre2 == "불교음악" || @song_ganre2 == "뮤직테라피" || @song_ganre2 == "뉴에이지"
-
-        # =>유형7. 앨범번호 에러시 예외처리
-        guess_error = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a")[0]
-        if guess_error.nil?
-            error7 = true
+        # GET 노래 제목, 장르1, 장르2, 재생시간, 가사, 아티스트 번호, 앨범 번호
+        @song_title, @song_genre1, @song_genre2, @runtime, @lyrics, @artist_num, @album_num = CrawlController.parser_song_origin(html_doc)
+        
+        # SET Loop Break (wrong condition)
+        validater = []
+        validater = CrawlController.skip_condition()
+        validater.each do |condition|
+            eval("return false if @#{condition[0]} == \"#{condition[1].to_s}\"")
+        end
+        
+        # IF album_num has nil, then SOMETHING need modify
+        # GET 수정된 장르1, 장르2, 아티스트 번호, 앨범 번호, 재생시간
+        if @album_num.nil?
             guess_error = html_doc.css("div#body-content//div.info-zone//ul.info-data//li//span.value").to_s.split('</span>')
-            @song_ganre1 = guess_error[2].gsub('<span class="value">','').split(' / ').first.to_s
-            @song_ganre2 = guess_error[2].gsub('<span class="value">','').split(' / ').last.to_s
-            @artist_num = guess_error.first.gsub('<a href="#" onclick="fnGoMore(\'artistInfo\',\'' , '/////').gsub('\');return false;">' , '/////').split('/////')[1].to_i
-            @album_num = guess_error.second.gsub('<a href="#" onclick="fnGoMore(\'albumInfo\',\'' , '/////').gsub('\');return false;">' , '/////').split('/////')[1].to_i
-            @runtime = guess_error[3].gsub('<span class="value">','').to_s
+            @song_genre1, @song_genre2, @artist_num, @album_num, @runtime = CrawlController.parser_modified(guess_error)
         end
 
-        # 루프가 스킵 되지 않았다면 본격적으로 데이터를 작성하자.
-        # 임의로 때려넣은 지니넘버 주소에 노래정보 있는거 확인했으니까
-        # 긁어올거 일단 다 긁어오고나서 저장하자
-
-        ###################################
-        #**      Song Table Details     **#
+        # 루프가 스킵 되지 않았다면 본격적으로 레코드에 기록하고 저장.
         song = Song.where(song_num: num).first
         song = Song.new if song.nil?
-        # 음원 정보(보통)
-        ## title(제목)
-        song.title = @song_title
-        ## ganre1(장르1)
-        song.ganre1 = @song_ganre1
-        ## ganre2(장르2)
-        song.ganre2 = @song_ganre2
-        ## runtime(재생시간)
-        @runtime = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(4)//span.value").inner_html.to_s unless error7
-        song.runtime = @runtime
-        ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
-        @lyrics = html_doc.css("div#body-content//div.lyrics-area//div.tit-box//pre").inner_html.to_s
-        song.lyrics = @lyrics
-        ## songwriter(작사)
-        #@lyrics = html_doc.css("div#body-content//div.lyrics-area//div.tit-box//pre").inner_html.to_s
-        #song.lyrics = @lyrics
-        ## composer(작곡)
-        #@lyrics = html_doc.css("div#body-content//div.lyrics-area//div.tit-box//pre").inner_html.to_s
-        #song.lyrics = @lyrics
-
-        # 음원 정보(참조)
-        ## artist_num(아티스트 번호)
-        @artist_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(1)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('artistInfo','","").first(8) unless error7
-        # song.artist_num = @artist_num
-        # puts "artist_num : " + @artist_num.to_s
+        song.title      = @song_title       ## title(제목)
+        song.genre1     = @song_genre1      ## genre1(장르1)
+        song.genre2     = @song_genre2      ## genre2(장르2)
+        song.runtime    = @runtime          ## runtime(재생시간)
+        song.lyrics     = @lyrics           ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
+      
         artist = CrawlController.crawl_artist(@artist_num)
-
         if artist.class == Singer
-            song.singer_id = artist.id
+            song.singer_id  = artist.id     ## artist_num(아티스트 번호) case 아티스트가 솔로
         elsif artist.class == Team
-            song.team_id = artist.id
+            song.team_id    = artist.id     ## artist_num(아티스트 번호) case 아티스트가 그룹
         end
-
-        ## album_num(앨범 번호)
-        @album_num = html_doc.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a")[0]['onclick'].to_s.gsub("fnGoMore('albumInfo','","").first(8) unless error7
-        # song.album_num = @album_num
-
-        #**       Album Table Details    **#
-        album = Album.where(album_num: @album_num).first
+        song.save
+        # They Can't be Crawl in Ginnie
+        #    song.songwriter = html_doc.css("---div#body-content//div.lyrics-area//div.tit-box//pre---").inner_html.to_s        ## songwriter(작사)
+        #    song.composer   = html_doc.css("---div#body-content//div.lyrics-area//div.tit-box//pre---").inner_html.to_s        ## composer(작곡)
+        
+        album = Album.where(album_num: @album_num).first    # 전에 긁어온 노래를 통해 이미 존재하는지 확인
         if album.nil?
             album = Album.new
             # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
             html_doc_album = CrawlController.load_page(@album_num, "album_number")
-            ## title(앨범제목)
-            @album_title = html_doc_album.css("div#body-content//div.info-zone//h2.name").inner_html.to_s.strip
-            album.title = @album_title
-            ## ganre1(앨범장르1)
-            @album_ganre1 = html_doc_album.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value").inner_html.to_s.split(' / ').first.to_s
-            album.ganre1 = @album_ganre1
-            ## ganre2(앨범장르2)
-            @album_ganre2 = html_doc_album.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value").inner_html.to_s.split(' / ').last.to_s
-            album.ganre2 = @album_ganre2
-            ## publisher(발매사)
-            @publisher = html_doc_album.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(3)//span.value").inner_html.to_s
-            album.publisher = @publisher
-            ## agency(기획사)
-            @agency = html_doc_album.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(4)//span.value").inner_html.to_s
-            album.agency = @agency
-            ## released_date(발매일)
-            @released_date = html_doc_album.css("div#body-content//div.info-zone//ul.info-data//li:nth-child(5)//span.value").inner_html.to_s
-            album.released_date = @released_date
-            ## jacket(앨범자켓 :: 이미지)
-            @jacket = "http:" + html_doc_album.css("div#body-content//div.photo-zone//a")[0]['href'].to_s
-            album.jacket = @jacket
+            @album_title, @album_genre1, @album_genre2, @publisher, @agency, @released_date, @jacket = CrawlController.parser_album_origin(html_doc_album)
+            
+            album.title         = @album_title      ## title(앨범제목)
+            album.genre1        = @album_genre1     ## genre1(앨범장르1)
+            album.genre2        = @album_genre2     ## genre2(앨범장르2)
+            album.publisher     = @publisher        ## publisher(발매사)
+            album.agency        = @agency           ## agency(기획사)
+            album.released_date = @released_date    ## released_date(발매일)
+            album.jacket        = @jacket           ## jacket(앨범자켓 :: 이미지)
 
             artist = CrawlController.crawl_artist(@artist_num)
-            ## artist_num(아티스트 번호)
-            # album.artist_num = @artist_num
-
             if artist.class == Singer
-                album.singer_id = artist.id
+                album.singer_id = artist.id         ## artist_num(아티스트 번호) case 아티스트가 솔로
             elsif artist.class == Team
-                album.team_id = artist.id
+                album.team_id = artist.id           ## artist_num(아티스트 번호) case 아티스트가 그룹
             end
-
-            ## album_num(앨범 고유번호)
-            album.album_num = @album_num
-            album.save #아래 앨범아이디 만들려면 먼저저장해야함.
+            
+            album.album_num = @album_num            ## album_num(앨범 고유번호)
+            album.save                              ## 아래 앨범아이디 만드려면 먼저저장해야함.
         else
-            @album_title    = album.title
-            @album_ganre1   = album.ganre1
-            @album_ganre2   = album.ganre2
-            @publisher      = album.publisher
-            @agency         = album.agency
-            @released_date  = album.released_date
             @jacket         = album.jacket
-            # @artist_num     = album.artist_num
-            # @artist_photo   = album.artist_photo
-            # @artist_name    = album.artist_name
-            # @album_num      = album.album_num
         end
-        #**                              **#
-
-        # 음원 정보(참조추출)
-        ## artist_photo(아티스트 사진)
-        # song.artist_photo = @artist_photo
-        ## jacket(자켓사진)
-        song.jacket = @jacket
-
-        # 앨범테이블 릴레이션
-        ## album_id(앨범아이디)
-        song.album_id = album.id
-        # 음원 정보(고유값)
-        ## song_tjnum(노래방번호 :: 나중에 따로 받아야 할듯)
-        # song.song_tjnum = nil
-        ## song_num(지니뮤직 고뮤번호)
-        song.song_num = num
-        #**                              **#
-        ####################################
-
-        # 다 긁었으니까 노래도 마저 저장하자
+        
+        song.jacket     = @jacket       ## jacket(자켓사진)         # 음원 정보(참조추출)
+        song.album_id   = album.id      ## album_id(앨범아이디)     # 앨범테이블 릴레이션
+        
+        # song.song_tjnum = nil         ## song_tjnum(노래방번호 :: 나중에 따로 받아야 할듯)    # 음원 정보(고유값)
+        song.song_num = num             ## song_num(지니뮤직 고뮤번호)                          # 음원 정보(고유값)
+        
+        # SAVE Song
+        song.save
+        
+        try = 0; success = 0;
+        tj_song, try, success = CrawlController.tj_linker(song, try, success)
+        if tj_song[0] != nil && tj_song != false
+            numbertj = tj_song[0]
+        else
+            numbertj = 0
+        end
+        
+        song.song_tjnum  = numbertj
         song.save
 
         return song
+    end
+    
+    def self.match_TJ
+        whole_count = Song.count
+        origin_unmatched_count = Song.empty_tj.count
+        
+        filled_song = []
+        i = 0
+        pop = 0
+        Song.empty_tj.each do |s|
+            # 5개만 테스트
+            break if i == 50
+            tj_song, i, pop = CrawlController.tj_linker(s, i, pop)
+            next if tj_song.count == 0
+            if tj_song.count != 0 && tj_song != false
+                s.song_tjnum = tj_song[0]
+                s.save
+                filled_song << s
+            end
+        end
+        puts "총 #{whole_count}곡.\n\n 입력이 되지 않은 #{origin_unmatched_count}곡 중 #{pop}곡을 찾아서 추가했음!"
+        
+        return filled_song.map{|e| e.id}
     end
 end
