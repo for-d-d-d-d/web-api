@@ -14,7 +14,7 @@ class JsonController < ApplicationController
     user = params[:user]
     user[:name]
     
-    "<input type='text' name='user[name]'"
+    # "<input type='text' name='user[name]'>"
     params[:user] # => user{"user_id":"1", "user_name":"김용현"}
     params[:id]
     

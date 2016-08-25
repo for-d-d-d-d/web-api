@@ -63,7 +63,6 @@ ActiveRecord::Schema.define(version: 20160808080349) do
     t.string   "symd"
     t.string   "eymd"
     t.integer  "song_rank"
-    t.integer  "song_id"
     t.integer  "song_num"
     t.string   "song_title"
     t.string   "song_singer"
@@ -96,8 +95,6 @@ ActiveRecord::Schema.define(version: 20160808080349) do
   create_table "singers", force: :cascade do |t|
     t.string   "name"
     t.string   "photo"
-    t.integer  "gender"
-    t.string   "typee"
     t.integer  "artist_num"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -143,8 +140,6 @@ ActiveRecord::Schema.define(version: 20160808080349) do
   create_table "teams", force: :cascade do |t|
     t.string   "name"
     t.string   "photo"
-    t.integer  "gender"
-    t.string   "typee"
     t.integer  "artist_num"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

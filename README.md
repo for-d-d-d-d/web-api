@@ -64,7 +64,7 @@
   - to GET method example
 
 
-    http://api.goraebang.com/json/regist?user[email]=이메일&user[name]=이름&user[password]=패스워드&user[password_confirmation]=패스워드확인&authNum=인증코드
+    http://api.goraebang.com/json/regist?user[email]=이메일&user[name]=이름&user[gender]=성별(0:기본, 1:남, 2:여, 3:표기거절)&user[password]=패스워드&user[password_confirmation]=패스워드확인&authNum=인증코드
 
 
 ### 매개변수(Parameters)
