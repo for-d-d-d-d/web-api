@@ -34,6 +34,8 @@
 - (0.0.18-1) 차단된 노래 delete(차단해제)
 - (0.0.19-0) 개인정보 변경
 - (0.0.20-0) 회원 탈퇴
+- (0.0.21-1) 음역검증된 노래 READ(임시적으로 만듬)
+
 
 
 ```ruby
@@ -544,6 +546,35 @@ authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
 
 ---
 
+
+## __| 음역검증된 노래 READ(임시적으로 만듬) (0.0.21-1) |__
+
+
+
+### 요청(Request)
+  - Method: '__POST__'
+  - Url: "__/json/song__"
+
+
+### 예제(Example)
+  - to GET method example
+
+
+    http://api.goraebang.com/json/song'
+
+
+### 매개변수(Parameters)
+
+
+### 반환(RETURN)
+
+- Type: __'json DATA-SET'__
+- Read : ``[{"result": 음역대 측정이 완료된 노래목록}...{}]``
+- __성공 요건__
+  
+  
+
+---
 
 
 
