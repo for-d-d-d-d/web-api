@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'figaro'
 gem 'whenever', :require => false
 gem 'rails-observers'
 # gem 'autoprefixer-rails'

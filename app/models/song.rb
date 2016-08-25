@@ -13,6 +13,10 @@ class Song < ActiveRecord::Base
         return self.where.not(lowkey: nil)
     end
     
+    def self.tj_ok
+        return self.where.not(song_tjnum: nil).where.not(song_tjnum: 0).where.not(jacket: "http:#")
+    end
+
     def self.empty_tj
         return Song.where(song_tjnum: nil)
     end

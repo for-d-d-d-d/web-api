@@ -5,7 +5,7 @@
 
 # Example:
 #
-# set :output, "/path/to/my/cron_log.log"
+set :output, "/home/ec2-user/web-api/log/cron_log.log"
 #
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
@@ -19,15 +19,16 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :environment, "development"
+# set :environment, "development"
 
-every 10.minute do
+every 5.minute do
   # exec
-  runner "CrawlController.run", :environment => "development"
+  runner "CrawlController.run(nil, nil)"#, :environment => "development"
   
   # dump ready
-  command "mkdir /home/ubuntu/workspace/public/seeds/#{Time.new.to_s.gsub('-','')}"
-  command "cp /home/ubuntu/workspace/db/seeds.rb /home/ubuntu/workspace/public/seeds/#{Time.new.to_s.gsub('-','')}/seed.rb"
+  command "mkdir /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}"
+  command "touch /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}/seed.rb"
+  command "cp /home/ec2-user/web-api/db/seeds.rb /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}/seed.rb"
   
   # dump
   rake "db:seed:dump"

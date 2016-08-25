@@ -23,7 +23,7 @@ class CrawlController < ApplicationController
     
     # start : 시작할 노래 번호
     # ex) 82425426 번은 악동뮤지션 200% 곡의 넘버임
-    def init()
+    def self.init()
         if Song.last == nil
             start = START_BASE_NUM
         else
@@ -193,18 +193,19 @@ class CrawlController < ApplicationController
         redirect_to :back
     end
     def run_song
-        
-        success = CrawlController.run()
+        var_count = params[:count]
+	var_start = params[:start_at]
+        success = CrawlController.run(var_count, var_start)
         
         render json: success
     end
     # Method Name : run
     # Method Procedure :
     # Method Description : 최초 크롤러 from 지니
-    def self.run()
-        count, @start_num = init()
-        count = params[:count].to_i unless params[:count].nil?
-        @start_num = params[:start_at].to_i unless params[:start_at].nil?
+    def self.run(var_count, var_start)
+        count, @start_num = CrawlController.init()
+        count = var_count.to_i unless var_count.nil?
+        @start_num = var_start.to_i unless var_start.nil?
         # last_saved_song_count = Song.count
         count_origin = count
         num = @start_num - 1

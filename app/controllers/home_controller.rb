@@ -26,8 +26,8 @@ class HomeController < ApplicationController
     end
 
     def main
-        @song = Song.ok.all
-        @carousel = @song.first(17)
+        @songs = Song.tj_ok.all
+        @carousel = @songs.first(17)
 
         @rankers = DailyTjPopularRank.all
 
@@ -108,7 +108,7 @@ class HomeController < ApplicationController
             @song_searched_By_title = Array.new
             @song_searched_By_lyrics = Array.new
 
-            Song.ok.all.each do |s|
+            Song.tj_ok.all.each do |s|
                 q.each do |qq|
                     @song_searched_By_artist << s if s.artist.name.include?(qq)
                     @song_searched_By_title << s if s.title.include?(qq)
