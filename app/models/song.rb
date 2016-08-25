@@ -114,37 +114,11 @@ class Song < ActiveRecord::Base
         #    song.songwriter = html_doc.css("---div#body-content//div.lyrics-area//div.tit-box//pre---").inner_html.to_s        ## songwriter(작사)
         #    song.composer   = html_doc.css("---div#body-content//div.lyrics-area//div.tit-box//pre---").inner_html.to_s        ## composer(작곡)
         
-        album = Album.where(album_num: @album_num).first    # 전에 긁어온 노래를 통해 이미 존재하는지 확인
-        if album.nil?
-            album = Album.new
-            # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
-            html_doc_album = CrawlController.load_page(@album_num, "album_number")
-            @album_title, @album_genre1, @album_genre2, @publisher, @agency, @released_date, @jacket = CrawlController.parser_album_origin(html_doc_album)
-            
-            album.title         = @album_title      ## title(앨범제목)
-            album.genre1        = @album_genre1     ## genre1(앨범장르1)
-            album.genre2        = @album_genre2     ## genre2(앨범장르2)
-            album.publisher     = @publisher        ## publisher(발매사)
-            album.agency        = @agency           ## agency(기획사)
-            album.released_date = @released_date    ## released_date(발매일)
-            album.jacket        = @jacket           ## jacket(앨범자켓 :: 이미지)
-
-            artist = CrawlController.crawl_artist(@artist_num)
-            if artist.class == Singer
-                album.singer_id = artist.id         ## artist_num(아티스트 번호) case 아티스트가 솔로
-            elsif artist.class == Team
-                album.team_id = artist.id           ## artist_num(아티스트 번호) case 아티스트가 그룹
-            end
-            
-            album.album_num = @album_num            ## album_num(앨범 고유번호)
-            album.save                              ## 아래 앨범아이디 만드려면 먼저저장해야함.
-        else
-            @jacket         = album.jacket
-        end
-        
+        album_id, @jacket = CrawlController.crawl_album(@album_num, @artist_num)
+         
         song.jacket     = @jacket       ## jacket(자켓사진)         # 음원 정보(참조추출)
-        song.album_id   = album.id      ## album_id(앨범아이디)     # 앨범테이블 릴레이션
-        
+        song.album_id   = album_id      ## album_id(앨범아이디)     # 앨범테이블 릴레이션
+
         # song.song_tjnum = nil         ## song_tjnum(노래방번호 :: 나중에 따로 받아야 할듯)    # 음원 정보(고유값)
         song.song_num = num             ## song_num(지니뮤직 고뮤번호)                          # 음원 정보(고유값)
         
@@ -186,5 +160,36 @@ class Song < ActiveRecord::Base
         puts "총 #{whole_count}곡.\n\n 입력이 되지 않은 #{origin_unmatched_count}곡 중 #{pop}곡을 찾아서 추가했음!"
         
         return filled_song.map{|e| e.id}
+    end
+
+    def crawl_start_at_artist
+        # song_num를 받는다
+        num = self.song_num
+
+        # 지니뮤직의 song 페이지에 접근해 아티스트번호와 앨범번호를 가져온다.
+        html_doc = CrawlController.load_page(num, "song_number")
+        @song_title, @song_genre1, @song_genre2, @runtime, @lyrics, artist_num, album_num = CrawlController.parser_song_origin(html_doc)
+        puts "<<최초 로드>> artist_num: #{artist_num}, album_num: #{album_num}"
+
+        if @album_num.nil?
+            guess_error = html_doc.css("div#body-content//div.info-zone//ul.info-data//li//span.value").to_s.split('</span>')
+            @song_genre1, @song_genre2, artist_num, album_num, @runtime = CrawlController.parser_modified(guess_error)
+        end
+        puts "<<수정 로드>> artist_num: #{artist_num}, album_num: #{album_num}"
+
+        # artist 페이지에 접근해 정보를 받아오고 저장
+        artist = CrawlController.crawl_artist(artist_num)
+        # album 페이지에 접근해 정보를 받아오고 저장
+        album_id, @jacket = CrawlController.crawl_album(album_num, artist_num)
+
+        # Song 에 아티스트 및 앨범 저장
+        self.album_id = album_id
+        if artist.class == Team
+                self.team_id = artist.id
+        elsif artist.class == Singer
+                self.singer_id = artist.id
+        end
+        self.jacket = @jacket
+        self.save
     end
 end

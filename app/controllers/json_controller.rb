@@ -346,7 +346,7 @@ class JsonController < ApplicationController
     end
     result_song = mySongs.map{|mysong| mysong.song_id}.map{|id| Song.find(id)}
     result_artist = result_song.map{|song| song.artist}.map{|artist| artist.name}
-    resutl = {song: result_song, artistName: result_artist}
+    result = {song: result_song, artistName: result_artist}
     puts "#{result}"
     render json: result
   end

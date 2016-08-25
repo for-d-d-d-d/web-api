@@ -21,19 +21,19 @@ set :output, "/home/ec2-user/web-api/log/cron_log.log"
 
 # set :environment, "development"
 
-every 5.minute do
-  # exec
-  runner "CrawlController.run(nil, nil)"#, :environment => "development"
-  
-  # dump ready
-  command "mkdir /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}"
-  command "touch /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}/seed.rb"
-  command "cp /home/ec2-user/web-api/db/seeds.rb /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}/seed.rb"
-  
-  # dump
-  rake "db:seed:dump"
-end
-
+#every 5.minute do
+#  # exec
+#  runner "CrawlController.run(nil, nil)"#, :environment => "development"
+#  
+#  # dump ready
+#  command "mkdir /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}"
+#  command "touch /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}/seed.rb"
+#  command "cp /home/ec2-user/web-api/db/seeds.rb /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}/seed.rb"
+#  
+#  # dump
+#  rake "db:seed:dump"
+#end
+#
 
 
 

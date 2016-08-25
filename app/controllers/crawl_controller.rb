@@ -367,6 +367,41 @@ class CrawlController < ApplicationController
         return team
     end
 
+    def self.crawl_album(album_num, artist_num)
+        @album_num = album_num
+        @artist_num = artist_num
+                        
+        album = Album.where(album_num: @album_num).first    # 전에 긁어온 노래를 통해 이미 존재하는지 확인
+        if album.nil?
+                album = Album.new
+                # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
+                html_doc_album = CrawlController.load_page(@album_num, "album_number")
+                puts "#{@album_num}, #{html_doc_album.to_s.length}"
+                @album_title, @album_genre1, @album_genre2, @publisher, @agency, @released_date, @jacket = CrawlController.parser_album_origin(html_doc_album)
+                                              
+                album.title         = @album_title      ## title(앨범제목)
+                album.genre1        = @album_genre1     ## genre1(앨범장르1)
+                album.genre2        = @album_genre2     ## genre2(앨범장르2)
+                album.publisher     = @publisher        ## publisher(발매사)
+                album.agency        = @agency           ## agency(기획사)
+                album.released_date = @released_date    ## released_date(발매일)
+                album.jacket        = @jacket           ## jacket(앨범자켓 :: 이미지)
+                
+                artist = CrawlController.crawl_artist(@artist_num)
+                if artist.class == Singer
+                        album.singer_id = artist.id         ## artist_num(아티스트 번호) case 아티스트가 솔로
+                elsif artist.class == Team
+                        album.team_id = artist.id           ## artist_num(아티스트 번호) case 아티스트가 그룹
+                end
+                
+                album.album_num = @album_num            ## album_num(앨범 고유번호)
+                album.save                              ## 아래 앨범아이디 만드려면 먼저저장해야함.
+        else
+                @jacket         = album.jacket
+        end
+        
+        return album.id, @jacket
+    end
     # Method Name : songs_rematch_for_correct_album
     # Method Procedure :
     # Method Description : 노래와 앨범을 다시 제대로 매치시켜주는 함수
