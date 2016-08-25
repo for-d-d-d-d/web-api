@@ -96,17 +96,12 @@ GEM
     execjs (2.7.0)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
-<<<<<<< HEAD
-    figaro (1.1.1)
-      thor (~> 0.14)
-=======
     ffi (1.9.14)
     ffi (1.9.14-x86-mingw32)
     figaro (1.1.1)
       thor (~> 0.14)
     font-awesome-rails (4.6.3.1)
       railties (>= 3.2, < 5.1)
->>>>>>> 9cfd1b5e39d6cd9d6cbae4a8aa742a53af7c4db2
     fuzzy-string-match (0.9.7)
       RubyInline (>= 3.8.6)
     globalid (0.3.6)
@@ -309,12 +304,9 @@ GEM
       sprockets-rails (>= 2.0, < 4.0)
     whenever (0.9.7)
       chronic (>= 0.6.3)
-<<<<<<< HEAD
-=======
     will_paginate (3.1.0)
     will_paginate-bootstrap (0.2.5)
       will_paginate (>= 3.0.3)
->>>>>>> 9cfd1b5e39d6cd9d6cbae4a8aa742a53af7c4db2
     yt (0.25.37)
       activesupport
 

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'figaro'
+
 # => admin & theme
 gem 'haml'
 gem 'haml-rails'
