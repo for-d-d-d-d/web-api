@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # => admin & theme
 gem 'haml'
 gem 'haml-rails'

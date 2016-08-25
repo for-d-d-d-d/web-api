@@ -115,7 +115,6 @@ class Song < ActiveRecord::Base
         #    song.composer   = html_doc.css("---div#body-content//div.lyrics-area//div.tit-box//pre---").inner_html.to_s        ## composer(작곡)
         
         album_id, @jacket = CrawlController.crawl_album(@album_num, @artist_num)
-        
         song.jacket     = @jacket       ## jacket(자켓사진)         # 음원 정보(참조추출)
         song.album_id   = album_id      ## album_id(앨범아이디)     # 앨범테이블 릴레이션
         
@@ -130,7 +129,7 @@ class Song < ActiveRecord::Base
         if tj_song[0] != nil && tj_song != false
             numbertj = tj_song[0]
         else
-            numbertj = 0
+            numbertj = nil
         end
         
         song.song_tjnum  = numbertj
@@ -161,7 +160,7 @@ class Song < ActiveRecord::Base
         
         return filled_song.map{|e| e.id}
     end
-    
+
     def crawl_start_at_artist
         # song_num를 받는다
         num = self.song_num
