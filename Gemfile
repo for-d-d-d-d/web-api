@@ -1,31 +1,49 @@
 source 'https://rubygems.org'
 
 gem 'figaro'
+# => admin & theme
+gem 'haml'
+gem 'haml-rails'
+gem 'compass-rails'
+gem 'bootstrap-sass'
+gem 'hierapolis-rails'
+gem 'rails_admin'
+
+# => crontab
 gem 'whenever', :require => false
+gem 'delayed_job_active_record'
+
 gem 'rails-observers'
 # gem 'autoprefixer-rails'
 # gem 'google-api-client', '0.9'
 # gem 'trollop'
+
+# => youtube link
 gem 'yt', '~> 0.25.5'
 # gem 'youtube_it'
 # gem 'youtube_search'
 
-gem 'delayed_job_active_record'
-
+# => social user
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
+
+# => script helper
 gem 'coffee-script-source', '1.8.0'
 # gem 'sidekiq'
 # gem 'sidekiq-status'
 # gem 'daemons'
 
+# => etc tools
 gem 'fuzzy-string-match'
 gem 'awesome_print'
 gem 'seed_dump'
 gem 'nokogiri'
 gem 'tzinfo-data'
+
+# => user module
 gem 'devise'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
 # Use sqlite3 as the database for Active Record
@@ -38,6 +56,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
+gem 'figaro'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
