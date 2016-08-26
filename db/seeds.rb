@@ -4,15 +4,14 @@ User.create!([
     ])
 Administer.create!([
   {username: "김용현", email: "yhk@gorae.com", password: "ks0352ks"},
-    {username: "안창현", email: "cha@gorae.com", password: "dksckdgus"},
-      {username: "노혜빈", email: "hbn@gorae.com", password: "shgPqls"},
-        {username: "최병재", email: "bjc@gorae.com", password: "chlqudwo"},
-          {username: "박현민", email: "hmp@gorae.com", password: "qkrgusals"},
-            {username: "손대근", email: "dgs@gorae.com", password: "thseorms"},
-              {username: "임현욱", email: "hwl@gorae.com", password: "dlagusdnr"},
-                {username: "이유민", email: "yml@gorae.com", password: "dldbals"},
-                  {username: "김다혜", email: "dhk@gorae.com", password: "rlaekgP"}
-                  ])
+  {username: "안창현", email: "cha@gorae.com", password: "dksckdgus"},
+  {username: "노혜빈", email: "hbn@gorae.com", password: "shgPqls"},
+  {username: "최병재", email: "bjc@gorae.com", password: "chlqudwo"},
+  {username: "박현민", email: "hmp@gorae.com", password: "qkrgusals"},
+  {username: "손대근", email: "dgs@gorae.com", password: "thseorms"},
+  {username: "임현욱", email: "hwl@gorae.com", password: "dlagusdnr"},
+  {username: "이유민", email: "yml@gorae.com", password: "dldbals"}
+])
 DailyTjPopularRank.create!([
   {symd: "20160401", eymd: "20160416", song_rank: 1, song_num: 46009, song_title: "어디에도", song_singer: "MC THE MAX"},
     {symd: "20160401", eymd: "20160416", song_rank: 2, song_num: 45592, song_title: "걱정말아요그대(응답하라1988 OST)", song_singer: "이적"},

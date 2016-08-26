@@ -11,6 +11,7 @@ class CrawlController < ApplicationController
     GINNIE_SONG_LYRICS      = "div#body-content//div.lyrics-area//div.tit-box//pre"
     GINNIE_SONG_ARTISTNUM   = "div#body-content//div.info-zone//ul.info-data//li:nth-child(1)//span.value//a"
     GINNIE_SONG_ALBUMNUM    = "div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a"
+    GINNIE_SONG_JACKET      = "div#body-content//div.photo-zone//a"
     
     # 지니뮤직 앨범 () 위치
     GINNIE_ALBUM_TITLE      = "div#body-content//div.info-zone//h2.name"
@@ -45,15 +46,18 @@ class CrawlController < ApplicationController
     def self.load_page(searchText, type)
         return false if searchText.nil? || type.nil?
         searchText = CGI::escape(searchText.to_s)
-        puts type.to_s + " query : " + searchText
+        puts "\n\t[Page 불러오기] \n\tcase : " + type.to_s + ", query : " + searchText + "\n"
 
         case type
         when "song_title"
             doc = Nokogiri::HTML(Net::HTTP.get(URI("http://www.tjmedia.co.kr/tjsong/song_search_list.asp?strType=0&strText=#{searchText}&strCond=0&strSize01=100&strSize02=15&strSize03=15&strSize04=15&strSize05=15")))
             if doc != nil && doc.css("table.board_type1").first != nil
                 result = doc.css("table.board_type1").first.css("tbody//tr")
+                if result == nil || result.length <= 1
+                    result = false
+                end
             else
-                result = ""
+                result = false
             end
             return result
         when "song_number"
@@ -248,7 +252,8 @@ class CrawlController < ApplicationController
         else
             album_num   = html_doc.css(GINNIE_SONG_ALBUMNUM)[0]['onclick'].to_s.gsub("fnGoMore('albumInfo','","").first(8)
         end
-        return song_title, song_genre1, song_genre2, runtime, lyrics, artist_num, album_num
+        jacket      = "http:" + html_doc.css(GINNIE_SONG_JACKET)[0]['href'].to_s
+        return song_title, song_genre1, song_genre2, runtime, lyrics, artist_num, album_num, jacket
     end
     
     # roll  :   HTML DOC modified parser 
@@ -277,7 +282,43 @@ class CrawlController < ApplicationController
     end
     
     
+    def self.crawl_album(album_num, artist_num)
+        @album_num = album_num
+        @artist_num = artist_num
+        
+        album = Album.where(album_num: @album_num).first    # 전에 긁어온 노래를 통해 이미 존재하는지 확인
+        if album.nil?
+            album = Album.new
+            # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
+            html_doc_album = CrawlController.load_page(@album_num, "album_number")
+            @album_title, @album_genre1, @album_genre2, @publisher, @agency, @released_date, @jacket = CrawlController.parser_album_origin(html_doc_album)
+            if @album_title == "" || @album_title == nil || @album_title.length <= 1
+                return false, false
+            end
+            album.title         = @album_title      ## title(앨범제목)
+            album.genre1        = @album_genre1     ## genre1(앨범장르1)
+            album.genre2        = @album_genre2     ## genre2(앨범장르2)
+            album.publisher     = @publisher        ## publisher(발매사)
+            album.agency        = @agency           ## agency(기획사)
+            album.released_date = @released_date    ## released_date(발매일)
+            album.jacket        = @jacket           ## jacket(앨범자켓 :: 이미지)
 
+            artist = CrawlController.crawl_artist(@artist_num)
+            if artist.class == Singer
+                album.singer_id = artist.id         ## artist_num(아티스트 번호) case 아티스트가 솔로
+            elsif artist.class == Team
+                album.team_id = artist.id           ## artist_num(아티스트 번호) case 아티스트가 그룹
+            end
+            
+            album.album_num = @album_num            ## album_num(앨범 고유번호)
+            album.save                              ## 아래 앨범아이디 만드려면 먼저저장해야함.
+        else
+            @jacket         = album.jacket
+        end
+        
+        return album.id, @jacket
+    end
+    
     def self.crawl_artist(artist_num)
 
         if artist_num == '14958011'
@@ -448,60 +489,66 @@ class CrawlController < ApplicationController
             elsif s.team_id != nil
                 song_artist = Team.find(s.team_id).name
             else
-                song_artist = nil
+                puts "\n\n[(tj_linker) 아티스트 불러오기 실패] > SKIP..! \n\t유효성 검사 (if s.singer_id == nil && s.team_id == nil)을 통과할 수 없음 \n\t관련정보 -> Song id: #{s.id}, title: #{s.title}, song_num: #{s.song_num}\n\n"
+                return false, false, false
             end
         else
             song_artist = s.artist.name
         end
+        puts "\n[(tj_linker) 아티스트 불러오기 성공] 제목 : #{s.title}, 아티스트 : #{song_artist}"
+        
         #변수를 초기화하고 load_page 메소드를 이용하여 크롤링
-        puts "#{s}\n\n#{song_artist} "
         strText = s.title
-        if song_artist == nil
-            singer = ""
+        if song_artist == nil || song_artist.length <= 1
+            puts "\n\n[(tj_linker) 아티스트 재확인 실패] > SKIP..! \n\t유효성 검사 (if song_artist == nil || song_artist.length <= 1)을 통과할 수 없음 \n\t관련정보 -> Song id: #{s.id}, title: #{s.title}, song_num: #{s.song_num}\n\n"
+            return false, false, false
         else
+            puts "[(tj_linker) 아티스트 재확인 성공] 제목 : #{s.title}, 아티스트 : #{song_artist}\n\n"
             singer = song_artist
         end
+        
+        puts "[(tj_linker) TJ Page 불러오기 시작] ~~> into load_page"
         @results = CrawlController.load_page(strText, "song_title")
-        if @results == ""
+        puts "[(tj_linker) TJ Page 불러온 결과 받음]"
+        if @results == false
+            puts "\n\n[(tj_linker) TJ Page 불러온 결과 무효] > SKIP..! \n\t유효성 검사 (if @results == false)을 통과할 수 없음 \n\t관련정보 -> strText: #{strText}\n\n"
             return false, false, false
         end
+        puts "[(tj_linker) TJ Page 불러온 결과 유효성 통과]\n"
+        
         i += 1
         winner_rate = 0
         @box = []
-        puts "#{i} after box"
+        puts "\n[(tj_linker) 불러온 TJ 검색목록과 비교 시작]\n\n"
         # 노래 제목과 가수 이름을 매치시켜봄.
         j = 0
         @results.each do |x|
             j += 1
-            puts "j = #{j}"
+            puts "\t전체 목록 중 #{j}번째 노래와 비교 중(j = #{j})"
             tj_num  = x.css("td:nth-child(1)").inner_html
             title   = x.css("td:nth-child(2)").inner_html.gsub('</span>','').gsub("<span class=\"txt\">",'')
             artist  = x.css("td:nth-child(3)").inner_html.gsub('</span>','').gsub("<span class=\"txt\">",'')
             # puts "#{tj_num}, #{title}, #{artist} before percent"
-            match_title     = CrawlController.string_difference_percent(strText, title).to_i
-            match_artist    = CrawlController.string_difference_percent(singer, artist).to_i
-            
-            puts "#{strText}의 #{singer}와, 제목 #{match_title}%, 가수명 #{match_artist}% 일치. after percent"
-            array = Array.new
-            array = [tj_num, [s.title, title, match_title], [singer, artist, match_artist]]
-            
-            challeng_rate = match_title + match_artist
-            if challeng_rate >= winner_rate
-                winner_rate = challeng_rate
-                @box = array
+            match_title     = CrawlController.string_difference_percent(strText, title).to_f
+            match_artist    = CrawlController.string_difference_percent(singer, artist).to_f
+            puts "\t\t원본 > 제목 : #{strText}, 아티스트 : #{singer},\n\t\t대상 > 제목 : #{title}, 아티스트 : #{artist} \n\t\t비교 > 제목 #{match_title}%, 아티스트 #{match_artist}% 일치"
+            if (match_title + match_artist) < 180.to_f
+                puts "\t이하 생략. 일치하지 않음. > 일치율 합계 : #{(match_title + match_artist)}\n"
+                next
             end
+            array = Array.new
+            array = [tj_num, [strText, title, match_title], [singer, artist, match_artist]]
             
-            puts "\n\n\n\n#{i}번째 곡을 위한 탐색, #{j}번째 비교중.  \n현재곡 : #{array[1][0]}(array[1][0]),\n\n현재 최고득점 : box #{@box}\n\n\n\n"
+            challenge_rate = match_title + match_artist
+            if challenge_rate >= winner_rate
+                winner_rate = challenge_rate
+                @box = array
+                puts "\n\n\n\n\t\t################### \n\t\t# 최고 일치곡 변경 : box #{@box}\n\t\t###################\n\n\n\n"
+            end
+            puts "\t전체 목록 중 #{j}번째 노래와 비교 완료 (j = #{j}). \n\t비교 원곡 : (array[1][0]) \"#{array[1][0]}\",\n\t최고 일치 : (@box[1][0]) \"#{@box[1][1]}\"\n\t.\n\t.\n\t.\n\t."
+            break if winner_rate == 200.to_f
         end
-        
-        if (@box[1][2].to_i + @box[2][2].to_i) >= 180
-            puts "'#{s.title} - #{singer}' 의 해당하는 노래를 찾아냈습니다."
-            pop += 1
-            puts "\n\n\n  #{pop}번째 일치 곡 발견! : #{@box}\n\n\n"
-        else
-            @box = []
-        end
-        puts ""
+        puts "[(tj_linker) 불러온 TJ 검색목록과 비교 종료]\n\n"
         return @box, i, pop
     end
 
