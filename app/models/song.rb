@@ -78,7 +78,7 @@ class Song < ActiveRecord::Base
         # GET 타겟 문서
         html_doc = CrawlController.load_page(num, "song_number")
         # GET 노래 제목, 장르1, 장르2, 재생시간, 가사, 아티스트 번호, 앨범 번호
-        @song_title, @song_genre1, @song_genre2, @runtime, @lyrics, @artist_num, @album_num = CrawlController.parser_song_origin(html_doc)
+        @song_title, @song_genre1, @song_genre2, @runtime, @lyrics, @artist_num, @album_num, @jacket = CrawlController.parser_song_origin(html_doc)
         
         # SET Loop Break (wrong condition)
         validater = []
@@ -102,7 +102,8 @@ class Song < ActiveRecord::Base
         song.genre2     = @song_genre2      ## genre2(장르2)
         song.runtime    = @runtime          ## runtime(재생시간)
         song.lyrics     = @lyrics           ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
-      
+        song.jacket     = @jacket           ## jacket(자켓사진)         # 음원 정보(참조추출)
+        
         artist = CrawlController.crawl_artist(@artist_num)
         if artist.class == Singer
             song.singer_id  = artist.id     ## artist_num(아티스트 번호) case 아티스트가 솔로
@@ -114,26 +115,27 @@ class Song < ActiveRecord::Base
         #    song.songwriter = html_doc.css("---div#body-content//div.lyrics-area//div.tit-box//pre---").inner_html.to_s        ## songwriter(작사)
         #    song.composer   = html_doc.css("---div#body-content//div.lyrics-area//div.tit-box//pre---").inner_html.to_s        ## composer(작곡)
         
-        album_id, @jacket = CrawlController.crawl_album(@album_num, @artist_num)
-        song.jacket     = @jacket       ## jacket(자켓사진)         # 음원 정보(참조추출)
-        song.album_id   = album_id      ## album_id(앨범아이디)     # 앨범테이블 릴레이션
-        
+        album_id, trash = CrawlController.crawl_album(@album_num, @artist_num)
+        unless album_id == false
+            song.album_id   = album_id  ## album_id(앨범아이디)     # 앨범테이블 릴레이션
+        end
         # song.song_tjnum = nil         ## song_tjnum(노래방번호 :: 나중에 따로 받아야 할듯)    # 음원 정보(고유값)
         song.song_num = num             ## song_num(지니뮤직 고뮤번호)                          # 음원 정보(고유값)
         
         # SAVE Song
         song.save
         
-        try = 0; success = 0;
-        tj_song, try, success = CrawlController.tj_linker(song, try, success)
-        if tj_song[0] != nil && tj_song != false
-            numbertj = tj_song[0]
-        else
-            numbertj = nil
-        end
+        # try = 0; success = 0;
+        # tj_song, try, success = CrawlController.tj_linker(song, try, success)
+        # numbertj = nil
+        # if tj_song != false 
+        #     if tj_song[0] != nil
+        #         numbertj = tj_song[0]
+        #     end
+        # end
         
-        song.song_tjnum  = numbertj
-        song.save
+        # song.song_tjnum  = numbertj
+        # song.save
 
         return song
     end
@@ -188,7 +190,7 @@ class Song < ActiveRecord::Base
         elsif artist.class == Singer
             self.singer_id = artist.id
         end
-        self.jacket = @jacket
+        # self.jacket = @jacket
         self.save
         
         puts self
