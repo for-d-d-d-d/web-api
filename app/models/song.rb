@@ -79,7 +79,8 @@ class Song < ActiveRecord::Base
         html_doc = CrawlController.load_page(num, "song_number")
         # GET 노래 제목, 장르1, 장르2, 재생시간, 가사, 아티스트 번호, 앨범 번호
         @song_title, @song_genre1, @song_genre2, @runtime, @lyrics, @artist_num, @album_num, @jacket = CrawlController.parser_song_origin(html_doc)
-        
+        return false if @song_title.length <= 1
+
         # SET Loop Break (wrong condition)
         validater = []
         validater = CrawlController.skip_condition()

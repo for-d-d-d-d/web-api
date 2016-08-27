@@ -21,9 +21,9 @@ set :output, "/home/ec2-user/web-api/log/cron_log.log"
 
 # set :environment, "development"
 
-#every 5.minute do
+#every 1.day do
 #  # exec
-#  runner "CrawlController.run(nil, nil)"#, :environment => "development"
+#  runner "CrawlController.run(500000, nil)"#, :environment => "development"
 #  
 #  # dump ready
 #  command "mkdir /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}"
@@ -31,9 +31,9 @@ set :output, "/home/ec2-user/web-api/log/cron_log.log"
 #  command "cp /home/ec2-user/web-api/db/seeds.rb /home/ec2-user/web-api/public/seeds/#{Time.new.to_s.gsub('-','').gsub(' ','_').gsub(':','').gsub('+','')}/seed.rb"
 #  
 #  # dump
-#  rake "db:seed:dump"
+#  rake "db:seed:dump RAILS_ENV=production"
 #end
-#
+
 
 
 

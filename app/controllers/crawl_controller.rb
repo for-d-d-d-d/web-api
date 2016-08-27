@@ -71,29 +71,76 @@ class CrawlController < ApplicationController
         end
     end
     
-    
-    def run_tj_popular
+    # ex) from = 201608, stop = 20160826 
+    def self.run_tj_popular(from, stop)
+        from = from.to_s unless from == nil
+        stop = stop.to_s unless stop == nil
+
         todate = Date.parse(Time.zone.now.to_s).to_s
-        if params[:from] == nil || params[:from] == ""
+        if from == nil || from == ""
             now_month  = todate.first(7)
         else
-            now_month  = todate.first(4).to_s + "-" + params[:from].first(2).to_s
+            now_month  = from.first(4).to_s + "-" + from.last(2).to_s
         end
-        start_date = "#{now_month}-01"
-        end_date = Date.parse(Time.zone.now.to_s).to_s
+        start_date = "#{now_month}-01"          # 이번년도- 이번달- 01일
+
+        end_date = todate                       # 오늘
+        if stop != nil && stop != ""
+            end_date = stop.first(4) + "-" + stop.first(6).last(2) + "-" + stop.last(2)
+        end
         
         result = "이미 이번 달은 #{end_date}까지 저장이 완료됨"
         if DailyTjPopularRank.where(eymd: end_date).take == nil
-            result = tj_daily_popular(start_date, end_date)
+            result = CrawlController.tj_daily_popular(start_date, end_date)
         end
-        
-        render json: result
+        puts "\n\n\t인기차트 총 #{DailyTjPopularRank.count}곡, 현재 수집한 기간 : #{start_date} ~ #{end_date} \n\n"
+        DailyTjPopularRank.all.map{|s| "#{s.symd} ~ #{s.eymd}"}.uniq.each do |term|
+            puts "\t\t#{term}"
+        end
+        puts "\n\n"
+        return result
     end
     
+    def self.automatically_run_tj_popular(start)
+        if start == nil
+            start = 201401 
+        end
+        td = Date.parse(Time.zone.now.to_s).to_s
+        todate          = td.first(4) + td.first(7).last(2) + td.last(2)
+        end_date        = todate.first(6) + "01"
+        todate          = todate.to_i
+        end_date        = end_date.to_i
+        start_year      = start.to_s.first(4).to_i
+        loop do
+            12.times do |month|
+                start_at = start + month
+                stop_at  = ((start_at + 1).to_s + "01").to_i
+                if month == 11
+                    stop_at = ((start + 100).to_s + "01").to_i
+                end
+                CrawlController.run_tj_popular(start_at, stop_at)
+                break if stop_at == end_date
+            end
+            break if start_year >= todate.to_s.first(4).to_i
+            start_year += 1
+            start += 100
+        end
+        if td.last(2).to_i <= 10
+            if todate.to_s.first(6).last(2) == "01"
+                st = ((todate.to_s.first(4).to_i - 100).to_s + "12").to_i
+            else
+                st = todate.to_s.first(6).to_i - 1
+            end
+            CrawlController.run_tj_popular(st, todate)
+        else
+            CrawlController.run_tj_popular(end_date, todate)
+        end
+        puts "인기차트 자동화 크롤링 종료"
+    end
     # Method Name : tj_daily_popular
     # Method Procedure :
     # Method Description : 인기차트(연월일 부터 ~ 연월일 까지)
-    def tj_daily_popular(start_date, end_date)
+    def self.tj_daily_popular(start_date, end_date)
         #-----------------------------------------------------------------------------------------------------
         # Parameter Mapping(TJ와 같은 방식으로) : 설정기간 {'언제부터' '언제까지' 기간 중에 인기 Top100 보기}
         ## 언제부터
@@ -137,7 +184,7 @@ class CrawlController < ApplicationController
             eval("td_song.song_title   = @result#{i}_3")
             eval("td_song.song_singer  = @result#{i}_4")
             
-            matched_song_id = from_tj_match_db(@tjnum)
+            matched_song_id = CrawlController.from_tj_match_db(@tjnum)
             if matched_song_id == false
                 matched_song_id = nil
             end
@@ -150,7 +197,7 @@ class CrawlController < ApplicationController
         return td_songs
     end
     
-    def from_tj_match_db(tjnum)
+    def self.from_tj_match_db(tjnum)
         matched_song = Song.where(song_tjnum: tjnum).take
         return false if matched_song == nil
         
@@ -216,12 +263,13 @@ class CrawlController < ApplicationController
         loop do
             break if count <= 0
             num += 1
+            puts "\n\n\n\t진행 상태 : [#{(count_origin - count)}/#{count_origin}]. 진행률 : [#{((count_origin.to_f - count.to_f)/count_origin.to_f)*100.to_f}%], 남은 곡 : #{count}개 \n\n"
             next if Song.where(song_num: num).take.present?
             next if Song.crawl(num) == false
             count -= 1
         end
         
-        puts "요청하신 크롤링이 종료되었습니다."
+        puts "요청하신 크롤링이 종료되었습니다.\n\n\t요청하신 곡 : #{count_origin}개, 현재 보유 곡 : 총 #{Song.count}개 \n\t-------------------------------------------------\n\t이미지 없는 곡 : #{Song.where(jacket: "http:#").count}개, 노래방 번호(TJ) 누락 곡 : #{Song.where(song_tjnum: nil).count}개 \n\t즉시 베포 가능한 곡 : #{Song.where.not(jacket: "http:#").where.not(song_tjnum: nil).count}개\n\n"
         return count_origin, count
     end
     

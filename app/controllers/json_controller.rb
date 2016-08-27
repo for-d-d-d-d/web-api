@@ -344,9 +344,10 @@ class JsonController < ApplicationController
     if ml.user_id == me.id
       mySongs = ml.mylist_songs
     end
-    result_song = mySongs.map{|mysong| mysong.song_id}.map{|id| Song.find(id)}
-    result_artist = result_song.map{|song| song.artist}.map{|artist| artist.name}
-    result = {song: result_song, artistName: result_artist}
+    result_mylistSong   = mySongs.map{|ms| ms.id}
+    result_song         = mySongs.map{|mysong| mysong.song_id}.map{|id| Song.find(id)}
+    result_artist       = result_song.map{|song| song.artist}.map{|artist| artist.name}
+    result = {mylistSongId: result_mylistSong, song: result_song, artistName: result_artist}
     puts "#{result}"
     render json: result
   end
@@ -475,7 +476,6 @@ class JsonController < ApplicationController
                                                           #       "modified_name" : "something",
                                                           #       "modified_birthdate" : "something",
                                                           #       "modified_gender" : "something"
-                                                          #     }
                                                           #     "authNum" : ""
                                                           #   }
     me = User.find(client[:id])
