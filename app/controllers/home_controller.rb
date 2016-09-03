@@ -64,7 +64,7 @@ class HomeController < ApplicationController
         end
     end
     
-    def search3(query)
+    def self.search3(query)
         if query.nil?
             flash[:error] = "검색어를 찾을 수 없습니다."
         else

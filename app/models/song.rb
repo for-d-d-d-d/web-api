@@ -8,9 +8,9 @@ class Song < ActiveRecord::Base
         s.song_num = num
         return s.crawl_song
     end
-    
+
     def self.ok
-        return self.where.not(lowkey: nil)
+        return self.where.not(song_num: nil).where.not(song_tjnum: nil)
     end
     
     def self.tj_ok
@@ -24,10 +24,11 @@ class Song < ActiveRecord::Base
     # 크롤링이 전부 종료된 이후의 데이터에 대하여 jacke IMG를 크기별로 리사이징 해서 저장합니다.
     # return: "SUCCESS"
     def self.jacket_resizing(size)
-        song = Song.all
+        song = Song.ok.all
         song.each do |s|
             jacket = s.jacket
             if size == "all"
+                next if jacket.nil?
                 s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
                 s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" if s.jacket_small == nil || s.jacket_middle.length < 20
             else
@@ -96,13 +97,14 @@ class Song < ActiveRecord::Base
         end
 
         # 루프가 스킵 되지 않았다면 본격적으로 레코드에 기록하고 저장.
-        song = Song.where(song_num: num).first
-        song = Song.new if song.nil?
-        song.title      = @song_title       ## title(제목)
+        song = self
+        #song = Song.where(song_num: num).take
+        #song = Song.new if song.nil?
+        #song.title      = @song_title       ## title(제목)
         song.genre1     = @song_genre1      ## genre1(장르1)
         song.genre2     = @song_genre2      ## genre2(장르2)
         song.runtime    = @runtime          ## runtime(재생시간)
-        song.lyrics     = @lyrics           ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
+        #song.lyrics     = @lyrics           ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
         song.jacket     = @jacket           ## jacket(자켓사진)         # 음원 정보(참조추출)
         
         artist = CrawlController.crawl_artist(@artist_num)

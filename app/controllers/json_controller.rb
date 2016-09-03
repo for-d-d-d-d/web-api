@@ -180,11 +180,10 @@ class JsonController < ApplicationController
   # 검색창(검색결과)
   def search
     artist = []
-    title = []
+    title  = []
     lyrics = []
-    homeC = HomeController.new
-    artist, title, lyrics = homeC.search3(params[:query])
-    result = {"artist": artist, "title": title, "lyrics": lyrics}
+    artist, title, lyrics = HomeController.search3(params[:query])
+    result = [{"artist": artist, "title": title, "lyrics": lyrics}]
     render json: result
   end
   
@@ -243,17 +242,6 @@ class JsonController < ApplicationController
     result << searched_by_genre
     # result << searched_by_nation
     render :json => result  
-  end
-  
-  # 검색창(검색결과)
-  def search
-    artist = []
-    title  = []
-    lyrics = []
-    homeC  = HomeController.new
-    artist, title, lyrics = homeC.search3(params[:query])
-    result = {"artist": artist, "title": title, "lyrics": lyrics}
-    render json: result
   end
   
   # myList CRUD > CREATE

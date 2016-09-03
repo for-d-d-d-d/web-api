@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20160808080349) do
     t.string   "writer"
     t.string   "composer"
     t.string   "youtube"
+    t.string   "artist_name"
     t.text     "jacket"
     t.text     "jacket_middle"
     t.text     "jacket_small"

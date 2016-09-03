@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   :registrations => "users/registrations",
   :sessions => "users/sessions" }
   
-  root 'home#entering'
-
+  #root 'home#entering'
+  root 'admin2#crawler_manager'
+  get "/we/admin2(/:action(/:id))" => "admin2#:action"
   match "/:controller(/:action(/:id))", :via => [:post, :get]
   
 end

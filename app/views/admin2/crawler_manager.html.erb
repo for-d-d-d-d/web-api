@@ -1,0 +1,85 @@
+
+<div class="container">
+    <div class="block-header">
+        <h1 style="color:#777">Crawler Manager</h1>
+
+        <ul class="actions">
+            <li>
+                <a href="">
+                    <i class="zmdi zmdi-trending-up"></i>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="zmdi zmdi-check-all"></i>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="" data-toggle="dropdown">
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a href="">Refresh</a>
+                    </li>
+                    <li>
+                        <a href="">Manage Widgets</a>
+                    </li>
+                    <li>
+                        <a href="">Widgets Settings</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    <div class="col-sm-12">
+        <!-- Tabs 네비바-->
+        <div class="card">
+
+            <div class="card-body">
+                <ul class="tab-nav tn-justified tn-icon" role="tablist">
+                    <li role="presentation" class="active">
+                        <a class="col-sx-4" href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">
+                            <i class="zmdi zmdi-album icon-tab"></i>Errors
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="col-xs-4" href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">
+                            <i class="zmdi zmdi-audio icon-tab"></i>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="col-xs-4" href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">
+                            <i class="zmdi zmdi-mic-setting icon-tab"></i>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content p-20" style="padding:0 !important; margin-top: 25px;">
+                    <!-- Tab1 -->
+                    <%= render partial: 'admin2/crawler_manager/tab1' %>
+
+                    <!-- Tab2 -->
+                    <%= render partial: 'admin2/crawler_manager/tab2' %>
+
+                    <!-- Tab3 -->
+                    <%= render partial: 'admin2/crawler_manager/tab3' %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page Loader -->
+<div class="page-loader">
+    <div class="preloader pls-blue">
+        <svg class="pl-circular" viewBox="25 25 50 50">
+            <circle class="plc-path" cx="50" cy="50" r="20" />
+        </svg>
+
+        <p>Please wait...</p>
+    </div>
+</div>
