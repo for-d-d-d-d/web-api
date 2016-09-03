@@ -19,4 +19,21 @@ class Album < ActiveRecord::Base
         return Singer.find(self.singer_id) unless self.singer_id.nil?
         nil
     end
+
+    def self.jacket_empty
+        a = self.where(jacket: "http:#")
+        return a
+    end
+    
+    def fill_jacket()
+       songs = self.songs 
+       error = []
+       has_img = songs.where.not(jacket: nii).where.not(jacket: "http:#").take
+       if has_img != nil
+           self.jacket = has_img.jacket
+           self.save
+       else
+           error << self
+       end
+    end
 end

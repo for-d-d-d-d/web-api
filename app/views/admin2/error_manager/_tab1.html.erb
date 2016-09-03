@@ -1,0 +1,68 @@
+<div role="tabpanel" class="tab-pane animated fadeIn in active" id="tab-1">
+
+    <!-- Rating -->
+    <div class="card rating-list">
+        <div class="listview">
+            <div class="lv-header">
+                <div class="m-t-5">
+                    Total <%= @errors.count %> Issues
+                </div>
+
+                <div class="m-t-5">
+                    Average Rating <%= @percent %>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="rl-star">
+                    <i class="zmdi zmdi-star <%= "active" if @percent >= 1 %>"></i>
+                    <i class="zmdi zmdi-star <%= "active" if @percent >= 2 %>"></i>
+                    <i class="zmdi zmdi-star <%= "active" if @percent >= 3 %>"></i>
+                    <i class="zmdi zmdi-star <%= "active" if @percent >= 4 %>"></i>
+                    <i class="zmdi zmdi-star <%= "active" if @percent >= 5 %>"></i>
+                </div>
+
+                <div class="m-t-5">
+                    <% if @percent >= 5 %>
+                        In Danger!
+                    <% elsif @percent >= 4 %>
+                        Bad!
+                    <% elsif @percent >= 3 %>
+                        Not Good!
+                    <% elsif @percent >= 2 %>
+                        Quite Fine!
+                    <% elsif @percent >= 1 %>
+                        Excellent!
+                    <% end %>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="lv-body">
+                <div class="p-15">
+                    <% for i in 1..5 %>
+                        <div class="lv-item">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <%= i %> <i class="zmdi zmdi-star"></i>
+                                </div>
+
+                                <div class="pull-right"><%= @total[i] %></div>
+
+                                <div class="media-body">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
+                                        style="width: <%= ((@total[i].to_f / @errors.count)*100).round(1) %>%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Rating-end -->
+</div>

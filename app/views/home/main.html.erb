@@ -24,7 +24,11 @@ Card type renewel CSS
             <!--  <%#= render partial: 'home/main/contents', layout: false %>-->
             <!--</div>-->
             <div class="row">
-                <% @song.each do |s| %>
+		<input type="hidden" value="<%= @songs.count %>/<%= Song.tj_ok.count %>/<%= Song.where.not(song_tjnum: nil).where.not(song_tjnum: 0).all.count %>">
+		<% Song.where.not(song_tjnum: nil).where.not(song_tjnum: 0).all.each do |song| %>
+			<input type="hidden" value="<%= song.id %>/<%= song.title %>"> 
+		<% end %>
+                <% @songs.each do |s| %>
                     <div class="col-md-3" id="card-<%= s.id %>" style="margin-bottom:30px;">
                         <%= render 'home/song_card_general_0707', layout: false, :locals => {:img_path => s.jacket, tag: 0, title: s.title, singer: s.artist.name, number: s.song_tjnum, id: s.id} %>
                     </div>

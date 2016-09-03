@@ -1,0 +1,74 @@
+<aside id="sidebar" class="sidebar c-overflow">
+    <div class="profile-menu">
+        <a href="" style="background: url(<%= image_path 'profile-menu.png' %>) no-repeat left top; background-size: 100%;">
+            <div class="profile-pic">
+                <!--<img src="images/profile-pics/1.jpg" alt="">-->
+                <%= image_tag 'profile-pics/1.jpg', alt: "" %>
+            </div>
+
+            <div class="profile-info">
+                User_name
+
+                <i class="zmdi zmdi-caret-down"></i>
+            </div>
+        </a>
+
+        <ul class="main-menu">
+            <li>
+                <a href="/admin/profile_about"><i class="zmdi zmdi-account"></i> 프로필 보기</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-input-antenna"></i> Privacy Settings</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
+            </li>
+            <li>
+                <a href=""><i class="zmdi zmdi-time-restore"></i> Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="main-menu">
+        <li class="active">
+            <a href="/admin/index"><i class="zmdi zmdi-home"></i> Dashboard</a>
+        </li>
+        <li class="sub-menu">
+            <a href=""><i class="zmdi zmdi-view-compact"></i> Header_Controller</a>
+
+            <ul>
+                <li><a href="textual-menu.html">textual-menu</a></li>
+                <li><a href="image-logo.html">image-logo</a></li>
+                <li><a href="top-mainmenu.html">top-mainmenu</a></li>
+            </ul>
+        </li>
+        <li class="sub-menu">
+            <a href=""><i class="zmdi zmdi-widgets"></i> Team_Comunity</a>
+
+            <ul>
+                <li><a href="http://whale-0-0-1-cloned-yhk1038-2.c9users.io/admin/awesome_4d.html">Team 4D</a></li>
+                <li><a href="widget-templates.html">Members</a></li>
+                <li><a href="widget-templates.html">Templates</a></li>
+                <li><a href="widgets.html">Widgets</a></li>
+            </ul>
+        </li>
+        <li class="sub-menu">
+            <a href=""><i class="zmdi zmdi-view-list"></i> Song_Info.</a>
+            <ul>
+                <li><a href="/admin/songs_info">Song List</a></li>
+                <li><a href="/admin/gui_vr_info">Keys for each Song</a></li>
+                <!-- <li><a href="/admin/list_range">곡/음역 이슈 정리</a></li> -->
+                <li><a href="/admin/team_list">Team List</a></li>
+                <li><a href="/admin/singer_list">Singer List</a></li>
+            </ul>
+        </li>
+        <li class="sub-menu">
+            <a href=""><i class="zmdi zmdi-view-list"></i> Admin_Menus</a>
+
+            <ul>
+                <li><a href="/admin/error_manager">Error_Manager</a></li>
+                <li><a href="/admin/crawler_manager">Crawler_Manager</a></li>
+            </ul>
+        </li>
+    </ul>
+</aside>

@@ -180,78 +180,9 @@ class JsonController < ApplicationController
   # 검색창(검색결과)
   def search
     artist = []
-    title = []
-    lyrics = []
-    homeC = HomeController.new
-    artist, title, lyrics = homeC.search3(params[:query])
-    result = {"artist": artist, "title": title, "lyrics": lyrics}
-    render json: result
-  end
-  
-  def search_by_filter
-    searched_by_since   = Song.ok.all
-    searched_by_gender  = Song.ok.all
-    searched_by_genre   = Song.ok.all
-    searched_by_nation  = Song.ok.all
-    
-    unless params[:since].nil? || params[:since].length == 0
-      searched_by_since = []
-      since = params[:since]
-      since_start = since.first(4).to_i
-      since_end   = since.last(4).to_i
-      
-      since_start.upto(since_end) do |year|
-        puts year
-        Song.ok.all.each do |song|
-          if song.album.released_date.to_s.first(4).to_i == year
-            searched_by_since << song
-            puts "현재 since 개수 : #{searched_by_since.count}\n"
-          end
-        end
-      end
-    end
-    
-    unless params[:gender].nil? || params[:gender].length == 0
-      searched_by_gender = []
-      gender = params[:gender]
-      
-      #searched_by_since.each do ||
-    end
-    
-    unless params[:genre].nil? || params[:genre].length == 0
-      searched_by_genre = []
-      genre = params[:genre]
-      puts "장르는 #{genre}"
-    
-      searched_by_since.each do |song|
-        puts "반복 잘 되니 #{song.genre1}, #{song.genre2}, #{song.album.genre1}, #{song.album.genre2}"
-        if song.genre1 == genre || song.genre2 == genre || song.album.genre1 == genre || song.album.genre2 == genre
-          searched_by_genre << song
-          puts "현재 genre 개수 : #{searched_by_genre.count}" 
-        end
-      end
-      searched_by_genre = searched_by_genre.uniq
-    end
-    
-    unless params[:nation].nil? || params[:nation].length == 0
-      #searched_by_genre
-    end
-    
-    result = []
-    # result << searched_by_since
-    # result << searched_by_gender
-    result << searched_by_genre
-    # result << searched_by_nation
-    render :json => result  
-  end
-  
-  # 검색창(검색결과)
-  def search
-    artist = []
     title  = []
     lyrics = []
-    homeC  = HomeController.new
-    artist, title, lyrics = homeC.search3(params[:query])
+    artist, title, lyrics = HomeController.search3(params[:query])
     result = {"artist": artist, "title": title, "lyrics": lyrics}
     render json: result
   end
@@ -338,13 +269,17 @@ class JsonController < ApplicationController
   # method : POST
   # Input   > id: 회원 id (+) myList_id: 읽어들일 myList ID
   # Output  > 내 mySong.all
-  def mySong_read
+  def mySong_read ##id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
     me = User.find(params[:id])
     ml = Mylist.find(params[:myList_id])
     if ml.user_id == me.id
       mySongs = ml.mylist_songs
     end
-    result = mySongs
+    result_mylistSong   = mySongs.map{|ms| ms.id}
+    result_song         = mySongs.map{|mysong| mysong.song_id}.map{|id| Song.find(id)}
+    result_artist       = result_song.map{|song| song.artist}.map{|artist| artist.name}
+    result = {mylistSongId: result_mylistSong, song: result_song, artistName: result_artist}
+    puts "#{result}"
     render json: result
   end
   
@@ -387,11 +322,30 @@ class JsonController < ApplicationController
   # Input   > id: 회원 id
   # Output  > 추천 Song Data
   def recom
+
     recomC = RecommendationController.new
     sing_it = recomC.recommend(params[:id])
     render json: sing_it
   end
   
+  
+  # blacklistsong CRUD > CREATE
+  # method : POST
+  # Input   > id: 회원 id (+) Song_id: 차단하려는 Song ID
+  # Output  > id: 차단할 song의 id, "SUCCESS" 메시지
+  
+  def blacklist_song_create
+    @check = "ERROR"
+    unless params[:id].nil? || params[:song_id].nil? || params[:user_id].nil?
+      bs = BlacklistSong.new
+      bs.song_id  = params[:song_id]
+      bs.user_id  = params[:user_id]
+      bs.save
+      @check = "SUCCESS"
+    end
+    result = {"id": bs.id, "message": @check}
+    render json: result 
+  end
   
   # blacklistsong CRUD > CREATE
   # method : POST
@@ -436,6 +390,50 @@ class JsonController < ApplicationController
     end
     result = me.blacklist_songs.all
     render json: result
-  
   end
+  
+  # 개인정보변경(devise문제로 비밀번호 변경은 추후에 추가예정) 
+  # method : POST
+  # Input   > id: 회원 id 
+  # Output  > 수정된 닉네임, 수정된 성별, 수정된 생일
+  def modify_userdata
+    @check = "ERROR"
+    client = params[:user]
+                                                          # "paramethers" :  
+                                                          #   {
+                                                          #     
+                                                          #     "user" : {
+                                                          #       "id" : "some number",
+                                                          #       "modified_name" : "something",
+                                                          #       "modified_birthdate" : "something",
+                                                          #       "modified_gender" : "something"
+                                                          #     "authNum" : ""
+                                                          #   }
+    me = User.find(client[:id])
+    me.name = client[:modified_name]
+    me.gender = client[:modified_gender]
+    me.birthdate = client[:modified_birthdate]
+    me.save
+    @check = "SUCCESS"
+                                                          # user[id]
+                                                          # user[modified_name]
+                                                          # user[modified_gender]
+                                                          # user[modified_birthdate]
+                                                          # authNum
+    
+    
+    result = {"message": @check}
+     
+    render json: result 
+  end
+  
+  def delete_account
+    client = params[:user]
+    me = User.find(client[:id])
+    
+    me.delete
+    
+  end
+    
+
 end

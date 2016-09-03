@@ -51,6 +51,7 @@ class RecommendationController < ApplicationController
       # AUTO-stage code
         # users = User.all
       # #
+      
         picked_user = users.sample(num)
         return picked_user
     end
@@ -67,9 +68,15 @@ class RecommendationController < ApplicationController
     
     def from_id_to_songs(ids)
         songs = []
+
+        # ids.each do |id|
+        #     songs << Song.find(id)
+        # end
+
         ids.each{ |id| songs.push(Song.find(id)) }
         return songs
     end
+    
     
     def user_validation(somebody, me, fold_minimum, favor_percentage)
         difference      = somebody - me
@@ -171,4 +178,5 @@ class RecommendationController < ApplicationController
         puts "\n(result) result_count :=>\n #{sing_it.count}\n"
         return sing_it
     end
+
 end

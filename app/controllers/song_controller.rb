@@ -32,9 +32,21 @@ class SongController < ApplicationController
   
   def song_num_save
     a = Song.find(params[:id])
-    a.tjnum = params[:tjNum]
-    a.gininum = params[:giniNum]
-    a.save
+    unless params[:tjNum].nil?
+        a.tjnum = params[:tjNum]
+    end
+    unless params[:giniNum].nil?
+        if user_signed_in?
+            if User.find(current_user.id).email.split('@').last.split('.').first == "4d"
+                user = User.find(current_user.id)
+                user.uid = user.uid.gsub('[','').gsub(']','').split(', ').map{|a| a.to_i}.push(params[:id].to_i).to_s if user.uid != nil
+                user.uid = "[#{params[:id]}]" if user.uid == nil
+                user.save
+            end
+        end
+            a.song_num = params[:giniNum]
+            a.crawl_song
+    end
     
     redirect_to :back
   end
@@ -53,5 +65,9 @@ class SongController < ApplicationController
       @song = Song.find(params[:id])
       render layout: false
     end
+  end
+  
+  def song_download
+    render layout: false
   end
 end
