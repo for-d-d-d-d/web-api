@@ -50,9 +50,9 @@ class JsonController < ApplicationController
       
       user = User.find_by_email(me[:email])
       my_account_password = BCrypt::Password.new(user.encrypted_password)
-      puts my_account_password
+      # puts my_account_password
       
-      if user.encrypted_password == me[:password]
+      if my_account_password == me[:password]
         @check = "SUCCESS"
         @id = user.id
       end
@@ -180,13 +180,46 @@ class JsonController < ApplicationController
   # 검색창(검색결과)
   def search
     artist = []
-    title = []
+    title  = []
     lyrics = []
-    homeC = HomeController.new
-    artist, title, lyrics = homeC.search3(params[:query])
+    artist, title, lyrics = HomeController.search3(params[:query])
+
     result = {"artist": artist, "title": title, "lyrics": lyrics}
     render json: result
   end
+
+  def search_by_artist
+    artist = []
+    
+    artist = HomeController.search3_by_artist(params[:query])
+
+    result = artist
+    render json: result
+
+  end
+
+  def search_by_title
+    title = []
+    
+    title = HomeController.search3_by_title(params[:query])
+
+    result = title
+    render json: result
+
+  end
+
+  def search_by_lyrics
+    lyrics = []
+    
+    lyrics = HomeController.search3_by_lyrics(params[:query])
+
+    result = lyrics
+    render json: result
+
+  end
+  
+    
+  
   
   # myList CRUD > CREATE
   # method : POST
@@ -335,37 +368,34 @@ class JsonController < ApplicationController
   # Input   > id: 회원 id (+) Song_id: 차단하려는 Song ID
   # Output  > id: 차단할 song의 id, "SUCCESS" 메시지
   
+  # def blacklist_song_create
+  #   @check = "ERROR"
+  #   unless params[:id].nil? || params[:song_id].nil? || params[:user_id].nil?
+  #     bs = BlacklistSong.new
+  #     bs.song_id  = params[:song_id]
+  #     bs.user_id  = params[:user_id]
+  #     bs.save
+  #     @check = "SUCCESS"
+  #   end
+  #   result = {"id": bs.id, "message": @check}
+  #   render json: result 
+  # end
+  
+
+
   def blacklist_song_create
     @check = "ERROR"
-    unless params[:id].nil? || params[:song_id].nil? || params[:user_id].nil?
+    
+    unless params[:id].nil? || params[:song_id].nil?
       bs = BlacklistSong.new
       bs.song_id  = params[:song_id]
-      bs.user_id  = params[:user_id]
+      bs.user_id  = params[:id]
       bs.save
       @check = "SUCCESS"
     end
     result = {"id": bs.id, "message": @check}
     render json: result 
   end
-  
-  # blacklistsong CRUD > CREATE
-  # method : POST
-  # Input   > id: 회원 id (+) Song_id: 차단하려는 Song ID
-  # Output  > id: 차단할 song의 id, "SUCCESS" 메시지
-  
-  def blacklist_song_create
-    @check = "ERROR"
-    unless params[:id].nil? || params[:song_id].nil? || params[:user_id].nil?
-      bs = BlacklistSong.new
-      bs.song_id  = params[:song_id]
-      bs.user_id  = params[:user_id]
-      bs.save
-      @check = "SUCCESS"
-    end
-    result = {"id": bs.id, "message": @check}
-    render json: result 
-  end
-  
   # blacklistsong CRUD > READ
   # method : POST
   # Input   > id: 회원 id 
@@ -409,7 +439,7 @@ class JsonController < ApplicationController
                                                           #       "modified_birthdate" : "something",
                                                           #       "modified_gender" : "something"
                                                           #     "authNum" : ""
-                                                          #   }
+                                                          #  
     me = User.find(client[:id])
     me.name = client[:modified_name]
     me.gender = client[:modified_gender]

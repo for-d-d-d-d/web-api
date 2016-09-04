@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160808080349) do
+ActiveRecord::Schema.define(version: 20160904130440) do
 
   create_table "administers", force: :cascade do |t|
     t.string   "username"
@@ -54,6 +54,12 @@ ActiveRecord::Schema.define(version: 20160808080349) do
 
   create_table "blacklist_songs", force: :cascade do |t|
     t.integer  "song_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "blacklists", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -122,6 +128,7 @@ ActiveRecord::Schema.define(version: 20160808080349) do
     t.string   "writer"
     t.string   "composer"
     t.string   "youtube"
+    t.string   "artist_name"
     t.text     "jacket"
     t.text     "jacket_middle"
     t.text     "jacket_small"

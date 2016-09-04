@@ -11,7 +11,7 @@ class CrawlController < ApplicationController
     GINNIE_SONG_LYRICS      = "div#body-content//div.lyrics-area//div.tit-box//pre"
     GINNIE_SONG_ARTISTNUM   = "div#body-content//div.info-zone//ul.info-data//li:nth-child(1)//span.value//a"
     GINNIE_SONG_ALBUMNUM    = "div#body-content//div.info-zone//ul.info-data//li:nth-child(2)//span.value//a"
-    GINNIE_SONG_JACKET      = "div#body-content//div.photo-zone//a"
+    GINNIE_SONG_JACKET      = "div#body-content//div.photo-zone//a//span.cover//img"
     
     # 지니뮤직 앨범 () 위치
     GINNIE_ALBUM_TITLE      = "div#body-content//div.info-zone//h2.name"
@@ -19,7 +19,7 @@ class CrawlController < ApplicationController
     GINNIE_ALBUM_PUBLISHER  = "div#body-content//div.info-zone//ul.info-data//li:nth-child(3)//span.value"
     GINNIE_ALBUM_AGENCY     = "div#body-content//div.info-zone//ul.info-data//li:nth-child(4)//span.value"
     GINNIE_ALBUM_RELEASE    = "div#body-content//div.info-zone//ul.info-data//li:nth-child(5)//span.value"
-    GINNIE_ALBUM_JACKET     = "div#body-content//div.photo-zone//a"
+    GINNIE_ALBUM_JACKET     = "div#body-content//div.photo-zone//a//span.cover//img"
     
     
     # start : 시작할 노래 번호
@@ -257,6 +257,23 @@ class CrawlController < ApplicationController
         count, @start_num = CrawlController.init()
         count = var_count.to_i unless var_count.nil?
         @start_num = var_start.to_i unless var_start.nil?
+	
+        # 몇 번 노래부터 10**3 개를 지정해서 크롤링할 때
+	if var_count == 0
+	    k = 5 # 지수
+	    if var_start != nil
+    	        modulo = @start_num.modulo(10**k)
+	        if modulo > 0
+		    count = (10**k).to_i - modulo.to_i + 1
+	        else
+		    puts "\n\n\n\n\n\n\n\t\tERROR : 잘못된 count 입니다.\n\n\n\n\n\n\n\n"
+		    return false
+	        end
+            else
+                puts "\n\n\n\n\n\n\n\t\tERROR : 두번째 인수가 입력되어야 합니다.\n\n\n\n\n\n\n\n"
+                return false
+            end
+	end
         # last_saved_song_count = Song.count
         count_origin = count
         num = @start_num - 1
@@ -264,11 +281,13 @@ class CrawlController < ApplicationController
             break if count <= 0
             num += 1
             puts "\n\n\n\t진행 상태 : [#{(count_origin - count)}/#{count_origin}]. 진행률 : [#{((count_origin.to_f - count.to_f)/count_origin.to_f)*100.to_f}%], 남은 곡 : #{count}개 \n\n"
+	    count -= 1
             next if Song.where(song_num: num).take.present?
             next if Song.crawl(num) == false
-            count -= 1
         end
-        
+        if var_count == 0
+            puts "\n\n\t이번 요청 : #{var_start}로부터 #{count_origin}회 탐색. ~> song_num #{var_start + count_origin - 1}(허수 포함)까지  탐색 완료.\n\t다음 탐색 : CrawlController.run(0, #{var_start + count_origin})\n\n\n" 
+	end
         puts "요청하신 크롤링이 종료되었습니다.\n\n\t요청하신 곡 : #{count_origin}개, 현재 보유 곡 : 총 #{Song.count}개 \n\t-------------------------------------------------\n\t이미지 없는 곡 : #{Song.where(jacket: "http:#").count}개, 노래방 번호(TJ) 누락 곡 : #{Song.where(song_tjnum: nil).count}개 \n\t즉시 베포 가능한 곡 : #{Song.where.not(jacket: "http:#").where.not(song_tjnum: nil).count}개\n\n"
         return count_origin, count
     end
@@ -300,7 +319,7 @@ class CrawlController < ApplicationController
         else
             album_num   = html_doc.css(GINNIE_SONG_ALBUMNUM)[0]['onclick'].to_s.gsub("fnGoMore('albumInfo','","").first(8)
         end
-        jacket      = "http:" + html_doc.css(GINNIE_SONG_JACKET)[0]['href'].to_s
+        jacket      = "http:" + html_doc.css(GINNIE_SONG_JACKET)[0]['src'].to_s
         return song_title, song_genre1, song_genre2, runtime, lyrics, artist_num, album_num, jacket
     end
     
@@ -324,7 +343,7 @@ class CrawlController < ApplicationController
         publisher       = html_doc_album.css(GINNIE_ALBUM_PUBLISHER).inner_html.to_s
         agency          = html_doc_album.css(GINNIE_ALBUM_AGENCY).inner_html.to_s
         released_date   = html_doc_album.css(GINNIE_ALBUM_RELEASE).inner_html.to_s
-        jacket          = "http:" + html_doc_album.css(GINNIE_ALBUM_JACKET)[0]['href'].to_s
+        jacket          = "http:" + html_doc_album.css(GINNIE_ALBUM_JACKET)[0]['src'].to_s
         
         return album_title, album_genre1, album_genre2, publisher, agency, released_date, jacket
     end
@@ -356,6 +375,7 @@ class CrawlController < ApplicationController
                 album.singer_id = artist.id         ## artist_num(아티스트 번호) case 아티스트가 솔로
             elsif artist.class == Team
                 album.team_id = artist.id           ## artist_num(아티스트 번호) case 아티스트가 그룹
+	    else
             end
             
             album.album_num = @album_num            ## album_num(앨범 고유번호)
@@ -375,6 +395,20 @@ class CrawlController < ApplicationController
                 s = Singer.new
                 s.name = "Various Artist"
                 s.save
+            end
+            return s
+        end
+        if artist_num == '14940989'
+            if Singer.where(artist_num: 14940989).first.nil?
+                s = Singer.new
+                s.name = "Marilyn Manson"
+                s.photo = "http://image.genie.co.kr/Y/IMAGE/IMG_ARTIST/014/940/989/14940989_4_600x600.JPG"
+                s.gender = 1
+                s.typee = "솔로"
+                s.artist_num = artist_num
+                s.save
+            else
+                s = Singer.where(artist_num: 14940989).first
             end
             return s
         end
@@ -431,11 +465,15 @@ class CrawlController < ApplicationController
         team.save
 
         #Team에 소속된 모든 artist에 대하여 크롤링을 실행
+        t_i = 0
         html_doc_team.css("div.artist-member-list//li//a").each do |t|
             artist_num2 = t.to_s.gsub('<a href="#" onclick="fnViewArtist(' , '/////').gsub('\');return false;">' , '/////').split('/////')[1].to_i
-            artist = self.crawl_artist(artist_num2)
+            if artist_num2 == 0
+                next
+            else
+                artist = self.crawl_artist(artist_num2)
+            end
             next unless artist
-
             if artist.class == Singer
                 if SingersTeam.where(team_id: team.id, singer_id: artist.id).first.nil?
                     st = SingersTeam.new
@@ -456,41 +494,6 @@ class CrawlController < ApplicationController
         return team
     end
 
-    def self.crawl_album(album_num, artist_num)
-        @album_num = album_num
-        @artist_num = artist_num
-                        
-        album = Album.where(album_num: @album_num).first    # 전에 긁어온 노래를 통해 이미 존재하는지 확인
-        if album.nil?
-                album = Album.new
-                # 타겟 문서 가져오기(속칭 긁어오기 또는 크롤링)
-                html_doc_album = CrawlController.load_page(@album_num, "album_number")
-                puts "#{@album_num}, #{html_doc_album.to_s.length}"
-                @album_title, @album_genre1, @album_genre2, @publisher, @agency, @released_date, @jacket = CrawlController.parser_album_origin(html_doc_album)
-                                              
-                album.title         = @album_title      ## title(앨범제목)
-                album.genre1        = @album_genre1     ## genre1(앨범장르1)
-                album.genre2        = @album_genre2     ## genre2(앨범장르2)
-                album.publisher     = @publisher        ## publisher(발매사)
-                album.agency        = @agency           ## agency(기획사)
-                album.released_date = @released_date    ## released_date(발매일)
-                album.jacket        = @jacket           ## jacket(앨범자켓 :: 이미지)
-                
-                artist = CrawlController.crawl_artist(@artist_num)
-                if artist.class == Singer
-                        album.singer_id = artist.id         ## artist_num(아티스트 번호) case 아티스트가 솔로
-                elsif artist.class == Team
-                        album.team_id = artist.id           ## artist_num(아티스트 번호) case 아티스트가 그룹
-                end
-                
-                album.album_num = @album_num            ## album_num(앨범 고유번호)
-                album.save                              ## 아래 앨범아이디 만드려면 먼저저장해야함.
-        else
-                @jacket         = album.jacket
-        end
-        
-        return album.id, @jacket
-    end
     # Method Name : songs_rematch_for_correct_album
     # Method Procedure :
     # Method Description : 노래와 앨범을 다시 제대로 매치시켜주는 함수

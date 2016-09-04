@@ -17,6 +17,7 @@ class CreateSongs < ActiveRecord::Migration
       t.string  :composer       # =>작곡
       t.string  :youtube        # =>뮤비주소 아이디값
 
+      t.string  :artist_name
       # 음원 정보(참조)
       # t.integer :artist_num     # =>아티스트 번호(Default : 팀 단위)
       # t.integer :album_num      # =>앨범 번호번호번호번호번호
