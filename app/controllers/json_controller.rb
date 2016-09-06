@@ -8,17 +8,9 @@ class JsonController < ApplicationController
   end
   
   def regist
-    @check = "ERROR"
-    @id    = "ERROR"
-    
-    
-    user = params[:user]
-    user[:name]
-    
-    "<input type='text' name='user[name]'"
-    params[:user] # => user{"user_id":"1", "user_name":"김용현"}
-    params[:id]
-    
+    @check      = "ERROR"
+    @mytoken    = nil
+    @mylist_id  = nil
     
     user                      = params[:user]
     u = User.new
@@ -30,15 +22,23 @@ class JsonController < ApplicationController
     
     if User.where(email: user[:email]).count == 0
       if user[:password] == user[:password_confirmation]
+        u.mytoken = SecureRandom.hex(16)
         u.save
-        @check = "SUCCESS"
-        @id = u.id
+        
+        uml = Mylist.new
+        uml.user_id = u.id
+        uml.title   = "#{u.name}님의 첫 번째 리스트"
+        uml.save
+        
+        @check      = "SUCCESS"
+        @mytoken    = u.mytoken
+        @mylist_id  = uml.id
       end
     end
     message = "#{u.password} , #{u.password_confirmation}"
     
     puts message
-    render :json => {result: @check, id: @id}
+    render :json => {result: @check, mytoken: @mytoken, mylist_id: @mylist_id}
   end
   
   def login
