@@ -21,6 +21,10 @@ class Song < ActiveRecord::Base
         return Song.where(song_tjnum: nil)
     end
     
+    def self.empty_tj
+        return Song.where(song_tjnum: nil)
+    end
+    
     # 크롤링이 전부 종료된 이후의 데이터에 대하여 jacke IMG를 크기별로 리사이징 해서 저장합니다.
     # return: "SUCCESS"
     def self.jacket_resizing(size)
@@ -126,6 +130,7 @@ class Song < ActiveRecord::Base
         song.song_num = num             ## song_num(지니뮤직 고뮤번호)                          # 음원 정보(고유값)
         
         # SAVE Song
+
         song.save
         
         # try = 0; success = 0;
