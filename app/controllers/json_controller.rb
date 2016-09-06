@@ -1,3 +1,4 @@
+require "bcrypt"
 class JsonController < ApplicationController
   
   def song
@@ -52,7 +53,7 @@ class JsonController < ApplicationController
       my_account_password = BCrypt::Password.new(user.encrypted_password)
       puts my_account_password
       
-      if user.encrypted_password == me[:password]
+      if my_account_password == me[:password]
         @check = "SUCCESS"
         @id = user.id
       end

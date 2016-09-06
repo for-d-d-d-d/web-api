@@ -315,6 +315,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  bcrypt
   bootstrap-sass
   byebug
   coffee-rails (~> 4.1.0)
