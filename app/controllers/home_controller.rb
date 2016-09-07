@@ -40,30 +40,6 @@ class HomeController < ApplicationController
         end
     end
     
-    def search2
-        if params[:query].nil?
-            flash[:error] = "검색어를 찾을 수 없습니다."
-        else
-            if params[:query].length == 0
-                flash[:error] = "검색어를 찾을 수 없습니다."
-                return
-            end
-
-            q = params[:query].split
-            @song_artist = Array.new
-            @song_title = Array.new
-            @song_lyrics = Array.new
-
-            Song.all.each do |s|
-                q.each do |qq|
-                    @song_artist << s unless s.artist.name.include?(qq)
-                    @song_title << s unless s.title.include?(qq)
-                    @song_lyrics << s unless s.lyrics.include?(qq)
-                end
-            end
-        end
-    end
-    
     def self.search3(query)
         if query.nil?
             flash[:error] = "검색어를 찾을 수 없습니다."
@@ -73,16 +49,16 @@ class HomeController < ApplicationController
                 return
             end
 
-            q = query.split
+            splited = query.split
             @song_searched_By_artist = Array.new
             @song_searched_By_title = Array.new
             @song_searched_By_lyrics = Array.new
 
             Song.ok.all.each do |s|
-                q.each do |qq|
-                    @song_searched_By_artist << s if s.artist.name.include?(qq)
-                    @song_searched_By_title << s if s.title.include?(qq)
-                    @song_searched_By_lyrics << s if s.lyrics.include?(qq)
+                splited.each do |q|
+                    @song_searched_By_artist << s if s.artist.name.include?(q)
+                    @song_searched_By_title << s if s.title.include?(q)
+                    @song_searched_By_lyrics << s if s.lyrics.include?(q)
                 end
             end
             
@@ -93,34 +69,78 @@ class HomeController < ApplicationController
         
         return @song_searched_By_artist, @song_searched_By_title, @song_searched_By_lyrics
     end
-    
-    def search
-        if params[:query].nil?
+
+    def self.search3_by_artist(query)
+        if query.nil?
             flash[:error] = "검색어를 찾을 수 없습니다."
         else
-            if params[:query].length == 0
+            if query.length == 0
                 flash[:error] = "검색어를 찾을 수 없습니다."
                 return
             end
 
-            q = params[:query].split
+            splited = query.split
             @song_searched_By_artist = Array.new
-            @song_searched_By_title = Array.new
-            @song_searched_By_lyrics = Array.new
 
-            Song.tj_ok.all.each do |s|
-                q.each do |qq|
-                    @song_searched_By_artist << s if s.artist.name.include?(qq)
-                    @song_searched_By_title << s if s.title.include?(qq)
-                    @song_searched_By_lyrics << s if s.lyrics.include?(qq)
+            Song.ok.all.each do |s|
+                splited.each do |q|
+                    @song_searched_By_artist << s if s.artist.name.include?(q)
                 end
             end
-            
             @song_searched_By_artist = @song_searched_By_artist.uniq
+        end
+        return @song_searched_By_artist
+    end
+
+    def self.search3_by_title(query)
+        if query.nil?
+            flash[:error] = "검색어를 찾을 수 없습니다."
+        else
+            if query.length == 0
+                flash[:error] = "검색어를 찾을 수 없습니다."
+                return
+            end
+
+            splited = query.split
+           
+            @song_searched_By_title = Array.new
+           
+
+            Song.ok.all.each do |s|
+                splited.each do |q|
+                    @song_searched_By_title << s if s.title.include?(q)
+                end
+            end
             @song_searched_By_title = @song_searched_By_title.uniq
+        end
+        return  @song_searched_By_title
+    end
+
+    def self.search3_by_lyrics(query)
+        if query.nil?
+            flash[:error] = "검색어를 찾을 수 없습니다."
+        else
+            if query.length == 0
+                flash[:error] = "검색어를 찾을 수 없습니다."
+                return
+            end
+
+            splited = query.split
+           
+            @song_searched_By_lyrics = Array.new
+           
+
+            Song.ok.all.each do |s|
+                splited.each do |q|
+                    @song_searched_By_lyrics << s if s.lyrics.include?(q)
+                end
+            end
             @song_searched_By_lyrics = @song_searched_By_lyrics.uniq
         end
+        return  @song_searched_By_lyrics
     end
+    
+   
     
     def this_song
         @song = []

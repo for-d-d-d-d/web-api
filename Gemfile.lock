@@ -44,6 +44,7 @@ GEM
       execjs
     awesome_print (1.7.0)
     bcrypt (3.1.11)
+    bcrypt (3.1.11-x86-mingw32)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     blankable (0.2.0)
@@ -160,6 +161,9 @@ GEM
     multipart-post (2.0.0)
     nested_form (0.3.2)
     nokogiri (1.6.8)
+      mini_portile2 (~> 2.1.0)
+      pkg-config (~> 1.1.7)
+    nokogiri (1.6.8-x86-mingw32)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     oauth2 (1.2.0)
@@ -280,6 +284,7 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.3.11)
+    sqlite3 (1.3.11-x86-mingw32)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -312,6 +317,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   awesome_print
