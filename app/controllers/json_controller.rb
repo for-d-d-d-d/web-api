@@ -47,16 +47,19 @@ class JsonController < ApplicationController
     me = params[:user]
     #input_password = "nil"
     
-    unless User.find_by_email(me[:email]).nil?
-      
-      user = User.find_by_email(me[:email])
-      my_account_password = BCrypt::Password.new(user.encrypted_password)
-      puts my_account_password
-      
-      if my_account_password == me[:password]
-        @check = "SUCCESS"
-        @id = user.id
+    if me[:mytoken].nil?
+      unless User.find_by_email(me[:email]).nil?
+        user = User.find_by_email(me[:email])
+        my_account_password = BCrypt::Password.new(user.encrypted_password)
+        if my_account_password == me[:password]
+          @check = "SUCCESS"
+          @id = user.id
+        end
       end
+    else
+      user = User.where(mytoken: me[:mytoken]).take
+      @check = "SUCCESS"
+      @id = user.id
     end
     
     message = "@check = #{@check}, @id = #{@id}"
