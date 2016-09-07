@@ -42,8 +42,9 @@ class JsonController < ApplicationController
   end
   
   def login
-    @check = "ERROR"
-    @id    = "ERROR"
+    @check    = "ERROR"
+    @id       = "ERROR"
+    @mytoken  = nil
     me = params[:user]
     #input_password = "nil"
     
@@ -52,8 +53,9 @@ class JsonController < ApplicationController
         user = User.find_by_email(me[:email])
         my_account_password = BCrypt::Password.new(user.encrypted_password)
         if my_account_password == me[:password]
-          @check = "SUCCESS"
-          @id = user.id
+          @check    = "SUCCESS"
+          @id       = user.id
+          @mytoken  = user.mytoken
         end
       end
     else
@@ -61,10 +63,7 @@ class JsonController < ApplicationController
       @check = "SUCCESS"
       @id = user.id
     end
-    
-    message = "@check = #{@check}, @id = #{@id}"
-    puts message
-    render :json => {result: @check, id: @id}
+    render :json => {result: @check, id: @id, mytoken: @mytoken}
   end
   
   def my_account
