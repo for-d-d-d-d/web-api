@@ -38,10 +38,10 @@ class RecommendationController < ApplicationController
         user1 = (1..20).to_a
         user2 = [1,2,3,4,5,6,7,8,9,10]
         user3 = [1,  3,  5,  7,  9]
-        user4 = [1,2,3,4,5,6,                             95]
+        user4 = [1,2,3,4,5,6,                             25]
         user5 = [          6,7,8,9,10]
         user6 = [  2,  4,  6,  8,  10]
-        user7 = [1,2,3,  5,6,7,8,    11,12,90,91,92,93,94]
+        user7 = [1,2,3,  5,6,7,8,    11,12,17,22, 24]
         
         users = []
         (1..7).to_a.each do |i|
@@ -176,6 +176,7 @@ class RecommendationController < ApplicationController
         sing_it = from_id_to_songs(sing_it)
         #puts "\n\n\n(result) lose_count :=>\n #{lose_count}\n"
         puts "\n(result) result_count :=>\n #{sing_it.count}\n"
+        
         return sing_it
     end
 

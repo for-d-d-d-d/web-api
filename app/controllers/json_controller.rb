@@ -359,12 +359,14 @@ class JsonController < ApplicationController
   # Input   > id: 회원 id
   # Output  > 추천 Song Data
   def recom
-
     recomC = RecommendationController.new
     sing_it = recomC.recommend(params[:id])
+    count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
+    count.count_recomm +=1
+    count.save
     render json: sing_it
   end
-  
+    
 
   def blacklist_song_create
     @check = "ERROR"
