@@ -39,13 +39,15 @@ class JsonController < ApplicationController
     message = "#{u.password} , #{u.password_confirmation}"
     
     puts message
-    render :json => {result: @check, mytoken: @mytoken, mylist_id: @mylist_id}
+    render :json => {result: @check, mytoken: @mytoken}
   end
   
   def login
-    @check    = "ERROR"
-    @id       = "ERROR"
-    @mytoken  = nil
+    @check      = "ERROR"
+    @id         = "ERROR"
+    @mytoken    = nil
+    @mylist_id  = nil
+    
     me = params[:user]
     #input_password = "nil"
     
@@ -64,7 +66,8 @@ class JsonController < ApplicationController
       @check = "SUCCESS"
       @id = user.id
     end
-    render :json => {result: @check, id: @id, mytoken: @mytoken}
+    @mylist_id = user.mylists.first.id if user.mylists.count != 0
+    render :json => {result: @check, id: @id, mytoken: @mytoken, mylist_id: @mylist_id}
   end
   
   def my_account
