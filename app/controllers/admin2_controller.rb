@@ -111,7 +111,16 @@ class Admin2Controller < ApplicationController
             redirect_to '/users/sign_in'
         end
         @songs = Song.first(1)
-        # @popular_songs = Song.
+        
+        @popular_songs = []
+        popular_songs = DailyTjPopularRank.where.not(song_id: nil).all#.map{|p_song| Song.find(p_song.id)}
+        popular_songs.each do |p_song|
+            if Song.find(p_song.id).song_num == nil
+                if Song.find(p_song.id).jacket == nil
+                    @popular_songs << Song.find(p_song.id)
+                end
+            end
+        end
         @miss_songs = Song.where(song_num: nil).where(jacket: nil)
         
     end

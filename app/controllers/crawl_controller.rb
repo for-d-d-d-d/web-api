@@ -259,21 +259,21 @@ class CrawlController < ApplicationController
         @start_num = var_start.to_i unless var_start.nil?
 	
         # 몇 번 노래부터 10**3 개를 지정해서 크롤링할 때
-	if var_count == 0
-	    k = 5 # 지수
-	    if var_start != nil
-    	        modulo = @start_num.modulo(10**k)
-	        if modulo > 0
-		    count = (10**k).to_i - modulo.to_i + 1
-	        else
-		    puts "\n\n\n\n\n\n\n\t\tERROR : 잘못된 count 입니다.\n\n\n\n\n\n\n\n"
-		    return false
-	        end
+    	if var_count == 0
+    	    k = 5 # 지수
+    	    if var_start != nil
+        	        modulo = @start_num.modulo(10**k)
+    	        if modulo > 0
+    		        count = (10**k).to_i - modulo.to_i + 1
+    	        else
+        		    puts "\n\n\n\n\n\n\n\t\tERROR : 잘못된 count 입니다.\n\n\n\n\n\n\n\n"
+        		    return false
+    	        end
             else
                 puts "\n\n\n\n\n\n\n\t\tERROR : 두번째 인수가 입력되어야 합니다.\n\n\n\n\n\n\n\n"
                 return false
             end
-	end
+    	end
         # last_saved_song_count = Song.count
         count_origin = count
         num = @start_num - 1
@@ -287,7 +287,7 @@ class CrawlController < ApplicationController
         end
         if var_count == 0
             puts "\n\n\t이번 요청 : #{var_start}로부터 #{count_origin}회 탐색. ~> song_num #{var_start + count_origin - 1}(허수 포함)까지  탐색 완료.\n\t다음 탐색 : CrawlController.run(0, #{var_start + count_origin})\n\n\n" 
-	end
+	    end
         puts "요청하신 크롤링이 종료되었습니다.\n\n\t요청하신 곡 : #{count_origin}개, 현재 보유 곡 : 총 #{Song.count}개 \n\t-------------------------------------------------\n\t이미지 없는 곡 : #{Song.where(jacket: "http:#").count}개, 노래방 번호(TJ) 누락 곡 : #{Song.where(song_tjnum: nil).count}개 \n\t즉시 베포 가능한 곡 : #{Song.where.not(jacket: "http:#").where.not(song_tjnum: nil).count}개\n\n"
         return count_origin, count
     end
