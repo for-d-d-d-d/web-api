@@ -111,6 +111,7 @@ class Admin2Controller < ApplicationController
             redirect_to '/users/sign_in'
         end
         @songs = Song.first(1)
+        # @popular_songs = Song.
         @miss_songs = Song.where(song_num: nil).where(jacket: nil)
         
     end

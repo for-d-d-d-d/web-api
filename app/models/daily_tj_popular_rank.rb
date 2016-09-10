@@ -1,6 +1,10 @@
 class DailyTjPopularRank < ActiveRecord::Base
 
-    def self.take(start, stop)
+    # def self.take(start, stop)
         
-    end
+    # end
+    
+    # def self.linker_with_Song
+    #     self.all.each do 
+    # end
 end
