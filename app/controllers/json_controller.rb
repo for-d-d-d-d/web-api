@@ -101,6 +101,15 @@ class JsonController < ApplicationController
     render :json => u
   end
   
+  def img_resize
+    # @example = "http://52.78.127.110/json/img_resize/1?size=100" # song.jacket_small
+    @example = "http://web-yhk1038.c9users.io/json/img_resize/1?size=100" # song.jacket_small
+    
+    @jacket_file_real_url = Song.find(params[:id]).jacket
+    @jacket_file_name = @jacket_file_real_url.split('/').last
+    @custom_size = params[:size]
+    render :layout => false
+  end
   
   # 첫 화면
   # > 캐러셀

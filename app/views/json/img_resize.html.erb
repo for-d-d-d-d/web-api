@@ -1,0 +1,9 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, minimum-scale=0.1">
+        <title><%= @jacket_file_name %> (<%= "#{@custom_size}x#{@custom_size}" %>)</title>
+    </head>
+    <body style="margin: 0px;">
+        <img style="-webkit-user-select: none; width: <%= @custom_size %>; height: auto;" src="<%= @jacket_file_real_url %>">
+    </body>
+</html>
