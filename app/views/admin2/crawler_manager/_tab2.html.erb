@@ -216,11 +216,11 @@
             </tbody>
         </table>
     </div>
-
+    
     <!--노래방 번호 + 지니 번호 찾기 테이블-->
     <div class="card">
         <div class="card-header">
-            <h2>STEP 2. 음악 번호들 채우기<small> 노래방 번호와 지니뮤직 번호를 찾아서 입력하기 위해 이 테이블을 사용하세요.<br> 링크를 클릭해 이동한 페이지에서 번호을 확인하고 입력하면 됩니다!</small></h2>
+            <h2>STEP 2. 음악 번호들 채우기(인기차트)<small> 노래방 번호와 지니뮤직 번호를 찾아서 입력하기 위해 이 테이블을 사용하세요.<br> 링크를 클릭해 이동한 페이지에서 번호을 확인하고 입력하면 됩니다!</small></h2>
         </div>
 
         <div class="table-responsive">
@@ -235,11 +235,11 @@
                         <th>지니뮤직 번호</th>
                         <th>지니번호 입력</th>
                         <th>저장</th>
-                        <!--<th>기능</th>-->
+                        <th>못찾겠다</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% @miss_songs.each do |miss| %>
+                    <% @miss_songs.first(30).each do |miss| %>
                     <tr>
                         <form action="/song/song_num_save/<%= miss.id %>" method="POST">
                             <td><%= miss.id %></td>
@@ -275,7 +275,74 @@
                                 </div>
                             </th>
                             <th><button type="submit" class="btn bgm-orange waves-effect">저장</button></th>
-                            <!--<td><button class="btn bgm-red waves-effect">삭제</button></td>-->
+                            <td><a href="/we/admin2/cannotFind_on_ginnie/<%= miss.id %>" class="btn bgm-red waves-effect">꽤꼬리!</a></td>
+                        </form>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--노래방 번호 + 지니 번호 찾기 테이블-->
+    <div class="card">
+        <div class="card-header">
+            <h2>STEP 2. 음악 번호들 채우기<small> 노래방 번호와 지니뮤직 번호를 찾아서 입력하기 위해 이 테이블을 사용하세요.<br> 링크를 클릭해 이동한 페이지에서 번호을 확인하고 입력하면 됩니다!</small></h2>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>노래방 번호</th>
+                        <!--<th>노래방번호 입력</th>-->
+                        <th>지니뮤직 번호</th>
+                        <th>지니번호 입력</th>
+                        <th>저장</th>
+                        <th>못찾겠다</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @miss_songs.first(30).each do |miss| %>
+                    <tr>
+                        <form action="/song/song_num_save/<%= miss.id %>" method="POST">
+                            <td><%= miss.id %></td>
+                            <td><%= miss.title %></td>
+                            <th><%= miss.artist_name %></th>
+
+                            <% if miss.song_tjnum.nil? %>
+                            <td><a href="<%= miss.song_tjnum %>" target="_blank" class="btn bgm-green waves-effect">노래방 찾기!</a></td>
+                            <% else %>
+                            <td><%= miss.song_tjnum %></td>
+                            <% end %>
+                            <!--<th style="width:200px;">
+                                <div class="input-group fg-float">
+                                    <span class="input-group-addon"><i class="zmdi zmdi-search"></i></span>
+                                    <div class="fg-line">
+                                        <input type="text" name="tjNum" class="form-control">
+                                        <label class="fg-label" style="color:#000;">노래방 번호</label>
+                                    </div>
+                                </div>
+                            </th>-->
+                            <% if miss.song_num.nil? %>
+                            <td><a href="http://www.genie.co.kr/search/searchMain?query=<%= miss.title %>%20<%= miss.artist_name %>&x=0&y=0" target="_blank" class="btn bgm-green waves-effect">노래 찾기!</a></td>
+                            <% else %>
+                            <td><%= miss.song_num %></td>
+                            <% end %>
+                            <th style="width:200px;">
+                                <div class="input-group fg-float">
+                                    <span class="input-group-addon"><i class="zmdi zmdi-search"></i></span>
+                                    <div class="fg-line">
+                                        <input type="text" name="giniNum" class="form-control">
+                                        <label class="fg-label" style="color:#000;">지니뮤직 번호</label>
+                                    </div>
+                                </div>
+                            </th>
+                            <th><button type="submit" class="btn bgm-orange waves-effect">저장</button></th>
+                            <td><a href="/we/admin2/cannotFind_on_ginnie/<%= miss.id %>" class="btn bgm-red waves-effect">꽤꼬리!</a></td>
                         </form>
                     </tr>
                     <% end %>

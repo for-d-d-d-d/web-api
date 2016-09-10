@@ -111,7 +111,15 @@ class Admin2Controller < ApplicationController
             redirect_to '/users/sign_in'
         end
         @songs = Song.first(1)
-        @miss_songs = Song.where(song_num: nil).first(450)
+        @miss_songs = Song.where(song_num: nil).where(jacket: nil)
+        
+    end
+    
+    def cannotFind_on_ginnie
+        song = Song.find(params[:id])
+        song.jacket = "Error::ThisMusickCanNotFind"
+        song.save
+        redirect_to :back
     end
 
     def error_manager
