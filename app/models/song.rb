@@ -111,7 +111,9 @@ class Song < ActiveRecord::Base
         song.genre1     = @song_genre1      ## genre1(장르1)
         song.genre2     = @song_genre2      ## genre2(장르2)
         song.runtime    = @runtime          ## runtime(재생시간)
-        #song.lyrics     = @lyrics           ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
+        if song.lyrics == nil
+            song.lyrics = @lyrics           ## lyrics(가사) %% 주 의 %% 가사는 뷰에서 사용할때 <pre><%= @lyrics.html_safe %></pre> 이렇게 출력해야함!
+        end
         song.jacket     = @jacket           ## jacket(자켓사진)         # 음원 정보(참조추출)
         
         artist = CrawlController.crawl_artist(@artist_num)

@@ -122,45 +122,52 @@ class Crawl2Controller < ApplicationController
     
     def self.parse_and_save_tj2(song_tjnum)
         html_doc    = Nokogiri::HTML(Net::HTTP.get(URI("http://www.tjmedia.co.kr/tjsong/song_search_list.asp?strType=16&strText=#{song_tjnum}&strCond=0&strSize01=100&strSize02=15&strSize03=15&strSize04=15&strSize05=15")))
+        puts "\n\n\t\thtml_doc.nil? #{html_doc.nil?}\n\n"
         a_song      = "div#BoardType1//table.board_type1//tbody//tr:last-child"
-        song_info    = html_doc.css(a_song)
+        # song_info   = html_doc.css(a_song)
 
         aa = html_doc.css(a_song + "//td:nth-child(1)").inner_html.gsub('</span>','').gsub('<span','').gsub('class="txt">','').gsub(' ','')
-        # puts "\n\n\t\t#{aa}\n\n"
+        puts "\n\t\t#{aa}\n\n"
         if aa != song_tjnum.to_i.to_s
             puts "\t\t#{song_tjnum} is NOT FOUND"
             return false
         end
         @song_tjnum  = html_doc.css(a_song + "//span.txt").inner_html.to_i
+        puts "\t\t song_tjnum   : #{@song_tjnum}"
         @song_title  = html_doc.css(a_song + "//td.left").inner_html.to_s
+        puts "\t\t song_title   : #{@song_title}"
         @artist_name = html_doc.css(a_song + "//td:nth-child(3)").inner_html.to_s
+        puts "\t\t artist_name  : #{@artist_name}"
         @writer      = html_doc.css(a_song + "//td:nth-child(4)").inner_html.to_s
+        puts "\t\t writer       : #{@writer}"
         @composer    = html_doc.css(a_song + "//td:nth-child(5)").inner_html.to_s
-        
-        html_doc2   = Nokogiri::HTML(Net::HTTP.get(URI("http://www.ziller.co.kr/singingroom/gasa_pop_view.jsp?pro=#{song_tjnum}")))
-        lyrics_doc  = html_doc2.css('body')
+        puts "\t\t composer     : #{@composer}"
+        # html_doc2   = Nokogiri::HTML(Net::HTTP.get(URI("http://www.ziller.co.kr/singingroom/gasa_pop_view.jsp?pro=#{song_tjnum}")))
+        # puts "html_doc2.nil? ~> #{html_doc2.nil?}"
+        # lyrics_doc  = html_doc2.css('body')
 
-        @shits = []
-        4.times do |t|
-            @shits << "<br>"
-            if lyrics_doc.to_a.first.elements.first(t+1).last.nil?
-                @shits << "<br>SORRY...<br><br>The lyric was not uploaded yet.<br>"
-            else
-                lyrics_doc.to_a.first.elements.first(t+1).last.children.to_a.each do |s| 
-                    if s.text.length != 0
-                        str = s.text
-                    else
-                        str = "<br>" 
-                    end
-                    @shits << str
-                end
-            end
-        end
-        @shits.shift
+        # @shits = []
+        # 4.times do |t|
+        #     @shits << "<br>"
+        #     if lyrics_doc.to_a.first.elements.first(t+1).last.nil?
+        #         @shits << "<br>SORRY...<br><br>The lyric was not uploaded yet.<br>"
+        #     else
+        #         lyrics_doc.to_a.first.elements.first(t+1).last.children.to_a.each do |s| 
+        #             if s.text.length != 0
+        #                 str = s.text
+        #             else
+        #                 str = "<br>" 
+        #             end
+        #             @shits << str
+        #         end
+        #     end
+        # end
+        # @shits.shift
 
-        @lyrics = @shits.join
-
+        # @lyrics = @shits.join
+        # puts "\t\t lyrics       : #{@lyrics}\n\n"
         song = Song.where(song_tjnum: song_tjnum).take
+        puts "\t\t song         : #{song}\n\n"
         if song.nil?
             song = Song.new
         end
@@ -170,20 +177,20 @@ class Crawl2Controller < ApplicationController
         song.artist_name    = @artist_name
         song.writer         = @writer
         song.composer       = @composer
-        song.lyrics         = @lyrics
+        # song.lyrics         = @lyrics
         song.save
 
         return song
 
         # => DEBUGERS//
-         puts "\n\n\tsong_info   : #{song_info}\n\n"
-         puts "\t\t song_tjnum   : #{@song_tjnum}"
-         puts "\t\t song_title   : #{@song_title}"
-         puts "\t\t artist_name  : #{@artist_name}"
-         puts "\t\t writer       : #{@writer}"
-         puts "\t\t composer     : #{@composer}"
-         puts "\t\t lyrics       : #{@lyrics}\n\n"
-         puts "\t\t song         : #{song}\n\n"
+        #  puts "\n\n\tsong_info   : #{song_info}\n\n"
+        #  puts "\t\t song_tjnum   : #{@song_tjnum}"
+        #  puts "\t\t song_title   : #{@song_title}"
+        #  puts "\t\t artist_name  : #{@artist_name}"
+        #  puts "\t\t writer       : #{@writer}"
+        #  puts "\t\t composer     : #{@composer}"
+        #  puts "\t\t lyrics       : #{@lyrics}\n\n"
+        #  puts "\t\t song         : #{song}\n\n"
     end
     
     def index
