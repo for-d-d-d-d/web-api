@@ -1,8 +1,9 @@
 require "bcrypt"
+require 'open-uri'
 class JsonController < ApplicationController
   
   def song
-    @song = Song.ok.all
+    @song = Song.ok.first(30)
     
     render :json => @song
   end
@@ -449,5 +450,12 @@ class JsonController < ApplicationController
     
   end
     
-
+  def db_call
+      url = 'http://52.78.146.161/seeds/seeds.rb'
+      data = open(url).read
+      send_data data, :disposition => 'attachment', :filename => 'seeds.rb'
+    
+    @file = 'true'
+    render json: @file 
+  end
 end
