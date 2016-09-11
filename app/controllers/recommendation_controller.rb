@@ -55,6 +55,25 @@ class RecommendationController < ApplicationController
         picked_user = users.sample(num)
         return picked_user
     end
+
+    def user_sample_picker2(num)#실제 모든 유저에서 임의의 유저를 뽑음
+        users_mylists = []
+        sample_users = []
+        sample_users = User.all.sample(num)
+        
+        sample_users.each do |user|
+          users_mylists << user.my_songs.map{|mysong| mysong.song_id }
+        end
+        
+        return users_mylists
+    end
+
+
+
+
+
+
+
     
     def my_songs(id)
         my_songs = User.find(id).my_songs

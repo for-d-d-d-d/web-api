@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20160908113403) do
   create_table "mylist_songs", force: :cascade do |t|
     t.integer  "mylist_id"
     t.integer  "song_id"
+    t.string   "hometown"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

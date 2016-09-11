@@ -56,6 +56,7 @@ class JsonController < ApplicationController
           @check    = "SUCCESS"
           @id       = user.id
           @mytoken  = user.mytoken
+          
         end
       end
     else
@@ -291,10 +292,11 @@ class JsonController < ApplicationController
   # Output  > id: 추가된 mySong ID (+) message: SUCCESS or ERROR
   def mySong_create
     @check = "ERROR"
-    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil?
+    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil? || params[:hometown].nil?
       ms = MylistSong.new
       ms.mylist_id  = params[:myList_id]
       ms.song_id    = params[:song_id]
+      ms.hometown   = params[:hometown]
       ms.save
       @check = "SUCCESS"
     end
