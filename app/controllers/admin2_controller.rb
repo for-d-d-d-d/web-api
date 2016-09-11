@@ -113,13 +113,28 @@ class Admin2Controller < ApplicationController
         @songs = Song.first(1)
         
         @popular_songs = []
-        popular_songs = DailyTjPopularRank.where.not(song_id: nil).all#.map{|p_song| Song.find(p_song.id)}
-        popular_songs.each do |p_song|
-            if Song.find(p_song.id).song_num == nil
-                if Song.find(p_song.id).jacket == nil
-                    @popular_songs << Song.find(p_song.id)
+        time = Time.zone.now.to_s.first(10)
+        loop do
+            if time.last(5).first(2) == "01" # 1월이 들어오는 경우 연도 하나 줄이고 전달을 12월로 넘김.
+                time = (time.first(4).to_i - 1).to_s + "-12-01"
+            else # 나머지는 걍 1씩 월에서 빼서 전달을 연산함.
+                is_zero = ""
+                if (time.last(5).first(2).to_i - 1).to_s.length == 1 
+                    is_zero = "0" 
+                end
+                time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
+            end
+            popular_songs = DailyTjPopularRank.where(symd: time).where.not(song_id: nil).order(song_rank: :desc).all
+            popular_songs.each do |p_song|
+                if Song.find(p_song.id).song_num == nil # 이미 추가된 노래 빼고 나머지
+                    if Song.find(p_song.id).jacket == nil # 꽤꼬리 표시 노래 빼고 나머지
+                        
+                        @popular_songs << Song.find(p_song.song_id)
+                        
+                    end
                 end
             end
+            break if @popular_songs.count >= 100
         end
         @miss_songs = Song.where(song_num: nil).where(jacket: nil)
         
