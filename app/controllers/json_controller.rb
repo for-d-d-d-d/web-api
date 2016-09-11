@@ -1,8 +1,9 @@
 require "bcrypt"
+require 'open-uri'
 class JsonController < ApplicationController
   
   def song
-    @song = Song.ok.all
+    @song = Song.ok.first(30)
     
     render :json => @song
   end
@@ -38,13 +39,15 @@ class JsonController < ApplicationController
     message = "#{u.password} , #{u.password_confirmation}"
     
     puts message
-    render :json => {result: @check, mytoken: @mytoken, mylist_id: @mylist_id}
+    render :json => {result: @check, mytoken: @mytoken}
   end
   
   def login
-    @check    = "ERROR"
-    @id       = "ERROR"
-    @mytoken  = nil
+    @check      = "ERROR"
+    @id         = "ERROR"
+    @mytoken    = nil
+    @mylist_id  = nil
+    
     me = params[:user]
     #input_password = "nil"
     
@@ -64,7 +67,8 @@ class JsonController < ApplicationController
       @check = "SUCCESS"
       @id = user.id
     end
-    render :json => {result: @check, id: @id, mytoken: @mytoken}
+    @mylist_id = user.mylists.first.id if user.mylists.count != 0
+    render :json => {result: @check, id: @id, mytoken: @mytoken, mylist_id: @mylist_id}
   end
   
   def my_account
@@ -98,6 +102,15 @@ class JsonController < ApplicationController
     render :json => u
   end
   
+  def img_resize
+    # @example = "http://52.78.127.110/json/img_resize/1?size=100" # song.jacket_small
+    @example = "http://web-yhk1038.c9users.io/json/img_resize/1?size=100" # song.jacket_small
+    
+    @jacket_file_real_url = Song.find(params[:id]).jacket
+    @jacket_file_name = @jacket_file_real_url.split('/').last
+    @custom_size = params[:size]
+    render :layout => false
+  end
   
   # 첫 화면
   # > 캐러셀
@@ -453,5 +466,12 @@ class JsonController < ApplicationController
     
   end
     
-
+  def db_call
+      url = 'http://52.78.146.161/seeds/seeds.rb'
+      data = open(url).read
+      send_data data, :disposition => 'attachment', :filename => 'seeds.rb'
+    
+    @file = 'true'
+    render json: @file 
+  end
 end
