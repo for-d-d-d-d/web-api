@@ -124,16 +124,14 @@ class Admin2Controller < ApplicationController
                 end
                 time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
             end
-            popular_songs = DailyTjPopularRank.where(symd: time).where.not(song_id: nil).order(song_rank: :desc).all
+            popular_songs = DailyTjPopularRank.where(symd: time).where.not(song_id: nil).order(song_rank: :asc).all
             popular_songs.each do |p_song|
-                if Song.find(p_song.id).song_num == nil # 이미 추가된 노래 빼고 나머지
-                    if Song.find(p_song.id).jacket == nil # 꽤꼬리 표시 노래 빼고 나머지
-                        
-                        @popular_songs << Song.find(p_song.song_id)
-                        
-                    end
-                end
+                song = Song.find(p_song.song_id)
+                next if song.song_num != nil # 이미 추가된 노래 빼고 나머지
+                next if song.jacket == "Error::ThisMusickCanNotFind"   # 꽤꼬리 표시 노래 빼고 나머지
+                @popular_songs << song
             end
+            @popular_songs = @popular_songs.uniq
             break if @popular_songs.count >= 100
         end
         @miss_songs = Song.where(song_num: nil).where(jacket: nil)
