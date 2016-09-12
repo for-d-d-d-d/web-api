@@ -9,7 +9,7 @@ class JsonController < ApplicationController
   end
   
   def top100
-    time = Time.zone.now.first(10).to_s
+    time = Time.zone.now.to_s.first(10)
     # time = "2014-02-21"
     is_zero = ""
     is_zero = "0"  if (time.last(5).first(2).to_i - 1).to_s.length == 1
