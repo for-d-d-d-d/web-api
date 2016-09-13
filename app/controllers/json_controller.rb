@@ -8,6 +8,20 @@ class JsonController < ApplicationController
     render :json => @song
   end
   
+  def top100
+    time = Time.zone.now.to_s.first(10)
+    # time = "2014-02-21"
+    is_zero = ""
+    is_zero = "0"  if (time.last(5).first(2).to_i - 1).to_s.length == 1
+    timeEnd = time.first(10).first(8) + "01"
+    time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
+    
+    @popular_top100 = DailyTjPopularRank.where(symd: time).where(eymd: timeEnd).order(song_rank: :asc)
+    @song_top100 = @popular_top100.map{|s| Song.find(s.song_id)}
+    
+    render :json => @song_top100
+  end
+  
   def regist
     @check      = "ERROR"
     @mytoken    = nil
