@@ -113,6 +113,7 @@ class Admin2Controller < ApplicationController
         @songs = Song.first(1)
         
         @popular_songs = []
+        @p_songs = []
         time = Time.zone.now.to_s.first(10)
         loop do
             if time.last(5).first(2) == "01" # 1월이 들어오는 경우 연도 하나 줄이고 전달을 12월로 넘김.
@@ -129,6 +130,7 @@ class Admin2Controller < ApplicationController
                 song = Song.find(p_song.song_id)
                 next if song.song_num != nil # 이미 추가된 노래 빼고 나머지
                 next if song.jacket == "Error::ThisMusickCanNotFind"   # 꽤꼬리 표시 노래 빼고 나머지
+                @p_songs << p_song
                 @popular_songs << song
             end
             @popular_songs = @popular_songs.uniq
