@@ -239,7 +239,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% @popular_songs.each do |ranker| %>
+                    <% @popular_songs.first(10).each do |ranker| %>
                     <tr>
                         <form action="/song/song_num_save/<%= ranker.id %>" method="POST">
                             <td><%= DailyTjPopularRank.where(song_id: ranker.id).first.symd.first(7) %> /<%= DailyTjPopularRank.where(song_id: ranker.id).take.song_rank %>위</td>
@@ -306,7 +306,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% @miss_songs.first(30).each do |miss| %>
+                    <% @miss_songs.first(15).each do |miss| %>
                     <tr>
                         <form action="/song/song_num_save/<%= miss.id %>" method="POST">
                             <td><%= miss.id %></td>

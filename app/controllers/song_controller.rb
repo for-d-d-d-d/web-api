@@ -36,16 +36,20 @@ class SongController < ApplicationController
         a.tjnum = params[:tjNum]
     end
     unless params[:giniNum].nil?
-        if user_signed_in?
-            if User.find(current_user.id).email.split('@').last.split('.').first == "4d"
-                user = User.find(current_user.id)
-                user.uid = user.uid.gsub('[','').gsub(']','').split(', ').map{|a| a.to_i}.push(params[:id].to_i).to_s if user.uid != nil
-                user.uid = "[#{params[:id]}]" if user.uid == nil
+        if Song.where(song_num: params[:giniNum]).take == nil
+            if user_signed_in?
+                if User.find(current_user.id).email.split('@').last.split('.').first == "4d"
+                    user = User.find(current_user.id)
+                    user.uid = user.uid.gsub('[','').gsub(']','').split(', ').map{|a| a.to_i}.push(params[:id].to_i).to_s if user.uid != nil
+                    user.uid = "[#{params[:id]}]" if user.uid == nil
+                end
+            end
+            a.song_num = params[:giniNum]
+            a.crawl_song
+            if Song.where(song_num: params[:giniNum]).take != nil
                 user.save
             end
         end
-            a.song_num = params[:giniNum]
-            a.crawl_song
     end
     
     redirect_to :back

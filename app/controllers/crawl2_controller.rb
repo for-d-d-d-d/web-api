@@ -122,8 +122,10 @@ class Crawl2Controller < ApplicationController
     
     def self.parse_and_save_tj2(song_tjnum)
         html_doc    = Nokogiri::HTML(Net::HTTP.get(URI("http://www.tjmedia.co.kr/tjsong/song_search_list.asp?strType=16&strText=#{song_tjnum}&strCond=0&strSize01=100&strSize02=15&strSize03=15&strSize04=15&strSize05=15")))
+        #html_doc     = Nokogiri::HTML(Net::HTTP.get(URI("https://www.tjmedia.co.kr/tjsong/song_search_list.asp?strType=16&strText=2135&strCond=0&searchOrderType=&searchOrderItem=&intPage=2")))
         puts "\n\n\t\thtml_doc.nil? #{html_doc.nil?}\n\n"
-        a_song      = "div#BoardType1//table.board_type1//tbody//tr:last-child"
+        # a_song      = "div#BoardType1//table.board_type1//tbody//tr:last-child"
+        a_song      = "div#BoardType1//table.board_type1//tbody//tr:nth-child(14)"
         # song_info   = html_doc.css(a_song)
 
         aa = html_doc.css(a_song + "//td:nth-child(1)").inner_html.gsub('</span>','').gsub('<span','').gsub('class="txt">','').gsub(' ','')
