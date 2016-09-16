@@ -115,6 +115,7 @@ class Admin2Controller < ApplicationController
         @popular_songs = []
         @p_songs = []
         time = Time.zone.now.to_s.first(10)
+        
         loop do
             if time.last(5).first(2) == "01" # 1월이 들어오는 경우 연도 하나 줄이고 전달을 12월로 넘김.
                 time = (time.first(4).to_i - 1).to_s + "-12-01"
@@ -135,8 +136,10 @@ class Admin2Controller < ApplicationController
             end
             @popular_songs = @popular_songs.uniq
             break if @popular_songs.count >= 100
+            break if time.first(4) < "1950"
         end
         @miss_songs = Song.where(song_num: nil).where(jacket: nil)
+        @popular_songs = @popular_songs.first(20)
         
     end
     
