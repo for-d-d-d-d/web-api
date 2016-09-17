@@ -228,8 +228,8 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Title</th>
-                        <th>Artist</th>
+                        <th>Title(DTPR)</th>
+                        <th>Artist(SONG)</th>
                         <th>노래방 번호</th>
                         <!--<th>노래방번호 입력</th>-->
                         <th>지니뮤직 번호</th>
@@ -241,15 +241,15 @@
                 <tbody>
                     <% @popular_songs.first(10).each do |ranker| %>
                     <tr>
-                        <form action="/song/song_num_save/<%= ranker.id %>" method="POST">
-                            <td><%= DailyTjPopularRank.where(song_id: ranker.id).first.symd.first(7) %> /<%= DailyTjPopularRank.where(song_id: ranker.id).take.song_rank %>위</td>
-                            <td><%= ranker.title %></td>
-                            <th><%= ranker.artist_name %></th>
+                        <form action="/song/song_num_save/<%= ranker[2].id %>" method="POST">
+                            <td><%= ranker[0].symd.first(7) %> /<%= ranker[0].song_rank %>위</td>
+                            <td><%= ranker[0].song_title %></td>
+                            <th><%= ranker[2].artist_name %></th>
 
-                            <% if ranker.song_tjnum.nil? %>
-                            <td><a href="<%= ranker.song_tjnum %>" target="_blank" class="btn bgm-green waves-effect">노래방 찾기!</a></td>
+                            <% if ranker[2].song_tjnum.nil? %>
+                            <td><a href="<%= ranker[2].song_tjnum %>" target="_blank" class="btn bgm-green waves-effect">노래방 찾기!</a></td>
                             <% else %>
-                            <td><%= ranker.song_tjnum %></td>
+                            <td><%= ranker[2].song_tjnum %></td>
                             <% end %>
                             <!--<th style="width:200px;">
                                 <div class="input-group fg-float">
@@ -260,10 +260,10 @@
                                     </div>
                                 </div>
                             </th>-->
-                            <% if ranker.song_num.nil? %>
-                            <td><a href="http://www.genie.co.kr/search/searchMain?query=<%= ranker.title %>%20<%= ranker.artist_name %>&x=0&y=0" target="_blank" class="btn bgm-green waves-effect">노래 찾기!</a></td>
+                            <% if ranker[2].song_num.nil? %>
+                            <td><a href="http://www.genie.co.kr/search/searchMain?query=<%= ranker[2].title %>%20<%= ranker[2].artist_name %>&x=0&y=0" target="_blank" class="btn bgm-green waves-effect">노래 찾기!</a></td>
                             <% else %>
-                            <td><%= ranker.song_num %></td>
+                            <td><%= ranker[2].song_num %></td>
                             <% end %>
                             <th style="width:200px;">
                                 <div class="input-group fg-float">
@@ -275,7 +275,7 @@
                                 </div>
                             </th>
                             <th><button type="submit" class="btn bgm-orange waves-effect">저장</button></th>
-                            <td><a href="/we/admin2/cannotFind_on_ginnie/<%= ranker.id %>" class="btn bgm-red waves-effect">꽤꼬리!</a></td>
+                            <td><a href="/we/admin2/cannotFind_on_ginnie/<%= ranker[2].id %>" class="btn bgm-red waves-effect">꽤꼬리!</a></td>
                         </form>
                     </tr>
                     <% end %>

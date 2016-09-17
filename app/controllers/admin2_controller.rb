@@ -112,34 +112,70 @@ class Admin2Controller < ApplicationController
         end
         @songs = Song.first(1)
         
-        @popular_songs = []
-        @p_songs = []
-        time = Time.zone.now.to_s.first(10)
+        # time = Time.zone.now.to_s.first(10)
         
-        loop do
-            if time.last(5).first(2) == "01" # 1월이 들어오는 경우 연도 하나 줄이고 전달을 12월로 넘김.
-                time = (time.first(4).to_i - 1).to_s + "-12-01"
-            else # 나머지는 걍 1씩 월에서 빼서 전달을 연산함.
-                is_zero = ""
-                if (time.last(5).first(2).to_i - 1).to_s.length == 1 
-                    is_zero = "0" 
+        # loop do
+        #     if time.last(5).first(2) == "01" # 1월이 들어오는 경우 연도 하나 줄이고 전달을 12월로 넘김.
+        #         time = (time.first(4).to_i - 1).to_s + "-12-01"
+        #     else # 나머지는 걍 1씩 월에서 빼서 전달을 연산함.
+        #         is_zero = ""
+        #         if (time.last(5).first(2).to_i - 1).to_s.length == 1 
+        #             is_zero = "0" 
+        #         end
+        #         time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
+        #     end
+        #     popular_songs = DailyTjPopularRank.where(symd: time).where.not(song_id: nil).order(song_rank: :asc).all
+        #     popular_songs.each do |p_song|
+        #         song = Song.find(p_song.song_id)
+        #         next if song.song_num != nil # 이미 추가된 노래 빼고 나머지
+        #         next if song.jacket == "Error::ThisMusickCanNotFind"   # 꽤꼬리 표시 노래 빼고 나머지
+        #         @p_songs << p_song
+        #         @popular_songs << song
+        #     end
+        #     @popular_songs = @popular_songs.uniq
+        #     break if @popular_songs.count >= 100
+        #     break if time.first(4) < "1950"
+        # end
+        
+        @popular_songs = []
+        3.times do |j|
+            year = 2016 - j
+            if year == 2016
+                8.times do |i|
+                    month = 8 - i
+                    DailyTjPopularRank.where(symd: "#{year}-0#{month}-01").each do |song| 
+                        if Song.find(song.song_id).song_num == nil
+                            @popular_songs << [song, "#{year}-0#{month}-01", Song.find(song.song_id) ]
+                        end
+                    end
                 end
-                time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
+            else
+                3.times do |i|
+                    month = 12 - i
+                    DailyTjPopularRank.where(symd: "#{year}-#{month}-01").each do |song| 
+                        if Song.find(song.song_id).song_num == nil
+                            @popular_songs << [song, "#{year}-#{month}-01", Song.find(song.song_id) ]
+                        end
+                    end
+                end
+                9.times do |i|
+                    month = 9 - i
+                    DailyTjPopularRank.where(symd: "#{year}-0#{month}-01").each do |song| 
+                        if Song.find(song.song_id).song_num == nil
+                            @popular_songs << [song, "#{year}-0#{month}-01", Song.find(song.song_id) ]
+                        end
+                    end
+                end
             end
-            popular_songs = DailyTjPopularRank.where(symd: time).where.not(song_id: nil).order(song_rank: :asc).all
-            popular_songs.each do |p_song|
-                song = Song.find(p_song.song_id)
-                next if song.song_num != nil # 이미 추가된 노래 빼고 나머지
-                next if song.jacket == "Error::ThisMusickCanNotFind"   # 꽤꼬리 표시 노래 빼고 나머지
-                @p_songs << p_song
-                @popular_songs << song
-            end
-            @popular_songs = @popular_songs.uniq
-            break if @popular_songs.count >= 100
-            break if time.first(4) < "1950"
         end
         @miss_songs = Song.where(song_num: nil).where(jacket: nil)
-        @popular_songs = @popular_songs.first(20)
+        @popular_songs = @popular_songs.first(15)
+        
+        
+        
+        
+        
+        
         
     end
     
