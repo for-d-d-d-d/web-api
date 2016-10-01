@@ -26,18 +26,19 @@ class HomeController < ApplicationController
     end
 
     def main
-        @songs = Song.tj_ok.all
+        # @songs = Song.tj_ok.all.first(60)
+        @songs = Song.popular_month
         @carousel = @songs.first(17)
 
-        @rankers = DailyTjPopularRank.all
+        # @rankers = DailyTjPopularRank.all
 
-        @ranker = Array.new
-        @rankers.each do |r|
-            aa = Song.where(song_tjnum: r.song_num).take
-            if aa != nil
-                @ranker << aa
-            end
-        end
+        # @ranker = Array.new
+        # @rankers.each do |r|
+        #     aa = Song.where(song_tjnum: r.song_num).take
+        #     if aa != nil
+        #         @ranker << aa
+        #     end
+        # end
     end
     
     def self.search3(query)
@@ -54,7 +55,7 @@ class HomeController < ApplicationController
             @song_searched_By_title = Array.new
             @song_searched_By_lyrics = Array.new
 
-            Song.ok.all.each do |s|
+            Song.tj_ok.all.each do |s|
                 splited.each do |q|
                     @song_searched_By_artist << s if s.artist.name.include?(q)
                     @song_searched_By_title << s if s.title.include?(q)
@@ -82,7 +83,7 @@ class HomeController < ApplicationController
             splited = query.split
             @song_searched_By_artist = Array.new
 
-            Song.ok.all.each do |s|
+            Song.tj_ok.all.each do |s|
                 splited.each do |q|
                     @song_searched_By_artist << s if s.artist.name.include?(q)
                 end
@@ -106,7 +107,7 @@ class HomeController < ApplicationController
             @song_searched_By_title = Array.new
            
 
-            Song.ok.all.each do |s|
+            Song.tj_ok.all.each do |s|
                 splited.each do |q|
                     @song_searched_By_title << s if s.title.include?(q)
                 end
@@ -130,7 +131,7 @@ class HomeController < ApplicationController
             @song_searched_By_lyrics = Array.new
            
 
-            Song.ok.all.each do |s|
+            Song.tj_ok.all.each do |s|
                 splited.each do |q|
                     @song_searched_By_lyrics << s if s.lyrics.include?(q)
                 end

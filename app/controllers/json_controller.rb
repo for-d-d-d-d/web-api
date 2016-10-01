@@ -9,16 +9,7 @@ class JsonController < ApplicationController
   end
   
   def top100
-    time = Time.zone.now.to_s.first(10)
-    # time = "2014-02-21"
-    is_zero = ""
-    is_zero = "0"  if (time.last(5).first(2).to_i - 1).to_s.length == 1
-    timeEnd = time.first(10).first(8) + "01"
-    time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
-    
-    @popular_top100 = DailyTjPopularRank.where(symd: time).where(eymd: timeEnd).order(song_rank: :asc)
-    @song_top100 = @popular_top100.map{|s| Song.find(s.song_id)}
-    
+    @song_top100 = Song.popular_month 
     render :json => @song_top100
   end
   
@@ -48,12 +39,13 @@ class JsonController < ApplicationController
         @check      = "SUCCESS"
         @mytoken    = u.mytoken
         @mylist_id  = uml.id
+        @my_id      = u.id 
       end
     end
     message = "#{u.password} , #{u.password_confirmation}"
     
     puts message
-    render :json => {result: @check, mytoken: @mytoken}
+    render :json => {result: @check, mytoken: @mytoken, myid: @my_id, mylist_id: @mylist_id}
   end
   
   def login
@@ -386,9 +378,7 @@ class JsonController < ApplicationController
   # Input   > id: 회원 id
   # Output  > 추천 Song Data
   def recom
-
-    recomC = RecommendationController.new
-    sing_it = recomC.recommend(params[:id])
+    sing_it = RecommendationController.recommend(params[:id])
     render json: sing_it
   end
   

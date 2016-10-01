@@ -12,7 +12,7 @@
         <%
             i = 0
             @song = Song.where.not(lowkey: nil).all
-            @carousel = @song.first(17)
+           # @carousel = @song.first(17)
         %>
         <% @carousel.each do |song| %>
         <% album = Album.find(song.album_id) %>

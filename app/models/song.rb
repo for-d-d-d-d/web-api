@@ -14,7 +14,12 @@ class Song < ActiveRecord::Base
     end
     
     def self.tj_ok
-        return self.where.not(song_tjnum: nil).where.not(song_tjnum: 0).where.not(jacket: "http:#")
+        return self.where.not(song_tjnum: nil).where.not(song_tjnum: 0).where.not(jacket: "http:#").where.not(jacket: "Error::ThisMusickCanNotFind")
+    end
+
+    def self.popular_month
+        result = DailyTjPopularRank.month.all.map{|song| self.find(song.song_id)}
+        return result
     end
 
     def self.empty_tj

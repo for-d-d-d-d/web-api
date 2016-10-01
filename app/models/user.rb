@@ -16,9 +16,9 @@ class User < ActiveRecord::Base
                 sa << s
             end
         end
-        if sa.count == 0
-            sa = Song.ok.first(12)
-        end
+        # if sa.count == 0
+        #     sa = Song.ok.first(12)
+        # end
         sa
     end
 
