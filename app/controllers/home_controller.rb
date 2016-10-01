@@ -211,6 +211,8 @@ class HomeController < ApplicationController
         a = videos.where(q: "[MV] 시간을 달려서").first.id
         render text: a
     end
+
+    
     
     
 end

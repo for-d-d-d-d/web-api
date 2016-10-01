@@ -55,6 +55,25 @@ class RecommendationController < ApplicationController
         picked_user = users.sample(num)
         return picked_user
     end
+
+    def user_sample_picker2(num)#실제 모든 유저에서 임의의 유저를 뽑음
+        users_mylists = []
+        sample_users = []
+        sample_users = User.all.sample(num)
+        
+        sample_users.each do |user|
+          users_mylists << user.my_songs.map{|mysong| mysong.song_id }
+        end
+        
+        return users_mylists
+    end
+
+
+
+
+
+
+
     
     def self.my_songs(id)
         my_songs = User.find(id).my_songs
@@ -176,6 +195,7 @@ class RecommendationController < ApplicationController
         sing_it = self.from_id_to_songs(sing_it)
         #puts "\n\n\n(result) lose_count :=>\n #{lose_count}\n"
         puts "\n(result) result_count :=>\n #{sing_it.count}\n"
+        
         return sing_it
     end
 

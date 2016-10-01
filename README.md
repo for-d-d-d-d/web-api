@@ -298,7 +298,7 @@ authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
   - to GET method example
 
 
-    http://api.goraebang.com/json/mySong_create?id=회원ID&myList_id=소속될myListID&song_id=추가할songID&authNum=인증코드'
+    http://api.goraebang.com/json/mySong_create?id=회원ID&myList_id=소속될myListID&song_id=추가할songID&hometown=출처&authNum=인증코드'
 
 
 ### 매개변수(Parameters)
@@ -308,6 +308,7 @@ key | value | desc
 id | 사용자 레코드 id값 |  필수
 myList_id | 소속될myListID | 필수
 song_id | 추가할songID | 필수
+hometown | 출처(어느 페이지를 통해 마이스트에 들어왔는지) | 필수
 authNum | 인증코드 | 필수, <br> 승인된 접속자를 식별
 
 

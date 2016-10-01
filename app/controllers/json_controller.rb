@@ -65,6 +65,7 @@ class JsonController < ApplicationController
           @check    = "SUCCESS"
           @id       = user.id
           @mytoken  = user.mytoken
+          
         end
       end
     else
@@ -310,10 +311,11 @@ class JsonController < ApplicationController
   # Output  > id: 추가된 mySong ID (+) message: SUCCESS or ERROR
   def mySong_create
     @check = "ERROR"
-    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil?
+    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil? || params[:hometown].nil?
       ms = MylistSong.new
       ms.mylist_id  = params[:myList_id]
       ms.song_id    = params[:song_id]
+      ms.hometown   = params[:hometown]
       ms.save
       @check = "SUCCESS"
     end
@@ -379,9 +381,12 @@ class JsonController < ApplicationController
   # Output  > 추천 Song Data
   def recom
     sing_it = RecommendationController.recommend(params[:id])
+    count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
+    count.count_recomm +=1
+    count.save
     render json: sing_it
   end
-  
+    
 
   def blacklist_song_create
     @check = "ERROR"

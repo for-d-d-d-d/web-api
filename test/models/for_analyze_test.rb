@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PercentageControllerTest < ActionController::TestCase
+class ForAnalyzeTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

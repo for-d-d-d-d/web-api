@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160808080349) do
+ActiveRecord::Schema.define(version: 20160908113403) do
 
   create_table "administers", force: :cascade do |t|
     t.string   "username"
@@ -71,6 +71,12 @@ ActiveRecord::Schema.define(version: 20160808080349) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "for_analyzes", force: :cascade do |t|
+    t.integer  "count_recomm"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   create_table "interval_keys", force: :cascade do |t|
     t.string   "key"
     t.integer  "number"
@@ -82,6 +88,7 @@ ActiveRecord::Schema.define(version: 20160808080349) do
   create_table "mylist_songs", force: :cascade do |t|
     t.integer  "mylist_id"
     t.integer  "song_id"
+    t.string   "hometown"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
