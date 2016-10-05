@@ -1,46 +1,155 @@
 require "bcrypt"
 require 'open-uri'
 class JsonController < ApplicationController
-  
+
+  SERVER_URL = "http://52.78.160.188"
+
+  def main_banner
+    size = 500
+    unless params[:size].nil?
+      size = params[:size]
+    end
+    main_banner = "http://fourd.dothome.co.kr/wp-content/uploads/2016/10/service_landing1-e1475689497196.png"
+    # img_url = SERVER_URL + "/json/img_resize?size=#{size}&url=#{origin_img_link}"
+    render json: {"image": main_banner, "title": "당신이 아직 불러보지 못한 좋은 노래가 많아요!", "url": SERVER_URL + "/json/recom/1"}
+  end
+
   def song
-    @song = Song.ok.first(30)
     
-    render :json => @song
+    page = 1
+    unless params[:page].nil?
+      page = params[:page].to_i
+      page = 1 if page == 0
+    end
+    @song = Song.tj_ok.first(30 * page).last(30)
+    
+    #
+    # [direct return empty json array, when the page is unexist]
+    if page != 1 && @song.first.id == Song.tj_ok.first(30 * (page - 1)).last(30).first.id
+      return render json: [{}]
+    end
+    
+    #
+    # [ready 'id' array of songs for input 'detail_song()' function]
+    ids = @song.map{|song| song.id}.to_s
+    unless params[:ids].nil?
+      ids = params[:ids].to_s.delete('[').delete(']').delete(' ')
+    end
+    
+    #
+    # [ready 'column'. It is attributes that is permitted to contain in returned json result.]
+    # [when the 'column' is nil or empty, then 'column' defines all of attributes.)]
+    column = Song.attribute_names
+    unless params[:column].nil? || params[:column].to_s.length == 0
+       column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
+    end
+    exclude = Song.attribute_names - column
+
+    #
+    # [ready 'mylist_count'. In this block, it recognizes wheter the client wants to recieve the data of mylist_count or not.]
+    mylist_count = false
+    if params[:mylist_count] != nil && params[:mylist_count] == "true"
+        mylist_count = true
+    end
+
+    songs = detail_songs(ids, exclude, params[:mytoken], mylist_count)
+
+    render :json => songs
   end
   
   def top100
-    @song_top100 = Song.popular_month 
-    render :json => @song_top100
+    @song_top100 = Song.popular_month
+    # result = @song_top100
+    # result = Song.tj_ok.first(30)
+
+    page = 1
+    unless params[:page].nil?
+       page = params[:page].to_i
+       page = 1 if page == 0
+       if page > 4
+         return render json: [{}]
+       end
+    end
+    @song = Song.tj_ok.first(25 * page).last(25)
+
+    column = Song.attribute_names
+    unless params[:column].nil? || params[:column].to_s.length == 0
+      column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
+    end
+
+    ids = @song.map{|song| song.id}.to_s
+    unless params[:ids].nil?
+      ids = params[:ids].to_s.delete('[').delete(']').delete(' ')
+    end
+
+    exclude = Song.attribute_names - column
+    result = detail_songs(ids, exclude, params[:mytoken])
+
+    render :json => result
   end
   
+  def check_email(email)
+    @email_format = Regexp.new(/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/)
+    @email_format.match(email.to_s.strip)    
+  end
+
   def regist
     @check      = "ERROR"
+    @status     = "400 BAD REQUEST"
+    @massage    = nil
     @mytoken    = nil
     @mylist_id  = nil
     
-    user                      = params[:user]
-    u = User.new
-    u.email                   = user[:email]
-    u.gender                  = user[:gender]
-    u.name                    = user[:name]
-    u.password                = user[:password]
-    u.password_confirmation   = user[:password_confirmation]
+    unless params[:user].nil?
+      user                      = params[:user]
+    else
+      @massage = "회원 정보를 입력해주세요"
+      return render json: {result: @check, status: @status, massage: @massage}
+    end
     
-    if User.where(email: user[:email]).count == 0
-      if user[:password] == user[:password_confirmation]
-        u.mytoken = SecureRandom.hex(16)
-        u.save
-        
-        uml = Mylist.new
-        uml.user_id = u.id
-        uml.title   = "#{u.name}님의 첫 번째 리스트"
-        uml.save
-        
-        @check      = "SUCCESS"
-        @mytoken    = u.mytoken
-        @mylist_id  = uml.id
-        @my_id      = u.id 
+    u = User.new
+    req_user_info = ["email", "name", "gender", "password", "password_confirmation"]
+    req_user_info.each do |attribute|
+      x = nil
+      eval("x = user[:#{attribute}]")
+      if x.nil?
+        @massage = "#{attribute}을(를) 입력해주세요"
+        return render json: {result: @check, status: @status, massage: @massage}
+      else
+        eval( "u.#{attribute} = user[:#{attribute}]")
       end
+    end
+    if check_email(u.email) != nil                             # 1.이메일 형식 체크
+      if User.where(email: user[:email]).count == 0            # 2.기존 회원인지 여부 체크
+        if user[:password].to_s.length >= 6                    # 3.비번 자릿수 체크
+          if user[:password] == user[:password_confirmation]   # 4.비번 == 비번확인 체크
+            u.mytoken = SecureRandom.hex(16)
+            u.save
+            
+            uml = Mylist.new
+            uml.user_id = u.id
+            uml.title   = "#{u.name}님의 첫 번째 리스트"
+            uml.save
+            
+            @check      = "SUCCESS"
+            @mytoken    = u.mytoken
+            @mylist_id  = uml.id
+            @my_id      = u.id 
+          else
+            @massage = "Incorrect Confirmation! Please Check your context, password confirmation"
+            return render json: {result: @check, status: @status, massage: @massage}
+          end
+        else # 3.비번 자릿수가 맞지 않을 때
+          @massage = "Oops! Too Short Password :( .. (at least 6 characters)"
+          return render json: {result: @check, status: @status, massage: @massage}
+        end
+      else # 2.기존 회원 중에 같은 이메일이 존재할 때
+        @massage = "Oops! This Email is Already Exist! (#{user[:email]})"
+        return render json: {result: @check, status: @status, massage: @massage}
+      end
+    else # 1.이메일 형식에 맞지 않을 때
+      @massage = "Oops! Please Check your Email Format! (ex. blah@blah.blah)"
+      return render json: {result: @check, status: @status, massage: @massage}
     end
     message = "#{u.password} , #{u.password_confirmation}"
     
@@ -50,14 +159,32 @@ class JsonController < ApplicationController
   
   def login
     @check      = "ERROR"
+    @status     = "400 BAD REQUEST"
+    @massage    = nil
+
     @id         = "ERROR"
     @mytoken    = nil
     @mylist_id  = nil
     
-    me = params[:user]
-    #input_password = "nil"
+    unless params[:user].nil?
+      me = params[:user]
+    else                                        # 차단1. 회원정보가 전혀 입력되지 않음
+      @massage = "회원 정보를 입력해주세요"
+      return render json: {result: @check, status: @status, massage: @massage}
+    end
     
-    if me[:mytoken].nil?
+    if me[:mytoken].nil?    # 로그인시 토큰이 없다(== 토큰만료. 자동로그인 불가. >> 재로그인)
+      if me[:email].nil?                        # 차단2. user[email]이 입력되지 않음
+        @massage = "email을 입력해주세요"
+        return render json: {result: @check, status: @status, massage: @massage}
+      elsif check_email(me[:email]) == nil      # 차단3. email이 형식에 맞지 않음
+        @massage = "Oops! Please Check your Email Format! (ex. blah@blah.blah)"
+        return render json: {result: @check, status: @status, massage: @massage}
+      elsif me[:password].nil?                  # 차단4. password가 입력되지 않음
+        @massage = "password을(를) 입력해주세요"
+        return render json: {result: @check, status: @status, massage: @massage}
+      end
+      
       unless User.find_by_email(me[:email]).nil?
         user = User.find_by_email(me[:email])
         my_account_password = BCrypt::Password.new(user.encrypted_password)
@@ -65,28 +192,59 @@ class JsonController < ApplicationController
           @check    = "SUCCESS"
           @id       = user.id
           @mytoken  = user.mytoken
-          
+        else                                    # 차단5. password가 맞지 않음
+          @massage = "Incorrect Password! Please Check your password!"
+          return render json: {result: @check, status: @status, massage: @massage}
         end
+      else                                      # 차단6. 가입되지 않은 email
+        @massage = "Oops! Please Check your Email! It's not registed account email :("
+        return render json: {result: @check, status: @status, massage: @massage}
       end
-    else
+    else                    # 토큰 있는 로그인(== 자동로그인.)
       user = User.where(mytoken: me[:mytoken]).take
+      if user.nil?                              # 차단7. 저장되지 않은 토큰으로 로그인 시도.
+        @massage = "잘못된 로그인 시도입니다. 다시 로그인해주세요"
+        return render json: {result: @check, status: @status, massage: @massage}
+      end
       @check = "SUCCESS"
       @id = user.id
     end
     @mylist_id = user.mylists.first.id if user.mylists.count != 0
-    render :json => {result: @check, id: @id, mytoken: @mytoken, mylist_id: @mylist_id}
+    render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
   end
   
   def my_account
     
-    user = {result: "ERROR", massage: "이런~ 가입부터 해달라고래!", id: nil, name: nil, gender: nil, email: nil}
-    if User.where(id: params[:id]).count != 0
-      me = User.find(params[:id])
-      user = {result: "SUCCESS", id: me.id, name: me.name, gender: me.gender, email: me.email}
-    else
-      if params[:id] < User.last.id
-        user = {result: "ERROR", massage: "다시 가입 해달라고래!", id: nil, name: nil, gender: nil, email: nil}
+    user = {result: "ERROR", massage: "이런~ 가입부터 해달라고래!", name: nil, gender: nil, email: nil}
+    me = User.where(mytoken: params[:mytoken]).take
+    if me != nil
+      gender = "없음"
+      if me.gender == 1
+        gender = "남성"
+      elsif me.gender == 2
+        gender = "여성"
+      elsif me.gender == 3
+        gender = "무관"
       end
+      
+      # [no-name_profile-img : 나중에 S3로 연동해야 함]
+      size = 150
+      # origin_img_link = "http://fourd.dothome.co.kr/wp-content/uploads/2016/10/logover3-300x300.png"
+      # img_url = SERVER_URL + "/json/img_resize?size=#{size}&url=#{origin_img_link}"
+      img_origin_url = "http://fourd.dothome.co.kr/wp-content/uploads/2016/10/logover3.png"
+      img_400_url = "http://fourd.dothome.co.kr/wp-content/uploads/2016/10/logover3-1-e1475689170577.png"
+      
+      user = {
+                 result: "SUCCESS", 
+                 massage: "#{me.name}님의 회원정보", 
+                 name: me.name, 
+                 gender: gender, 
+                 email: me.email, 
+                 profile_img_origin: img_origin_url, 
+                 profile_img_400: img_400_url
+             }
+    else
+      user = {result: "ERROR", massage: "다시 가입 해달라고래!", name: nil, gender: nil, email: nil}
     end
     
     render :json => user
@@ -110,9 +268,17 @@ class JsonController < ApplicationController
   
   def img_resize
     # @example = "http://52.78.127.110/json/img_resize/1?size=100" # song.jacket_small
-    @example = "http://web-yhk1038.c9users.io/json/img_resize/1?size=100" # song.jacket_small
-    
-    @jacket_file_real_url = Song.find(params[:id]).jacket
+    # @example = "http://web-yhk1038.c9users.io/json/img_resize/1?size=100" # song.jacket_small
+
+    unless params[:id].nil?
+      url = Song.find(params[:id]).jacket
+    end
+
+    unless params[:url].nil?
+      url = params[:url]
+    end
+
+    @jacket_file_real_url = url
     @jacket_file_name = @jacket_file_real_url.split('/').last
     @custom_size = params[:size]
     render :layout => false
@@ -251,13 +417,18 @@ class JsonController < ApplicationController
   def myList_create
     @check = "ERROR"
     unless params[:id].nil? || params[:title].nil?
+      if User.find(params[:id]).nil?
+        return render json: {"check": @check, "id": "NULL", "status": "400 BAD REQUEST", "message": "사용자를 찾을 수 없습니다"}
+      end
       ml = Mylist.new
       ml.user_id  = params[:id]
       ml.title    = params[:title]
       ml.save
       @check = "SUCCESS"
+    else
+      return render json: {"check": @check, "id": "NULL", "status": "400 BAD REQUEST", "message":     "사용자를 찾을 수 없습니다"}
     end
-    result = {"id": ml.id, "message": @check}
+    result = {"id": ml.id, "check": @check}
     render json: result
   end
   
@@ -311,11 +482,11 @@ class JsonController < ApplicationController
   # Output  > id: 추가된 mySong ID (+) message: SUCCESS or ERROR
   def mySong_create
     @check = "ERROR"
-    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil? || params[:hometown].nil?
+    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil? # || params[:hometown].nil?
       ms = MylistSong.new
       ms.mylist_id  = params[:myList_id]
       ms.song_id    = params[:song_id]
-      ms.hometown   = params[:hometown]
+      #ms.hometown   = params[:hometown]
       ms.save
       @check = "SUCCESS"
     end
@@ -478,5 +649,89 @@ class JsonController < ApplicationController
     
     @file = 'true'
     render json: @file 
+  end
+
+  # fn() INFO
+  # description : 문자열 형태로 전달되는 각종 ID값들의 배열을 배열로 변환하는 함수.
+  # 1. id값으로 매핑된 문자열만 입력값으로 허용.
+  # 2. 매핑된 문자열을 배열 형태로 변환.
+  # 3. id값은 반드시 임의의 숫자형태일 것.
+  # 4. ex) 가능한 입력형식
+  #             "[1,2,3]" / "1,2,3" / "[1, 2, 3]"
+  #        불가능한 입력형식
+  #             "['1','2','3']" / '["1","2","3"]' / "[\"1\",\"2\",\"3\"]"
+  # 5. 권장사항
+  #     - int형 element들을 담은 배열을 그대로 문자열로 변환한 형태가 최적의 입력형태.
+  def mapped_string_translater_to_array(string)
+        str0 = string.delete(' ')
+        arr0 = str0.split('')
+        arr0.shift      if arr0.first == '['
+        arr0.pop        if arr0.last  == ']'
+        str1 = arr0.join
+        arr1 = str1.split(',')
+        arr2 = arr1.map{|el| el.to_i}   # 임시 제외 => .map{|el| nil if el == 0}.compact
+        result = arr2
+        
+        return result
+  end
+
+  # fn() INFO
+  # description : 노래 레코드에 대한 상세정보를 선택적으로 반환하는 함수. 
+  # why         : 매번 레코드 정보를 전부 리턴하는 낭비를 방지
+  # INPUT       : ids : SongTable의 주key인 id값들을 요소로하는 배열을 문자열 형태로 입력. 
+  #               exclude : 레코드 속성중에 제거하고자 하는 불필요한 속성들. Array형태로 입력. 
+  # - case      : ids : "[1,2,3]" / "1,2,3" / "[1, 2, 3]" 세가지 형태가 가능하며, 첫 번째 형태를 권장.
+  #               exclude : {
+  #                     "없을때" : (arrayType) [],
+  #                     "1개 이상 존재" : (arrayType) ["", "", ... , ""]
+  #                     }
+  # OUTPUT      : fn() returns records with hashType for the SongTable.
+  def detail_songs(ids, exclude, mytoken, mylist_count)
+        song_ids = mapped_string_translater_to_array(ids)
+        songs = song_ids.map{|song_id| Song.find(song_id)}
+        
+        default = ["created_at","updated_at","youtube","lowkey","highkey"]
+        will_exclude = default + exclude unless exclude == "nil" || exclude == nil || exclude.class != Array
+        will_exclude = will_exclude.uniq
+        
+        attributes = []
+        Song.attribute_names.each do |an|
+            attributes << an unless will_exclude.include?(an)
+        end
+
+        result = []
+        songs.each do |song|
+            arr = []
+            attributes.each do |att|
+                eval("arr << [att, song.#{att}]")
+            end
+            
+            release = song.album.released_date.split('')
+            release.pop
+            release = release.join
+            arr << ["release", release]
+
+            is_my_favorite = false
+            unless mytoken.nil?
+                me = User.where(mytoken: mytoken).take
+                mySongs = me.my_songs.map{|ms| ms.id}
+                is_my_favorite = true if mySongs.include?(song.id)
+            end
+            arr << ["is_my_favorite", is_my_favorite]
+            
+            if mylist_count == true
+                ml_count = MylistSong.where(song_id: song.id).map{|ms| ms.mylist.user}.uniq.count
+                arr << ["mylist_count", ml_count]
+            end
+            result << [song.id, arr.to_h]
+        end
+        result = result.to_h.to_a.each{|s| s.shift}.flatten
+
+        return result
+  end
+
+  def temp(arr)
+        #arr.each do 
+        return arr
   end
 end
