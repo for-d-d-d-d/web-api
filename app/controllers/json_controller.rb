@@ -11,7 +11,11 @@ class JsonController < ApplicationController
     end
     main_banner = "http://fourd.dothome.co.kr/wp-content/uploads/2016/10/service_landing1-e1475689497196.png"
     # img_url = SERVER_URL + "/json/img_resize?size=#{size}&url=#{origin_img_link}"
-    render json: {"image": main_banner, "title": "당신이 아직 불러보지 못한 좋은 노래가 많아요!", "url": SERVER_URL + "/json/recom/1"}
+    result = []
+    7.times do
+        result << {"image": main_banner, "title": "당신이 아직 불러보지 못한 좋은 노래가 많아요!", "url": SERVER_URL + "/json/recom/1"}
+    end
+    render json: result
   end
 
   def song
@@ -310,59 +314,65 @@ class JsonController < ApplicationController
   # 첫 화면
   # > 조건검색
   def search_by_filter
-    searched_by_since   = Song.ok.all
-    searched_by_gender  = Song.ok.all
-    searched_by_genre   = Song.ok.all
-    searched_by_nation  = Song.ok.all
+    whole_song = Song.tj_ok.map{|song| song.id}.uniq
+    mytoken = params[:mytoken] 
+    searched_by_since   = whole_song
+    searched_by_gender  = whole_song
+    searched_by_genre   = whole_song
+    searched_by_nation  = whole_song
     
     unless params[:since].nil? || params[:since].length == 0
       searched_by_since = []
-      since = params[:since]
+      since = params[:since]    # since = 2000 ~ 2005
       since_start = since.first(4).to_i
       since_end   = since.last(4).to_i
       
       since_start.upto(since_end) do |year|
-        puts year
-        Song.ok.all.each do |song|
-          if song.album.released_date.to_s.first(4).to_i == year
-            searched_by_since << song
-            puts "현재 since 개수 : #{searched_by_since.count}\n"
-          end
+        Album.where("released_date LIKE ?", "%#{year}%").all.each do |album|
+          searched_by_since = album.songs.tj_ok + searched_by_since
         end
       end
+      searched_by_since = searched_by_since.map{|song| song.id}.uniq
     end
     
-    unless params[:gender].nil? || params[:gender].length == 0
-      searched_by_gender = []
+    unless params[:gender].nil? || params[:gender].length == 0      
       gender = params[:gender]
       
-      #searched_by_since.each do ||
+      if gender == "남성"
+        searched_by_gender = []
+        gender = 1
+      elsif gender == "여성"
+        searched_by_gender = []
+        gender = 2
+      elsif gender == "혼성"
+        searched_by_gender = []
+        gender = 4
+      end
+
+      artists = []
+      if gender.class == Fixnum
+        artists = Singer.where("gender LIKE ?", gender) + Team.where("gender LIKE ?", gender)
+        searched_by_gender = artists.map{|artist| artist.songs.tj_ok}
+        searched_by_gender = searched_by_gender.map{|song| song.id}.uniq
+      end
     end
     
     unless params[:genre].nil? || params[:genre].length == 0
       searched_by_genre = []
       genre = params[:genre]
-      puts "장르는 #{genre}"
-      searched_by_since.each do |song|
-        puts "반복 잘 되니 #{song.genre1}, #{song.genre2}, #{song.album.genre1}, #{song.album.genre2}"
-        if song.genre1 == genre || song.genre2 == genre || song.album.genre1 == genre || song.album.genre2 == genre
-          searched_by_genre << song
-          puts "현재 genre 개수 : #{searched_by_genre.count}" 
-        end
-      end
-      
+
+      searched_by_genre = Song.tj_ok.where("genre1 LIKE ?", "%#{genre}%") + Song.tj_ok.where("genre2 LIKE ?", "%#{genre}%")
+      searched_by_genre = searched_by_genre.map{|song| song.id}
       searched_by_genre = searched_by_genre.uniq
     end
     
     unless params[:nation].nil? || params[:nation].length == 0
-      #searched_by_genre
+      searched_by_nation = searched_by_nation
     end
     
     result = []
-    # result << searched_by_since
-    # result << searched_by_gender
-    result << searched_by_genre
-    # result << searched_by_nation
+    result_ids = searched_by_since & searched_by_gender & searched_by_genre & searched_by_nation
+    result = detail_songs(result_ids, [], mytoken, true)
     render :json => result  
   end
   
@@ -687,6 +697,7 @@ class JsonController < ApplicationController
   #                     }
   # OUTPUT      : fn() returns records with hashType for the SongTable.
   def detail_songs(ids, exclude, mytoken, mylist_count)
+        ids = ids.to_s if ids.class != String
         song_ids = mapped_string_translater_to_array(ids)
         songs = song_ids.map{|song_id| Song.find(song_id)}
         
