@@ -87,7 +87,7 @@ class JsonController < ApplicationController
     end
 
     exclude = Song.attribute_names - column
-    result = detail_songs(ids, exclude, params[:mytoken], false)
+    result = detail_songs(ids, exclude, params[:mytoken], true)
 
     render :json => result
   end
@@ -123,6 +123,8 @@ class JsonController < ApplicationController
         return render json: {result: @check, status: @status, massage: @massage}
       else
         eval( "u.#{attribute} = user[:#{attribute}]")
+        u.name = ""
+        u.gender = 0
       end
     end
     if check_email(u.email) != nil                             # 1.이메일 형식 체크
@@ -410,7 +412,7 @@ class JsonController < ApplicationController
   end
   
   # 검색창(검색결과)
-  def search
+  def search_nomal
     artist = []
     title  = []
     lyrics = []
@@ -420,39 +422,34 @@ class JsonController < ApplicationController
     render json: result
   end
 
-  def search_by_artist
-    artist = []
-    
-    artist = HomeController.search3_by_artist(params[:query])
+  def search_by
+    return render json: {state: "400 BAD REQUEST", message: "you need to send a parameter : 'mytoken'"} if params[:mytoken].nil?
+    mytoken = params[:mytoken]
 
-    result = artist
+    return render json: {state: "400 BAD REQUEST", message: "you need to send a parameter : 'search_by' ('artist' or 'title' or 'lyrics')"} if params[:search_by].nil? || params[:search_by] != "artist" && params[:search_by] != "title" && params[:search_by] != "lyrics"
+    search_by = params[:search_by]
+    
+    return render json: {state: "400 BAD REQUEST", message: "you need to send a parameter : 'query'", toast: "검색어를 입력해주세요"} if params[:query].nil?
+
+    if search_by == "artist"
+        songs = HomeController.search3_by_artist(params[:query])
+    elsif search_by == "title"
+        songs = HomeController.search3_by_title(params[:query])
+    elsif search_by == "lyrics"
+        songs = HomeController.search3_by_lyrics(params[:query])
+    end
+
+    if songs.count == 0
+        return render json: songs
+    else
+        ids = songs.map{|song| song.id}
+    end
+
+    result = detail_songs(ids, [], mytoken, true)
     render json: result
 
   end
 
-  def search_by_title
-    title = []
-    
-    title = HomeController.search3_by_title(params[:query])
-
-    result = title
-    render json: result
-
-  end
-
-  def search_by_lyrics
-    lyrics = []
-    
-    lyrics = HomeController.search3_by_lyrics(params[:query])
-
-    result = lyrics
-    render json: result
-
-  end
-  
-    
-  
-  
   # myList CRUD > CREATE
   # method : POST
   # Input   > id: 회원 id (+) title: myList 타이틀
