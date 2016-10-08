@@ -87,16 +87,18 @@ class JsonController < ApplicationController
     end
 
     exclude = Song.attribute_names - column
-    result = detail_songs(ids, exclude, params[:mytoken])
+    result = detail_songs(ids, exclude, params[:mytoken], false)
 
     render :json => result
   end
   
+  # function
   def check_email(email)
     @email_format = Regexp.new(/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/)
     @email_format.match(email.to_s.strip)    
   end
 
+  # USER : CREATE
   def regist
     @check      = "ERROR"
     @status     = "400 BAD REQUEST"
@@ -161,6 +163,34 @@ class JsonController < ApplicationController
     render :json => {result: @check, mytoken: @mytoken, myid: @my_id, mylist_id: @mylist_id}
   end
   
+  # USER   : ENTER account with minimal info
+  # method : POST
+  # INPUT       > parameters : {
+  #                       user : {
+  #                           mytoken         : (마이토큰) / 토큰이 있는 경우, 자동로그인 pass
+  #                             or 
+  #                           email           : (이메일로그인) / 토큰이 없는경우, 수동 로그인
+  #                           password        : (비밀번호)
+  #                       }
+  #               }
+  # OUTPUT      > 성공시 {
+  #                 result      : (성공여부),
+  #                 mytoken     : (내 토큰정보),
+  #                 id          : (내 회원 고유번호),
+  #                 mylist_id   : (마이리스트 고유번호)
+  #               },
+  #               실패시 {
+  #                 result      : (성공여부),
+  #                 status      : (에러상태),
+  #                 massage     : (에러사유)
+  #               }
+  # ERROR case
+  #     1. input parameter가 없을 때
+  #     2. 수동 로그인 > 이메일이 없을 때
+  #     3. 수동 로그인 > 이메일이 형식에 맞지않을 때
+  #     4. 수동 로그인 > 비밀번호가 입력되지 않았을 때
+  #     5. 수동 로그인 > 비밀번호가 올바르지 않을 때
+  #     6. 자동 로그인 > 존재하지 않는 토큰이 입력되었을 때
   def login
     @check      = "ERROR"
     @status     = "400 BAD REQUEST"
@@ -217,10 +247,29 @@ class JsonController < ApplicationController
     render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
   end
   
+  # USER   : READ accout more detail
+  # method : POST
+  # INPUT   > parameters : {
+  #             mytoken             : (회원 토큰) 
+  #                         or
+  #             id                  : (회원 id)
+  #           }
+  # OUTPUT  > {
+  #             result              : (성공여부),
+  #             message             : (참고 메세지),
+  #             name                : (회원이름),
+  #             gender              : (성별),
+  #             email               : (가입 이메일),
+  #             profile_img_origin  : (프사 원본주소),
+  #             profile_img_400     : (프사 썸네일주소)
+  #           }
   def my_account
-    
-    user = {result: "ERROR", massage: "이런~ 가입부터 해달라고래!", name: nil, gender: nil, email: nil}
-    me = User.where(mytoken: params[:mytoken]).take
+    user = {result: "ERROR", message: "이런~ 가입부터 해달라고래!", name: nil, gender: nil, email: nil}
+    if params[:mytoken] != nil
+      me = User.where(mytoken: params[:mytoken]).take
+    elsif params[:id] != nil
+      me = User.find(params[:id])
+    end
     if me != nil
       gender = "없음"
       if me.gender == 1
@@ -240,7 +289,7 @@ class JsonController < ApplicationController
       
       user = {
                  result: "SUCCESS", 
-                 massage: "#{me.name}님의 회원정보", 
+                 message: "#{me.name}님의 회원정보", 
                  name: me.name, 
                  gender: gender, 
                  email: me.email, 
@@ -248,26 +297,10 @@ class JsonController < ApplicationController
                  profile_img_400: img_400_url
              }
     else
-      user = {result: "ERROR", massage: "다시 가입 해달라고래!", name: nil, gender: nil, email: nil}
+      user = {result: "ERROR", message: "다시 가입 해달라고래!", name: nil, gender: nil, email: nil}
     end
     
     render :json => user
-  end
-  
-  def user_data ##회원데이터 
-    user                      = params[:user]
-    u                         = User.find(params[:id])
-    u.email                   = user[:email]
-    u.gender                  = user[:gender]
-    u.name                    = user[:name]
-    
-    render :json => user
-  end
-  
-  def logout ##따로 API로 정보를 던져줄게 있나??
-    check = "ERROR"
-    
-    render :json => u
   end
   
   def img_resize
