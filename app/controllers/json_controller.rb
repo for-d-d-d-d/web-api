@@ -114,7 +114,7 @@ class JsonController < ApplicationController
     end
     
     u = User.new
-    req_user_info = ["email", "name", "gender", "password", "password_confirmation"]
+    req_user_info = ["email", "password", "password_confirmation"]
     req_user_info.each do |attribute|
       x = nil
       eval("x = user[:#{attribute}]")
@@ -271,13 +271,13 @@ class JsonController < ApplicationController
       me = User.find(params[:id])
     end
     if me != nil
-      gender = "없음"
+      gender = 0 # "없음"
       if me.gender == 1
-        gender = "남성"
+        gender = 1 # "남성"
       elsif me.gender == 2
-        gender = "여성"
+        gender = 2 # "여성"
       elsif me.gender == 3
-        gender = "무관"
+        gender = 3 # "무관"
       end
       
       # [no-name_profile-img : 나중에 S3로 연동해야 함]
