@@ -362,12 +362,9 @@ class JsonController < ApplicationController
       since_start = since.first(4).to_i
       since_end   = since.last(4).to_i
       
-      since_start.upto(since_end) do |year|
-        Album.where("released_date LIKE ?", "%#{year}%").all.each do |album|
-          searched_by_since = album.songs.tj_ok + searched_by_since
-        end
-      end
-      searched_by_since = searched_by_since.map{|song| song.id}.uniq
+      album_ids = Album.where(:released_date => since_start..since_end).all.map{|album| album.id}
+      searched_by_since = Song.where(album_id: album_ids).tj_ok
+      searched_by_since = searched_by_since.map{|song| song.id}.uniq.sort
     end
     
     unless params[:gender].nil? || params[:gender].length == 0      
@@ -386,9 +383,10 @@ class JsonController < ApplicationController
 
       artists = []
       if gender.class == Fixnum
-        artists = Singer.where("gender LIKE ?", gender) + Team.where("gender LIKE ?", gender)
-        searched_by_gender = artists.map{|artist| artist.songs.tj_ok}
-        searched_by_gender = searched_by_gender.map{|song| song.id}.uniq
+        singer_ids = Singer.where("gender LIKE ?", gender).all.map{|singer| singer.id}
+        team_ids = Team.where("gender LIKE ?", gender).all.map{|team| team.id}
+        searched_by_gender = Song.where(singer_id: singer_ids) + Song.where(team_id: team_ids)
+        searched_by_gender = searched_by_gender.map{|song| song.id}.uniq.sort
       end
     end
     
@@ -405,9 +403,13 @@ class JsonController < ApplicationController
       searched_by_nation = searched_by_nation
     end
     
-    result = []
+    column = Song.attribute_names
+    unless params[:column].nil? || params[:column].to_s.length == 0
+      column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
+    end
+    exclude = Song.attribute_names - column
     result_ids = searched_by_since & searched_by_gender & searched_by_genre & searched_by_nation
-    result = detail_songs(result_ids, [], mytoken, true)
+    result = detail_songs(result_ids, exclude, mytoken, true)
     render :json => result  
   end
   
