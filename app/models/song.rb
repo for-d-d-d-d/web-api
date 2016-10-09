@@ -14,7 +14,7 @@ class Song < ActiveRecord::Base
     end
     
     def self.tj_ok
-        return self.where.not(song_tjnum: nil).where.not(song_tjnum: 0).where.not(jacket: "http:#").where.not(jacket: "Error::ThisMusickCanNotFind")
+        return self.where.not(song_tjnum: nil).where.not(song_tjnum: 0).where.not(jacket: "http:#").where.not(jacket: "Error::ThisMusickCanNotFind").where.not(album_id: nil)
     end
 
     def self.popular_month

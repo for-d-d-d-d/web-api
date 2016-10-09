@@ -136,13 +136,13 @@ class Admin2Controller < ApplicationController
         #     break if @popular_songs.count >= 100
         #     break if time.first(4) < "1950"
         # end
-        
+        now_month = Time.zone.now.month
         @popular_songs = []
         3.times do |j|
             year = 2016 - j
             if year == 2016
-                8.times do |i|
-                    month = 8 - i
+                now_month.times do |i|
+                    month = now_month - i
                     DailyTjPopularRank.where(symd: "#{year}-0#{month}-01").each do |song| 
                         if Song.find(song.song_id).song_num == nil
                             @popular_songs << [song, "#{year}-0#{month}-01", Song.find(song.song_id) ]
