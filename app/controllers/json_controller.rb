@@ -20,19 +20,17 @@ class JsonController < ApplicationController
 
   def song
     
-    page = 1
-    unless params[:page].nil?
-      page = params[:page].to_i
-      page = 1 if page == 0
-    end
-    @song = Song.tj_ok.first(30 * page).last(30)
+    @song = Song.tj_ok
     
     #
-    # [direct return empty json array, when the page is unexist]
-    if page != 1 && @song.first.id == Song.tj_ok.first(30 * (page - 1)).last(30).first.id
-      return render json: [{}]
+    # [pager]
+    unless params[:page].nil?
+        @song = pager(params[:page], @song.all)
+        if @song.nil?
+            return render json: [{}]
+        end
     end
-    
+
     #
     # [ready 'id' array of songs for input 'detail_song()' function]
     ids = @song.map{|song| song.id}.to_s
@@ -304,6 +302,57 @@ class JsonController < ApplicationController
     
     render :json => user
   end
+
+  # USER   : UPDATE accout
+  # method : PUT
+  # INPUT   > parameters : {
+  #                 mytoken
+  #                 mod
+  #                 user: { 
+  #                     name
+  #                     gender
+  #                 },
+  #                 password
+  #                 password_confirm
+  #                 new_password
+  #             }
+  # OUTPUT  > {
+  #             result          : (성공여부),
+  #             message         : (참고메세지),
+  #             name            : (-변경된- 이름),
+  #             gender          : (-변경된- 성별),
+  #             email           : (이메일-변경불가-),
+  #             mytoken         : (토큰)
+  #           }
+  def user_modify
+    error = {result: "ERROR", message: "this is default error message", name: nil, gender: nil, email: nil, mytoken: nil}
+
+    if params[:mytoken].nil?
+        error[:message] = "please login first"
+        return render json: error
+    end
+
+    user = User.where(mytoken: params[:mytoken]).take unless params[:mytoken].nil?
+
+    if user.nil?
+        error[:message] = "incorrect token, please check your 'mytoken', Did you singed up?"
+        return render json: error
+    end
+    
+    if params[:user].nil?
+        error[:message] = "you may loose your parameters 'user[something]'"
+        return render json: error
+    end
+    user.update(params.require(:user).permit(:name, :gender)) unless params[:user].nil?
+
+    #arr = ['name','email']
+    #arr.each do |a|
+    #    eval("user.#{a} = params[:#{a}] unless params[:#{a}].nil?")
+    #end
+    #user.save
+
+    render :json => {result: "SUCCESS", message: "your account successfuly updated!", name: user.name, gender: user.gender, email: user.email, mytoken: user.mytoken}
+  end
   
   def img_resize
     # @example = "http://52.78.127.110/json/img_resize/1?size=100" # song.jacket_small
@@ -424,15 +473,37 @@ class JsonController < ApplicationController
     render json: result
   end
 
-  def search_by
-    return render json: {state: "400 BAD REQUEST", message: "you need to send a parameter : 'mytoken'"} if params[:mytoken].nil?
-    mytoken = params[:mytoken]
+  #
+  # UTIL > pager
+  def pager(page, arr)
+    limit   = 30
+    page    = page.to_i
+    page    = page unless page.nil?
+    page    = 1    if page == 0
 
+    arr = arr[(limit * (page - 1))..((limit * page)-1)]
+    return arr
+  end
+
+  def search_by
+    if params[:auto_complete] == "true"
+        count = 3
+
+        artists = Song.where("artist_name LIKE ?", "%#{params[:query]}%").select("artist_name").uniq.map{|s| s.artist_name}.first(count)
+        title   = Song.where("title LIKE ?", "%#{params[:query]}%").select("title, artist_name").map{|s| "#{s.title}, #{s.artist_name}"}.uniq.first(count)
+        lyrics  = Song.where("lyrics LIKE ?", "%#{params[:query]}%").select("title, artist_name, lyrics").uniq.map{|s| "#{s.title}, #{s.artist_name}, #{s.lyrics.first(20) + '...'}"}.first(count)
+        return render json: [artists: artists, title: title, lyrics: lyrics]
+    end
+
+    #
+    # Validatiors
+    return render json: {state: "400 BAD REQUEST", message: "you need to send a parameter : 'mytoken'"} if params[:mytoken].nil?
     return render json: {state: "400 BAD REQUEST", message: "you need to send a parameter : 'search_by' ('artist' or 'title' or 'lyrics')"} if params[:search_by].nil? || params[:search_by] != "artist" && params[:search_by] != "title" && params[:search_by] != "lyrics"
     search_by = params[:search_by]
-    
     return render json: {state: "400 BAD REQUEST", message: "you need to send a parameter : 'query'", toast: "검색어를 입력해주세요"} if params[:query].nil?
 
+    mytoken     = params[:mytoken]
+    search_by   = params[:search_by]
     if search_by == "artist"
         songs = HomeController.search3_by_artist(params[:query])
     elsif search_by == "title"
@@ -446,6 +517,10 @@ class JsonController < ApplicationController
     else
         ids = songs.map{|song| song.id}
     end
+
+    #
+    # Pager
+    ids = pager(params[:page], ids)
 
     result = detail_songs(ids, [], mytoken, true)
     render json: result
@@ -582,6 +657,11 @@ class JsonController < ApplicationController
       if ms.mylist.user_id == me.id
         ms.delete
       end
+    end
+    unless params[:song_id].nil?
+        ml = me.mylists.first
+        ms = me.mylists.first.mylist_songs.where(song_id: params[:song_id]).take
+        ms.delete
     end
     mySongs = ml.mylist_songs
     result = mySongs
@@ -759,6 +839,7 @@ class JsonController < ApplicationController
                 me = User.where(mytoken: mytoken).take
                 mySongs = me.my_songs.map{|ms| ms.id}
                 is_my_favorite = true if mySongs.include?(song.id)
+                maybe_mysong = me.mylists.first.mylist_songs.where(song_id: song.id).take
             end
             arr << ["is_my_favorite", is_my_favorite]
             
