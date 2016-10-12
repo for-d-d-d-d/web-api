@@ -600,12 +600,16 @@ class JsonController < ApplicationController
   def mySong_create
     @check = "ERROR"
     unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil? # || params[:hometown].nil?
-      ms = MylistSong.new
-      ms.mylist_id  = params[:myList_id]
-      ms.song_id    = params[:song_id]
-      #ms.hometown   = params[:hometown]
-      ms.save
-      @check = "SUCCESS"
+      unless Mylist.find(params[:myList_id]).mylist_songs.where(song_id: params[:song_id]).take.nil?
+        return render json: {"id": nil, "message": "이미 추가된 곡입니다"}
+      else
+        ms = MylistSong.new
+        ms.mylist_id  = params[:myList_id]
+        ms.song_id    = params[:song_id]
+        #ms.hometown   = params[:hometown]
+        ms.save
+        @check = "SUCCESS"
+      end
     end
     result = {"id": ms.id, "message": @check}
     render json: result
