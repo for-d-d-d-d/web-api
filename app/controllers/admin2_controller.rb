@@ -110,10 +110,8 @@ class Admin2Controller < ApplicationController
         unless user_signed_in?
             redirect_to '/users/sign_in'
         end
-        @songs = Song.first(1)
         
         # time = Time.zone.now.to_s.first(10)
-        
         # loop do
         #     if time.last(5).first(2) == "01" # 1월이 들어오는 경우 연도 하나 줄이고 전달을 12월로 넘김.
         #         time = (time.first(4).to_i - 1).to_s + "-12-01"
@@ -136,47 +134,53 @@ class Admin2Controller < ApplicationController
         #     break if @popular_songs.count >= 100
         #     break if time.first(4) < "1950"
         # end
-        now_month = Time.zone.now.month
-        @popular_songs = []
-        3.times do |j|
-            year = 2016 - j
-            if year == 2016
-                now_month.times do |i|
-                    month = now_month - i
-                    DailyTjPopularRank.where(symd: "#{year}-0#{month}-01").each do |song| 
-                        if Song.find(song.song_id).song_num == nil
-                            @popular_songs << [song, "#{year}-0#{month}-01", Song.find(song.song_id) ]
-                        end
-                    end
-                end
-            else
-                3.times do |i|
-                    month = 12 - i
-                    DailyTjPopularRank.where(symd: "#{year}-#{month}-01").each do |song| 
-                        if Song.find(song.song_id).song_num == nil
-                            @popular_songs << [song, "#{year}-#{month}-01", Song.find(song.song_id) ]
-                        end
-                    end
-                end
-                9.times do |i|
-                    month = 9 - i
-                    DailyTjPopularRank.where(symd: "#{year}-0#{month}-01").each do |song| 
-                        if Song.find(song.song_id).song_num == nil
-                            @popular_songs << [song, "#{year}-0#{month}-01", Song.find(song.song_id) ]
-                        end
-                    end
-                end
-            end
-        end
-        @miss_songs = Song.where(song_num: nil).where(jacket: nil)
-        @popular_songs = @popular_songs.first(15)
         
+        # now_month = Time.zone.now.month
+        # @popular_songs = []
+        # 3.times do |j|
+        #     year = 2016 - j
+        #     if year == 2016
+        #         now_month.times do |i|
+        #             month = now_month - i
+        #             DailyTjPopularRank.where(symd: "#{year}-0#{month}-01").each do |song| 
+        #                 if Song.find(song.song_id).song_num == nil
+        #                     @popular_songs << [song, "#{year}-0#{month}-01", Song.find(song.song_id) ]
+        #                 end
+        #             end
+        #         end
+        #     else
+        #         3.times do |i|
+        #             month = 12 - i
+        #             DailyTjPopularRank.where(symd: "#{year}-#{month}-01").each do |song| 
+        #                 if Song.find(song.song_id).song_num == nil
+        #                     @popular_songs << [song, "#{year}-#{month}-01", Song.find(song.song_id) ]
+        #                 end
+        #             end
+        #         end
+        #         9.times do |i|
+        #             month = 9 - i
+        #             DailyTjPopularRank.where(symd: "#{year}-0#{month}-01").each do |song| 
+        #                 if Song.find(song.song_id).song_num == nil
+        #                     @popular_songs << [song, "#{year}-0#{month}-01", Song.find(song.song_id) ]
+        #                 end
+        #             end
+        #         end
+        #     end
+        # end
+        # @miss_songs = Song.where(song_num: nil).where(jacket: nil)
+        # @popular_songs = @popular_songs.first(15)
+        # @songs = @miss_songs.first(0)
+    end
+    
+    def ajax_search
         
+        songs1 = Song.need_crawl.where("artist_name LIKE ?", "%#{params[:query]}%")
+        songs2 = Song.need_crawl.where("title LIKE ?", "%#{params[:query]}%")
+        songs3 = Song.need_crawl.where("lyrics LIKE ?", "%#{params[:query]}%")
         
+        @songs = (songs1 + songs2 + songs3).uniq
         
-        
-        
-        
+        render json: {  Songs: @songs }
     end
     
     def cannotFind_on_ginnie

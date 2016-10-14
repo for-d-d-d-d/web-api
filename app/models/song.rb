@@ -8,7 +8,10 @@ class Song < ActiveRecord::Base
         s.song_num = num
         return s.crawl_song
     end
-
+    
+    def self.need_crawl
+        self.where(song_num: nil).where(jacket: nil) #.where.not(jacket: "Error::ThisMusickCanNotFind") #.where(album_id: nil)
+    end
     def self.ok
         return self.where.not(song_num: nil).where.not(song_tjnum: nil)
     end

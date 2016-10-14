@@ -35,7 +35,7 @@ class SongController < ApplicationController
     unless params[:tjNum].nil?
         a.tjnum = params[:tjNum]
     end
-    unless params[:giniNum].nil?
+    unless params[:giniNum].nil? || params[:giniNum].length < 1
         if Song.where(song_num: params[:giniNum]).take == nil
             if user_signed_in?
                 if User.find(current_user.id).email.split('@').last.split('.').first == "4d"
@@ -51,8 +51,11 @@ class SongController < ApplicationController
             end
         end
     end
-    
-    redirect_to :back
+    if params[:ajax_search].nil?
+        # redirect_to :back
+    else
+        render json: {  Message: "'#{a.title} - #{a.artist_name}'이 성공적으로 저장되었습니다." }
+    end
   end
 
   def song_delete

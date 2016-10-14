@@ -1,0 +1,40 @@
+<% @songs.each do |song| %>
+    <tr>
+        <form action="/song/song_num_save/<%= song.id %>" method="POST">
+            <td><%= song.id %></td>
+            <td><%= song.title %></td>
+            <th><%= song.artist_name %></th>
+
+            <% if song.song_tjnum.nil? %>
+            <td><a href="<%= song.song_tjnum %>" target="_blank" class="btn bgm-green waves-effect">노래방 찾기!</a></td>
+            <% else %>
+            <td><%= song.song_tjnum %></td>
+            <% end %>
+            <!--<th style="width:200px;">
+                <div class="input-group fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-search"></i></span>
+                    <div class="fg-line">
+                        <input type="text" name="tjNum" class="form-control">
+                        <label class="fg-label" style="color:#000;">노래방 번호</label>
+                    </div>
+                </div>
+            </th>-->
+            <% if song.song_num.nil? %>
+            <td><a href="http://www.genie.co.kr/search/searchMain?query=<%= song.title %>%20<%= song.artist_name %>&x=0&y=0" target="_blank" class="btn bgm-green waves-effect">노래 찾기!</a></td>
+            <% else %>
+            <td><%= song.song_num %></td>
+            <% end %>
+            <th style="width:200px;">
+                <div class="input-group fg-float">
+                    <span class="input-group-addon"><i class="zmdi zmdi-search"></i></span>
+                    <div class="fg-line">
+                        <input type="text" name="giniNum" class="form-control">
+                        <label class="fg-label" style="color:#000;">지니뮤직 번호</label>
+                    </div>
+                </div>
+            </th>
+            <th><button type="submit" class="btn bgm-orange waves-effect">저장</button></th>
+            <td><a href="/we/admin2/cannotFind_on_ginnie/<%= song.id %>" class="btn bgm-red waves-effect">꽤꼬리!</a></td>
+        </form>
+    </tr>
+<% end %>

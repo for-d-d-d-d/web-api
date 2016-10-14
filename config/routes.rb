@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   #root 'home#entering'
   root 'admin2#crawler_manager'
   get "/we/admin2(/:action(/:id))" => "admin2#:action"
+  post "/we/admin2(/:action(/:id))" => "admin2#:action"
   match "/:controller(/:action(/:id))", :via => [:post, :get]
   
 end
