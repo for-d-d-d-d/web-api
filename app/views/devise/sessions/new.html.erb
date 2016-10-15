@@ -1,55 +1,209 @@
+<%
+    @copy_message = [
+                        # ['당신이 불러보지 못한 좋은 노래들이 많아요!'],
+                        [
+                            'How to Select',
+                            'Karaoke Song For You',
+                            'in goraeBang'
+                        ],
+                        [
+                            '테마, 취향, 음역대까지!',
+                            '나만의 맞춤형 노래 추천앱 고래방',
+                            '애창곡 한 그릇 담아가세요'
+                        ]
+                        
+                    ]
+    ver = 2
+    if ver == 1
+        cm = @copy_message.first
+        fs = 55
+        fs1 = fs -10
+        fs2 = fs
+        fs3 = fs -10
+    elsif ver == 2
+        cm = @copy_message.second
+        fs = 48
+        fs1 = fs -10
+        fs2 = fs
+        fs3 = fs -10
+    end
+%>
+<style>
+    .copyBox{
+        text-align: center;
+        color: #fff;
+        
+    }
+    .loginBox-wrap{
+        /*height:400px;*/
+        /*display:inline;*/
+        margin:40px 0%;
+        padding:70px 44px 30px 44px;
+        border-radius: 0px;
+        /*border: 1px solid #ebebeb;*/
+        /*margin: 0% 0% 20% 0%;*/
+    }
+@media screen and (min-width:768px) {
+    .loginBox{
+        padding:0;
+        margin:0px 12% 0px 18%;
+    }
+    #facebook_login{
+        border-right:5px solid #fff;
+    }
+    #google_login{
+        border-left:5px solid #fff;
+    }
+}
+@media screen and (max-width:767px) {
+    .loginBox{
+        padding:0;
+        margin:0px 1% 0px 1%;
+    }
+    #facebook_login{
+        font-size: 22px;
+    }
+    #google_login{
+        border-left:5px solid #fff;
+    }
+}
 
-<form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post"><input type="hidden" name="utf8" type="hidden" value="&#x2713;"/><input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-
-    <div>
-        <div class="col-md-3 col-lg-3"></div>
-        <div class="col-md-6 col-lg-6">
-            <!-- 왼쪽 DIV -->
-            <div class="field col-md-5 col-lg-5" style="height:400px; display:inline;padding:50px 44px 30px 44px; background: rgba(255, 255, 255, 0.7); border-radius: 5px; border: 1px solid #ebebeb; margin: 0% 0% 20% 0%;">
-                <input autofocus="autofocus" type="email" name="user[email]" class="form-control_f" id="user_email" placeholder="이메일을 입력하세요." style="margin-bottom:20px; width:100%"><br/>
-                <div>
-                    <input autocomplete="off" type="password" name="user[password]" class="form-control_f" id="user_password" placeholder="비밀번호를 입력하세요." style="margin-bottom:10px; width:60%">
-                    <button type="submit" class="btn btn-primary btn-sm active" style="float:right; width:35%;">Login</button>
-                </div>
-                <div class="actions" style="height:20%;">
-                    <div type="field" style="padding-top: 4px; float:left;">
-                        <input type="hidden" name="user[remember_me]"  type="hidden" value="0" style="margin:0px 5px;" /><input type="checkbox" name="user[remember_me]"  type="hidden" value="1" id="user_remember_me" style="margin:0px 5px;" />
-                    </div>
-                    <span style="font-size:16px;">이메일 저장</span>
-                    <!-- <input type="submit" name="commit" value="로그인" class="login_for_what" style="background: #00a1ff; margin-bottom:11%; float:right;"><br><br> -->
-                </div>
-
-                <div style="margin:15px 0px 25px 0px;">
-                    <a href="/users/password/new" class="else_sign_match_btn" style="float:right;">비밀번호 찾기</a>
-                </div>
-                <br>
-
-                <div style="border-top:1px solid rgba(125, 125, 125, 0.5); border-bottom:1px solid rgba(125, 125, 125, 0.5); padding:10px 0px 10px 0px;">
-                    <!-- <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path  %> <br/> -->
-                    <a href="/users/auth/facebook">
-                        <button type="button" class="btn btn-primary btn-lg active" style="width:100%; font-size:16px;">Login with Facebook</button>
-                    </a>
-                    <br/><br/>
-                    <a href="/users/auth/google_oauth2">
-                        <button type="button" class="btn btn-primary btn-lg active" style="width:100%; font-size:16px;">Login with Google</button>
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-md-2 col-lg-2"></div>
-
-            <!-- 오른쪽 DIV -->
-            <div class="field col-md-5 col-lg-5" style="height:400px; display:inline; padding:50px 44px 30px 44px; background: rgba(255, 255, 255, 0.7); border-radius: 5px; border: 1px solid #ebebeb; margin: 0% 0% 20% 0%;">
-                <div>
-                    <div style="height:60%;"><h3 style="margin-top: 0px;">지금 고래방에 가입하시고 천국가세요!</h3></div>
-                    <div style="border-top:1px solid rgba(125, 125, 125, 0.5); border-bottom:1px solid rgba(125, 125, 125, 0.5); padding:10px 0px 10px 0px;">
-                        <a href="" class="else_sign_match_btn" style=""><button type="button" class="btn btn-primary btn-lg active" style="width:100%; margin-bottom:20px;">고래방 소개</button></a>
-                        <a href="/users/sign_up" class="else_sign_match_btn" style=""><button type="button" class="btn btn-primary btn-lg active" style="width:100%;">Sign Up</button></a>
-                    </div>
-
-                </div>
-            </div>
+    .loginBox-style{
+        padding:44px;
+        background: rgba(255, 255, 255, 1);
+    }
+    .triangle{
+        margin:0px 0% 0px 49%;
+        display: block;
+        width: 0px;
+        height: 0px;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-top: 15px solid #fff;
+    }
+    .input-wrap{
+        width:100%;
+        height:70px;
+        margin-bottom: 10px;
+    }
+    .labelBox{
+        display:inline;
+        float:left;
+        width: 17%;
+        height:100%;
+        padding:13px 4%;
+        background: rgb(237, 73, 97);
+        
+    }
+    .inputBox{
+        display:inline;
+        float:right;
+        width: 83%;
+        height:100%;
+        border:none;
+        background: #eaeaea;
+        padding:10px 40px;
+        font-size: 25px;
+        color: rgb(237, 73, 97);
+    }
+    .submitBox{
+        
+        height: 70px;
+        background: rgb(237, 73, 97);
+        border:none;
+        border-radius:0;
+        color: #fff;
+        font-size: 25px;
+        box-shadow: none;
+        margin-bottom: 15px;
+    }
+    .ectText{
+        font-size: 18px;
+    }
+    .labelImg{
+        width:100%;
+        height:auto;
+    }
+    #parallelogram{
+    	width: 150px;
+    	height: 100px;
+    	-webkit-transform: skew(20deg);
+    	   -moz-transform: skew(20deg);
+    	     -o-transform: skew(20deg);
+    	background: rgba(0,0,0,0.4);
+    }
+    .pa_top{
+        
+    }
+    .pa_bottom{
+        
+    }
+</style>
+<div>
+    <!-- 왼쪽 DIV -->
+    <div class="col-md-6 loginBox-wrap" style="background:none; /*border:none;*/">
+        <div class="copyBox">
+            <p style="font-size:<%= fs1 %>px;"><%= cm.first %></p>
+            <p style="font-size:<%= fs2 %>px;font-weight: bold;"><%= cm.second %></p>
+            <p style="font-size:<%= fs3 %>px;"><%= cm.third %></p>
         </div>
-        <div class="col-md-3 col-lg-3"></div>
     </div>
-</form>
+
+    <!-- 오른쪽 DIV -->
+    <div class="field col-md-6">
+        <div class="loginBox-wrap loginBox">
+            <div class="loginBox-style">
+                <form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post">
+                    <input type="hidden" name="utf8" type="hidden" value="&#x2713;"/>
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+                    <div class="input-wrap">
+                        <div class="labelBox"><img src="/images/profile01.png" class="labelImg"></div>
+                        <input class="inputBox" autofocus="autofocus" type="email" name="user[email]" class="form-control_f" id="user_email" placeholder="User Email" style=""><br/>
+                    </div>
+                    <div class="input-wrap">
+                        <div class="labelBox"><img src="/images/safety01.png" class="labelImg"></div>
+                        <input class="inputBox" autocomplete="off" type="password" name="user[password]" class="form-control_f" id="user_password" placeholder="Password" style="">
+                    </div>
+                    
+                    <div class="actions" style="height:20%; margin:15px 0px;">
+                        <div type="field" style="padding-top: 4px; float:left;">
+                            <input type="hidden" name="user[remember_me]"  type="hidden" value="0" style="margin:0px 5px;" />
+                            <input type="checkbox" name="user[remember_me]"  type="hidden" value="1" id="user_remember_me" style="margin:0px 5px;" />
+                        </div>
+                        <span class="ectText">이메일 저장</span>
+                        <a href="/users/password/new" class="else_sign_match_btn" style="float:right;"><span class="ectText">비밀번호를 잊어버리셨나요?</span></a>
+                        <!-- <input type="submit" name="commit" value="로그인" class="login_for_what" style="background: #00a1ff; margin-bottom:11%; float:right;"><br><br> -->
+                    </div>
+                    <button type="submit" class="btn active submitBox" style="width:100%;">Login</button><br>
+                    <div class="row" style="margin:0">
+                        <button type="button" class="btn active submitBox col-sm-6 col-xs-12" id="facebook_login" style="">Login with Facebook</button>
+                        <button type="button" class="btn active submitBox col-sm-6 col-xs-12" id="google_login" style="">Login with Google</button>
+                    </div>
+                </form>
+        
+                <!--<div style="border-top:1px solid rgba(125, 125, 125, 0.5); border-bottom:1px solid rgba(125, 125, 125, 0.5); padding:10px 0px 10px 0px;">-->
+                    <!-- <%#= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path  %> <br/> -->
+                <!--    <a href="/users/auth/facebook">-->
+                        
+                <!--    </a>-->
+                <!--    <br/><br/>-->
+                <!--    <a href="/users/auth/google_oauth2">-->
+                        
+                <!--    </a>-->
+                <!--</div>-->
+                <!--<div>-->
+                <!--    <div style="height:60%;">-->
+                <!--        <h3 style="margin-top: 0px;">지금 고래방에 가입하시고 천국가세요!</h3>-->
+                <!--    </div>-->
+                <!--    <div style="border-top:1px solid rgba(125, 125, 125, 0.5); border-bottom:1px solid rgba(125, 125, 125, 0.5); padding:10px 0px 10px 0px;">-->
+                <!--        <a href="" class="else_sign_match_btn" style=""><button type="button" class="btn btn-primary btn-lg active" style="width:100%; margin-bottom:20px;">고래방 소개</button></a>-->
+                <!--        <a href="/users/sign_up" class="else_sign_match_btn" style=""><button type="button" class="btn btn-primary btn-lg active" style="width:100%;">Sign Up</button></a>-->
+                <!--    </div>-->
+        
+                <!--</div>-->
+            </div>
+            <div class="triangle"></div>
+        </div>
+    </div>
+</div>

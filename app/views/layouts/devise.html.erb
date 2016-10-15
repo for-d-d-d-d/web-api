@@ -18,37 +18,45 @@
         <!-- devise용 css -->
         <link href="/css/devise.css" rel="stylesheet">
         <%
-            @bg = ["https://drscdn.500px.org/photo/66007189/q%3D80_m%3D2000/53f84eed281208de771e12317520398b",
-                   "https://drscdn.500px.org/photo/37025002/q%3D80_m%3D2000/e24b6abea3de45166a342e23432a307b",
-          	   "https://drscdn.500px.org/photo/30384243/q%3D80_m%3D2000/367c79cc52501d25f729684930d3d8c1",
-          	   "https://drscdn.500px.org/photo/65832547/q%3D80_m%3D2000/037a0817265469dbd7f3ce9e99a101af"
+            @bg = ["http://fourd.dothome.co.kr/wp-content/uploads/2016/10/login_background.png"
+            #       "https://drscdn.500px.org/photo/37025002/q%3D80_m%3D2000/e24b6abea3de45166a342e23432a307b",
+          	 #  "https://drscdn.500px.org/photo/30384243/q%3D80_m%3D2000/367c79cc52501d25f729684930d3d8c1",
+          	 #  "https://drscdn.500px.org/photo/65832547/q%3D80_m%3D2000/037a0817265469dbd7f3ce9e99a101af"
                   ]
         %>
         <style>
-          body{
-	    background-image:url(<%= @bg.sample %>); 
-	    background-size:cover;
-          }
-          .bgBlur:before {
-            content: '';
-            position: absolute;
-            top: 0; left:0; right:0; bottom:0;
-            background: inherit;
-            z-index:-1;
-            filter: blur(3px); 
-            -webkit-filter: blur(3px); 
-            -moz-filter: blur(3px);
-            -o-filter: blur(3px);
-            -ms-filter: blur(3px);
-            /*filter: url(#blur);*/
-          }
+            body{
+                background-image:url(<%= @bg.sample %>); 
+                background-size:cover;
+            }
+            .bgBlur:before {
+                content: '';
+                position: absolute;
+                top: 0; left:0; right:0; bottom:0;
+                background: inherit;
+                z-index:-1;
+                filter: blur(3px); 
+                -webkit-filter: blur(3px); 
+                -moz-filter: blur(3px);
+                -o-filter: blur(3px);
+                -ms-filter: blur(3px);
+                /*filter: url(#blur);*/
+            }
+            .logoImg{
+                width: 100%;
+            }
         </style>
     </head>
     <body class="bgBlur">
         <!-- header 추가!!!!!!! -->
         <!-- Logo -->
-        <div style="text-align:center;">
-            <%= image_tag 'whale3.png', size: "300" %>
+        <div class="row" style="margin-top:-30px;">
+            <div class="col-md-5 col-sm-4 col-xs-3"></div>
+            <div class="col-md-2 col-sm-4 col-xs-6">
+                <%= image_tag 'http://fourd.dothome.co.kr/wp-content/uploads/2016/10/logover1-300x300.png', class: "logoImg" %>
+                <%#= image_tag 'whale3.png', size: "300" %>
+            </div>
+            <div class="col-md-5 col-sm-4 col-xs-3"></div>
         </div>
         <!-- Logo end -->
         <%= yield %>
