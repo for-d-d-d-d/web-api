@@ -36,13 +36,12 @@ class Song < ActiveRecord::Base
     # 크롤링이 전부 종료된 이후의 데이터에 대하여 jacke IMG를 크기별로 리사이징 해서 저장합니다.
     # return: "SUCCESS"
     def self.jacket_resizing(size)
-        song = Song.ok.all
+        song = Song.tj_ok.all
         song.each do |s|
             jacket = s.jacket
             if size == "all"
                 next if jacket.nil?
-                s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
-                s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" if s.jacket_small == nil || s.jacket_middle.length < 20
+                s.jacket_resizing(size)
             else
                 if size == "middle"
                     s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
@@ -52,6 +51,20 @@ class Song < ActiveRecord::Base
             end
             s.save
         end
+    end
+
+    def jacket_resizing(size)
+        jacket = self.jacket
+        s = self
+        return false if jacket.nil?
+        if jacket.last(7).first(3).to_i == 600
+            s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
+            s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" if s.jacket_small == nil || s.jacket_middle.length < 20
+        else
+            s.jacket_middle = "http://52.78.160.188/json/img_resize/#{s.id}?size=200"
+            s.jacket_small = "http://52.78.160.188/json/img_resize/#{s.id}?size=100"
+        end
+        return s
     end
     
     def artist
@@ -146,6 +159,7 @@ class Song < ActiveRecord::Base
 
         song.save
         
+        song.jacket_resizing
         # try = 0; success = 0;
         # tj_song, try, success = CrawlController.tj_linker(song, try, success)
         # numbertj = nil
