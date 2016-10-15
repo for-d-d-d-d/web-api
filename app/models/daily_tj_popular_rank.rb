@@ -29,7 +29,7 @@ class DailyTjPopularRank < ActiveRecord::Base
             end
             time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
         end        
-        result = DailyTjPopularRank.where(symd: time).where(eymd: endTime).where.not(song_id: nil).order(song_rank: :asc)
+        result = DailyTjPopularRank.where(symd: time).where.not(song_id: nil).order(song_rank: :asc) #.where(eymd: endTime).where.not(song_id: nil).order(song_rank: :asc)
 
         return result
     end

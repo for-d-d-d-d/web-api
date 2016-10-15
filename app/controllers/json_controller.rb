@@ -20,12 +20,13 @@ class JsonController < ApplicationController
 
   def song
     
-    @song = Song.tj_ok
+    #@song = Song.tj_ok.all
+    @song = Song.popular_month
     
     #
     # [pager]
     unless params[:page].nil?
-        @song = pager(params[:page], @song.all)
+        @song = pager(params[:page], @song)
         if @song.nil?
             return render json: [{}]
         end
@@ -60,19 +61,20 @@ class JsonController < ApplicationController
   end
   
   def top100
-    @song_top100 = Song.popular_month
+    @song = Song.popular_month
     # result = @song_top100
     # result = Song.tj_ok.first(30)
 
-    page = 1
-    unless params[:page].nil?
-       page = params[:page].to_i
-       page = 1 if page == 0
-       if page > 4
-         return render json: [{}]
-       end
-    end
-    @song = Song.tj_ok.first(25 * page).last(25)
+    #page = 1
+    #unless params[:page].nil?
+    #   page = params[:page].to_i
+    #   page = 1 if page == 0
+    #   if page > 4
+    #     return render json: [{}]
+    #   end
+    #end
+    #@song = Song.tj_ok.first(100 * page).last(100)
+    #@song = pager(params[:page], @song)
 
     column = Song.attribute_names
     unless params[:column].nil? || params[:column].to_s.length == 0

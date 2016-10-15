@@ -46,6 +46,20 @@ class SongController < ApplicationController
             end
             a.song_num = params[:giniNum]
             a.crawl_song
+
+            attributes = ['title', 'artist_name', 'genre1', 'genre2', 'artist.name', 'album.genre1', 'album.genre2']
+            attributes.each do |atn|
+                next if a.title.nil?
+                next if a.artist_name.nil?
+                next if a.genre1.nil?
+                next if a.genre2.nil?
+                next if a.artist.name.nil?
+                next if a.album.genre1.nil?
+                next if a.album.genre2.nil?
+                eval("a.#{atn} = a.#{atn}.gsub('amp;','') if a.#{atn}.include?('amp;')")
+            end
+            a.save
+
             if Song.where(song_num: params[:giniNum]).take != nil
                 user.save
             end
