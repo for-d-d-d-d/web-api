@@ -206,19 +206,19 @@ class JsonController < ApplicationController
       me = params[:user]
     else                                        # 차단1. 회원정보가 전혀 입력되지 않음
       @massage = "회원 정보를 입력해주세요"
-      return render json: {result: @check, status: @status, massage: @massage}
+      return render json: {result: @check, status: @status, message: @massage}
     end
     
     if me[:mytoken].nil?    # 로그인시 토큰이 없다(== 토큰만료. 자동로그인 불가. >> 재로그인)
       if me[:email].nil?                        # 차단2. user[email]이 입력되지 않음
         @massage = "email을 입력해주세요"
-        return render json: {result: @check, status: @status, massage: @massage}
+        return render json: {result: @check, status: @status, message: @massage}
       elsif check_email(me[:email]) == nil      # 차단3. email이 형식에 맞지 않음
         @massage = "Oops! Please Check your Email Format! (ex. blah@blah.blah)"
-        return render json: {result: @check, status: @status, massage: @massage}
+        return render json: {result: @check, status: @status, message: @massage}
       elsif me[:password].nil?                  # 차단4. password가 입력되지 않음
         @massage = "password을(를) 입력해주세요"
-        return render json: {result: @check, status: @status, massage: @massage}
+        return render json: {result: @check, status: @status, message: @massage}
       end
       
       unless User.find_by_email(me[:email]).nil?
@@ -230,17 +230,17 @@ class JsonController < ApplicationController
           @mytoken  = user.mytoken
         else                                    # 차단5. password가 맞지 않음
           @massage = "Incorrect Password! Please Check your password!"
-          return render json: {result: @check, status: @status, massage: @massage}
+          return render json: {result: @check, status: @status, message: @massage}
         end
       else                                      # 차단6. 가입되지 않은 email
         @massage = "Oops! Please Check your Email! It's not registed account email :("
-        return render json: {result: @check, status: @status, massage: @massage}
+        return render json: {result: @check, status: @status, message: @massage}
       end
     else                    # 토큰 있는 로그인(== 자동로그인.)
       user = User.where(mytoken: me[:mytoken]).take
       if user.nil?                              # 차단7. 저장되지 않은 토큰으로 로그인 시도.
         @massage = "잘못된 로그인 시도입니다. 다시 로그인해주세요"
-        return render json: {result: @check, status: @status, massage: @massage}
+        return render json: {result: @check, status: @status, message: @massage}
       end
       @check = "SUCCESS"
       @id = user.id
@@ -263,7 +263,8 @@ class JsonController < ApplicationController
   #             gender              : (성별),
   #             email               : (가입 이메일),
   #             profile_img_origin  : (프사 원본주소),
-  #             profile_img_400     : (프사 썸네일주소)
+  #             profile_img_400     : (프사 썸네일주소),
+  #             mylist_id           : (내 마이리스트 id)
   #           }
   def my_account
     user = {result: "ERROR", message: "이런~ 가입부터 해달라고래!", name: nil, gender: nil, email: nil}
@@ -296,7 +297,8 @@ class JsonController < ApplicationController
                  gender: gender, 
                  email: me.email, 
                  profile_img_origin: img_origin_url, 
-                 profile_img_400: img_400_url
+                 profile_img_400: img_400_url,
+                 mylist_id: me.mylists.first.id
              }
     else
       user = {result: "ERROR", message: "다시 가입 해달라고래!", name: nil, gender: nil, email: nil}
@@ -314,8 +316,8 @@ class JsonController < ApplicationController
   #                     name
   #                     gender
   #                 },
-  #                 password
-  #                 password_confirm
+  #                 password(x => current_password)
+  #                 password_confirm(x => new_password_confirm)
   #                 new_password
   #             }
   # OUTPUT  > {
@@ -345,6 +347,22 @@ class JsonController < ApplicationController
         error[:message] = "you may loose your parameters 'user[something]'"
         return render json: error
     end
+    
+    unless params[:new_password].nil? || params[:new_password_confirm].nil?
+        if params[:new_password] == params[:new_password_confirm]
+            if params[:current_password] == BCrypt::Password.new(user.encrypted_password)
+                user.password = params[:new_paaword]
+                user.save
+            else
+                error[:message] = "현재 비밀번호가 일치하지 않습니다"
+                return render json: error
+            end
+        else
+            error[:message] = "새 비밀번호가 확인과 일치하지 않습니다"
+            return render json: error
+        end
+    end
+
     user.update(params.require(:user).permit(:name, :gender)) unless params[:user].nil?
 
     #arr = ['name','email']
@@ -529,6 +547,36 @@ class JsonController < ApplicationController
 
   end
 
+  def filter_by
+    songs = Song.tj_ok
+    filtered_genre  = songs.where("genre1 LIKE ?", "%#{params[:genre]}%") unless params[:genre].nil?
+    filtered_age    = []
+    unless params[:age].nil?
+        Album.where("released_date LIKE ?", "%#{params[:age]}%").all.each{|album| filtered_age += album.songs.tj_ok}
+    end
+
+    filtered_gender = []
+    unless params[:gender].nil?
+        if params[:gender] == "남성"
+            @gender = 1
+        elsif params[:gender] == "여성"
+            @gender = 2
+        elsif params[:gender] == "혼성"
+            @gender = 4
+        else
+            @gender = nil
+        end
+        (Singer.where(gender: @gender).all + Team.where(gender: @gender).all).each do |artist|
+            filtered_gender += artist.songs.tj_ok
+        end
+    end
+    songs2 = (filtered_genre + filtered_age + filtered_gender).uniq
+    ids = songs2.map{|s| s.id}
+    ids = pager(params[:page], ids)
+
+    render json: detail_songs(ids, [], params[:mytoken], true)
+  end
+
   # myList CRUD > CREATE
   # method : POST
   # Input   > id: 회원 id (+) title: myList 타이틀
@@ -634,6 +682,27 @@ class JsonController < ApplicationController
     puts "#{result}"
     render json: result
   end
+
+  def mySong_read_1 ##id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
+    me = User.find(params[:id])
+    ml = Mylist.find(params[:myList_id])
+    if ml.user_id == me.id
+      mySongs = ml.mylist_songs
+    end
+    result_mylistSong   = mySongs.map{|ms| ms.id}
+    # result_song         = mySongs.map{|mysong| Song.find(mysong.song_id).as_json}.map{|id| Song.find(id)}
+    result_songs = []
+    mySongs.each do |mysong|
+      song = Song.find(mysong.song_id).as_json
+      song["mySongId"] = mysong.id
+      result_songs << song
+    end
+    # result = {mylistSongId: result_mylistSong, song: result_song}
+    result = result_songs
+    puts "#{result}"
+    render json: result
+  end
+
   
   # mySong CRUD > UPDATE
   # method : POST
@@ -680,9 +749,9 @@ class JsonController < ApplicationController
   # Output  > 추천 Song Data
   def recom
     sing_it = RecommendationController.recommend(params[:id])
-    count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
-    count.count_recomm +=1
-    count.save
+    #count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
+    #count.count_recomm +=1
+    #count.save
     render json: sing_it
   end
     
@@ -691,11 +760,14 @@ class JsonController < ApplicationController
     @check = "ERROR"
     
     unless params[:id].nil? || params[:song_id].nil?
-      bs = BlacklistSong.new
-      bs.song_id  = params[:song_id]
-      bs.user_id  = params[:id]
-      bs.save
-      @check = "SUCCESS"
+        if User.find(params[:id]).blacklist_songs.where(song_id: params[:song_id]).count != 0
+            return render json: {status: @check, message: "이미 차단 설정된 노래입니다"}
+        end
+        bs = BlacklistSong.new
+        bs.song_id  = params[:song_id]
+        bs.user_id  = params[:id]
+        bs.save
+        @check = "SUCCESS"
     end
     result = {"id": bs.id, "message": @check}
     render json: result 
@@ -708,21 +780,37 @@ class JsonController < ApplicationController
   def blacklist_song_read
     me = User.find(params[:id])
     my_bs = me.blacklist_songs.all
-    result = my_bs
-    
+    results = []
+    my_bs.each do |bs|
+        a_song = Song.find(bs.song_id).as_json
+        a_song["blacklist_song_id"] = bs.id
+        results << a_song
+    end
+    result = results
     render json: result
   end
   
   # blacklistsong CRUD > DELETE
   # method : POST
-  # Input   > id: 회원 id, 차단해지 하려는 노래의 blacklist_songs.id
+  # Input   > id: 회원 id, 차단해지 하려는 노래의 blacklist_song_id
   # Output  > blacklist_songs: 해당 회원의 차단된 노래들
   def blacklist_song_delete
-    me = User.find(params[:id]) 
-    bs = BlacklistSong.find(params[:blacklist_songs.id])
-    unless params[:blacklist_songs.id].nil? || params[:user_id].nil?
+    @status = "ERROR"
+    @message = "INCOMPLETE PARAMETERS : 'song_id' or 'id'"
+
+    unless params[:song_id].nil? || params[:id].nil?
+      my_bl = BlacklistSong.where(user_id: params[:id])
+      if my_bl.where(song_id: params[:song_id]).take.nil?
+        @message = "unexist blacklist song"
+        return render json: {status: @status, message: @message}
+      end
+      bs = my_bl.where(song_id: params[:song_id]).take
       bs.delete
+    else
+      return render json: {status: @status, message: @message}
     end
+    
+    me = User.find(params[:id])
     result = me.blacklist_songs.all
     render json: result
   end
@@ -808,6 +896,8 @@ class JsonController < ApplicationController
   # why         : 매번 레코드 정보를 전부 리턴하는 낭비를 방지
   # INPUT       : ids : SongTable의 주key인 id값들을 요소로하는 배열을 문자열 형태로 입력. 
   #               exclude : 레코드 속성중에 제거하고자 하는 불필요한 속성들. Array형태로 입력. 
+  #               mytoken : 사용자 토큰(str)
+  #               mylist_count : true or false
   # - case      : ids : "[1,2,3]" / "1,2,3" / "[1, 2, 3]" 세가지 형태가 가능하며, 첫 번째 형태를 권장.
   #               exclude : {
   #                     "없을때" : (arrayType) [],
