@@ -35,7 +35,9 @@ class JsonController < ApplicationController
     u.password                = user[:password]
     u.password_confirmation   = user[:password_confirmation]
     
-    if User.where(email: user[:email]).count == 0
+    if User.where(email: user[:email]).count == 0 
+      # && user[:password].length > 6 && user[:email].include? "@" 
+      #회원가입할때에 이메일 양식이 맞지 않거나 비밀번호가 6자미만이면 succes를 리턴하면안됨 현재는 success뜸
       if user[:password] == user[:password_confirmation]
         u.mytoken = SecureRandom.hex(16)
         u.save
