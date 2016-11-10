@@ -13,7 +13,7 @@ class JsonController < ApplicationController
     # img_url = SERVER_URL + "/json/img_resize?size=#{size}&url=#{origin_img_link}"
     result = []
     7.times do
-        result << {"image": main_banner, "title": "당신이 아직 불러보지 못한 좋은 노래가 많아요!", "url": SERVER_URL + "/json/recom/1"}
+        result << {"image": main_banner, "title": "당신이 아직 불러보지 못한 좋은 노래가 많아요!"} #, "url": SERVER_URL + "/json/recom/1"}
     end
     render json: result
   end

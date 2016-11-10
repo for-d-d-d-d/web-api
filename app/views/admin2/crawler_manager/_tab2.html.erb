@@ -355,8 +355,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <%# @miss_songs.first(15).each do |miss| %>
-                        <% Song.first(1).each do |miss| %>
+                        <% @miss_songs.first(15).each do |miss| %>
+                        <%# Song.first(1).each do |miss| %>
                         <tr>
                             <form action="/song/song_num_save/<%= miss.id %>" method="POST">
                                 <td><%= miss.id %></td>

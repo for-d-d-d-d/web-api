@@ -167,9 +167,9 @@ class Admin2Controller < ApplicationController
                 end
             end
         end
-        # @miss_songs = Song.where(song_num: nil).where(jacket: nil)
+        @miss_songs = Song.where(song_num: nil).where(jacket: nil)
         @popular_songs = @popular_songs.first(15)
-        # @songs = @miss_songs.first(0)
+        @songs = @miss_songs.first(0)
     end
     
     def ajax_search
