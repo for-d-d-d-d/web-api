@@ -18,7 +18,7 @@ Devise.setup do |config|
   # Start omniauth facebook, google
 
   # Facebook Login
-  config.omniauth :facebook, "781195762014960", "8fdd8091ca6900a2109746f9831ac035",
+  config.omniauth :facebook, "1422447904447236", "f3ad7e337227e57280d4676cd0b5ce8b",
   scope: 'email', info_fields: 'email, name,first_name, last_name, gender'
 
   # Google Login#

@@ -172,12 +172,14 @@
                             <input type="checkbox" name="user[remember_me]"  type="hidden" value="1" id="user_remember_me" style="margin:0px 5px;" />
                         </div>
                         <span class="ectText">이메일 저장</span>
+
+
                         <a href="/users/password/new" class="else_sign_match_btn" style="float:right;"><span class="ectText">비밀번호를 잊어버리셨나요?</span></a>
                         <!-- <input type="submit" name="commit" value="로그인" class="login_for_what" style="background: #00a1ff; margin-bottom:11%; float:right;"><br><br> -->
                     </div>
                     <button type="submit" class="btn active submitBox" style="width:100%;">Login</button><br>
                     <div class="row" style="margin:0">
-                        <button type="button" class="btn active submitBox col-sm-6 col-xs-12" id="facebook_login" style="">Login with Facebook</button>
+                        <%= link_to "Login with Facebook", user_facebook_omniauth_authorize_path, class: "btn active submitBox col-sm-6 col-xs-12", id: "facebook_login" %>
                         <button type="button" class="btn active submitBox col-sm-6 col-xs-12" id="google_login" style="">Login with Google</button>
                     </div>
                 </form>
