@@ -8,13 +8,21 @@ class Song < ActiveRecord::Base
         s.song_num = num
         return s.crawl_song
     end
-
+    
+    def self.need_crawl
+        self.where(song_num: nil).where(jacket: nil) #.where.not(jacket: "Error::ThisMusickCanNotFind") #.where(album_id: nil)
+    end
     def self.ok
         return self.where.not(song_num: nil).where.not(song_tjnum: nil)
     end
     
     def self.tj_ok
-        return self.where.not(song_tjnum: nil).where.not(song_tjnum: 0).where.not(jacket: "http:#")
+        return self.where.not(song_tjnum: nil).where.not(song_tjnum: 0).where.not(jacket: "http:#").where.not(jacket: "Error::ThisMusickCanNotFind").where.not(album_id: nil)
+    end
+
+    def self.popular_month
+        result = DailyTjPopularRank.month.all.map{|song| self.find(song.song_id)}
+        return result
     end
 
     def self.empty_tj
@@ -28,13 +36,12 @@ class Song < ActiveRecord::Base
     # 크롤링이 전부 종료된 이후의 데이터에 대하여 jacke IMG를 크기별로 리사이징 해서 저장합니다.
     # return: "SUCCESS"
     def self.jacket_resizing(size)
-        song = Song.ok.all
+        song = Song.tj_ok.all
         song.each do |s|
             jacket = s.jacket
             if size == "all"
                 next if jacket.nil?
-                s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
-                s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" if s.jacket_small == nil || s.jacket_middle.length < 20
+                s.jacket_resizing("nil")
             else
                 if size == "middle"
                     s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" if s.jacket_middle == nil || s.jacket_middle.length < 20
@@ -44,6 +51,21 @@ class Song < ActiveRecord::Base
             end
             s.save
         end
+    end
+
+    def jacket_resizing(sth)
+        jacket = self.jacket
+        s = self
+        return false if jacket.nil?
+        if jacket.last(7).first(3).to_i == 600
+            s.jacket_middle = jacket.chomp("600x600.JPG") + "200x200.JPG" #if s.jacket_middle == nil || s.jacket_middle.length < 20
+            s.jacket_small = jacket.chomp("600x600.JPG") + "100x100.JPG" #if s.jacket_small == nil || s.jacket_middle.length < 20
+        else
+            s.jacket_middle = "http://52.78.160.188/json/img_resize/#{s.id}?size=200"
+            s.jacket_small = "http://52.78.160.188/json/img_resize/#{s.id}?size=100"
+        end
+        s.save
+        return s
     end
     
     def artist
@@ -137,7 +159,7 @@ class Song < ActiveRecord::Base
         # SAVE Song
 
         song.save
-        
+       
         # try = 0; success = 0;
         # tj_song, try, success = CrawlController.tj_linker(song, try, success)
         # numbertj = nil
@@ -150,7 +172,7 @@ class Song < ActiveRecord::Base
         # song.song_tjnum  = numbertj
         # song.save
 
-        return song
+        return song.jacket_resizing("a")
     end
     
     def self.match_TJ

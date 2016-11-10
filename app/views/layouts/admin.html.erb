@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>고래방 Admin</title>
-
+        <title>고래방 Admin~</title>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
         <!-- Vendor CSS -->
         <link href="/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
         <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
@@ -27,6 +27,107 @@
 
         <!--<link href="/nouislider/nouislider.min.css" rel="stylesheet">-->
         <link href="/vendors/bower_components/nouislider/src/jquery.nouislider.css" rel="stylesheet">
+        <script type="text/javascript">
+	        $(document).ready(function() {
+                // alert('foo');
+                $("#sea").change(function() {
+                    var q = $(this).val();
+                    // alert(q);
+            
+                    $.ajax({
+                      method: "POST",
+                      url: "/we/admin2/ajax_search",
+                      data: { query: q },
+                      dataType: "json"
+                    })
+                    .done(function( json ) {
+                        var songs = json.Songs;
+                        var i = songs.length;
+                        var k = 0;
+                        
+                        if(i > 0){
+                            $("#result").empty('');
+                            // alert(i);
+                            
+                            $.each(songs, function(index, item) {
+                                k = index + 1;
+                                // alert(item.id);
+                                $("#result").append(
+                                    '<tr id="row' + k + '">' + 
+                                        // '<form action="/song/song_num_save/' + item.id + '" method="POST">' + 
+                                            '<td>' + item.id + '</td>'+
+                                            '<td>' + item.title + '</td>'+
+                                            '<th>' + item.artist_name + '</th>'+
+                                            '<td>' + item.song_tjnum + '</td>'+
+                                            '<td>'+
+                                                '<a href="http://www.genie.co.kr/search/searchMain?query=' + item.title + '%20' + item.artist_name + '&x=0&y=0" target="_blank" class="btn bgm-green waves-effect">노래 찾기!</a>'+
+                                            '</td>'+
+                                            '<th style="width:200px;">'+
+                                                '<div class="input-group fg-float">'+
+                                                    '<span class="input-group-addon"><i class="zmdi zmdi-search"></i></span>'+
+                                                    '<div class="fg-line">'+
+                                                        '<input type="text" name="giniNum" id="' + k + '" class="form-control submitInput">'+
+                                                        '<label class="fg-label" style="color:#000;">지니뮤직 번호</label>'+
+                                                    '</div>'+
+                                                    '<input class="counter" type="hidden" value="' + k + '">'+
+                                                '</div>'+
+                                            '</th>'+
+                                            '<th>'+
+                                                '<a style="cursor:pointer" value="/song/song_num_save/' + item.id + '?ajax_search=true&giniNum=" num="'+ k +'" id="btn' + k + 
+                                                    '" class="btn bgm-orange waves-effect submitBtn" data-remote="true" format="js">저장</a>'+
+                                            '</th>'+
+                                            '<td>'+
+                                                '<a href="/we/admin2/cannotFind_on_ginnie/' + item.id + '" class="btn bgm-red waves-effect">꽤꼬리!</a>'+
+                                            '</td>'+
+                                        // '</form>'+
+                                    '</tr>'
+                                );
+                            });
+                            
+                            $(".submitInput").change(function(){
+                                var giniNum = this.value;
+                                var num = $(this).attr("id");
+                                // alert("I got a giniNum : " + giniNum);
+                                // alert("it from the row number " + num);
+                                
+                                var submitBtn = $( "#btn" + num );
+                                var href = submitBtn.attr("value");
+                                
+                                var updated_href = href + giniNum;
+                                
+                                submitBtn.attr("value",updated_href);
+                                alert("서버에 저장할 준비가 되었습니다.");
+                                
+                                submitBtn.click(function(){
+                                    var num2 = $(this).attr("num");
+                                    var updated_href2 = $(this).attr("value");
+                                    // alert(updated_href2);
+                                    $.ajax({
+                                      method: "GET",
+                                      url: updated_href2,
+                                      dataType: "json"
+                                    })
+                                    .done(function( json ) {
+                                        var message = json.Message;
+                                        alert(message);
+                                        $("#row" + num2).slideUp('slow');
+                                    });
+                                });
+                            });
+                        } else {
+                            $("#result").empty('');
+                            $("#result").append(
+                                '<tr>'+
+                                    '<td colspan="8" align="center">베포되지 않은 곡 중에는 찾을 수가 없네요ㅠㅠ</td>'+
+                                '</tr>'
+                            );
+                        };
+                    });
+                });
+                
+                
+            });
+        </script>
     </head>
     <body>
         <!-- scripts -->

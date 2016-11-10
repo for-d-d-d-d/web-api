@@ -4,7 +4,7 @@ class RecommendationController < ApplicationController
     COUNT_OF_RECOM      = 30    # N 개, desc: 추천받는이가 한 번에 추천받을 곡의 갯수
     FAVOR_PERCENTAGE    = 10    # N %,  desc: 한 유저의 취향으로 판단 할 수 있는 곡의 비중
     
-    MY_ID = 1
+    MY_ID = 1 
 
     NUMBER_OF_SAMPLE_USER   = 4 # N 명, desc: 한 번에 비교할 샘플 유저의 수
     
@@ -18,10 +18,10 @@ class RecommendationController < ApplicationController
     #             FOLD_MINIMUM      => 최 상단 설정부 참고
     #             COUNT_OF_RECOM    => 최 상단 설정부 참고 
     #             FAVOR_PERCENTAGE  => 최 상단 설정부 참고
-    def init(my_id)
+    def self.init(my_id)
         # MY_ID = my_id
-        sample_users = user_sample_picker(NUMBER_OF_SAMPLE_USER)
-        me = map_id(my_songs(MY_ID))
+        sample_users = self.user_sample_picker(NUMBER_OF_SAMPLE_USER)
+        me = self.map_id(my_songs(my_id))
         sing_it = []
         
         return sample_users, me, sing_it, FOLD_MINIMUM, COUNT_OF_RECOM, FAVOR_PERCENTAGE
@@ -32,26 +32,26 @@ class RecommendationController < ApplicationController
     # desc      : 비교할 대상자를 (임의의) num명을 선정
     # input     : NUMBER_OF_SAMPLE_USER
     # output    : (임의의) num명이 각각 보유한 노래 id
-    def user_sample_picker(num)
+    def self.user_sample_picker(num)
         
       # TEST-stage code
-        user1 = (1..20).to_a
-        user2 = [1,2,3,4,5,6,7,8,9,10]
-        user3 = [1,  3,  5,  7,  9]
-        user4 = [1,2,3,4,5,6,                             25]
-        user5 = [          6,7,8,9,10]
-        user6 = [  2,  4,  6,  8,  10]
-        user7 = [1,2,3,  5,6,7,8,    11,12,17,22, 24]
-        
-        users = []
-        (1..7).to_a.each do |i|
-            eval("users << user" + i.to_s)
-        end
+        # user1 = (1..20).to_a
+        # user2 = [1,2,3,4,5,6,7,8,9,10]
+        # user3 = [1,  3,  5,  7,  9]
+        # user4 = [1,2,3,4,5,6,                             95]
+        # user5 = [          6,7,8,9,10]
+        # user6 = [  2,  4,  6,  8,  10]
+        # user7 = [1,2,3,  5,6,7,8,    11,12,90,91,92,93,94]
+        # 
+        # users = []
+        # (1..7).to_a.each do |i|
+        #     eval("users << user" + i.to_s)
+        # end
         
       # AUTO-stage code
-        # users = User.all
-      # #
-      
+        users = User.all.map{|user| user.my_songs.map{|song| song.id}}
+      # 
+        
         picked_user = users.sample(num)
         return picked_user
     end
@@ -75,17 +75,17 @@ class RecommendationController < ApplicationController
 
 
     
-    def my_songs(id)
+    def self.my_songs(id)
         my_songs = User.find(id).my_songs
         return my_songs
     end
     
-    def map_id(things)
+    def self.map_id(things)
         mapped = things.uniq.map{|s| s.id}.sort
         return mapped
     end
     
-    def from_id_to_songs(ids)
+    def self.from_id_to_songs(ids)
         songs = []
 
         # ids.each do |id|
@@ -97,7 +97,7 @@ class RecommendationController < ApplicationController
     end
     
     
-    def user_validation(somebody, me, fold_minimum, favor_percentage)
+    def self.user_validation(somebody, me, fold_minimum, favor_percentage)
         difference      = somebody - me
         how_many_equal  = (somebody - difference).count
         
@@ -124,11 +124,11 @@ class RecommendationController < ApplicationController
         return check, difference
     end
     
-    def filler(sing_it, sample_users, me, fold_minimum, favor_percentage, count_of_recom)
+    def self.filler(sing_it, sample_users, me, fold_minimum, favor_percentage, count_of_recom)
         i = 0
         lose_count = 0
         sample_users.each do |somebody|
-            check, difference = user_validation(somebody, me, fold_minimum, favor_percentage)
+            check, difference = self.user_validation(somebody, me, fold_minimum, favor_percentage)
             
             # puts "\n\nUSER Number #{i}"
             i += 1
@@ -137,7 +137,7 @@ class RecommendationController < ApplicationController
             
             if check == false || difference.count == 0
                 lose_count += 1
-                puts "this shit is skipped!"
+                puts "this shit is skipped! #{lose_count}"
                 next
             end
             
@@ -155,10 +155,10 @@ class RecommendationController < ApplicationController
     
     # roll : Recommendation Main Feild
     # desc : 결국 추천될 노래는 여기서 수렴
-    def recommend(my_id)
+    def self.recommend(my_id)
         
         # GET Initailized Resource
-        sample_users, me, sing_it, fold_minimum, count_of_recom, favor_percentage = init(my_id)
+        sample_users, me, sing_it, fold_minimum, count_of_recom, favor_percentage = self.init(my_id)
         
         # DEBUGGER for init()
         # puts "(inits) sample_users :=>\n #{sample_users.count}\n"
@@ -172,7 +172,7 @@ class RecommendationController < ApplicationController
         i = 0
         loop do
             # SET 'sing_it'
-            sing_it, lose_count = filler(sing_it, sample_users, me, fold_minimum, favor_percentage, count_of_recom)
+            sing_it, lose_count = self.filler(sing_it, sample_users, me, fold_minimum, favor_percentage, count_of_recom)
             
             # breaker
             break if i >= count_of_recom
@@ -180,7 +180,7 @@ class RecommendationController < ApplicationController
             break if lose_count == 0
             
             # READY next loop
-            sample_users = user_sample_picker(lose_count*5)
+            sample_users = self.user_sample_picker(lose_count*5)
             if i % 5 == 0 && fold_minimum > 2
                 fold_minimum -= 1
             end
@@ -192,7 +192,7 @@ class RecommendationController < ApplicationController
         end
         
         # READY to send API
-        sing_it = from_id_to_songs(sing_it)
+        sing_it = self.from_id_to_songs(sing_it)
         #puts "\n\n\n(result) lose_count :=>\n #{lose_count}\n"
         puts "\n(result) result_count :=>\n #{sing_it.count}\n"
         
