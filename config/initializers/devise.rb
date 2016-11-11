@@ -19,7 +19,8 @@ Devise.setup do |config|
 
   # Facebook Login
   config.omniauth :facebook, "1422447904447236", "f3ad7e337227e57280d4676cd0b5ce8b",
-  callback_url: "http://http://52.78.160.188/home/main",
+  # callback_url: "http://52.78.160.188",
+  callback_url: "http://52.78.160.188/we/admin2/crawler_manager",
   scope: 'email', info_fields: 'email, name,first_name, last_name, gender'
 
   # Google Login#
