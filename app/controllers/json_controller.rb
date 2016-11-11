@@ -13,7 +13,7 @@ class JsonController < ApplicationController
     # img_url = SERVER_URL + "/json/img_resize?size=#{size}&url=#{origin_img_link}"
     result = []
     7.times do
-        result << {"image": main_banner, "title": "당신이 아직 불러보지 못한 좋은 노래가 많아요!", "url": SERVER_URL + "/json/recom/1"}
+        result << {"image": main_banner, "title": "당신이 아직 불러보지 못한 좋은 노래가 많아요!"} #, "url": SERVER_URL + "/json/recom/1"}
     end
     render json: result
   end
@@ -411,7 +411,18 @@ class JsonController < ApplicationController
   # 첫 화면
   # > 이달의 신곡
   def month_new
-    result = Song.ok.all.first(9) #추후 갯수 밑 신곡반영.
+    month_new_songs = []
+    Time.zone.now
+    Song.tj_ok.each do |song| #추후 갯수 밑 신곡반영.
+        if song.created_at.to_s.first(10) == (Time.zone.now.to_s.first(8) + "01")
+            month_new_songs << song
+        end
+    end
+
+    return render :json => [] if params[:mytoken].nil? || params[:mytoken].length < 1
+    ids = month_new_songs.map{|s| s.id}
+    ids = pager(params[:page], ids).to_s
+    result = detail_songs(ids, [], params[:mytoken], true)
     render :json => result
   end
   
@@ -505,6 +516,11 @@ class JsonController < ApplicationController
     return arr
   end
 
+  # 검색 api
+  # INPUT   >   mytoken, page,
+  #             search_by : "artist" / "title" / "lyrics"
+  #             query
+  # OUTPUT  >   songs with pager
   def search_by
     if params[:auto_complete] == "true"
         count = 3
@@ -547,6 +563,13 @@ class JsonController < ApplicationController
 
   end
 
+  # 조건검색 api
+  # INPUT   >   mytoken, page
+  #             genre
+  #             age
+  #             gender
+  #
+  # OUTPUT  >   songs with pager
   def filter_by
     songs = Song.tj_ok
     filtered_genre  = songs.where("genre1 LIKE ?", "%#{params[:genre]}%") unless params[:genre].nil?
@@ -698,8 +721,11 @@ class JsonController < ApplicationController
       result_songs << song
     end
     # result = {mylistSongId: result_mylistSong, song: result_song}
-    result = result_songs
-    puts "#{result}"
+    
+    ids = result_songs.to_a.map{|s| s["id"]}
+    ids = pager(params[:page], ids).to_s
+    result = detail_songs(ids, [], me.mytoken, true)
+    #result = result_songs
     render json: result
   end
 
@@ -752,7 +778,10 @@ class JsonController < ApplicationController
     #count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
     #count.count_recomm +=1
     #count.save
-    render json: sing_it
+    ids = sing_it.map{|s| s.id}
+    ids = pager(params[:page], ids).to_s
+    result = detail_songs(ids, [], User.find(params[:id]).mytoken, true)
+    render json: result
   end
     
 

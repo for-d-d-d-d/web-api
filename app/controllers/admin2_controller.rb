@@ -167,7 +167,13 @@ class Admin2Controller < ApplicationController
                 end
             end
         end
-        # @miss_songs = Song.where(song_num: nil).where(jacket: nil)
+        miss_songs = []
+        Song.where(song_num: nil).where(jacket: nil).each do |song|
+            if song.created_at.to_s.first(10) == "2016-11-01"
+                miss_songs << song
+            end
+        end
+        @miss_songs = miss_songs         # Song.where(song_num: nil).where(jacket: nil)
         @popular_songs = @popular_songs.first(15)
         # @songs = @miss_songs.first(0)
     end
