@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   :sessions => "users/sessions" }
 
   devise_scope :user do
-    delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+    delete 'sign_out', :to => 'devise/sessions#destroy'     # , :as => :destroy_user_session
   end
   
   #root 'home#entering'

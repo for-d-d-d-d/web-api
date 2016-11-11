@@ -26,9 +26,9 @@ class HomeController < ApplicationController
     end
 
     def main
-        # @songs = Song.tj_ok.all.first(60)
-        @songs = Song.first #popular_month
-        @carousel = @songs.first(17)
+        @songs = Song.tj_ok.all.first(60)
+        # @songs = Song.tj_ok.first #popular_month
+        @carousel = Song.tj_ok.first(17)
 
         # @rankers = DailyTjPopularRank.all
 
