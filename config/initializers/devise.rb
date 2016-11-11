@@ -19,12 +19,13 @@ Devise.setup do |config|
 
   # Facebook Login
   config.omniauth :facebook, "1422447904447236", "f3ad7e337227e57280d4676cd0b5ce8b",
+  callback_url: "http://http://52.78.160.188/home/main",
   scope: 'email', info_fields: 'email, name,first_name, last_name, gender'
 
   # Google Login#
   # require 'omniauth-google-oauth2'
-  config.omniauth :google_oauth2, "447293847405-stauf2p98vu9fg5232sfrrlm123tqg3h.apps.googleusercontent.com",
-  "tF0i1AGOxQIW7g_bpQ--eGCt", { access_type: "offline", approval_prompt: "" }
+  # config.omniauth :google_oauth2, "447293847405-stauf2p98vu9fg5232sfrrlm123tqg3h.apps.googleusercontent.com",
+  # "tF0i1AGOxQIW7g_bpQ--eGCt", { access_type: "offline", approval_prompt: "" }
 
   # config.omniauth :google_oauth2, ENV["447293847405-stauf2p98vu9fg5232sfrrlm123tqg3h.apps.googleusercontent.com"],
   #                                   ENV["tF0i1AGOxQIW7g_bpQ--eGCt"], {
