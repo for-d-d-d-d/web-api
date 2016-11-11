@@ -24,7 +24,7 @@ gem 'yt', '~> 0.25.5'
 
 # => social user
 gem 'omniauth'
-gem 'omniauth-google-oauth2'
+# gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 
 # => script helper
