@@ -411,7 +411,18 @@ class JsonController < ApplicationController
   # 첫 화면
   # > 이달의 신곡
   def month_new
-    result = Song.ok.all.first(9) #추후 갯수 밑 신곡반영.
+    month_new_songs = []
+    Time.zone.now
+    Song.tj_ok.each do |song| #추후 갯수 밑 신곡반영.
+        if song.created_at.to_s.first(10) == (Time.zone.now.to_s.first(8) + "01")
+            month_new_songs << song
+        end
+    end
+
+    return render :json => [] if params[:mytoken].nil? || params[:mytoken].length < 1
+    ids = month_new_songs.map{|s| s.id}
+    ids = pager(params[:page], ids).to_s
+    result = detail_songs(ids, [], params[:mytoken], true)
     render :json => result
   end
   

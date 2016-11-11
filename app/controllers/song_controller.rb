@@ -71,6 +71,43 @@ class SongController < ApplicationController
         render json: {  Message: "'#{a.title} - #{a.artist_name}'이 성공적으로 저장되었습니다." }
     end
   end
+ 
+  def song_num_save_origin
+    a = Song.find(params[:id])
+    unless params[:tjNum].nil?
+        a.song_tjnum = params[:tjNum]
+    end
+    unless params[:giniNum].nil? || params[:giniNum].length < 1
+        if Song.where(song_num: params[:giniNum]).take == nil
+            if User.find(current_user.id).email.split('@').last.split('.').first == "4d"
+                user = User.find(current_user.id)
+                user.uid = user.uid.gsub('[','').gsub(']','').split(', ').map{|a| a.to_i}.push(params[:id].to_i).to_s if user.uid != nil
+                user.uid = "[#{params[:id]}]" if user.uid == nil
+            end
+        end
+        a.song_num = params[:giniNum]
+        a.crawl_song
+
+        attributes = ['title', 'artist_name', 'genre1', 'genre2', 'artist.name', 'album.genre1', 'album.genre2']
+        attributes.each do |atn|
+            next if a.title.nil?
+            next if a.artist_name.nil?
+            next if a.genre1.nil?
+            next if a.genre2.nil?
+            next if a.artist.name.nil?
+            next if a.album.genre1.nil?
+            next if a.album.genre2.nil?
+            eval("a.#{atn} = a.#{atn}.gsub('amp;','') if a.#{atn}.include?('amp;')")
+        end
+        a.save
+
+        if Song.where(song_num: params[:giniNum]).take != nil
+            #user.save
+        end
+    end
+
+    redirect_to :back
+  end
 
   def song_delete
     if params[:confirm] == "true"

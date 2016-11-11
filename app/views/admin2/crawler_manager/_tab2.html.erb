@@ -269,7 +269,7 @@
         <!-- 노래방 번호 + 지니 번호 찾기 테이블-->
         <div class="card">
             <div class="card-header">
-                <h2>STEP 2. 음악 번호들 채우기( 인기차트 )<small> 노래방 번호와 지니뮤직 번호를 찾아서 입력하기 위해 이 테이블을 사용하세요.<br> 링크를 클릭해 이동한 페이지에서 번호을 확인하고 입력하면 됩니다!</small></h2>
+                <h2>STEP 2. 음악 번호들 채우기(인기차트)<small> 노래방 번호와 지니뮤직 번호를 찾아서 입력하기 위해 이 테이블을 사용하세요.<br> 링크를 클릭해 이동한 페이지에서 번호을 확인하고 입력하면 됩니다!</small></h2>
             </div>
 
             <div class="table-responsive">
@@ -336,7 +336,7 @@
         <!--노래방 번호 + 지니 번호 찾기 테이블-->
         <div class="card">
             <div class="card-header">
-                <h2>STEP 2. 음악 번호들 채우기<small> 노래방 번호와 지니뮤직 번호를 찾아서 입력하기 위해 이 테이블을 사용하세요.<br> 링크를 클릭해 이동한 페이지에서 번호을 확인하고 입력하면 됩니다!</small></h2>
+                <h2>STEP 3. 음악 번호들 채우기(이달의 신곡)<small> 노래방 번호와 지니뮤직 번호를 찾아서 입력하기 위해 이 테이블을 사용하세요.<br> 링크를 클릭해 이동한 페이지에서 번호을 확인하고 입력하면 됩니다!</small></h2>
             </div>
     
             <div class="table-responsive">
@@ -351,14 +351,13 @@
                             <th>지니뮤직 번호</th>
                             <th>지니번호 입력</th>
                             <th>저장</th>
-                            <th>못찾겠다</th>
+                            <th>못찾겠다(<%= @miss_songs.count %>)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% @miss_songs.first(15).each do |miss| %>
-                        <%# Song.first(1).each do |miss| %>
+                        <% @miss_songs.each do |miss| %>
                         <tr>
-                            <form action="/song/song_num_save/<%= miss.id %>" method="POST">
+                            <form action="/song/song_num_save_origin/<%= miss.id %>" method="POST">
                                 <td><%= miss.id %></td>
                                 <td><%= miss.title %></td>
                                 <th><%= miss.artist_name %></th>
