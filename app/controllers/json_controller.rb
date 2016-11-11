@@ -516,6 +516,11 @@ class JsonController < ApplicationController
     return arr
   end
 
+  # 검색 api
+  # INPUT   >   mytoken, page,
+  #             search_by : "artist" / "title" / "lyrics"
+  #             query
+  # OUTPUT  >   songs with pager
   def search_by
     if params[:auto_complete] == "true"
         count = 3
@@ -558,6 +563,13 @@ class JsonController < ApplicationController
 
   end
 
+  # 조건검색 api
+  # INPUT   >   mytoken, page
+  #             genre
+  #             age
+  #             gender
+  #
+  # OUTPUT  >   songs with pager
   def filter_by
     songs = Song.tj_ok
     filtered_genre  = songs.where("genre1 LIKE ?", "%#{params[:genre]}%") unless params[:genre].nil?
@@ -709,8 +721,11 @@ class JsonController < ApplicationController
       result_songs << song
     end
     # result = {mylistSongId: result_mylistSong, song: result_song}
-    result = result_songs
-    puts "#{result}"
+    
+    ids = result_songs.to_a.map{|s| s["id"]}
+    ids = pager(params[:page], ids).to_s
+    result = detail_songs(ids, [], me.mytoken, true)
+    #result = result_songs
     render json: result
   end
 
@@ -763,7 +778,10 @@ class JsonController < ApplicationController
     #count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
     #count.count_recomm +=1
     #count.save
-    render json: sing_it
+    ids = sing_it.map{|s| s.id}
+    ids = pager(params[:page], ids).to_s
+    result = detail_songs(ids, [], User.find(params[:id]).mytoken, true)
+    render json: result
   end
     
 
