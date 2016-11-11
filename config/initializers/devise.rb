@@ -24,8 +24,8 @@ Devise.setup do |config|
 
   # Google Login#
   # require 'omniauth-google-oauth2'
-  config.omniauth :google_oauth2, "447293847405-stauf2p98vu9fg5232sfrrlm123tqg3h.apps.googleusercontent.com",
-  "tF0i1AGOxQIW7g_bpQ--eGCt", { access_type: "offline", approval_prompt: "" }
+  # config.omniauth :google_oauth2, "447293847405-stauf2p98vu9fg5232sfrrlm123tqg3h.apps.googleusercontent.com",
+  # "tF0i1AGOxQIW7g_bpQ--eGCt", { access_type: "offline", approval_prompt: "" }
 
   # config.omniauth :google_oauth2, ENV["447293847405-stauf2p98vu9fg5232sfrrlm123tqg3h.apps.googleusercontent.com"],
   #                                   ENV["tF0i1AGOxQIW7g_bpQ--eGCt"], {
