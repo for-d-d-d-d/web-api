@@ -40,8 +40,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
           puts "\n\n\n\n\n\n\n\n\n\n\t\t'@user.persisted is FALSE'에 진입함 \n\t\t#{@user}\n\n\n\n\n\n\n\n\n"
           session["devise.facebook_data"] = request.env["omniauth.auth"]
           puts "\n\n\n\n\n\n\n\n\n\n\t\t'session[\"devise.facebook_data\"]'를 반환받았음\n\t\t#{}\n\n\n\n\n\n\n\n\n"
-          redirect_to "/json/main_banner" # new_user_session_path
-          # redirect_to new_user_registration_url
+          # redirect_to "/json/main_banner" # new_user_session_path
+          #redirect_to new_user_registration_url
+          redirect_to user_session_path
+
         end
     end
 
