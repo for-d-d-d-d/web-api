@@ -18,8 +18,11 @@ Devise.setup do |config|
   # Start omniauth facebook, google
 
   # Facebook Login
-  config.omniauth :facebook, "1422447904447236", "f3ad7e337227e57280d4676cd0b5ce8b",
-  callback_url: "http://52.78.160.188/home/main",
+  config.omniauth :facebook, ENV["FB_APP_ID"], ENV["FB_APP_SECRET"],
+    # config.omniauth :facebook, "1422447904447236", "f3ad7e337227e57280d4676cd0b5ce8b",
+    # callback_url: "http://52.78.160.188",
+  callback_url: "http://52.78.160.188/users/sign_in", #we/admin2/crawler_manager",
+    # callback_url: user_session_path,
   scope: 'email', info_fields: 'email, name,first_name, last_name, gender'
 
   # Google Login#
