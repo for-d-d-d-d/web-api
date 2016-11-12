@@ -21,7 +21,9 @@ Devise.setup do |config|
   config.omniauth :facebook, "1422447904447236", "f3ad7e337227e57280d4676cd0b5ce8b",
   # callback_url: "http://52.78.160.188",
   callback_url: "http://52.78.160.188/users/auth/facebook/callback",
-  scope: 'email', info_fields: 'email, name,first_name, last_name, gender'
+  scope: 'email', 
+  # info_fields: 'email, name,first_name, last_name, gender'
+  info_fields: 'email'
 
   # Google Login#
   # require 'omniauth-google-oauth2'
