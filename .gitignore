@@ -16,6 +16,8 @@
 /log/*
 !/log/.keep
 /tmp
+/utilities/*
+/public/seeds/*
 
 # Ignore application configuration
 /config/application.yml

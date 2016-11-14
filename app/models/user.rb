@@ -24,40 +24,54 @@ class User < ActiveRecord::Base
 
     def self.from_omniauth(auth)
         where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-            # user.provider = auth.provider 하아... 존나안디ㅗㄴ다...
-            # user.id = auth.id
-            # user.name = auth.info.name
-
-
-            user.email = auth.info.email
+        # where(auth.slice(:provider, :uid)).first_or_initialize.tap do |user|
+            user.provider = auth.provider
+            user.id = auth.id
+            unless auth.info.email.nil?
+                user.email = auth.info.email
+            else
+                unless auth.id.nil?
+                    user.eamil = ""
+                end
+            end
             user.password = Devise.friendly_token[0,20]
             user.name = auth.info.name   # assuming the user model has a name
             # user.image = auth.info.image # assuming the user model has an image
         end
     end
 
+    # def self.new_with_session(params, session)
+    #   super.tap do |user|
+    #       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+    #           user.email = data["email"] if user.email.blank?
+    #       end
+    #   end
+    # end
+
     def self.new_with_session(params, session)
-        super.tap do |user|
-            if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
-                user.email = data["email"] if user.email.blank?
-            end
-        end
+        if session["devise.user_attributes"]
+            new(session["devise.user_attributes"], without_protecttion: true) do |user|
+                user.attributes = params
+                user.valid?
+            end  
+        else
+            super
+        end 
     end
 
-
-    def self.find_for_facebook_oauth(auth)
-        user = where(auth.slice(:provider, :uid)).first_or_create do |user|
-        user.provider = auth.provider
-        user.uid = auth.uid
-        user.email = auth.info.email
-        user.password = Devise.friendly_token[0,20]
-        user.name = auth.info.name   # assuming the user model has a name
-        # user.image = auth.info.image # assuming the user model has an image
-         # 이 때는 이상하게도 after_create 콜백이 호출되지 않아서 아래와 같은 조치를 했다.
-        # user.add_role :user if user.roles.empty?
-        # user   # 최종 반환값은 user 객체이어야 한다.
-        end
-    end   
+    # def self.find_for_facebook_oauth(auth)
+    #   user = where(auth.slice(:provider, :uid)).first_or_create do |user|
+    #       user.provider = auth.provider
+    #       user.uid = auth.uid
+    #       user.email = auth.info.email
+    #       user.password = Devise.friendly_token[0,20]
+    #       user.name = auth.info.name   # assuming the user model has a name
+    #       user.image = auth.info.image # assuming the user model has an image
+    #       # 이 때는 이상하게도 after_create 콜백이 호출되지 않아서 아래와 같은 조치를 했다.
+    #       # user.add_role :user if user.roles.empty?
+    #       # user   # 최종 반환값은 user 객체이어야 한다.
+    #   end
+    # end   
 
     
     # def self.find_for_google_oauth2(access_token, signed_in_resource=nil)

@@ -11,41 +11,62 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     #     end
     # end
 
-    # def facebook
-    #     # You need to implement the method below in your model (e.g. app/models/user.rb)
-    #     @user = User.find_for_facebook_oauth(request.env["omniauth.auth"])
-    #      # @user = find_for_facebook_oauth(env["omniauth.auth"], current_user)
-
-    #     if @user.persisted?
-    #         sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
-    #         set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
-    #     else
-    #         session["devise.facebook_data"] = request.env["omniauth.auth"]
-    #         #redirect_to new_user_registration_url
-    #         redirect_to "redirect_to root_path"
-    #     end
-    # end
-
     def facebook
         # You need to implement the method below in your model (e.g. app/models/user.rb)
-        puts "\n\n\n\n\n\n\n\n\n\n\t\t페북로그인 시도 'def facebook'에 진입함 \n\n\n\n\n\n\n\n\n\n"
-        @user = User.from_omniauth(request.env["omniauth.auth"])
-        puts "\n\n\n\n\n\n\n\n\n\n\t\t'@user' 를 반환받았음  \n\n\n\n\n\n\n\n\n\n"
 
-        if @user.persisted?
-          puts "\n\n\n\n\n\n\n\n\n\n\t\t'@user.persisted is TRUE'에 진입함 \n\t\t#{@user}\n\n\n\n\n\n\n\n\n"
-          sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
-          set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
+        user = User.from_omniauth(request.env["omniauth.auth"])
+        puts "\n\n\n\n\n\n\n\n\n\n\t\t'user' 를 반환받았음  \n\t\t#{request.env["omniauth.auth"]}\n\n\t\tuser.id = #{user.id}\n\n\n\n\n\n\n\n\n"
+
+        if user.persisted?
+            puts "\n\n\n\n\n\n\n\n\n\n\t\t'user.persisted is TRUE'에 진입함 \n\t\t#{user}\n\n\n\n\n\n\n\n\n"
+            flash.notice = "Signed in!"
+            sign_in_and_redirect user
         else
-          puts "\n\n\n\n\n\n\n\n\n\n\t\t'@user.persisted is FALSE'에 진입함 \n\t\t#{@user}\n\n\n\n\n\n\n\n\n"
-          session["devise.facebook_data"] = request.env["omniauth.auth"]
-          puts "\n\n\n\n\n\n\n\n\n\n\t\t'session[\"devise.facebook_data\"]'를 반환받았음\n\t\t#{}\n\n\n\n\n\n\n\n\n"
-          # redirect_to "/json/main_banner" # new_user_session_path
-          #redirect_to new_user_registration_url
-          redirect_to user_session_path
-
+            puts "\n\n\n\n\n\n\n\n\n\n\t\t'user.persisted is FALSE'에 진입함 \n\t\t#{user.errors.to_a}\n\n\n\n\n\n\n\n\n"
+            session["devise.user_attributes"] = user.attributes
+            redirect_to new_user_registration_url
         end
+       # alias_method :facebook, :facebook
     end
+
+    # def facebook
+    #    You need to implement the method below in your model (e.g. app/models/user.rb)
+    #    @user = User.from_omniauth(request.env["omniauth.auth"])
+
+    #    if @user.persisted?
+    #        sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
+    #        set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
+    #    else
+    #        session["devise.facebook_data"] = request.env["omniauth.auth"]
+    #        redirect_to new_user_registration_url
+    #    end
+    # end
+
+
+    # def facebook
+    #   You need to implement the method below in your model (e.g. app/models/user.rb)
+    #   puts "\n\n\n\n\n\n\n\n\n\n\t\t페북로그인 시도 'def facebook'에 진입함 \n\n\n\n\n\n\n\n\n\n"
+    #   @user = User.from_omniauth(request.env["omniauth.auth"])
+    #   puts "\n\n\n\n\n\n\n\n\n\n\t\t'@user' 를 반환받았음  \n\n\n\n\n\n\n\n\n\n"
+
+    #   if @user.persisted?
+    #       puts "\n\n\n\n\n\n\n\n\n\n\t\t'@user.persisted is TRUE'에 진입함 \n\t\t#{@user}\n\n\n\n\n\n\n\n\n"
+    #       sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
+    #       set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
+    #   else
+    #       puts "\n\n\n\n\n\n\n\n\n\n\t\t'@user.persisted is FALSE'에 진입함 \n\t\t#{@user}\n\n\n\n\n\n\n\n\n"
+    #       session["devise.facebook_data"] = request.env["omniauth.auth"]
+    #       puts "\n\n\n\n\n\n\n\n\n\n\t\t'session[\"devise.facebook_data\"]'를 반환받았음\n\t\t#{}\n\n\n\n\n\n\n\n\n"
+    #       # redirect_to "/json/main_banner" # new_user_session_path
+    #       # redirect_to new_user_registration_url
+    #       # redirect_to user_session_path
+    #   end
+    # end
+
+    #     if request.env["omniauth.auth"].info.email.blank?
+    #         redirect_to "/users/auth/facebook?auth_type=rerequest&scope=email"
+    #     end
+
 
     def failure
        puts "\n\n\n\n\n\n\n\n\n\n\t\t'failure'에 진입함 \n\t\t#{}\n\n\n\n\n\n\n\n\n"
