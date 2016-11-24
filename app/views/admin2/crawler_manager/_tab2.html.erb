@@ -73,7 +73,7 @@
                     </div>
                     <% end %>
 
-                    <% User.where.not(uid: nil).all.order(:uid).each do |user| %>
+                    <% User.where.not(uid: nil).where.not("name LIKE ?", "%betaUser%").all.order(:uid).each do |user| %>
                     <% if user_signed_in? %>
                         <% next if user.id == current_user.id %>
                     <% end %>

@@ -5,15 +5,26 @@ class JsonController < ApplicationController
   SERVER_URL = "http://52.78.160.188"
 
   def main_banner
-    size = 500
-    unless params[:size].nil?
-      size = params[:size]
-    end
-    main_banner = "http://fourd.dothome.co.kr/wp-content/uploads/2016/10/service_landing1-e1475689497196.png"
+    # size = 500
+    # unless params[:size].nil?
+    #   size = params[:size]
+    # end
     # img_url = SERVER_URL + "/json/img_resize?size=#{size}&url=#{origin_img_link}"
+    
+    contents = $contents
+
+    banner  = []
+    contents.each do |content|
+        obj     = {}
+        obj["background_img"]   = content[0]
+        obj["main_title"]       = content[1]
+        obj["sub_title"]        = content[2]
+        banner << obj
+    end
+
     result = []
-    7.times do
-        result << {"image": main_banner, "title": "당신이 아직 불러보지 못한 좋은 노래가 많아요!"} #, "url": SERVER_URL + "/json/recom/1"}
+    banner.each do |b|
+        result << {"image": b["background_img"], "title": "#{b["main_title"]}\n#{b["sub_title"]}"} #, "url": SERVER_URL + "/json/recom/1"}
     end
     render json: result
   end
@@ -62,6 +73,7 @@ class JsonController < ApplicationController
   
   def top100
     @song = Song.popular_month
+    # @song = Song.all.sample(100) #tj_ok.where("genre2 LIKE ?", "%힙합%")
     # result = @song_top100
     # result = Song.tj_ok.first(30)
 
@@ -81,10 +93,9 @@ class JsonController < ApplicationController
       column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
     end
 
-    ids = @song.map{|song| song.id}.to_s
-    unless params[:ids].nil?
-      ids = params[:ids].to_s.delete('[').delete(']').delete(' ')
-    end
+    ids = @song.map{|song| song.id}
+    ids = filtering_blacklistSongs_from_list(ids, User.where(mytoken: params[:mytoken]).take.id)
+    ids = pager(params[:page], ids).to_s
 
     exclude = Song.attribute_names - column
     result = detail_songs(ids, exclude, params[:mytoken], true)
@@ -421,6 +432,7 @@ class JsonController < ApplicationController
 
     return render :json => [] if params[:mytoken].nil? || params[:mytoken].length < 1
     ids = month_new_songs.map{|s| s.id}
+    ids = filtering_blacklistSongs_from_list(ids, User.where(mytoken: params[:mytoken]).take.id)
     ids = pager(params[:page], ids).to_s
     result = detail_songs(ids, [], params[:mytoken], true)
     render :json => result
@@ -508,11 +520,19 @@ class JsonController < ApplicationController
   # UTIL > pager
   def pager(page, arr)
     limit   = 30
-    page    = page.to_i
-    page    = page unless page.nil?
-    page    = 1    if page == 0
+    if page == "-1"|| page == nil
+        page = 0
+    else
+        page    = page.to_i
+        page    = page unless page.nil?
+        page    = 1 if page == 0
+    end
 
-    arr = arr[(limit * (page - 1))..((limit * page)-1)]
+    if page == 0
+        arr = arr
+    else
+        arr = arr[(limit * (page - 1))..((limit * page)-1)]
+    end
     return arr
   end
 
@@ -525,9 +545,9 @@ class JsonController < ApplicationController
     if params[:auto_complete] == "true"
         count = 3
 
-        artists = Song.where("artist_name LIKE ?", "%#{params[:query]}%").select("artist_name").uniq.map{|s| s.artist_name}.first(count)
-        title   = Song.where("title LIKE ?", "%#{params[:query]}%").select("title, artist_name").map{|s| "#{s.title}, #{s.artist_name}"}.uniq.first(count)
-        lyrics  = Song.where("lyrics LIKE ?", "%#{params[:query]}%").select("title, artist_name, lyrics").uniq.map{|s| "#{s.title}, #{s.artist_name}, #{s.lyrics.first(20) + '...'}"}.first(count)
+        artists = Song.where("artist_name LIKE ?", "%#{params[:query]}%").select("artist_name").uniq.map{|s| "|아티스트| " + s.artist_name}.first(count)
+        title   = Song.where("title LIKE ?", "%#{params[:query]}%").select("title, artist_name").map{|s| "|제목검색| #{s.title}, #{s.artist_name}"}.uniq.first(count)
+        lyrics  = Song.where("lyrics LIKE ?", "%#{params[:query]}%").select("title, artist_name, lyrics").uniq.map{|s| "|가사검색| #{s.title}, #{s.artist_name}, #{s.lyrics.first(20).gsub('<br>',' ').gsub('&amp;','&')}..."}.first(count)
         return render json: [artists: artists, title: title, lyrics: lyrics]
     end
 
@@ -553,6 +573,10 @@ class JsonController < ApplicationController
     else
         ids = songs.map{|song| song.id}
     end
+    
+    #
+    # remove hateSong
+    ids = filtering_blacklistSongs_from_list(ids, User.where(mytoken: mytoken).take.id)
 
     #
     # Pager
@@ -666,6 +690,32 @@ class JsonController < ApplicationController
     render json: result
   end
   
+  def mySong_vs_blacklistSong(me_id)
+    me = User.find(me_id)
+    mySongs = me.mylists.first.mylist_songs
+    blSongs = me.blacklist_songs
+    blSongs.each do |bl|
+        same_mySong = mySongs.where(song_id: bl.song_id).take
+        if same_mySong.nil?
+            next
+        else
+            if same_mySong.created_at.to_s < bl.created_at.to_s
+                same_mySong.delete
+            else
+                bl.delete
+            end
+        end
+    end
+    return true
+  end
+
+  def filtering_blacklistSongs_from_list(ids, myid)
+    me = User.find(myid)
+    bl_ids = me.blacklist_songs.map{|s| s.song_id}
+    ids = ids - bl_ids
+    return ids
+  end
+
   # mySong CRUD > CREATE
   # method : POST
   # Input   > id: 회원 id (+) myList_id: 추가될 myList ID (+) song_id: 추가할 song ID
@@ -673,11 +723,12 @@ class JsonController < ApplicationController
   def mySong_create
     @check = "ERROR"
     unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil? # || params[:hometown].nil?
-      unless Mylist.find(params[:myList_id]).mylist_songs.where(song_id: params[:song_id]).take.nil?
+      # unless Mylist.find(params[:myList_id]).mylist_songs.where(song_id: params[:song_id]).take.nil?
+      unless User.find(params[:id]).mylists.first.mylist_songs.where(song_id: params[:song_id]).take.nil?
         return render json: {"id": nil, "message": "이미 추가된 곡입니다"}
       else
         ms = MylistSong.new
-        ms.mylist_id  = params[:myList_id]
+        ms.mylist_id  = User.find(params[:id]).mylists.first.id    # params[:myList_id]
         ms.song_id    = params[:song_id]
         #ms.hometown   = params[:hometown]
         ms.save
@@ -708,6 +759,7 @@ class JsonController < ApplicationController
 
   def mySong_read_1 ##id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
     me = User.find(params[:id])
+    mySong_vs_blacklistSong(me.id)
     ml = Mylist.find(params[:myList_id])
     if ml.user_id == me.id
       mySongs = ml.mylist_songs
@@ -724,7 +776,7 @@ class JsonController < ApplicationController
     
     ids = result_songs.to_a.map{|s| s["id"]}
     ids = pager(params[:page], ids).to_s
-    result = detail_songs(ids, [], me.mytoken, true)
+    result = detail_songs(ids, [], me.mytoken, true).reverse
     #result = result_songs
     render json: result
   end
@@ -779,6 +831,7 @@ class JsonController < ApplicationController
     #count.count_recomm +=1
     #count.save
     ids = sing_it.map{|s| s.id}
+    ids = filtering_blacklistSongs_from_list(ids, params[:id])
     ids = pager(params[:page], ids).to_s
     result = detail_songs(ids, [], User.find(params[:id]).mytoken, true)
     render json: result
@@ -809,13 +862,16 @@ class JsonController < ApplicationController
   def blacklist_song_read
     me = User.find(params[:id])
     my_bs = me.blacklist_songs.all
-    results = []
+    songs = []
     my_bs.each do |bs|
         a_song = Song.find(bs.song_id).as_json
         a_song["blacklist_song_id"] = bs.id
-        results << a_song
+        songs << a_song
     end
-    result = results
+    ids = songs.map{|s| s["id"]}
+    ids = pager(params[:page], ids).to_s
+    result = detail_songs(ids, [], nil, true)
+
     render json: result
   end
   
@@ -938,7 +994,7 @@ class JsonController < ApplicationController
         song_ids = mapped_string_translater_to_array(ids)
         songs = song_ids.map{|song_id| Song.find(song_id)}
         
-        default = ["created_at","updated_at","youtube","lowkey","highkey"]
+        default = ["created_at","updated_at","youtube","lowkey","highkey","jacket","jacket_middle","jacket_small","song_num"]
         will_exclude = default + exclude unless exclude == "nil" || exclude == nil || exclude.class != Array
         will_exclude = will_exclude.uniq
         
@@ -952,12 +1008,41 @@ class JsonController < ApplicationController
             arr = []
             attributes.each do |att|
                 eval("arr << [att, song.#{att}]")
+                if att == "jacket"
+                    if song.jacket.nil?
+                        
+                    elsif song.jacket == "Error::ThisMusickCanNotFind"
+                    end
+                end
+            end
+
+            if song.song_num.nil?
+                arr << ["song_num", 0]
+            else
+                arr << ["song_num", song.song_num]
+            end
+            if song.jacket.nil?
+                arr << ["jacket", $noReadyJacket_600]
+                arr << ["jacket_middle", $noReadyJacket_200]
+                arr << ["jacket_small", $noReadyJacket_100]
+            elsif song.jacket == "Error::ThisMusickCanNotFind"
+                arr << ["jacket", $noReadyJacket_600]
+                arr << ["jacket_middle", $noReadyJacket_200]
+                arr << ["jacket_small", $noReadyJacket_100]
+            else
+                arr << ["jacket", song.jacket]
+                arr << ["jacket_middle", song.jacket_middle]
+                arr << ["jacket_small", song.jacket_small]
             end
             
-            release = song.album.released_date.split('')
-            release.pop
-            release = release.join
-            arr << ["release", release]
+            if song.album.nil?
+                arr << ["release", "세팅 대기중인 곡입니다"]
+            else
+                release = song.album.released_date.split('')
+                release.pop
+                release = release.join
+                arr << ["release", release]
+            end
 
             is_my_favorite = false
             unless mytoken.nil?

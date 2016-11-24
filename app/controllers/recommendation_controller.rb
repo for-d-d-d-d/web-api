@@ -2,7 +2,7 @@ class RecommendationController < ApplicationController
     
     FOLD_MINIMUM        = 4     # N 개, desc: 추천받는이와 최소한 몇 개는 같은 곡이 있어야 하는지.
     COUNT_OF_RECOM      = 30    # N 개, desc: 추천받는이가 한 번에 추천받을 곡의 갯수
-    FAVOR_PERCENTAGE    = 10    # N %,  desc: 한 유저의 취향으로 판단 할 수 있는 곡의 비중
+    FAVOR_PERCENTAGE    = 40    # N %,  desc: 한 유저의 취향으로 판단 할 수 있는 곡의 비중
     
     MY_ID = 1 
 

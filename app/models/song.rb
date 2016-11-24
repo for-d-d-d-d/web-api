@@ -12,12 +12,18 @@ class Song < ActiveRecord::Base
     def self.need_crawl
         self.where(song_num: nil).where(jacket: nil) #.where.not(jacket: "Error::ThisMusickCanNotFind") #.where(album_id: nil)
     end
+
     def self.ok
         return self.where.not(song_num: nil).where.not(song_tjnum: nil)
     end
     
     def self.tj_ok
         return self.where.not(song_tjnum: nil).where.not(song_tjnum: 0).where.not(jacket: "http:#").where.not(jacket: "Error::ThisMusickCanNotFind").where.not(album_id: nil)
+    end
+
+    # 입력되지 않은 노래를 검색결과에 띄워줄 때, 중복크롤로 인해 깨진 노래가 함께 뜨지 않도록 거르는 메서드.
+    def self.no_crash
+        return self.where.not("title LIKE ?", "%<img class=%")
     end
 
     def self.popular_month

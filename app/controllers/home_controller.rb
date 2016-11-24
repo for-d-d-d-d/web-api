@@ -79,7 +79,7 @@ class HomeController < ApplicationController
                 flash[:error] = "검색어를 찾을 수 없습니다."
                 return
             end
-            @song_searched_By_artist = Song.where("artist_name LIKE ?", "%#{query}%").tj_ok.uniq
+            @song_searched_By_artist = Song.no_crash.where("artist_name LIKE ?", "%#{query}%").uniq
         end
         return @song_searched_By_artist
     end
@@ -92,7 +92,7 @@ class HomeController < ApplicationController
                 flash[:error] = "검색어를 찾을 수 없습니다."
                 return
             end
-            @song_searched_By_title = Song.where("title LIKE ?", "%#{query}%").tj_ok.uniq
+            @song_searched_By_title = Song.no_crash.where("title LIKE ?", "%#{query}%").uniq
         end
         return  @song_searched_By_title
     end
@@ -111,7 +111,7 @@ class HomeController < ApplicationController
             @song_searched_By_lyrics = Array.new
            
 
-            Song.tj_ok.all.each do |s|
+            Song.no_crash.all.each do |s|
                 splited.each do |q|
                     @song_searched_By_lyrics << s if s.lyrics.include?(q)
                 end
