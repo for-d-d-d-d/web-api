@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   
   #RESTAPI TRIAL
   namespace :api do
-    resources :my_songs
+    resources :my_song
     
   end
   

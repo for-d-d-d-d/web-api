@@ -39,7 +39,7 @@ class Api::MySongController < ApplicationController
         # result = {mylistSongId: result_mylistSong, song: result_song}
         
         ids = result_songs.to_a.map{|s| s["id"]}
-        ids = pager(params[:page], ids).to_s
+        #ids = pager(params[:page], ids).to_s
         result = detail_songs(ids, [], me.mytoken, true).reverse
         #result = result_songs
         render json: result
