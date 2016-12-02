@@ -120,21 +120,46 @@ class Crawl2Controller < ApplicationController
          puts "\t\t lyrics       : #{@lyrics}\n\n"
          puts "\t\t song         : #{song}\n\n"
     end
+
+    def self.valid(html_doc, song_tjnum, size)
+        result = ""
+        a_song = ""
+        size.times do |k|
+            a_song  = "div#BoardType1//table.board_type1//tbody//tr:nth-child(#{k+1})"
+            aa      = html_doc.css(a_song + "//td:nth-child(1)").inner_html.gsub('</span>','').gsub('<span','').gsub('class="txt">','').gsub(' ','')
+            puts "\n\t\t#{aa}\n\n"
+            if aa != song_tjnum.to_i.to_s
+                puts "\t\t#{song_tjnum} is NOT FOUND"
+                result = "false"
+            else
+                puts "\t\t#{song_tjnum} is FOUND !!"
+                result = "true"
+            end
+            break if result == "true"
+        end
+        return result.to_s, a_song
+    end
     
     # 질러넷을 포함하지 않는 한 곡 크롤링(가사 제외 / 노래방 번호, 제목, 가수이름, 작사가, 작곡가를 저장)
     def self.parse_and_save_tj2(song_tjnum)
         html_doc    = Nokogiri::HTML(Net::HTTP.get(URI("http://www.tjmedia.co.kr/tjsong/song_search_list.asp?strType=16&strText=#{song_tjnum}&strCond=0&strSize01=100&strSize02=15&strSize03=15&strSize04=15&strSize05=15")))
         puts "\n\n\t\thtml_doc.nil? #{html_doc.nil?}\n\n"
-        a_song      = "div#BoardType1//table.board_type1//tbody//tr:last-child"
-        # a_song      = "div#BoardType1//table.board_type1//tbody//tr:nth-child(14)"
-        # song_info   = html_doc.css(a_song)
 
-        aa = html_doc.css(a_song + "//td:nth-child(1)").inner_html.gsub('</span>','').gsub('<span','').gsub('class="txt">','').gsub(' ','')
-        puts "\n\t\t#{aa}\n\n"
-        if aa != song_tjnum.to_i.to_s
-            puts "\t\t#{song_tjnum} is NOT FOUND"
+        # a_song      = "div#BoardType1//table.board_type1//tbody//tr:nth-child(5)"
+        # # a_song      = "div#BoardType1//table.board_type1//tbody//tr:nth-child(14)"
+        # aa = html_doc.css(a_song + "//td:nth-child(1)").inner_html.gsub('</span>','').gsub('<span','').gsub('class="txt">','').gsub(' ','')
+        # puts "\n\t\t#{aa}\n\n"
+        # if aa != song_tjnum.to_i.to_s
+        #     puts "\t\t#{song_tjnum} is NOT FOUND"
+        #     return false
+        # end
+        
+        size    = html_doc.css("div#BoardType1//table.board_type1//tbody//tr").to_a.size
+        status, a_song = Crawl2Controller.valid(html_doc, song_tjnum, size)
+        if status == "false"
             return false
         end
+
         @song_tjnum  = html_doc.css(a_song + "//span.txt").inner_html.to_i
         puts "\t\t song_tjnum   : #{@song_tjnum}"
         @song_title  = html_doc.css(a_song + "//td.left").inner_html.to_s
