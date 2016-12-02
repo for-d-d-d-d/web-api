@@ -29,79 +29,9 @@ class JsonController < ApplicationController
     render json: result
   end
 
-  def song
-    
-    #@song = Song.tj_ok.all
-    @song = Song.popular_month
-    
-    #
-    # [pager]
-    unless params[:page].nil?
-        @song = pager(params[:page], @song)
-        if @song.nil?
-            return render json: [{}]
-        end
-    end
-
-    #
-    # [ready 'id' array of songs for input 'detail_song()' function]
-    ids = @song.map{|song| song.id}.to_s
-    unless params[:ids].nil?
-      ids = params[:ids].to_s.delete('[').delete(']').delete(' ')
-    end
-    
-    #
-    # [ready 'column'. It is attributes that is permitted to contain in returned json result.]
-    # [when the 'column' is nil or empty, then 'column' defines all of attributes.)]
-    column = Song.attribute_names
-    unless params[:column].nil? || params[:column].to_s.length == 0
-       column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
-    end
-    exclude = Song.attribute_names - column
-
-    #
-    # [ready 'mylist_count'. In this block, it recognizes wheter the client wants to recieve the data of mylist_count or not.]
-    mylist_count = false
-    if params[:mylist_count] != nil && params[:mylist_count] == "true"
-        mylist_count = true
-    end
-
-    songs = detail_songs(ids, exclude, params[:mytoken], mylist_count)
-
-    render :json => songs
-  end
   
-  def top100
-    @song = Song.popular_month
-    # @song = Song.all.sample(100) #tj_ok.where("genre2 LIKE ?", "%힙합%")
-    # result = @song_top100
-    # result = Song.tj_ok.first(30)
-
-    #page = 1
-    #unless params[:page].nil?
-    #   page = params[:page].to_i
-    #   page = 1 if page == 0
-    #   if page > 4
-    #     return render json: [{}]
-    #   end
-    #end
-    #@song = Song.tj_ok.first(100 * page).last(100)
-    #@song = pager(params[:page], @song)
-
-    column = Song.attribute_names
-    unless params[:column].nil? || params[:column].to_s.length == 0
-      column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
-    end
-
-    ids = @song.map{|song| song.id}
-    ids = filtering_blacklistSongs_from_list(ids, User.where(mytoken: params[:mytoken]).take.id)
-    ids = pager(params[:page], ids).to_s
-
-    exclude = Song.attribute_names - column
-    result = detail_songs(ids, exclude, params[:mytoken], true)
-
-    render :json => result
-  end
+  
+ 
   
   # function
   def check_email(email)
@@ -318,6 +248,7 @@ class JsonController < ApplicationController
     render :json => user
   end
 
+  
   # USER   : UPDATE accout
   # method : PUT
   # INPUT   > parameters : {
@@ -385,6 +316,15 @@ class JsonController < ApplicationController
     render :json => {result: "SUCCESS", message: "your account successfuly updated!", name: user.name, gender: user.gender, email: user.email, mytoken: user.mytoken}
   end
   
+   #회원탈퇴  
+  def delete_account
+    client = params[:user]
+    me = User.find(client[:id])
+    
+    me.delete
+    
+  end
+  
   def img_resize
     # @example = "http://52.78.127.110/json/img_resize/1?size=100" # song.jacket_small
     # @example = "http://web-yhk1038.c9users.io/json/img_resize/1?size=100" # song.jacket_small
@@ -414,10 +354,39 @@ class JsonController < ApplicationController
   
   # 첫 화면
   # > 인기차트
-  def top_100
-    @top100 = Song.ok.all.first(9) #추후에 top100에서 뽑도록 바꿀 것.
-    render :json => @top100
+  
+   def top100
+    @song = Song.popular_month
+    # @song = Song.all.sample(100) #tj_ok.where("genre2 LIKE ?", "%힙합%")
+    # result = @song_top100
+    # result = Song.tj_ok.first(30)
+
+    #page = 1
+    #unless params[:page].nil?
+    #   page = params[:page].to_i
+    #   page = 1 if page == 0
+    #   if page > 4
+    #     return render json: [{}]
+    #   end
+    #end
+    #@song = Song.tj_ok.first(100 * page).last(100)
+    #@song = pager(params[:page], @song)
+
+    column = Song.attribute_names
+    unless params[:column].nil? || params[:column].to_s.length == 0
+      column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
+    end
+
+    ids = @song.map{|song| song.id}
+    ids = filtering_blacklistSongs_from_list(ids, User.where(mytoken: params[:mytoken]).take.id)
+    ids = pager(params[:page], ids).to_s
+
+    exclude = Song.attribute_names - column
+    result = detail_songs(ids, exclude, params[:mytoken], true)
+
+    render :json => result
   end
+ 
   
   # 첫 화면
   # > 이달의 신곡
@@ -438,83 +407,121 @@ class JsonController < ApplicationController
     render :json => result
   end
   
-  # 첫 화면
-  # > 조건검색
-  def search_by_filter
-    whole_song = Song.tj_ok.map{|song| song.id}.uniq
-    mytoken = params[:mytoken] 
-    searched_by_since   = whole_song
-    searched_by_gender  = whole_song
-    searched_by_genre   = whole_song
-    searched_by_nation  = whole_song
-    
-    unless params[:since].nil? || params[:since].length == 0
-      searched_by_since = []
-      since = params[:since]    # since = 2000 ~ 2005
-      since_start = since.first(4).to_i
-      since_end   = since.last(4).to_i
-      
-      album_ids = Album.where(:released_date => since_start..since_end).all.map{|album| album.id}
-      searched_by_since = Song.where(album_id: album_ids).tj_ok
-      searched_by_since = searched_by_since.map{|song| song.id}.uniq.sort
+  
+  # 조건검색 api
+  # INPUT   >   mytoken, page
+  #             genre
+  #             age
+  #             gender
+  #
+  # OUTPUT  >   songs with pager
+  def filter_by
+    songs = Song.tj_ok
+    filtered_genre  = songs.where("genre1 LIKE ?", "%#{params[:genre]}%") unless params[:genre].nil?
+    filtered_age    = []
+    unless params[:age].nil?
+        Album.where("released_date LIKE ?", "%#{params[:age]}%").all.each{|album| filtered_age += album.songs.tj_ok}
     end
-    
-    unless params[:gender].nil? || params[:gender].length == 0      
-      gender = params[:gender]
-      
-      if gender == "남성"
-        searched_by_gender = []
-        gender = 1
-      elsif gender == "여성"
-        searched_by_gender = []
-        gender = 2
-      elsif gender == "혼성"
-        searched_by_gender = []
-        gender = 4
-      end
 
-      artists = []
-      if gender.class == Fixnum
-        singer_ids = Singer.where("gender LIKE ?", gender).all.map{|singer| singer.id}
-        team_ids = Team.where("gender LIKE ?", gender).all.map{|team| team.id}
-        searched_by_gender = Song.where(singer_id: singer_ids) + Song.where(team_id: team_ids)
-        searched_by_gender = searched_by_gender.map{|song| song.id}.uniq.sort
-      end
+    filtered_gender = []
+    unless params[:gender].nil?
+        if params[:gender] == "남성"
+            @gender = 1
+        elsif params[:gender] == "여성"
+            @gender = 2
+        elsif params[:gender] == "혼성"
+            @gender = 4
+        else
+            @gender = nil
+        end
+        (Singer.where(gender: @gender).all + Team.where(gender: @gender).all).each do |artist|
+            filtered_gender += artist.songs.tj_ok
+        end
     end
-    
-    unless params[:genre].nil? || params[:genre].length == 0
-      searched_by_genre = []
-      genre = params[:genre]
+    songs2 = (filtered_genre + filtered_age + filtered_gender).uniq
+    ids = songs2.map{|s| s.id}
+    ids = pager(params[:page], ids)
 
-      searched_by_genre = Song.tj_ok.where("genre1 LIKE ?", "%#{genre}%") + Song.tj_ok.where("genre2 LIKE ?", "%#{genre}%")
-      searched_by_genre = searched_by_genre.map{|song| song.id}
-      searched_by_genre = searched_by_genre.uniq
-    end
-    
-    unless params[:nation].nil? || params[:nation].length == 0
-      searched_by_nation = searched_by_nation
-    end
-    
-    column = Song.attribute_names
-    unless params[:column].nil? || params[:column].to_s.length == 0
-      column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
-    end
-    exclude = Song.attribute_names - column
-    result_ids = searched_by_since & searched_by_gender & searched_by_genre & searched_by_nation
-    result = detail_songs(result_ids, exclude, mytoken, true)
-    render :json => result  
+    render json: detail_songs(ids, [], params[:mytoken], true)
   end
   
-  # 검색창(검색결과)
-  def search_nomal
-    artist = []
-    title  = []
-    lyrics = []
-    artist, title, lyrics = HomeController.search3(params[:query])
+  # 첫 화면
+  # > 조건검색
+  # def search_by_filter
+  #   whole_song = Song.tj_ok.map{|song| song.id}.uniq
+  #   mytoken = params[:mytoken] 
+  #   searched_by_since   = whole_song
+  #   searched_by_gender  = whole_song
+  #   searched_by_genre   = whole_song
+  #   searched_by_nation  = whole_song
+    
+  #   unless params[:since].nil? || params[:since].length == 0
+  #     searched_by_since = []
+  #     since = params[:since]    # since = 2000 ~ 2005
+  #     since_start = since.first(4).to_i
+  #     since_end   = since.last(4).to_i
+      
+  #     album_ids = Album.where(:released_date => since_start..since_end).all.map{|album| album.id}
+  #     searched_by_since = Song.where(album_id: album_ids).tj_ok
+  #     searched_by_since = searched_by_since.map{|song| song.id}.uniq.sort
+  #   end
+    
+  #   unless params[:gender].nil? || params[:gender].length == 0      
+  #     gender = params[:gender]
+      
+  #     if gender == "남성"
+  #       searched_by_gender = []
+  #       gender = 1
+  #     elsif gender == "여성"
+  #       searched_by_gender = []
+  #       gender = 2
+  #     elsif gender == "혼성"
+  #       searched_by_gender = []
+  #       gender = 4
+  #     end
 
-    result = {"artist": artist, "title": title, "lyrics": lyrics}
-    render json: result
-  end
+  #     artists = []
+  #     if gender.class == Fixnum
+  #       singer_ids = Singer.where("gender LIKE ?", gender).all.map{|singer| singer.id}
+  #       team_ids = Team.where("gender LIKE ?", gender).all.map{|team| team.id}
+  #       searched_by_gender = Song.where(singer_id: singer_ids) + Song.where(team_id: team_ids)
+  #       searched_by_gender = searched_by_gender.map{|song| song.id}.uniq.sort
+  #     end
+  #   end
+    
+  #   unless params[:genre].nil? || params[:genre].length == 0
+  #     searched_by_genre = []
+  #     genre = params[:genre]
+
+  #     searched_by_genre = Song.tj_ok.where("genre1 LIKE ?", "%#{genre}%") + Song.tj_ok.where("genre2 LIKE ?", "%#{genre}%")
+  #     searched_by_genre = searched_by_genre.map{|song| song.id}
+  #     searched_by_genre = searched_by_genre.uniq
+  #   end
+    
+  #   unless params[:nation].nil? || params[:nation].length == 0
+  #     searched_by_nation = searched_by_nation
+  #   end
+    
+  #   column = Song.attribute_names
+  #   unless params[:column].nil? || params[:column].to_s.length == 0
+  #     column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
+  #   end
+  #   exclude = Song.attribute_names - column
+  #   result_ids = searched_by_since & searched_by_gender & searched_by_genre & searched_by_nation
+  #   result = detail_songs(result_ids, exclude, mytoken, true)
+  #   render :json => result  
+  # end
+  
+  # 검색창(검색결과)
+  # def search_normal
+  #   artist = []
+  #   title  = []
+  #   lyrics = []
+  #   artist, title, lyrics = HomeController.search3(params[:query])
+
+  #   result = {"artist": artist, "title": title, "lyrics": lyrics}
+  #   render json: result
+  # end
 
   #
   # UTIL > pager
@@ -587,42 +594,7 @@ class JsonController < ApplicationController
 
   end
 
-  # 조건검색 api
-  # INPUT   >   mytoken, page
-  #             genre
-  #             age
-  #             gender
-  #
-  # OUTPUT  >   songs with pager
-  def filter_by
-    songs = Song.tj_ok
-    filtered_genre  = songs.where("genre1 LIKE ?", "%#{params[:genre]}%") unless params[:genre].nil?
-    filtered_age    = []
-    unless params[:age].nil?
-        Album.where("released_date LIKE ?", "%#{params[:age]}%").all.each{|album| filtered_age += album.songs.tj_ok}
-    end
-
-    filtered_gender = []
-    unless params[:gender].nil?
-        if params[:gender] == "남성"
-            @gender = 1
-        elsif params[:gender] == "여성"
-            @gender = 2
-        elsif params[:gender] == "혼성"
-            @gender = 4
-        else
-            @gender = nil
-        end
-        (Singer.where(gender: @gender).all + Team.where(gender: @gender).all).each do |artist|
-            filtered_gender += artist.songs.tj_ok
-        end
-    end
-    songs2 = (filtered_genre + filtered_age + filtered_gender).uniq
-    ids = songs2.map{|s| s.id}
-    ids = pager(params[:page], ids)
-
-    render json: detail_songs(ids, [], params[:mytoken], true)
-  end
+  
 
   # myList CRUD > CREATE
   # method : POST
@@ -690,6 +662,7 @@ class JsonController < ApplicationController
     render json: result
   end
   
+  #블랙리스트와 마이리스트에 같은노래가 있는오류 수정 기능 함수
   def mySong_vs_blacklistSong(me_id)
     me = User.find(me_id)
     mySongs = me.mylists.first.mylist_songs
@@ -708,7 +681,7 @@ class JsonController < ApplicationController
     end
     return true
   end
-
+  
   def filtering_blacklistSongs_from_list(ids, myid)
     me = User.find(myid)
     bl_ids = me.blacklist_songs.map{|s| s.song_id}
@@ -743,20 +716,7 @@ class JsonController < ApplicationController
   # method : POST
   # Input   > id: 회원 id (+) myList_id: 읽어들일 myList ID
   # Output  > 내 mySong.all
-  def mySong_read ##id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
-    me = User.find(params[:id])
-    ml = Mylist.find(params[:myList_id])
-    if ml.user_id == me.id
-      mySongs = ml.mylist_songs
-    end
-    result_mylistSong   = mySongs.map{|ms| ms.id}
-    result_song         = mySongs.map{|mysong| mysong.song_id}.map{|id| Song.find(id)}
-    result_artist       = result_song.map{|song| song.artist}.map{|artist| artist.name}
-    result = {mylistSongId: result_mylistSong, song: result_song, artistName: result_artist}
-    puts "#{result}"
-    render json: result
-  end
-
+ 
   def mySong_read_1 ##id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
     me = User.find(params[:id])
     mySong_vs_blacklistSong(me.id)
@@ -900,49 +860,11 @@ class JsonController < ApplicationController
     render json: result
   end
   
-  # 개인정보변경(devise문제로 비밀번호 변경은 추후에 추가예정) 
-  # method : POST
-  # Input   > id: 회원 id 
-  # Output  > 수정된 닉네임, 수정된 성별, 수정된 생일
-  def modify_userdata
-    @check = "ERROR"
-    client = params[:user]
-                                                          # "paramethers" :  
-                                                          #   {
-                                                          #     
-                                                          #     "user" : {
-                                                          #       "id" : "some number",
-                                                          #       "modified_name" : "something",
-                                                          #       "modified_birthdate" : "something",
-                                                          #       "modified_gender" : "something"
-                                                          #     "authNum" : ""
-                                                          #  
-    me = User.find(client[:id])
-    me.name = client[:modified_name]
-    me.gender = client[:modified_gender]
-    me.birthdate = client[:modified_birthdate]
-    me.save
-    @check = "SUCCESS"
-                                                          # user[id]
-                                                          # user[modified_name]
-                                                          # user[modified_gender]
-                                                          # user[modified_birthdate]
-                                                          # authNum
-    
-    
-    result = {"message": @check}
-     
-    render json: result 
-  end
   
-  def delete_account
-    client = params[:user]
-    me = User.find(client[:id])
-    
-    me.delete
-    
-  end
-    
+  
+  
+ 
+  # 크롤러 돌리는 서버에서 데이터 백업해서 이 서버에 데이터 저장하는 코드 
   def db_call
       url = 'http://52.78.146.161/seeds/seeds.rb'
       data = open(url).read
