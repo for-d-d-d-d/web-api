@@ -181,10 +181,6 @@ class HomeController < ApplicationController
         @header_BG_img = @song.sample.jacket
     end
     
-    def old_mylist
-        
-        
-    end
     
     def youtube
         videos = Yt::Collections::Videos.new

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'json/song'
   post 'json/regist'
   get 'json/regist'
+
   
   devise_for :users, :controllers => {omniauth_callbacks: "users/omniauth_callbacks",
   :registrations => "users/registrations",
@@ -17,5 +18,13 @@ Rails.application.routes.draw do
   get "/we/admin2(/:action(/:id))" => "admin2#:action"
   post "/we/admin2(/:action(/:id))" => "admin2#:action"
   match "/:controller(/:action(/:id))", :via => [:post, :get]
+  
+  
+  #RESTAPI TRIAL
+  namespace :api do
+    resources :my_songs
+    
+  end
+  
   
 end
