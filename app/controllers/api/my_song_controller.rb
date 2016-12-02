@@ -23,7 +23,8 @@ class Api::MySongController < ApplicationController
     
     def index
         me = User.find(params[:id])
-        mySong_vs_blacklistSong(me.id)
+        #=> 이 주석처리된 함수 Util 컨트롤러 만들면  살려야 함!!! 임시 주석임.
+        # JsonController.mySong_vs_blacklistSong(me.id)
         ml = Mylist.find(params[:myList_id])
         if ml.user_id == me.id
           mySongs = ml.mylist_songs
@@ -39,8 +40,8 @@ class Api::MySongController < ApplicationController
         # result = {mylistSongId: result_mylistSong, song: result_song}
         
         ids = result_songs.to_a.map{|s| s["id"]}
-        #ids = pager(params[:page], ids).to_s
-        result = detail_songs(ids, [], me.mytoken, true).reverse
+        ids = JsonController.pager(params[:page], ids).to_s
+        result = JsonController.detail_songs(ids, [], me.mytoken, true).reverse
         #result = result_songs
         render json: result
             

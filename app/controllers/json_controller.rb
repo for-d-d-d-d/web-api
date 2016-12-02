@@ -1066,4 +1066,25 @@ class JsonController < ApplicationController
 
         return result
   end
+
+
+   #
+   # UTIL > pager
+   def self.pager(page, arr)
+       limit   = 30
+       if page == "-1"|| page == nil
+          page = 0
+       else
+          page    = page.to_i
+          page    = page unless page.nil?
+          page    = 1 if page == 0
+       end
+   
+       if page == 0
+          arr = arr
+       else
+          arr = arr[(limit * (page - 1))..((limit * page)-1)]
+       end
+       return arr
+   end
 end
