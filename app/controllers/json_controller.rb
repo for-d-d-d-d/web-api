@@ -4,35 +4,6 @@ class JsonController < ApplicationController
 
   SERVER_URL = "http://52.78.160.188"
 
-  def main_banner
-    # size = 500
-    # unless params[:size].nil?
-    #   size = params[:size]
-    # end
-    # img_url = SERVER_URL + "/json/img_resize?size=#{size}&url=#{origin_img_link}"
-    
-    contents = $contents
-
-    banner  = []
-    contents.each do |content|
-        obj     = {}
-        obj["background_img"]   = content[0]
-        obj["main_title"]       = content[1]
-        obj["sub_title"]        = content[2]
-        banner << obj
-    end
-
-    result = []
-    banner.each do |b|
-        result << {"image": b["background_img"], "title": "#{b["main_title"]}\n#{b["sub_title"]}"} #, "url": SERVER_URL + "/json/recom/1"}
-    end
-    render json: result
-  end
-
-  
-  
- 
-  
   # function
   def check_email(email)
     @email_format = Regexp.new(/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/)
@@ -343,52 +314,57 @@ class JsonController < ApplicationController
     render :layout => false
   end
   
-  # 첫 화면
+  # 첫 화면 ( restAPI server(0) android(x) iOS(x) )
   # > 캐러셀
-  def main_carousel 
-    @song = Song.ok.all
-    @carousel = @song.first(9)
+  def main_banner
+    # size = 500
+    # unless params[:size].nil?
+    #   size = params[:size]
+    # end
+    # img_url = SERVER_URL + "/json/img_resize?size=#{size}&url=#{origin_img_link}"
     
-    render :json => @carousel
+    contents = $contents
+
+    banner  = []
+    contents.each do |content|
+        obj     = {}
+        obj["background_img"]   = content[0]
+        obj["main_title"]       = content[1]
+        obj["sub_title"]        = content[2]
+        banner << obj
+    end
+
+    result = []
+    banner.each do |b|
+        result << {"image": b["background_img"], "title": "#{b["main_title"]}\n#{b["sub_title"]}"} #, "url": SERVER_URL + "/json/recom/1"}
+    end
+    render json: result
   end
   
-  # 첫 화면
+  # 첫 화면 ( restAPI server(0) android(x) iOS(x) )
   # > 인기차트
-  
-   def top100
+  def top100
     @song = Song.popular_month
     # @song = Song.all.sample(100) #tj_ok.where("genre2 LIKE ?", "%힙합%")
     # result = @song_top100
     # result = Song.tj_ok.first(30)
 
-    #page = 1
-    #unless params[:page].nil?
-    #   page = params[:page].to_i
-    #   page = 1 if page == 0
-    #   if page > 4
-    #     return render json: [{}]
-    #   end
-    #end
-    #@song = Song.tj_ok.first(100 * page).last(100)
-    #@song = pager(params[:page], @song)
-
     column = Song.attribute_names
     unless params[:column].nil? || params[:column].to_s.length == 0
       column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
     end
-
-    ids = @song.map{|song| song.id}
-    ids = filtering_blacklistSongs_from_list(ids, User.where(mytoken: params[:mytoken]).take.id)
-    ids = pager(params[:page], ids).to_s
-
     exclude = Song.attribute_names - column
-    result = detail_songs(ids, exclude, params[:mytoken], true)
+
+    ids     = @song.map{|song| song.id}
+    ids     = UtilController.filtering_blacklistSongs_from_list(ids, User.where(mytoken: params[:mytoken]).take.id)
+    ids     = UtilController.pager(params[:page], ids).to_s
+    result  = UtilController.detail_songs(ids, exclude, params[:mytoken], true)
 
     render :json => result
   end
  
   
-  # 첫 화면
+  # 첫 화면 ( restAPI server(0) android(x) iOS(x) )
   # > 이달의 신곡
   def month_new
     month_new_songs = []
@@ -401,14 +377,14 @@ class JsonController < ApplicationController
 
     return render :json => [] if params[:mytoken].nil? || params[:mytoken].length < 1
     ids = month_new_songs.map{|s| s.id}
-    ids = filtering_blacklistSongs_from_list(ids, User.where(mytoken: params[:mytoken]).take.id)
-    ids = pager(params[:page], ids).to_s
-    result = detail_songs(ids, [], params[:mytoken], true)
+    ids = UtilController.filtering_blacklistSongs_from_list(ids, User.where(mytoken: params[:mytoken]).take.id)
+    ids = UtilController.pager(params[:page], ids).to_s
+    result = UtilController.detail_songs(ids, [], params[:mytoken], true)
     render :json => result
   end
   
   
-  # 조건검색 api
+  # 조건검색 api ( restAPI server(0) android(x) iOS(x) )
   # INPUT   >   mytoken, page
   #             genre
   #             age
@@ -438,112 +414,15 @@ class JsonController < ApplicationController
             filtered_gender += artist.songs.tj_ok
         end
     end
-    songs2 = (filtered_genre + filtered_age + filtered_gender).uniq
-    ids = songs2.map{|s| s.id}
-    ids = pager(params[:page], ids)
-
-    render json: detail_songs(ids, [], params[:mytoken], true)
-  end
-  
-  # 첫 화면
-  # > 조건검색
-  # def search_by_filter
-  #   whole_song = Song.tj_ok.map{|song| song.id}.uniq
-  #   mytoken = params[:mytoken] 
-  #   searched_by_since   = whole_song
-  #   searched_by_gender  = whole_song
-  #   searched_by_genre   = whole_song
-  #   searched_by_nation  = whole_song
+    songs2  = (filtered_genre + filtered_age + filtered_gender).uniq
     
-  #   unless params[:since].nil? || params[:since].length == 0
-  #     searched_by_since = []
-  #     since = params[:since]    # since = 2000 ~ 2005
-  #     since_start = since.first(4).to_i
-  #     since_end   = since.last(4).to_i
-      
-  #     album_ids = Album.where(:released_date => since_start..since_end).all.map{|album| album.id}
-  #     searched_by_since = Song.where(album_id: album_ids).tj_ok
-  #     searched_by_since = searched_by_since.map{|song| song.id}.uniq.sort
-  #   end
-    
-  #   unless params[:gender].nil? || params[:gender].length == 0      
-  #     gender = params[:gender]
-      
-  #     if gender == "남성"
-  #       searched_by_gender = []
-  #       gender = 1
-  #     elsif gender == "여성"
-  #       searched_by_gender = []
-  #       gender = 2
-  #     elsif gender == "혼성"
-  #       searched_by_gender = []
-  #       gender = 4
-  #     end
-
-  #     artists = []
-  #     if gender.class == Fixnum
-  #       singer_ids = Singer.where("gender LIKE ?", gender).all.map{|singer| singer.id}
-  #       team_ids = Team.where("gender LIKE ?", gender).all.map{|team| team.id}
-  #       searched_by_gender = Song.where(singer_id: singer_ids) + Song.where(team_id: team_ids)
-  #       searched_by_gender = searched_by_gender.map{|song| song.id}.uniq.sort
-  #     end
-  #   end
-    
-  #   unless params[:genre].nil? || params[:genre].length == 0
-  #     searched_by_genre = []
-  #     genre = params[:genre]
-
-  #     searched_by_genre = Song.tj_ok.where("genre1 LIKE ?", "%#{genre}%") + Song.tj_ok.where("genre2 LIKE ?", "%#{genre}%")
-  #     searched_by_genre = searched_by_genre.map{|song| song.id}
-  #     searched_by_genre = searched_by_genre.uniq
-  #   end
-    
-  #   unless params[:nation].nil? || params[:nation].length == 0
-  #     searched_by_nation = searched_by_nation
-  #   end
-    
-  #   column = Song.attribute_names
-  #   unless params[:column].nil? || params[:column].to_s.length == 0
-  #     column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
-  #   end
-  #   exclude = Song.attribute_names - column
-  #   result_ids = searched_by_since & searched_by_gender & searched_by_genre & searched_by_nation
-  #   result = detail_songs(result_ids, exclude, mytoken, true)
-  #   render :json => result  
-  # end
-  
-  # 검색창(검색결과)
-  # def search_normal
-  #   artist = []
-  #   title  = []
-  #   lyrics = []
-  #   artist, title, lyrics = HomeController.search3(params[:query])
-
-  #   result = {"artist": artist, "title": title, "lyrics": lyrics}
-  #   render json: result
-  # end
-
-  #
-  # UTIL > pager
-  def pager(page, arr)
-    limit   = 30
-    if page == "-1"|| page == nil
-        page = 0
-    else
-        page    = page.to_i
-        page    = page unless page.nil?
-        page    = 1 if page == 0
-    end
-
-    if page == 0
-        arr = arr
-    else
-        arr = arr[(limit * (page - 1))..((limit * page)-1)]
-    end
-    return arr
+    ids     = songs2.map{|s| s.id}
+    ids     = UtilController.pager(params[:page], ids)
+    result  = UtilController.detail_songs(ids, [], params[:mytoken], true)
+    render json: result
   end
 
-  # 검색 api
+  # 검색 api ( restAPI server(0) android(x) iOS(x) )
   # INPUT   >   mytoken, page,
   #             search_by : "artist" / "title" / "lyrics"
   #             query
@@ -581,20 +460,121 @@ class JsonController < ApplicationController
         ids = songs.map{|song| song.id}
     end
     
-    #
-    # remove hateSong
-    ids = filtering_blacklistSongs_from_list(ids, User.where(mytoken: mytoken).take.id)
-
-    #
-    # Pager
-    ids = pager(params[:page], ids)
-
-    result = detail_songs(ids, [], mytoken, true)
+    ids     = UtilController.filtering_blacklistSongs_from_list(ids, User.where(mytoken: mytoken).take.id) # remove hateSong
+    ids     = UtilController.pager(params[:page], ids)  # Pager
+    result  = UtilController.detail_songs(ids, [], mytoken, true)
     render json: result
+  end
 
+  # Recommender ( restAPI server(0) android(x) iOS(x) )
+  # method : POST, GET
+  # Input   > id: 회원 id
+  # Output  > 추천 Song Data
+  def recom
+    sing_it = RecommendationController.recommend(params[:id])
+    #count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
+    #count.count_recomm +=1
+    #count.save
+    ids     = sing_it.map{|s| s.id}
+    ids     = UtilController.filtering_blacklistSongs_from_list(ids, params[:id])
+    ids     = UtilController.pager(params[:page], ids).to_s
+    result  = UtilController.detail_songs(ids, [], User.find(params[:id]).mytoken, true)
+    render json: result
+  end
+  
+  def search_practice_note
+    return false
+    # 첫 화면
+    # > 조건검색
+    # def search_by_filter
+    #   whole_song = Song.tj_ok.map{|song| song.id}.uniq
+    #   mytoken = params[:mytoken] 
+    #   searched_by_since   = whole_song
+    #   searched_by_gender  = whole_song
+    #   searched_by_genre   = whole_song
+    #   searched_by_nation  = whole_song
+      
+    #   unless params[:since].nil? || params[:since].length == 0
+    #     searched_by_since = []
+    #     since = params[:since]    # since = 2000 ~ 2005
+    #     since_start = since.first(4).to_i
+    #     since_end   = since.last(4).to_i
+        
+    #     album_ids = Album.where(:released_date => since_start..since_end).all.map{|album| album.id}
+    #     searched_by_since = Song.where(album_id: album_ids).tj_ok
+    #     searched_by_since = searched_by_since.map{|song| song.id}.uniq.sort
+    #   end
+      
+    #   unless params[:gender].nil? || params[:gender].length == 0      
+    #     gender = params[:gender]
+        
+    #     if gender == "남성"
+    #       searched_by_gender = []
+    #       gender = 1
+    #     elsif gender == "여성"
+    #       searched_by_gender = []
+    #       gender = 2
+    #     elsif gender == "혼성"
+    #       searched_by_gender = []
+    #       gender = 4
+    #     end
+  
+    #     artists = []
+    #     if gender.class == Fixnum
+    #       singer_ids = Singer.where("gender LIKE ?", gender).all.map{|singer| singer.id}
+    #       team_ids = Team.where("gender LIKE ?", gender).all.map{|team| team.id}
+    #       searched_by_gender = Song.where(singer_id: singer_ids) + Song.where(team_id: team_ids)
+    #       searched_by_gender = searched_by_gender.map{|song| song.id}.uniq.sort
+    #     end
+    #   end
+      
+    #   unless params[:genre].nil? || params[:genre].length == 0
+    #     searched_by_genre = []
+    #     genre = params[:genre]
+  
+    #     searched_by_genre = Song.tj_ok.where("genre1 LIKE ?", "%#{genre}%") + Song.tj_ok.where("genre2 LIKE ?", "%#{genre}%")
+    #     searched_by_genre = searched_by_genre.map{|song| song.id}
+    #     searched_by_genre = searched_by_genre.uniq
+    #   end
+      
+    #   unless params[:nation].nil? || params[:nation].length == 0
+    #     searched_by_nation = searched_by_nation
+    #   end
+      
+    #   column = Song.attribute_names
+    #   unless params[:column].nil? || params[:column].to_s.length == 0
+    #     column = params[:column].to_s.delete('[').delete(']').delete(' ').split(',')
+    #   end
+    #   exclude = Song.attribute_names - column
+    #   result_ids = searched_by_since & searched_by_gender & searched_by_genre & searched_by_nation
+    #   result = detail_songs(result_ids, exclude, mytoken, true)
+    #   render :json => result  
+    # end
+    
+    # 검색창(검색결과)
+    # def search_normal
+    #   artist = []
+    #   title  = []
+    #   lyrics = []
+    #   artist, title, lyrics = HomeController.search3(params[:query])
+  
+    #   result = {"artist": artist, "title": title, "lyrics": lyrics}
+    #   render json: result
+    # end
   end
 
   
+
+
+
+
+
+
+
+
+
+
+
 
   # myList CRUD > CREATE
   # method : POST
@@ -661,141 +641,10 @@ class JsonController < ApplicationController
     result = me.mylists
     render json: result
   end
-  
-  #블랙리스트와 마이리스트에 같은노래가 있는오류 수정 기능 함수
-  def mySong_vs_blacklistSong(me_id)
-    me = User.find(me_id)
-    mySongs = me.mylists.first.mylist_songs
-    blSongs = me.blacklist_songs
-    blSongs.each do |bl|
-        same_mySong = mySongs.where(song_id: bl.song_id).take
-        if same_mySong.nil?
-            next
-        else
-            if same_mySong.created_at.to_s < bl.created_at.to_s
-                same_mySong.delete
-            else
-                bl.delete
-            end
-        end
-    end
-    return true
-  end
-  
-  def filtering_blacklistSongs_from_list(ids, myid)
-    me = User.find(myid)
-    bl_ids = me.blacklist_songs.map{|s| s.song_id}
-    ids = ids - bl_ids
-    return ids
-  end
 
-  # mySong CRUD > CREATE
-  # method : POST
-  # Input   > id: 회원 id (+) myList_id: 추가될 myList ID (+) song_id: 추가할 song ID
-  # Output  > id: 추가된 mySong ID (+) message: SUCCESS or ERROR
-  def mySong_create
-    @check = "ERROR"
-    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil? # || params[:hometown].nil?
-      # unless Mylist.find(params[:myList_id]).mylist_songs.where(song_id: params[:song_id]).take.nil?
-      unless User.find(params[:id]).mylists.first.mylist_songs.where(song_id: params[:song_id]).take.nil?
-        return render json: {"id": nil, "message": "이미 추가된 곡입니다"}
-      else
-        ms = MylistSong.new
-        ms.mylist_id  = User.find(params[:id]).mylists.first.id    # params[:myList_id]
-        ms.song_id    = params[:song_id]
-        #ms.hometown   = params[:hometown]
-        ms.save
-        @check = "SUCCESS"
-      end
-    end
-    result = {"id": ms.id, "message": @check}
-    render json: result
-  end
-  
-  # mySong CRUD > READ
-  # method : POST
-  # Input   > id: 회원 id (+) myList_id: 읽어들일 myList ID
-  # Output  > 내 mySong.all
- 
-  def mySong_read_1 ##id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
-    me = User.find(params[:id])
-    mySong_vs_blacklistSong(me.id)
-    ml = Mylist.find(params[:myList_id])
-    if ml.user_id == me.id
-      mySongs = ml.mylist_songs
-    end
-    result_mylistSong   = mySongs.map{|ms| ms.id}
-    # result_song         = mySongs.map{|mysong| Song.find(mysong.song_id).as_json}.map{|id| Song.find(id)}
-    result_songs = []
-    mySongs.each do |mysong|
-      song = Song.find(mysong.song_id).as_json
-      song["mySongId"] = mysong.id
-      result_songs << song
-    end
-    # result = {mylistSongId: result_mylistSong, song: result_song}
-    
-    ids = result_songs.to_a.map{|s| s["id"]}
-    ids = pager(params[:page], ids).to_s
-    result = detail_songs(ids, [], me.mytoken, true).reverse
-    #result = result_songs
-    render json: result
-  end
 
-  
-  # mySong CRUD > UPDATE
-  # method : POST
-  # Input   > id: 회원 id (+) myList_id: myList ID (+) targetList_id: TARGET list ID (+) mySong_id: 수정하려는 mySong ID
-  # Output  > id: 변경된 mySong id (+) message: SUCCESS or ERROR
-  def mySong_update
-    @check = "ERROR"
-    if params[:myList_id] != params[:targetList_id]
-      ms = MylistSong.find(params[:mySong_id])
-      ms.mylist_id = params[:targetList_id]
-      ms.save
-      @check = "SUCCESS"
-    end
-    result = {"id": ms.id, "message": @check}
-    render json: result
-  end
-  
-  # mySong CRUD > DELETE
-  # method : POST
-  # Input   > id: 회원 id (+) mySong_id: 삭제하려는 mySong ID
-  # Output  > 내 mySong.all
-  def mySong_delete
-    me = User.find(params[:id])
-    unless params[:mySong_id].nil?
-      ms = MylistSong.find(params[:mySong_id])
-      ml = ms.mylist
-      if ms.mylist.user_id == me.id
-        ms.delete
-      end
-    end
-    unless params[:song_id].nil?
-        ml = me.mylists.first
-        ms = me.mylists.first.mylist_songs.where(song_id: params[:song_id]).take
-        ms.delete
-    end
-    mySongs = ml.mylist_songs
-    result = mySongs
-    render json: result
-  end
-  
-  # Recommender
-  # method : POST, GET
-  # Input   > id: 회원 id
-  # Output  > 추천 Song Data
-  def recom
-    sing_it = RecommendationController.recommend(params[:id])
-    #count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
-    #count.count_recomm +=1
-    #count.save
-    ids = sing_it.map{|s| s.id}
-    ids = filtering_blacklistSongs_from_list(ids, params[:id])
-    ids = pager(params[:page], ids).to_s
-    result = detail_songs(ids, [], User.find(params[:id]).mytoken, true)
-    render json: result
-  end
+
+
     
 
   def blacklist_song_create
@@ -828,10 +677,9 @@ class JsonController < ApplicationController
         a_song["blacklist_song_id"] = bs.id
         songs << a_song
     end
-    ids = songs.map{|s| s["id"]}
-    ids = pager(params[:page], ids).to_s
-    result = detail_songs(ids, [], nil, true)
-
+    ids     = songs.map{|s| s["id"]}
+    ids     = UtilController.pager(params[:page], ids).to_s
+    result  = UtilController.detail_songs(ids, [], nil, true)
     render json: result
   end
   
@@ -855,8 +703,8 @@ class JsonController < ApplicationController
       return render json: {status: @status, message: @message}
     end
     
-    me = User.find(params[:id])
-    result = me.blacklist_songs.all
+    me      = User.find(params[:id])
+    result  = me.blacklist_songs.all
     render json: result
   end
   
@@ -864,136 +712,110 @@ class JsonController < ApplicationController
   
   
  
-  # 크롤러 돌리는 서버에서 데이터 백업해서 이 서버에 데이터 저장하는 코드 
-  def db_call
-      url = 'http://52.78.146.161/seeds/seeds.rb'
-      data = open(url).read
-      send_data data, :disposition => 'attachment', :filename => 'seeds.rb'
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  # mySong CRUD > CREATE ( restAPI server(0) android(x) iOS(x) )
+  # method : POST
+  # Input   > id: 회원 id (+) myList_id: 추가될 myList ID (+) song_id: 추가할 song ID
+  # Output  > id: 추가된 mySong ID (+) message: SUCCESS or ERROR
+  def mySong_create
+    @check = "ERROR"
+    unless params[:id].nil? || params[:myList_id].nil? || params[:song_id].nil? # || params[:hometown].nil?
+      # unless Mylist.find(params[:myList_id]).mylist_songs.where(song_id: params[:song_id]).take.nil?
+      unless User.find(params[:id]).mylists.first.mylist_songs.where(song_id: params[:song_id]).take.nil?
+        return render json: {"id": nil, "message": "이미 추가된 곡입니다"}
+      else
+        ms = MylistSong.new
+        ms.mylist_id  = User.find(params[:id]).mylists.first.id    # params[:myList_id]
+        ms.song_id    = params[:song_id]
+        #ms.hometown   = params[:hometown]
+        ms.save
+        @check = "SUCCESS"
+      end
+    end
+    result = {"id": ms.id, "message": @check}
+    render json: result
+  end
+  
+  # mySong CRUD > READ ( restAPI server(0) android(x) iOS(x) )
+  # method : POST
+  # Input   > id: 회원 id (+) myList_id: 읽어들일 myList ID
+  # Output  > 내 mySong.all
+  def mySong_read_1 ##id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
+    me = User.find(params[:id])
+    UtilController.mySong_vs_blacklistSong(me.id)
+    ml = Mylist.find(params[:myList_id])
+    if ml.user_id == me.id
+      mySongs = ml.mylist_songs
+    end
+    result_mylistSong   = mySongs.map{|ms| ms.id}
+    # result_song         = mySongs.map{|mysong| Song.find(mysong.song_id).as_json}.map{|id| Song.find(id)}
+    result_songs = []
+    mySongs.each do |mysong|
+      song = Song.find(mysong.song_id).as_json
+      song["mySongId"] = mysong.id
+      result_songs << song
+    end
+    # result = {mylistSongId: result_mylistSong, song: result_song}
     
-    @file = 'true'
-    render json: @file 
+    ids     = result_songs.to_a.map{|s| s["id"]}
+    ids     = UtilController.pager(params[:page], ids).to_s
+    result  = UtilController.detail_songs(ids, [], me.mytoken, true).reverse
+    #result = result_songs
+    render json: result
   end
 
-  # fn() INFO
-  # description : 문자열 형태로 전달되는 각종 ID값들의 배열을 배열로 변환하는 함수.
-  # 1. id값으로 매핑된 문자열만 입력값으로 허용.
-  # 2. 매핑된 문자열을 배열 형태로 변환.
-  # 3. id값은 반드시 임의의 숫자형태일 것.
-  # 4. ex) 가능한 입력형식
-  #             "[1,2,3]" / "1,2,3" / "[1, 2, 3]"
-  #        불가능한 입력형식
-  #             "['1','2','3']" / '["1","2","3"]' / "[\"1\",\"2\",\"3\"]"
-  # 5. 권장사항
-  #     - int형 element들을 담은 배열을 그대로 문자열로 변환한 형태가 최적의 입력형태.
-  def mapped_string_translater_to_array(string)
-        str0 = string.delete(' ')
-        arr0 = str0.split('')
-        arr0.shift      if arr0.first == '['
-        arr0.pop        if arr0.last  == ']'
-        str1 = arr0.join
-        arr1 = str1.split(',')
-        arr2 = arr1.map{|el| el.to_i}   # 임시 제외 => .map{|el| nil if el == 0}.compact
-        result = arr2
-        
-        return result
-  end
-
-  # fn() INFO
-  # description : 노래 레코드에 대한 상세정보를 선택적으로 반환하는 함수. 
-  # why         : 매번 레코드 정보를 전부 리턴하는 낭비를 방지
-  # INPUT       : ids : SongTable의 주key인 id값들을 요소로하는 배열을 문자열 형태로 입력. 
-  #               exclude : 레코드 속성중에 제거하고자 하는 불필요한 속성들. Array형태로 입력. 
-  #               mytoken : 사용자 토큰(str)
-  #               mylist_count : true or false
-  # - case      : ids : "[1,2,3]" / "1,2,3" / "[1, 2, 3]" 세가지 형태가 가능하며, 첫 번째 형태를 권장.
-  #               exclude : {
-  #                     "없을때" : (arrayType) [],
-  #                     "1개 이상 존재" : (arrayType) ["", "", ... , ""]
-  #                     }
-  # OUTPUT      : fn() returns records with hashType for the SongTable.
-  def detail_songs(ids, exclude, mytoken, mylist_count)
-        ids = ids.to_s if ids.class != String
-        song_ids = mapped_string_translater_to_array(ids)
-        songs = song_ids.map{|song_id| Song.find(song_id)}
-        
-        default = ["created_at","updated_at","youtube","lowkey","highkey","jacket","jacket_middle","jacket_small","song_num"]
-        will_exclude = default + exclude unless exclude == "nil" || exclude == nil || exclude.class != Array
-        will_exclude = will_exclude.uniq
-        
-        attributes = []
-        Song.attribute_names.each do |an|
-            attributes << an unless will_exclude.include?(an)
-        end
-
-        result = []
-        songs.each do |song|
-            arr = []
-            attributes.each do |att|
-                eval("arr << [att, song.#{att}]")
-                if att == "jacket"
-                    if song.jacket.nil?
-                        
-                    elsif song.jacket == "Error::ThisMusickCanNotFind"
-                    end
-                end
-            end
-
-            if song.song_num.nil?
-                arr << ["song_num", 0]
-            else
-                arr << ["song_num", song.song_num]
-            end
-            if song.jacket.nil?
-                arr << ["jacket", $noReadyJacket_600]
-                arr << ["jacket_middle", $noReadyJacket_200]
-                arr << ["jacket_small", $noReadyJacket_100]
-            elsif song.jacket == "Error::ThisMusickCanNotFind"
-                arr << ["jacket", $noReadyJacket_600]
-                arr << ["jacket_middle", $noReadyJacket_200]
-                arr << ["jacket_small", $noReadyJacket_100]
-            else
-                arr << ["jacket", song.jacket]
-                arr << ["jacket_middle", song.jacket_middle]
-                arr << ["jacket_small", song.jacket_small]
-            end
-            
-            if song.album.nil?
-                arr << ["release", "세팅 대기중인 곡입니다"]
-            else
-                release = song.album.released_date.split('')
-                release.pop
-                release = release.join
-                arr << ["release", release]
-            end
-
-            is_my_favorite = false
-            unless mytoken.nil?
-                me = User.where(mytoken: mytoken).take
-                mySongs = me.my_songs.map{|ms| ms.id}
-                is_my_favorite = true if mySongs.include?(song.id)
-                maybe_mysong = me.mylists.first.mylist_songs.where(song_id: song.id).take
-            end
-            arr << ["is_my_favorite", is_my_favorite]
-            
-            if mylist_count == true
-                ml_count = MylistSong.where(song_id: song.id).map{|ms| ms.mylist.user}.uniq.count
-                arr << ["mylist_count", ml_count]
-            end
-            result << [song.id, arr.to_h]
-        end
-        result = result.to_h.to_a.each{|s| s.shift}.flatten
-
-        return result
-  end
-
-  def temp(arr)
-        #arr.each do 
-        return arr
+  
+  # mySong CRUD > UPDATE ( restAPI server(0) android(x) iOS(x) )
+  # method : POST
+  # Input   > id: 회원 id (+) myList_id: myList ID (+) targetList_id: TARGET list ID (+) mySong_id: 수정하려는 mySong ID
+  # Output  > id: 변경된 mySong id (+) message: SUCCESS or ERROR
+  def mySong_update
+    @check = "ERROR"
+    if params[:myList_id] != params[:targetList_id]
+      ms = MylistSong.find(params[:mySong_id])
+      ms.mylist_id = params[:targetList_id]
+      ms.save
+      @check = "SUCCESS"
+    end
+    result = {"id": ms.id, "message": @check}
+    render json: result
   end
   
+  # mySong CRUD > DELETE ( restAPI server(0) android(x) iOS(x) )
+  # method : POST
+  # Input   > id: 회원 id (+) mySong_id: 삭제하려는 mySong ID
+  # Output  > 내 mySong.all
+  def mySong_delete
+    me = User.find(params[:id])
+    unless params[:mySong_id].nil?
+      ms = MylistSong.find(params[:mySong_id])
+      ml = ms.mylist
+      if ms.mylist.user_id == me.id
+        ms.delete
+      end
+    end
+    unless params[:song_id].nil?
+        ml = me.mylists.first
+        ms = me.mylists.first.mylist_songs.where(song_id: params[:song_id]).take
+        ms.delete
+    end
+    mySongs = ml.mylist_songs
+    result = mySongs
+    render json: result
+  end
   
-  
-
-
-   
 end
