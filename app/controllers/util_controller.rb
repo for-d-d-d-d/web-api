@@ -95,13 +95,16 @@ class UtilController < ApplicationController
             end
 
             is_my_favorite = false
+            mysong_id = 0
             unless mytoken.nil?
                 me = User.where(mytoken: mytoken).take
                 mySongs = me.my_songs.map{|ms| ms.id}
                 is_my_favorite = true if mySongs.include?(song.id)
-                # maybe_mysong = me.mylists.first.mylist_songs.where(song_id: song.id).take
+                maybe_mysong = me.mylists.first.mylist_songs.where(song_id: song.id).take
+                mysong_id = maybe_mysong.id unless maybe_mysong.nil?
             end
             arr << ["is_my_favorite", is_my_favorite]
+            arr << ["mysong_id", mysong_id]
             
             if mylist_count == true
                 ml_count = MylistSong.where(song_id: song.id).map{|ms| ms.mylist.user}.uniq.count

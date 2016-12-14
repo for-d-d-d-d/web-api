@@ -27,7 +27,7 @@ class Api::MySongController < ApplicationController
             return render json: {"id": nil, "message": @check}
         end
         # => hurdle 3) overlap or repeat protection
-        unless Mylist.find(params[:myList_id]).mylist_songs.where(song_id: params[:song_id]).take.nil?
+        unless Mylist.find(params[:mylist_id]).mylist_songs.where(song_id: params[:song_id]).take.nil?
             return render json: {"id": nil, "message": "이미 추가된 곡입니다"}
         end
         
@@ -56,7 +56,7 @@ class Api::MySongController < ApplicationController
         ## STAGE > function config (with input parameters)
         me = User.find(params[:user_id])
         UtilController.mySong_vs_blacklistSong(me.id)
-        ml = Mylist.find(params[:myList_id])
+        ml = Mylist.find(params[:mylist_id])
         if ml.user_id == me.id
             mySongs = ml.mylist_songs
         end
@@ -120,20 +120,28 @@ class Api::MySongController < ApplicationController
         me = User.find(params[:user_id])
         
         unless params[:id].nil?
-          ms = MylistSong.find(params[:id])
-          ml = ms.mylist
-          if ms.mylist.user_id == me.id
-            ms.delete
-          end
+            ms = MylistSong.where(id: params[:id]).take
+            unless ms.nil?
+                ml = ms.mylist
+                if ms.mylist.user_id == me.id
+                    ms.delete
+                end
+            else
+                unless params[:song_id].nil?
+                    ml = me.mylists.first
+                    ms = ml.mylist_songs.where(song_id: params[:song_id]).take
+                    ms.delete
+                end
+            end
         end
         
         # => additional tools (you can use this code-block when you need delete certainly. you need additional one parameter 'params[:song_id]')
         # => however it need for getting parameter from android app (WRANING 'It must be modify on android side')
-        unless params[:song_id].nil?
-            ml = me.mylists.first
-            ms = me.mylists.first.mylist_songs.where(song_id: params[:song_id]).take
-            ms.delete
-        end
+        # unless params[:song_id].nil?
+        #     ml = me.mylists.first
+        #     ms = me.mylists.first.mylist_songs.where(song_id: params[:song_id]).take
+        #     ms.delete
+        # end
         
         mySongs = ml.mylist_songs
         result = mySongs
