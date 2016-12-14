@@ -65,11 +65,12 @@ class Api::BlacklistSongController < ApplicationController
     # Output  > (Song-Table hash) blacklist_songs #onpage
     def destroy
         song_id = params[:id]
-        @status = "ERROR"
+        me      = User.find(params[:user_id])
+        @status  = "ERROR"
         @message = "INCOMPLETE PARAMETERS : 'song_id' or 'id'"
     
         unless song_id.nil? || params[:user_id].nil?
-          my_bl = BlacklistSong.where(user_id: params[:user_id])
+          my_bl = me.blacklist_songs
           if my_bl.where(song_id: song_id).take.nil?
             @message = "unexist blacklist song"
             return render json: {status: @status, message: @message}
@@ -80,7 +81,6 @@ class Api::BlacklistSongController < ApplicationController
           return render json: {status: @status, message: @message}
         end
         
-        me      = User.find(params[:user_id])
         result  = me.blacklist_songs.all
         render json: result
     end
