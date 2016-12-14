@@ -4,12 +4,6 @@ class JsonController < ApplicationController
 
   SERVER_URL = "http://52.78.160.188"
 
-  # function
-  def check_email(email)
-    @email_format = Regexp.new(/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/)
-    @email_format.match(email.to_s.strip)    
-  end
-
   # USER : CREATE
   def regist
     @check      = "ERROR"
@@ -39,7 +33,7 @@ class JsonController < ApplicationController
         u.gender = 0
       end
     end
-    if check_email(u.email) != nil                             # 1.이메일 형식 체크
+    if UtilController.check_email(u.email) != nil                             # 1.이메일 형식 체크
       if User.where(email: user[:email]).count == 0            # 2.기존 회원인지 여부 체크
         if user[:password].to_s.length >= 6                    # 3.비번 자릿수 체크
           if user[:password] == user[:password_confirmation]   # 4.비번 == 비번확인 체크
@@ -125,7 +119,7 @@ class JsonController < ApplicationController
       if me[:email].nil?                        # 차단2. user[email]이 입력되지 않음
         @massage = "email을 입력해주세요"
         return render json: {result: @check, status: @status, message: @massage}
-      elsif check_email(me[:email]) == nil      # 차단3. email이 형식에 맞지 않음
+      elsif UtilController.check_email(me[:email]) == nil      # 차단3. email이 형식에 맞지 않음
         @massage = "Oops! Please Check your Email Format! (ex. blah@blah.blah)"
         return render json: {result: @check, status: @status, message: @massage}
       elsif me[:password].nil?                  # 차단4. password가 입력되지 않음
@@ -314,7 +308,7 @@ class JsonController < ApplicationController
     render :layout => false
   end
   
-  # 첫 화면 ( restAPI server(0) android(x) iOS(x) )
+  # 첫 화면 ( restAPI server(0) android(0) iOS(x) )
   # > 캐러셀
   def main_banner
     # size = 500
@@ -341,7 +335,7 @@ class JsonController < ApplicationController
     render json: result
   end
   
-  # 첫 화면 ( restAPI server(0) android(x) iOS(x) )
+  # 첫 화면 ( restAPI server(0) android(0) iOS(x) )
   # > 인기차트
   def top100
     @song = Song.popular_month
@@ -364,7 +358,7 @@ class JsonController < ApplicationController
   end
  
   
-  # 첫 화면 ( restAPI server(0) android(x) iOS(x) )
+  # 첫 화면 ( restAPI server(0) android(0) iOS(x) )
   # > 이달의 신곡
   def month_new
     month_new_songs = []
@@ -384,7 +378,7 @@ class JsonController < ApplicationController
   end
   
   
-  # 조건검색 api ( restAPI server(0) android(x) iOS(x) )
+  # 조건검색 api ( restAPI server(0) android(0) iOS(x) )
   # INPUT   >   mytoken, page
   #             genre
   #             age
@@ -422,7 +416,7 @@ class JsonController < ApplicationController
     render json: result
   end
 
-  # 검색 api ( restAPI server(0) android(x) iOS(x) )
+  # 검색 api ( restAPI server(0) android(0) iOS(x) )
   # INPUT   >   mytoken, page,
   #             search_by : "artist" / "title" / "lyrics"
   #             query
@@ -466,7 +460,7 @@ class JsonController < ApplicationController
     render json: result
   end
 
-  # Recommender ( restAPI server(0) android(x) iOS(x) )
+  # Recommender ( restAPI server(0) android(0) iOS(x) )
   # method : POST, GET
   # Input   > id: 회원 id
   # Output  > 추천 Song Data
@@ -576,7 +570,7 @@ class JsonController < ApplicationController
 
 
 
-  # myList CRUD > CREATE
+  # myList CRUD > CREATE ( restAPI server(0) android(0) iOS(x) )
   # method : POST
   # Input   > id: 회원 id (+) title: myList 타이틀
   # Output  > id: 생성된 myList id (+) message: SUCCESS or ERROR
@@ -598,7 +592,7 @@ class JsonController < ApplicationController
     render json: result
   end
   
-  # myList CRUD > READ
+  # myList CRUD > READ ( restAPI server(0) android(0) iOS(x) )
   # method : POST
   # Input   > id: 회원 id
   # Output  > 내 myList.all
@@ -608,7 +602,7 @@ class JsonController < ApplicationController
     render json: result
   end
   
-  # myList CRUD > UPDATE
+  # myList CRUD > UPDATE ( restAPI server(0) android(0) iOS(x) )
   # method : POST
   # Input   > id: 회원 id (+) myList_id: 수정하려는 myList ID (+) title: 수정하려는 myList 타이틀
   # Output  > id: 변경된 myList id (+) message: SUCCESS or ERROR
@@ -626,7 +620,7 @@ class JsonController < ApplicationController
     render json: result
   end
   
-  # myList CRUD > DELETE
+  # myList CRUD > DELETE ( restAPI server(0) android(0) iOS(x) )
   # method : POST
   # Input   > id: 회원 id (+) myList_id: 삭제하려는 myList ID
   # Output  > id: 내 myList.all
@@ -646,7 +640,7 @@ class JsonController < ApplicationController
 
 
     
-
+  # blacklistsong CRUD > CREATE ( restAPI server(0) android(0) iOS(x) )
   def blacklist_song_create
     @check = "ERROR"
     
@@ -663,7 +657,7 @@ class JsonController < ApplicationController
     result = {"id": bs.id, "message": @check}
     render json: result 
   end
-  # blacklistsong CRUD > READ
+  # blacklistsong CRUD > READ ( restAPI server(0) android(0) iOS(x) )
   # method : POST
   # Input   > id: 회원 id 
   # Output  > blacklist_songs: 해당 회원의 차단된 노래들
@@ -683,7 +677,7 @@ class JsonController < ApplicationController
     render json: result
   end
   
-  # blacklistsong CRUD > DELETE
+  # blacklistsong CRUD > DELETE ( restAPI server(0) android(0) iOS(x) )
   # method : POST
   # Input   > id: 회원 id, 차단해지 하려는 노래의 blacklist_song_id
   # Output  > blacklist_songs: 해당 회원의 차단된 노래들

@@ -37,9 +37,9 @@ Rails.application.routes.draw do
           # => (수정 갱신) PUT    /api/mylist/:mylist_id/my_song/:id      api/my_song#update
           # => (지목 삭제) DELETE /api/mylist/:mylist_id/my_song/:id      api/my_song#destroy
       end
-      resources :interface, :blacklist_song
+      resources :interface, :blacklist_song, :user
   end
-  
+  post '/api/user/login', to: "api/user#login"
   get '/api/:action', to: "api/interface#:action"
   
   

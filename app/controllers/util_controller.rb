@@ -1,5 +1,11 @@
 class UtilController < ApplicationController
+    ## REST-API Definition
     
+    # function
+    def self.check_email(email)
+        @email_format = Regexp.new(/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/)
+        @email_format.match(email.to_s.strip)    
+    end
     
     def self.pager(page, arr)
         limit   = 30

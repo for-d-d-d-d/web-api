@@ -1,6 +1,6 @@
 class Api::InterfaceController < ApplicationController
-    
     ## REST-API Definition
+    
     def index
         # super
     end

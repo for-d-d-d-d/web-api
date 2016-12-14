@@ -1,4 +1,5 @@
 class Api::MySongController < ApplicationController
+    ## REST-API Definition
     
     # => (신규 생성) POST   /api/mylist/:mylist_id/my_song          api/my_song#create
     # STORY   > 마이리스트에 새로운 곡을 추가
