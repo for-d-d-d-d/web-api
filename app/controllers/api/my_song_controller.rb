@@ -46,7 +46,7 @@ class Api::MySongController < ApplicationController
     
     
     # => (유관 조회) GET    /api/mylist/:mylist_id/my_song          api/my_song#index
-    # STORY   > 내 마이리스트들중 특정 마이리스트의 수록곡들를 조회
+    # STORY   > 내 마이리스트들중 특정 마이리스트의 수록곡들을 조회
     # Input   > (url) mylist_id:  읽어들일 mylist의 id
     #           (+)   user_id:    회원 id
     #           (+)   page:       page 번호(cf. offset)
