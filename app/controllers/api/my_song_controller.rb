@@ -128,11 +128,12 @@ class Api::MySongController < ApplicationController
         end
         
         # => additional tools (you can use this code-block when you need delete certainly. you need additional one parameter 'params[:song_id]')
-        # unless params[:song_id].nil?
-        #     ml = me.mylists.first
-        #     ms = me.mylists.first.mylist_songs.where(song_id: params[:song_id]).take
-        #     ms.delete
-        # end
+        # => however it need for getting parameter from android app (WRANING 'It must be modify on android side')
+        unless params[:song_id].nil?
+            ml = me.mylists.first
+            ms = me.mylists.first.mylist_songs.where(song_id: params[:song_id]).take
+            ms.delete
+        end
         
         mySongs = ml.mylist_songs
         result = mySongs

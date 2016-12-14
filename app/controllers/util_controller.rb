@@ -99,7 +99,7 @@ class UtilController < ApplicationController
                 me = User.where(mytoken: mytoken).take
                 mySongs = me.my_songs.map{|ms| ms.id}
                 is_my_favorite = true if mySongs.include?(song.id)
-                maybe_mysong = me.mylists.first.mylist_songs.where(song_id: song.id).take
+                # maybe_mysong = me.mylists.first.mylist_songs.where(song_id: song.id).take
             end
             arr << ["is_my_favorite", is_my_favorite]
             
