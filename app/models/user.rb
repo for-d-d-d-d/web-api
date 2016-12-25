@@ -22,6 +22,42 @@ class User < ActiveRecord::Base
         sa
     end
 
+    def self.markingRange(admin_name)
+        start = 1
+        stop  = self.where("email LIKE?", "%.beta%").count
+        count = 20  # 1인당 몇 명
+        if admin_name == "손대근"
+            start = 80
+            stop  = start + count -1
+        elsif admin_name == "김용현"
+            start = 60 
+            stop  = start + count -1
+        elsif admin_name == "유선우"
+            start = 40
+            stop  = start + count -1
+        elsif admin_name == "김은솔"
+            start = 100
+            stop  = start + count -1
+        elsif admin_name == "정지은"
+            start = 120
+            stop  = start + count -1
+        end
+        puts "\n\n\t\tstart = #{start} / stop = #{stop}\n\n\n"
+        return start-1, stop-1
+    end
+
+    def self.betaUserDetail(admin_name)
+        start, stop = User.markingRange(admin_name)
+        start = start.to_i; stop = stop.to_i;
+        self.where("email LIKE?", "%.beta%").map{|u| ["EMAIL : "+ u.email, "NAME : "+ u.name, "COUNT : "+ u.my_songs.count.to_s + "개", u.mylists.first.mylist_songs.map{|s| Song.find(s.song_id)}.map{|s| s.title + " / " + s.artist_name}]}[start..stop]
+    end
+
+    def self.betaUserBlank(admin_name)
+        start, stop = User.markingRange(admin_name)
+        start = start.to_i; stop  = stop.to_i;
+        self.where("email LIKE?", "%.beta%").map{|u| if u.my_songs.count < 13 then ["EMAIL : "+ u.email, "NAME : "+ u.name, "COUNT : "+ u.my_songs.count.to_s + "개", u.mylists.first.mylist_songs.map{|s| Song.find(s.song_id)}.map{|s| s.title + " / " + s.artist_name}] end}[start..stop]
+    end
+
     def self.from_omniauth(auth)
         where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
         # where(auth.slice(:provider, :uid)).first_or_initialize.tap do |user|

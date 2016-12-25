@@ -197,9 +197,9 @@ class Api::UserController < ApplicationController
     def show
         user = {result: "ERROR", message: "이런~ 가입부터 해달라고래!", name: nil, gender: nil, email: nil}
         
-        if params[:id].to_i == 0
+        if (10**(params[:id].length)).class == Bignum
             me = User.where(mytoken: params[:id]).take
-        else
+        elsif (10**(params[:id].length)).class == Fixnum
             me = User.where(id: params[:id]).take
         end
         

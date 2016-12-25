@@ -324,4 +324,17 @@ class Admin2Controller < ApplicationController
         @percent = 0
         @percent = (sum.to_f / @errors.count).round(2) unless @errors.count == 0
     end
+
+    def betaUser
+        complete = nil
+        complete = params[:complete_beta_user] unless params[:complete_beta_user].nil?
+
+        admin_name = params[:admin_name]
+        if params[:admin_name].nil? || params[:admin_name].length.zero?
+            admin_name = "all"
+        end
+
+        @results = User.betaUserDetail(admin_name) unless complete == "false"
+        @results = User.betaUserBlank(admin_name)  if complete == "false"
+    end
 end

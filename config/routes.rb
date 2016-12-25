@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  get 'json/song'
-  post 'json/regist'
-  get 'json/regist'
-
   
   devise_for :users, :controllers => {omniauth_callbacks: "users/omniauth_callbacks",
   :registrations => "users/registrations",
@@ -19,6 +15,7 @@ Rails.application.routes.draw do
   post "/we/admin2(/:action(/:id))" => "admin2#:action"
   match "/:controller(/:action(/:id))", :via => [:post, :get]
   
+  get "/beta(/:admin_name(/:complete_beta_user))", to: 'admin2#betaUser'
   
   # REST-API TRIAL
   # namespace :api do
@@ -26,6 +23,7 @@ Rails.application.routes.draw do
     
   # end
   
+  # RealTime RESTful Routing
   namespace :api do
       resources :mylist do
           resources :my_song
