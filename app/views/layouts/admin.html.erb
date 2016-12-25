@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>고래방 Admin~</title>
+        <title>고래방 admin~</title>
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
         <!-- Vendor CSS -->
         <link href="/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
@@ -174,13 +174,13 @@
         <%= render partial: 'admin/feature_layouts/header' %>
 
         <section id="main">
-            <%= render partial: 'admin/feature_layouts/sidebar' %>
-            <%= render partial: 'admin/feature_layouts/chat' %>
+            <%= render partial: 'admin2/feature_layouts/sidebar' %>
+            <%= render partial: 'admin2/feature_layouts/chat' %>
             <section id="content">
                 <%= yield %>
             </section>
         </section>
 
-        <%= render partial: 'admin/feature_layouts/footer' %>
+        <%= render partial: 'admin2/feature_layouts/footer' %>
     </body>
 </html>

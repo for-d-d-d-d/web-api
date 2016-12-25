@@ -55,6 +55,7 @@ class Api::MySongController < ApplicationController
     # Issue   > # id외에 노래의 제목과 아티스트같은 내부데이터도 반환해줘야함.
     def index
         ## STAGE > function config (with input parameters)
+        puts "\n\n\n\t\tparameter 'user_id' is nil\n\n\n\n" if params[:user_id].nil? || params[:user_id].length.zero?
         me = User.find(params[:user_id])
         UtilController.mySong_vs_blacklistSong(me.id)
         ml = Mylist.find(params[:mylist_id])
