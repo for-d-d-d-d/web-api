@@ -281,7 +281,7 @@ class JsonController < ApplicationController
     render :json => {result: "SUCCESS", message: "your account successfuly updated!", name: user.name, gender: user.gender, email: user.email, mytoken: user.mytoken}
   end
   
-   #회원탈퇴  
+  # 회원탈퇴
   def delete_account
     client = params[:user]
     me = User.find(client[:id])
