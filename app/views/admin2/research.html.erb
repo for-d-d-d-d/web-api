@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="col-md-12">
+        <%#
+            done = []
+            yet  = []
+            @results.compact.each do |r|
+                if r[2].gsub('COUNT : ','').gsub('개','').to_i >= 13
+                    done << r
+                else
+                    yet  << r
+                end
+            end
+            if params[:complete_beta_user] == "false"
+                done = @results - yet
+            end
+        %>
+        <div class="card">
+            <div class="listview">
+                <div class="lv-header bgm-teal">
+                    <h3 style="color: #fff;"><%#= done.count  %> 개 완료, <%#= yet.count %> 개 남음</h3>
+                    <p><span style="color:#fff">남은 계정들 : </span> <%#= yet.map{|y| y[0].gsub('EMAIL : me@','<span style="color: #fff">').gsub('.beta','</span><span style="font-size: 1.1em; font-weight: bold;">번</span> ')}.join(', ').html_safe  %></p>
+                </div>
+                <div class="lv-body">
+                </div>
+            </div>
+        </div>
+        <%# @results.compact.each do |result| %>
+        <% results = (1..100).to_a %>
+        <% results.each do |result| %>
+        <div class="col-md-3 col-sm-4 col-xs-12">
+            <div class="card">
+                <div class="listview">
+                    <div class="lv-header bgm-indigo" style="color: #fff; font-size: 10px;">
+                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%= result %><%#= result[0] %></div>
+                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%#= result[1] %></div>
+                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%#= result[2] %></div>
+                    </div>
+                    <div class="lv-body" style="padding-left: 5%; padding-right: 5%; padding-bottom: 15px;">
+                        <%# result[3].each do |song| %>
+                            <p style="margin-bottom: 2px;"><%#= result[3].index(song) + 1 %> | <%#= song %></p>
+                        <%# end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% end %>
+    </div>
+</div>

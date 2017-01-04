@@ -24,6 +24,8 @@ module Workspace
         config.active_record.raise_in_transactional_callbacks = true
 
         # config.active_job.queue_adapter = :delayed_job
-
+        
+        # 2695 6617 618 925
+        config.autoload_paths << Rails.root.join('lib')
     end
 end

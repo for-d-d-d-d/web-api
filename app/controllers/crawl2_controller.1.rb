@@ -9,15 +9,15 @@ class Crawl2Controller < ApplicationController
         @songs = []
         if condition == 0
             #
-        elsif condition == 10 #이게 질러넷없이 tj만 긁는거
-            
+        elsif condition == 10
+            song_tjnum = start - 1
             i = 0
             count_origin = count
             loop do
+                song_tjnum += 1
                 count -= 1
                 puts "\n\n\t\tNow SONG tjnum : #{song_tjnum}, #{count} LEAVES"
                 unless Song.where(song_tjnum: song_tjnum).take.nil?
-                    song_tjnum += 1    
                     next
                 end
 
@@ -27,12 +27,11 @@ class Crawl2Controller < ApplicationController
                     @songs << song.id
                     i += 1
                 end
-                song_tjnum += 1
-                
+
                 break if count <= 0
             end
-        else # 질러넷, TJ 모두 긁는거
-            
+        else
+            song_tjnum = start - 1
             i = 0
             count_origin = count
             loop do
@@ -40,7 +39,6 @@ class Crawl2Controller < ApplicationController
                 count -= 1
                 puts "\n\n\t\tNow SONG tjnum : #{song_tjnum}, #{count} LEAVES"
                 unless Song.where(song_tjnum: song_tjnum).take.nil?
-                    song_tjnum += 1
                     next
                 end
 
@@ -50,8 +48,7 @@ class Crawl2Controller < ApplicationController
                     @songs << song.id
                     i += 1
                 end
-                song_tjnum += 1
-                
+
                 break if count <= 0
             end
         end
@@ -61,7 +58,7 @@ class Crawl2Controller < ApplicationController
     def self.parse_and_save_tj(song_tjnum)
         
         # 크롤링 타겟 Page를 가져옴.
-        html_doc    = Nokogiri::HTML(Net::HTTP.get(URI("http://www.tjmedia.co.kr/tjsong/song_search_list.asp?strType=16&strText=#{song_tjnum}&strCond=0&strSize01=100&strSize02=15&strSize03=15&strSize04=15&strSize05=15")))
+        #####/
         
         # 크롤링 타겟 Song을 a_song으로 가져옴.
         a_song      = "div#BoardType1//table.board_type1//tbody//tr:nth-child(2)"
@@ -83,28 +80,28 @@ class Crawl2Controller < ApplicationController
         @writer      = html_doc.css(a_song + "//td:nth-child(4)").inner_html.to_s
         @composer    = html_doc.css(a_song + "//td:nth-child(5)").inner_html.to_s
         
-        html_doc2   = Nokogiri::HTML(Net::HTTP.get(URI("http://www.ziller.co.kr/singingroom/gasa_pop_view.jsp?pro=#{song_tjnum}")))
-        lyrics_doc  = html_doc2.css('body')
+        # html_doc2   = Nokogiri::HTML(Net::HTTP.get(URI("http://www.ziller.co.kr/singingroom/gasa_pop_view.jsp?pro=#{song_tjnum}")))
+        # lyrics_doc  = html_doc2.css('body')
 
-        @shits = []
-        4.times do |t|
-            @shits << "<br>"
-            if lyrics_doc.to_a.first.elements.first(t+1).last.nil?
-                @shits << "<br>SORRY...<br><br>The lyric was not uploaded yet.<br>"
-            else
-                lyrics_doc.to_a.first.elements.first(t+1).last.children.to_a.each do |s| 
-                    if s.text.length != 0
-                        str = s.text
-                    else
-                        str = "<br>" 
-                    end
-                    @shits << str
-                end
-            end
-        end
-        @shits.shift
-
-        @lyrics = @shits.join
+        # @shits = []
+        # 4.times do |t|
+        #     @shits << "<br>"
+        #     if lyrics_doc.to_a.first.elements.first(t+1).last.nil?
+        #         @shits << "<br>SORRY...<br><br>The lyric was not uploaded yet.<br>"
+        #     else
+        #         lyrics_doc.to_a.first.elements.first(t+1).last.children.to_a.each do |s| 
+        #             if s.text.length != 0
+        #                 str = s.text
+        #             else
+        #                 str = "<br>" 
+        #             end
+        #             @shits << str
+        #         end
+        #     end
+        # end
+        # @shits.shift
+        # @lyrics     = @shits.join
+        # song.lyrics = @lyrics
 
         song = Song.where(song_tjnum: song_tjnum).take
         if song.nil?
@@ -116,7 +113,7 @@ class Crawl2Controller < ApplicationController
         song.artist_name    = @artist_name
         song.writer         = @writer
         song.composer       = @composer
-        song.lyrics         = @lyrics
+        
         song.save
 
         return song
@@ -175,15 +172,10 @@ class Crawl2Controller < ApplicationController
         end
 
         @song_tjnum  = html_doc.css(a_song + "//span.txt").inner_html.to_i
-        puts "\t\t song_tjnum   : #{@song_tjnum}"
         @song_title  = html_doc.css(a_song + "//td.left").inner_html.to_s
-        puts "\t\t song_title   : #{@song_title}"
         @artist_name = html_doc.css(a_song + "//td:nth-child(3)").inner_html.to_s
-        puts "\t\t artist_name  : #{@artist_name}"
         @writer      = html_doc.css(a_song + "//td:nth-child(4)").inner_html.to_s
-        puts "\t\t writer       : #{@writer}"
         @composer    = html_doc.css(a_song + "//td:nth-child(5)").inner_html.to_s
-        puts "\t\t composer     : #{@composer}"
         # html_doc2   = Nokogiri::HTML(Net::HTTP.get(URI("http://www.ziller.co.kr/singingroom/gasa_pop_view.jsp?pro=#{song_tjnum}")))
         # puts "html_doc2.nil? ~> #{html_doc2.nil?}"
         # lyrics_doc  = html_doc2.css('body')

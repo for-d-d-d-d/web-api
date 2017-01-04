@@ -375,7 +375,6 @@ class CrawlController < ApplicationController
                 album.singer_id = artist.id         ## artist_num(아티스트 번호) case 아티스트가 솔로
             elsif artist.class == Team
                 album.team_id = artist.id           ## artist_num(아티스트 번호) case 아티스트가 그룹
-	    else
             end
             
             album.album_num = @album_num            ## album_num(앨범 고유번호)

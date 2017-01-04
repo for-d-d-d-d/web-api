@@ -26,6 +26,18 @@ class Song < ActiveRecord::Base
         return self.where.not("title LIKE ?", "%<img class=%")
     end
 
+    def checkJacket
+        result = false
+        result = true if self.jacket.include?("//image.genie.co.kr/")
+        return result
+    end
+    
+    # def self.checkEnglish(str)
+    #     @english_format = Regexp.new(/^[a-z,A-Z]/)
+    #     str.match(str)
+        
+    # end
+    
     def self.popular_month
         result = DailyTjPopularRank.month.all.map{|song| self.find(song.song_id)}
         return result

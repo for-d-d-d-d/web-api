@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+    <!--[if IE 9 ]><html class="ie9"><![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>고래방 가르치기</title>
+    
+        <!-- Vendor CSS -->
+        <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
+        <link href="/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/lightgallery/light-gallery/css/lightGallery.css" rel="stylesheet">
+        <link href="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">        
+            
+        <!-- CSS -->
+        <link href="/css/app.min.1.css" rel="stylesheet">
+        <link href="/css/app.min.2.css" rel="stylesheet">
+    </head>
+    
+    <body>
+        <style>
+            .loginCard{
+                position: fixed;
+                width: 100%;
+                color: #fff;
+                font-size: 17px;
+                line-height: 0.5;
+                font-weight: bold;
+            }
+            
+            @media screen and (max-width: 768px){
+                #l-start-left{
+                    margin-top: 20% !important;
+                    margin-bottom: 0px !important;
+                }
+                .btn-getStart{
+                    margin-bottom: 700px !important;
+                    width: 100% !important;
+                }
+                #l-start{
+                    width: 85% !important;
+                    background: none !important;
+                    box-shadow: none;
+                }
+            }
+            @media screen and (min-width: 768px){
+                #l-start{
+                    width: inherit !important;
+                }
+            }
+            .btn-getStart{
+                top: 10% !important;
+                right: 0px !important;
+                /*position: absolute !important;*/
+                width: 250px;
+                height: 65px;
+                border-radius: 0;
+                line-height: 50px !important;
+                font-size: 25px;
+                font-weight: bold;
+            }
+            
+            .card-body > p {
+                margin: 0px;
+            }
+            .center{
+                text-align: center;
+            }
+            .hr{
+                text-align: center;
+            }
+            .title{
+                font-weight: bold;
+                margin-bottom: 3px !important;
+            }
+            .highlight{
+                background: #00bcd4;
+                color: #fff;
+                font-weight: bold;
+            }
+            .bolder{
+                font-weight: bold;
+            }
+            #count-wrapper{
+                float:right;
+                margin-right: 40px;
+                font-size: 13px;
+                margin-top: 10px;
+            }
+            .refresh_icon{
+                float: right;
+                right: 10px;
+                position: absolute;
+                top: 25px;
+            }
+            
+            .infoCard-super{
+                /*box-shadow: 1px 1px 2px #777;*/
+                /*border: 1px solid rgba(119, 119, 119, 0.21);*/
+                border-radius: 3px;
+                background-color: rgba(0, 0, 0, 0.75);
+            }
+            .infoCard-img_cover{
+                width:100%;
+                height: 100%;
+                margin-top: -25%;
+                z-index: 50;
+                border-radius: 3px;
+                background-color: rgba(0, 0, 0, 1);
+            }
+            .infoCard-wrapper{
+                width: 100%;
+                height: 60px;
+                margin-top: -60px;
+                z-index: 100;
+                border-bottom-left-radius: 3px;
+                border-bottom-right-radius: 3px;
+            }
+            .infoCard-content{
+                position: absolute;
+                /*background-color: #fff;*/
+                width: 100%;
+                height: 60px;
+                z-index: 101;
+                border-bottom-left-radius: 1px;
+                border-bottom-right-radius: 2px;
+            }
+            .infoCard-content2{
+                background: linear-gradient(rgba(255,255,255,0), rgba(0,0,0,1));
+                color: #fff;
+                padding: 10px 4px 5px;
+                width: 100%;
+                height: 60px;
+            }
+            
+            .infoCard-span{
+                
+            }
+            .infoCard-content-title{
+                /*font-size: 14px;*/
+                font-weight: bolder;
+            }
+            .infoCard-content-artist{
+                margin-top: 3px;
+                font-size: 14px;
+            }
+            @media screen and (max-width: 768px){
+                /*.infoCard-content{*/
+                /*    width:;*/
+                /*}*/
+            }
+        </style>
+        <script>
+            function refresh(page){
+                var btn = $("#refreshBtn");
+                var nextPage = page + 1;
+                console.log('current : ' + page + ', nextPage : ' + nextPage);
+                btn.attr("onclick","refresh("+ nextPage +")");
+                location.reload();
+            }
+        </script>
+        <div class="card loginCard" style="z-index: 1001 !important;">
+            <div class="card-header bgm-red" style="/*background-color: #2196f3;*/">고래방 가르치기
+                <a onclick="refresh(1)" id="refreshBtn" class="btn btn-default btn-icon waves-effect waves-circle waves-float refresh_icon" style=""><i class="zmdi zmdi-refresh"></i></a>
+                <span id="count-wrapper">현재까지 <span id="count">?</span>개 했어요!</span>
+            </div>
+            <div class="card-body"></div>
+        </div>
+        <section id="main">
+            <section id="content">
+                <div class="container">
+                    <div class="block-header">
+                         <h2>당신의 취향을 알려주세요! <small>JQuery lightGallery is a lightweight jQuery lightbox gallery for displaying image and video gallery</small></h2>
+                    </div>
+                 
+                    <div class="card">
+                        <div class="lv-header-alt clearfix">
+                            <h2 class="lvh-label hidden-xs">찾는 노래가 있나요? 오른쪽 검색 아이콘을 눌러주세요!</h2>
+                            
+                            <div class="lvh-search">
+                                <input type="text" placeholder="Start typing..." class="lvhs-input">
+                                <i class="lvh-search-close">&times;</i>
+                            </div>
+                            
+                            <ul class="lv-actions actions">
+                                <li>
+                                    <a href="" class="lvh-search-trigger">
+                                        <i class="zmdi zmdi-search"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                 
+                        <div class="card-body card-padding">                     
+                            <div class="lightbox photos">
+                                <% @songs[0..100].each do |song| %>
+                                <%
+                                    if song.checkJacket == false
+                                        jacket = "/media/gallery/1.jpg"
+                                    else
+                                        jacket = song.jacket
+                                    end
+                                %>
+                                <div data-src="<%= jacket %>" class="col-md-2 col-sm-4 col-xs-6">
+                                    <div class="lightbox-item p-item infoCard-super">
+                                        <img src="<%= jacket %>" alt="" style="background-color: rgba(0, 0, 0, 0.5);"/>
+                                        <!--<div class="infoCard-img_cover"></div>-->
+                                        <div class="infoCard-wrapper">
+                                            <div class="infoCard-content">
+                                                <div class="infoCard-content2">
+                                                    <span class="infoCard-span infoCard-content-title"><%= song.title.truncate(14) %></span><br>
+                                                    <span class="infoCard-span infoCard-content-artist"><%= song.artist_name.truncate(15) %></span>
+                                                </div>
+                                                <!--<p>title</p>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% end %>
+                                
+                                
+                                 <div data-src="/media/gallery/5.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/5.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/2.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/2.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/3.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/3.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/4.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/4.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/5.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/5.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/6.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/6.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/7.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/7.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/8.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/8.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/9.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/9.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/10.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/10.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/11.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/11.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/12.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/12.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/13.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/13.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/14.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/14.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/15.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/15.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/16.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/16.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/17.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/7.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/18.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/18.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/19.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/19.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/20.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/20.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/21.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/21.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/22.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/22.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/23.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/23.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/24.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/24.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/1.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/1.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/2.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/2.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/3.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/3.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/4.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/4.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/5.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/5.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/6.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/6.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/7.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/7.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/8.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/8.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/9.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/9.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/10.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/10.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/11.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/11.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/12.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/12.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/13.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/13.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/14.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/14.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/15.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/15.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/16.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/16.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/17.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/7.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/18.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/18.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/19.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/19.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/20.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/20.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/21.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/21.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/22.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/22.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/23.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/23.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 <div data-src="/media/gallery/24.jpg" class="col-md-2 col-sm-4 col-xs-6">
+                                     <div class="lightbox-item p-item">
+                                         <img src="/media/gallery/thumbs/24.jpg" alt="" />
+                                     </div>
+                                 </div>
+                                 
+                                 
+                                 
+                             </div>
+                 
+                             <div class="clearfix"></div>
+                 
+                             <div class="load-more m-t-30">
+                                 <a href=""><i class="zmdi zmdi-refresh-alt"></i> Load More...</a>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                    
+            </section>
+        </section>
+        
+        <%= render partial: 'admin2/feature_layouts/footer' %>
+
+        <!-- Page Loader -->
+        <div class="page-loader">
+            <div class="preloader pls-blue">
+                <svg class="pl-circular" viewBox="25 25 50 50">
+                    <circle class="plc-path" cx="50" cy="50" r="20" />
+                </svg>
+
+                <p>Please wait...</p>
+            </div>
+        </div>
+
+        <!-- Older IE warning message -->
+        <!--[if lt IE 9]>
+            <div class="ie-warning">
+                <h1 class="c-white">Warning!!</h1>
+                <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+                <div class="iew-container">
+                    <ul class="iew-download">
+                        <li>
+                            <a href="http://www.google.com/chrome/">
+                                <img src="/images/browsers/chrome.png" alt="">
+                                <div>Chrome</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.mozilla.org/en-US/firefox/new/">
+                                <img src="/images/browsers/firefox.png" alt="">
+                                <div>Firefox</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.opera.com">
+                                <img src="/images/browsers/opera.png" alt="">
+                                <div>Opera</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.apple.com/safari/">
+                                <img src="/images/browsers/safari.png" alt="">
+                                <div>Safari</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                                <img src="/images/browsers/ie.png" alt="">
+                                <div>IE (New)</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <p>Sorry for the inconvenience!</p>
+            </div>   
+        <![endif]-->
+    
+    
+        <!-- Javascript Libraries -->
+        <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+                <script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
+        <script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
+        <script src="/vendors/bower_components/lightgallery/light-gallery/js/lightGallery.min.js"></script>
+        
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+        
+        <script src="/js/functions.js"></script>
+        <script src="/js/demo.js"></script>
+    
+    
+    </body>
+</html>

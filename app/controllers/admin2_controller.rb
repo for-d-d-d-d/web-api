@@ -337,4 +337,69 @@ class Admin2Controller < ApplicationController
         @results = User.betaUserDetail(admin_name) unless complete == "false"
         @results = User.betaUserBlank(admin_name)  if complete == "false"
     end
+    
+    
+    
+    
+    
+    
+    
+    # 환영합니다 메세지 & 시작하기 버튼
+    def research
+        is_admin = false
+        is_admin = true if params[:is_admin].to_s == "true"
+        
+        # @results = 
+        render layout: 'research'
+    end
+    
+    # 시작하기 누르면 더미 유저 생성 ~> 패쓰 (검색 대기 화면으로)
+    def create_dummy_user
+        sex     = params[:sex]
+        birth   = params[:birth]
+        accept  = params[:accept]
+        
+        # => fix parameters info for match User Table scheme
+        if      sex == "male"       then sex = 1
+        elsif   sex == "female"     then sex = 2
+        elsif   sex == "other"      then sex = 3
+        else    sex = 0
+        end
+        
+        birth = "" if birth.nil? || birth.length.zero?
+        
+        
+        # => rescent dummy user calculation
+        lastDummyUser   = User.where("email LIKE?", "%dummy@%").last   # lastDummyUser.email = "dummy@101.user"
+        newUserNum  = 1 if lastDummyUser.nil?
+        newUserNum  = lastDummyUser.email.gsub('dummy@','').gsub('.user','').to_i unless lastDummyUser.nil?
+        
+        # => create user
+        user = User.new
+        user.email = "dummy@" + newUserNum.to_s + ".user"
+        user.gender = sex
+        user.name = birth.to_s
+        if accept == "checked"
+            user.password = "111111"
+            user.mytoken = SecureRandom.hex(16)
+            #user.save
+            redirect_to '/we/admin2/info2'
+        else
+            redirect_to :back
+        end
+    end
+    
+    # 검색 대기 (+결과) 화면 <~ Ajax통신으로 비동기 처리.
+    def info2
+        @songs = Song.where("genre1 LIKE?", "%가요%").all
+        @ending = false
+        @ending =true
+        render layout: false
+    end
+    
+    def login
+        #
+        #
+        render layout: false
+    end
 end
