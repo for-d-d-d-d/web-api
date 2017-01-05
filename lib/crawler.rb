@@ -1,7 +1,7 @@
 class Crawler
     
     def foo
-        puts "\n\n\n\tfoo\n\n\n\n"
+        puts "\n\n\n\n\n\tfoo\n\n\n\n\n\n"
         return "\treturned!!"
     end
     
@@ -27,17 +27,28 @@ class Crawler
     
     # Step 4. Get song's more detail info ~> @song_tjnum, @song_title, @artist_num, @writer, @composer
     # // 노래의 정보들을 추출.
-    def parsing_info
+    def parsing_info(target)
     end
     
     # Step 5. 
     # // 기존에 이미 긁어온 노래인지 확인.
-    def set_song_instance(song_tjnum)
-        song = Song.where(song_tjnum: song_tjnum).take
-        Console.put("/* song */", song)
-        if song.nil?
-            song = Song.new
+    def set_song_instance(song_tjnum, table: "Song", symd: "", eymd: "")
+        
+        case table
+        when "Song"
+            song = Song.where(song_tjnum: song_tjnum).take
+            Console.put("/* song */", song)
+            if song.nil?
+                song = Song.new
+            end
+        when "DailyTjPopularRank"
+            song = DailyTjPopularRank.where(symd: symd, eymd: eymd, song_num: song_tjnum).take
+            Console.put("/* song */", song)
+            if song.nil?
+                song = DailyTjPopularRank.new
+            end
         end
+        
         return song
     end
     
@@ -45,20 +56,37 @@ class Crawler
     # // 노래 정보들을 저장.
     def set_song_attribute(song, attrs)
         Console.put("attrs", attrs)
-        song.song_tjnum     = attrs[:song_tjnum]
-        song.title          = attrs[:title]
-        song.artist_name    = attrs[:artist_name]
-        song.writer         = attrs[:writer]
-        song.composer       = attrs[:composer]
+        
+        case song.class.to_s
+        when "Song"
+            song.song_tjnum     = attrs[:song_tjnum]
+            song.title          = attrs[:title]
+            song.artist_name    = attrs[:artist_name]
+            song.writer         = attrs[:writer]
+            song.composer       = attrs[:composer]
+            
+        when "DailyTjPopularRank"
+            song_tjnum = attrs[:song_tjnum]
+            
+            song.symd           = attrs[:symd]
+            song.eymd           = attrs[:eymd]
+            song.song_rank      = attrs[:rank]
+            song.song_id        = Song.where(song_tjnum: song_tjnum).take&.id
+            song.song_num       = attrs[:song_tjnum]
+            song.song_title     = attrs[:title]
+            song.song_singer    = attrs[:artist_name]
+        end
         
         return song
     end
     
     def save(song)
         song.save
-        Console.put("/* saved song's id */", Song.where(id: song.id).take.id)
         
-        return song.id
+        Console.put("/* saved song's id */", song.id) unless song.new_record?
+        result = song.id
+        result = "records not saved" if song.new_record?
+        return result
     end
     
     

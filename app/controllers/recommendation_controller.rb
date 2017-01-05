@@ -48,33 +48,24 @@ class RecommendationController < ApplicationController
         #     eval("users << user" + i.to_s)
         # end
         
-      # AUTO-stage code
-        users = User.all.map{|user| user.my_songs.map{|song| song.id}}
-      # 
+    #   # AUTO-stage code
+    #     users = User.all.map{|user| user.my_songs.map{|song| song.id}}
+    #   # 
         
-        picked_user = users.sample(num)
-        return picked_user
-    end
-
-    def user_sample_picker2(num)#실제 모든 유저에서 임의의 유저를 뽑음
+    #     picked_user = users.sample(num)
+    #     return picked_user
         users_mylists = []
         sample_users = []
         sample_users = User.all.sample(num)
         
         sample_users.each do |user|
-          users_mylists << user.my_songs.map{|mysong| mysong.song_id }
+          users_mylists << user.my_songs.map{|mysong| mysong.id }
         end
         
         return users_mylists
     end
 
 
-
-
-
-
-
-    
     def self.my_songs(id)
         my_songs = User.find(id).my_songs
         return my_songs

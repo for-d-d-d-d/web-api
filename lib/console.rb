@@ -1,6 +1,6 @@
-class Console
+class Console < Util
     def self.put(label, arg)
-        puts "\n\t#{label} ~> \t#{arg}\n"
+        puts "\n\n\n\t#{label} ~> \t#{arg}\n\n\n"
     end
     
     def self.now(comment)

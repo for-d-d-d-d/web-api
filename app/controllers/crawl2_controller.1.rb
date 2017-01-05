@@ -250,9 +250,9 @@ class Crawl2Controller < ApplicationController
         puts "\n\n\n\t\t#{yyyymm}\n\n\n"
         html_doc    = Nokogiri::HTML(Net::HTTP.get(URI("https://www.tjmedia.co.kr/tjsong/song_monthNew.asp?YY=#{yyyy}&MM=#{mm}")))
         
-        raw_count = 2
+        row_count = 2
         loop do
-            a_song      = "div#BoardType1//table.board_type1//tbody//tr:nth-child(#{raw_count})"
+            a_song      = "div#BoardType1//table.board_type1//tbody//tr:nth-child(#{row_count})"
             song_info   = html_doc.css(a_song)
             break if song_info.length == 0
 
@@ -276,7 +276,7 @@ class Crawl2Controller < ApplicationController
                 song.save
             else
                 puts "\n\t이달의 신곡인데 왜 노래방 번호가 똑같은게 있지?\n"
-                raw_count += 1
+                row_count += 1
                 next
             end
 
@@ -287,7 +287,7 @@ class Crawl2Controller < ApplicationController
             #puts "writer        =   " + @writer
             #puts "composer      =   " + @composer
             #puts "#{raw_count}"
-            raw_count += 1
+            row_count += 1
         end
         #tj_numbers = 1
         #songs = []
