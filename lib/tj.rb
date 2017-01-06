@@ -90,28 +90,47 @@ class Tj < Crawler
             start_date  = now
             end_date    = now
             
+            # => 크롤링 기간은 물리적으로 무조건 과거.
             case type
-            when "daily"
-                start_date  = now - 1.day
-                end_date    = now - 1.day
-            when "weekly"
+            when "daily"                            # => 어제의 인기차트를 크롤링.
+                # => 기간 설정.
+                start_date  = now - 1.day                   # 어제 시작
+                end_date    = now                           # 오늘 시작
+            
+            
+            when "weekly"                           # => 지난주의 인기차트를 크롤링.
+                now = now.beginning_of_week                 # 이번주 시작일
+                
+                # => [정정 조건] 해를 넘긴 경우 지난주는 이전년도 마지막주.
                 before_year   = now.year
                 before_cweek  = now.cweek - 1
-                
                 if before_cweek.zero?
                     before_year  = now.year - 1
                     before_cweek = 52
                 end
                 
-                start_date  = Date.commercial(before_year, before_cweek, 1)
-                end_date    = Date.commercial(before_year, before_cweek, 7)
-            when "monthly"
+                # => 기간 설정.
+                start_date  = Date.commercial(before_year, before_cweek, 1) # 지난주 시작일
+                end_date    = now                                           # 이번주 시작일
+            
+            
+            when "monthly"                          # => 지난달의 인기차트를 크롤링.
+                now = now.beginning_of_month                # 이번달 시작일
                 
+                # => [정정 조건] 해를 넘긴 경우 지난달은 이전년도 마지막달.
+                before_year     = now.year
+                before_month    = now.month - 1
+                if before_month.zero?
+                    before_year  = now.year - 1
+                    before_month = 12
+                end
                 
-                start_date  = now - 1.day
-                end_date    = now - 1.day
+                # => 기간 설정.
+                start_date  = Date.new(before_year, before_month)   # 지난달 시작일
+                end_date    = now                                   # 이번달 시작일
             end
             
+            # => 설정된 기간으로 변수 세팅.
             @year,  @month,  @day   = start_date.year, start_date.month, start_date.day
             @year2, @month2, @day2  = end_date.year, end_date.month, end_date.day
         end
@@ -338,14 +357,24 @@ class Tj < Crawler
                                                 #   => 'time' can take any 'yyyymmdd' formatted Integer such as 20170105. 
                                                 #       (날짜와 그 형식이 올바르다면, 어느 날짜를 집어넣든지 올바른 연산을 처리함.)
             start = Console.now("start at")
-            
+            # Console.put("type", type)
+            # Console.put("time", time)
+            # Console.put("count", count)
+            # Console.put("offset", offset)
             tj = Tj.new
             time = Mytime.yyyymmdd_to_date(time)
+            # Console.put("time2", time)
             count.times do |i|
+                # i += 1
                 i += offset
-                date = time - i.day    if type == "daily"
-                date = time - i.week   if type == "weekly"
-                date = time - i.month  if type == "monthly"
+                case type
+                when "daily"
+                    date = time - i.day; Console.put("daily", date);
+                when "weekly"
+                    date = time - i.week; Console.put("weekly", date);
+                when "monthly"
+                    date = time - i.month; Console.put("monthly", date);
+                end
                 
                 tj.set_term(type, date)
                 tj.get_uri("popular")
