@@ -28,7 +28,7 @@ class Song < ActiveRecord::Base
 
     def checkJacket
         result = false
-        result = true if self.jacket.include?("//image.genie.co.kr/")
+        result = true if self.jacket&.include?("//image.genie.co.kr/")
         return result
     end
     
@@ -41,6 +41,16 @@ class Song < ActiveRecord::Base
     def self.popular_month
         result = DailyTjPopularRank.month.all.map{|song| self.find(song.song_id)}
         return result
+    end
+    
+    def tag_my_favorite(user)
+        song = self
+        if user.mylists.first.mylist_songs.map{|s| s.song_id}.include?(song.id)
+            song.lowkey = "true"
+        else
+            song.lowkey = "false"
+        end
+        return song
     end
 
     def self.empty_tj

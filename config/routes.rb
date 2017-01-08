@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   get "/beta(/:admin_name(/:complete_beta_user))", to: 'admin2#betaUser'
   get "/research(/:is_admin)", to: 'admin2#research'
   get "/survey(/:action(/:id))", to: "admin2#:action"
-  
+  match "/we/admin2/get_ids(/:id)", to: "admin2#get_ids", :via => [:get, :post, :delete]
   # REST-API TRIAL
   # namespace :api do
   #   resources :my_song

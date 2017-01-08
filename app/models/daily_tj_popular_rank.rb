@@ -18,18 +18,36 @@ class DailyTjPopularRank < ActiveRecord::Base
     end
 
     def self.month
-        time = Time.zone.now.to_s.first(10)
-        endTime = time.first(7) + "-01"
-        if time.last(5).first(2) == "01" # 1월이 들어오는 경우 연도 하나 줄이고 전달을 12월로 넘김.
-            time = (time.first(4).to_i - 1).to_s + "-12-01"
-        else                             # 나머지는 걍 1씩 월에서 빼서 전달을 연산함.
-            is_zero = ""
-            if (time.last(5).first(2).to_i - 1).to_s.length == 1
-                is_zero = "0"
-            end
-            time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
-        end        
-        result = DailyTjPopularRank.where(symd: time).where.not(song_id: nil).order(song_rank: :asc) #.where(eymd: endTime).where.not(song_id: nil).order(song_rank: :asc)
+        now = Time.current.to_date
+        now = now.beginning_of_month                # 이번달 시작일
+        
+        # => [정정 조건] 해를 넘긴 경우 지난달은 이전년도 마지막달.
+        before_year     = now.year
+        before_month    = now.month - 1
+        if before_month.zero?
+            before_year  = now.year - 1
+            before_month = 12
+        end
+        
+        # => 기간 설정.
+        start_date  = Date.new(before_year, before_month).to_s   # 지난달 시작일
+        end_date    = now.to_s                                   # 이번달 시작일
+        # .where.not(song_id: nil)
+        result = self.where(symd: start_date).order(song_rank: :asc)
+        
+        
+        # time = Time.zone.now.to_s.first(10)
+        # endTime = time.first(7) + "-01"
+        # if time.last(5).first(2) == "01" # 1월이 들어오는 경우 연도 하나 줄이고 전달을 12월로 넘김.
+        #     time = (time.first(4).to_i - 1).to_s + "-12-01"
+        # else                             # 나머지는 걍 1씩 월에서 빼서 전달을 연산함.
+        #     is_zero = ""
+        #     if (time.last(5).first(2).to_i - 1).to_s.length == 1
+        #         is_zero = "0"
+        #     end
+        #     time = time.first(4) + "-" + is_zero + (time.last(5).first(2).to_i - 1).to_s + "-01"
+        # end        
+        # result = DailyTjPopularRank.where(symd: time).where.not(song_id: nil).order(song_rank: :asc) #.where(eymd: endTime).where.not(song_id: nil).order(song_rank: :asc)
 
         return result
     end
