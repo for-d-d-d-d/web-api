@@ -360,10 +360,14 @@ class Admin2Controller < ApplicationController
         accept  = params[:accept]
         
         # => fix parameters info for match User Table scheme
-        if      sex == "male"       then sex = 1
-        elsif   sex == "female"     then sex = 2
-        elsif   sex == "other"      then sex = 3
-        else    sex = 0
+        if sex == "male"
+            sex = 1
+        elsif sex == "female"
+            sex = 2
+        elsif sex == "other"
+            sex = 3
+        else
+            sex = 0
         end
         
         birth = "" if birth.nil? || birth.length.zero?
@@ -371,19 +375,26 @@ class Admin2Controller < ApplicationController
         
         # => rescent dummy user calculation
         lastDummyUser   = User.where("email LIKE?", "%dummy@%").last   # lastDummyUser.email = "dummy@101.user"
-        newUserNum  = 1 if lastDummyUser.nil?
-        newUserNum  = lastDummyUser.email.gsub('dummy@','').gsub('.user','').to_i unless lastDummyUser.nil?
+        
+        newUserNum      = "1" if lastDummyUser.nil?
+        newUserNum      = (lastDummyUser.email.gsub('dummy@','').gsub('.user','').to_i + 1).to_s  unless lastDummyUser.nil?
         
         # => create user
         user = User.new
-        user.email = "dummy@" + newUserNum.to_s + ".user"
-        user.gender = sex
-        user.name = birth.to_s
+        user.email      = "dummy@" + newUserNum + ".user"
+        user.gender     = sex
+        user.name       = birth.to_s
         if accept == "checked"
-            user.password = "111111"
-            user.mytoken = SecureRandom.hex(16)
-            #user.save
-            redirect_to '/we/admin2/info2'
+            user.password   = "111111"
+            user.mytoken    = SecureRandom.hex(16)
+            user.save
+            Mylist.create!([{
+                user_id: user.id,
+                title: user.email + " 님의 첫 번째 리스트"
+            }])
+            
+            session[:user]  = user
+            redirect_to "/we/admin2/info2/#{user.id}"
         else
             redirect_to :back
         end
@@ -391,15 +402,55 @@ class Admin2Controller < ApplicationController
     
     # 검색 대기 (+결과) 화면 <~ Ajax통신으로 비동기 처리.
     def info2
-        @songs = Song.where("genre1 LIKE?", "%가요%").all
-        @ending = false
-        @ending =true
-        render layout: false
+        redirect_to '/we/admin2/login' if params[:id].nil?
+        
+        # => @current_user의 자료형 맞춰주기 위한 블록 (+ session reset)
+        session.delete(:user)
+        @current_user = User.where(id: params[:id]).take
+        session[:user] = @current_user
+        
+        # => @current_user가 존재하는 경우에만 통과.
+        if @current_user
+            @songs = Song.popular_month.each{|song| song.tag_my_favorite(@current_user)}
+            @count = @current_user.mylists.first.mylist_songs.count
+            render layout: false
+        else
+            redirect_to '/we/admin2/login'
+        end
     end
     
     def login
         #
         #
         render layout: false
+    end
+    
+    # => ajax method
+    def get_ids
+        result = false
+        return render json: result if session[:user].nil?
+        
+        user = session[:user]
+        user = User.find(user["id"])
+        
+        case request.method_symbol
+        when :get
+            song_id = params[:id] #.gsub('[','').gsub(']','').split(',').map{|s| s.to_i}
+            
+            ms = MylistSong.new
+            ms.mylist_id = user.mylists.first.id
+            ms.song_id   = song_id
+            ms.save
+        when :delete
+            song_id = params[:id]
+            
+            ms = MylistSong.where(song_id: song_id, mylist_id: user.mylists.first.id).take
+            if ms
+                ms.delete
+            end
+        end
+        
+        count = user.mylists.first.mylist_songs.count
+        return render json: count
     end
 end
