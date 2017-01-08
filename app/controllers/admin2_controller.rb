@@ -415,7 +415,7 @@ class Admin2Controller < ApplicationController
         if @current_user
             spp = SONGS_PER_PAGE
             page = 1
-            @songs = Song.popular_month[(page - 1)*spp..page*spp].each{|song| song.tag_my_favorite(@current_user)}
+            @songs = Song.popular_month[(page - 1)*spp..(page*spp - 1)]&.each{|song| song.tag_my_favorite(@current_user)}
             @count = @current_user.mylists.first.mylist_songs.count
             render layout: false
         else
@@ -471,7 +471,7 @@ class Admin2Controller < ApplicationController
         
         spp     = SONGS_PER_PAGE
         page    = params[:page].to_i
-        songs   = Song.popular_month[(page - 1)*spp..page*spp]&.each{|song| song.checkJacket2.tag_my_favorite(user)}
+        songs   = Song.popular_month[(page - 1)*spp..(page*spp - 1)]&.each{|song| song.checkJacket2.tag_my_favorite(user)}
         
         return render json: songs
     end
