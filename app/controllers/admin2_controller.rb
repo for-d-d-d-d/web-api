@@ -475,4 +475,14 @@ class Admin2Controller < ApplicationController
         
         return render json: songs
     end
+    
+    # => ajax method
+    def searching
+        query = params[:query]
+        
+        g1, g2, g3 = HomeController.search3(query)
+        songs = g1 + g2 + g3
+        
+        return render json: songs
+    end
 end

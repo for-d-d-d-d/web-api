@@ -191,6 +191,13 @@
                     console.log("searchBtn!");
                     $(".lvh-search").fadeToggle(250);
                 });
+                
+                $(".lvhs-input").keypress(function(event){
+                    var words = $(this).val();
+                    console.log(words);
+                    
+                    ajax_search(words);
+                });
             });
             
             function select(id){
@@ -308,6 +315,24 @@
                     $("span#count").append(count);
                 });
             }
+            
+            function ajax_search(query){
+                $.ajax({
+                    method: "GET",
+                    url: "/we/admin2/searching",
+                    data: { query: query }
+                })
+                .done(function( songs ) {
+                    console.log( "Data Searched: " + songs );
+                    if (songs != null) {
+                        $.each(songs, function(index, song) {
+                            console.log(index)
+                        });
+                    } else {
+                        console.log("Result is Null")
+                    };
+                });
+            }
         </script>
         <div class="card loginCard" style="z-index: 1001 !important;">
             <div class="card-header bgm-red" style="/*background-color: #2196f3;*/">고래방 가르치기 <%#= @current_user.my_songs.map{|s| s.title.first(3)} %> <%#= @current_user.my_songs.count %>
@@ -342,7 +367,7 @@
                             </ul>
                         </div>
                  
-                        <div class="card-body card-padding">                     
+                        <div class="card-body card-padding">
                             <div class="lightbox photos">
                                 <% @songs.each do |song| %>
                                     <%
