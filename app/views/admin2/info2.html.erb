@@ -325,8 +325,42 @@
                 .done(function( songs ) {
                     console.log( "Data Searched: " + songs );
                     if (songs != null) {
+                        $(".photos").empty();
                         $.each(songs, function(index, song) {
-                            console.log(index)
+                            var anchor = "";
+                            var jacket = "";
+                            var a_card = "";
+                            
+                            // lowkey true: tag my favorite;
+                            if (song.lowkey == "true") {
+                                anchor = '<a style="z-index: 10000; background: #2196F3 !important;" onclick="cancel(' + song.id + ')" id="selectBtn_' + song.id + '" class="btn btn-icon btn-float waves-effect waves-circle waves-float refresh_icon selectBtn bgm-green"><i class="zmdi zmdi-mail-send"></i></a>'
+                            } else {
+                                anchor = '<a style="z-index: 10000;" onclick="select(' + song.id + ')" id="selectBtn_' + song.id + '" class="btn btn-icon btn-float waves-effect waves-circle waves-float refresh_icon selectBtn bgm-green"><i class="zmdi zmdi-mail-send"></i></a>'
+                            };
+                            
+                            // highkey true: check jacket img;
+                            if (song.highkey == "false") {
+                                jacket = "https://scontent.xx.fbcdn.net/v/t1.0-9/15095721_1099306143519780_6966671705149925303_n.jpg?oh=d69e37d5e799c027f0d10ac0405ba314&oe=58C6FE81"
+                            } else {
+                                jacket = song.jacket
+                            };
+                            
+                            a_card = ('<div data-src="' + jacket + '" class="col-md-2 col-sm-4 col-xs-6" style="border: 3px solid #fff; margin: 0px; padding: 0px;">'
+                                        + '<div class="lightbox-item p-item" style="width: 100%;">'
+                                            + '<img src="' + jacket + '" alt="' + song.title + '" />'
+                                            + '<div class="infoCard-imgcover"></div>'
+                                            + '<div class="infoCard-wrapper">'
+                                                + '<div class="infoCard-content">'
+                                                    + '<div class="infoCard-content2">'
+                                                        + '<span class="infoCard-span infoCard-content-title">' + song.title + '</span><br>'
+                                                        + '<span class="infoCard-span infoCard-content-artist">' + song.artist_name + '</span>'
+                                                        + anchor
+                                                    + '</div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>');
+                            $(".photos").html(a_card);
                         });
                     } else {
                         console.log("Result is Null")
