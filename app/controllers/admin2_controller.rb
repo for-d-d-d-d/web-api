@@ -479,12 +479,15 @@ class Admin2Controller < ApplicationController
     # => ajax method
     def searching
         query = params[:query]
+        result = false
+        return render json: result if session[:user].nil?
         
-        # g1, g2, g3 = HomeController.search3(query)
-        # songs = g1 + g2 + g3
+        user = session[:user]
+        user = User.find(user["id"])
+        
         g1 = HomeController.search3_by_title(query)
         g2 = HomeController.search3_by_artist(query)
-        songs = g1 + g2
+        songs = (g1 + g2)&.each{|song| song.checkJacket2.tag_my_favorite(user)}
         
         return render json: songs
     end
