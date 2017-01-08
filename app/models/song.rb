@@ -32,6 +32,13 @@ class Song < ActiveRecord::Base
         return result
     end
     
+    def checkJacket2 # => only use for javascript in ajax return data
+        song = self
+        song.highkey = "false"
+        song.highkey = "true" if song.jacket&.include?("//image.genie.co.kr/")
+        return song
+    end
+    
     # def self.checkEnglish(str)
     #     @english_format = Regexp.new(/^[a-z,A-Z]/)
     #     str.match(str)

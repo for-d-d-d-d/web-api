@@ -400,6 +400,8 @@ class Admin2Controller < ApplicationController
         end
     end
     
+    SONGS_PER_PAGE = 20 # 한 회 로딩에 보여줄 노래 개수
+    
     # 검색 대기 (+결과) 화면 <~ Ajax통신으로 비동기 처리.
     def info2
         redirect_to '/we/admin2/login' if params[:id].nil?
@@ -411,7 +413,9 @@ class Admin2Controller < ApplicationController
         
         # => @current_user가 존재하는 경우에만 통과.
         if @current_user
-            @songs = Song.popular_month.each{|song| song.tag_my_favorite(@current_user)}
+            spp = SONGS_PER_PAGE
+            page = 1
+            @songs = Song.popular_month[(page - 1)*spp..page*spp].each{|song| song.tag_my_favorite(@current_user)}
             @count = @current_user.mylists.first.mylist_songs.count
             render layout: false
         else
@@ -425,6 +429,9 @@ class Admin2Controller < ApplicationController
         render layout: false
     end
     
+    # 고래방 길들이기 > ajax task group
+    # ==================================
+    #
     # => ajax method
     def get_ids
         result = false
@@ -452,5 +459,20 @@ class Admin2Controller < ApplicationController
         
         count = user.mylists.first.mylist_songs.count
         return render json: count
+    end
+    
+    # => ajax method
+    def next_page
+        result = false
+        return render json: result if session[:user].nil?
+        
+        user = session[:user]
+        user = User.find(user["id"])
+        
+        spp     = SONGS_PER_PAGE
+        page    = params[:page].to_i
+        songs   = Song.popular_month[(page - 1)*spp..page*spp]&.each{|song| song.checkJacket2.tag_my_favorite(user)}
+        
+        return render json: songs
     end
 end

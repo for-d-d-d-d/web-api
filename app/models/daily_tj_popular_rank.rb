@@ -32,8 +32,8 @@ class DailyTjPopularRank < ActiveRecord::Base
         # => 기간 설정.
         start_date  = Date.new(before_year, before_month).to_s   # 지난달 시작일
         end_date    = now.to_s                                   # 이번달 시작일
-        # .where.not(song_id: nil)
-        result = self.where(symd: start_date).order(song_rank: :asc)
+        
+        result = self.where(symd: start_date).where.not(song_id: nil).order(song_rank: :asc)
         
         
         # time = Time.zone.now.to_s.first(10)
