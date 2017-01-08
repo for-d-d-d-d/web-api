@@ -361,13 +361,7 @@ class JsonController < ApplicationController
   # 첫 화면 ( restAPI server(0) android(0) iOS(x) )
   # > 이달의 신곡
   def month_new
-    month_new_songs = []
-    Time.zone.now
-    Song.tj_ok.each do |song| #추후 갯수 밑 신곡반영.
-        if song.created_at.to_s.first(10) == (Time.zone.now.to_s.first(8) + "01")
-            month_new_songs << song
-        end
-    end
+    month_new_songs = Song.month_new
 
     return render :json => [] if params[:mytoken].nil? || params[:mytoken].length < 1
     ids = month_new_songs.map{|s| s.id}
@@ -465,7 +459,7 @@ class JsonController < ApplicationController
   # Input   > id: 회원 id
   # Output  > 추천 Song Data
   def recom
-    sing_it = RecommendationController.recommend(params[:id])
+    sing_it = SunwooController.recommend(params[:id])
     #count = ForAnalyze.find(1) # 추천 받을 때 마다 분석정보를 담는 DB에 총추천횟수를 1씩 올려줌.
     #count.count_recomm +=1
     #count.save

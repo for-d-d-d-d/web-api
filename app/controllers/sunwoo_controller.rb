@@ -33,9 +33,7 @@ class SunwooController < ApplicationController
         
         #song id 를 song으로 바꿔줌
         def from_id_to_songs(ids)
-            songs = []
-            ids.each{ |id| songs.push(Song.find(id)) }
-            return songs
+            return ids.map{|id| Song.find(id)}
         end
         
         
@@ -89,6 +87,7 @@ class SunwooController < ApplicationController
                 puts "엥?!!!???!!"
                 puts "오!"
                 break if recom.sing_it.count >= recom.count_of_recom
+                break if i >= 1000
                 puts "우!"
                 if i % 5 == 0
                     if recom.equal_minimum > 2
@@ -102,12 +101,12 @@ class SunwooController < ApplicationController
                 i += 1
                 puts "앗!!"
             end
-            
+            puts "#{recom.sing_it}"
             # READY to send API
-            @sing_it = recom.from_id_to_songs(@sing_it)
-            puts "\n(result) result_count :=>\n #{@sing_it.count}\n"
+            sing_it = recom.from_id_to_songs(recom.sing_it)
+            puts "\n(result) result_count :=>\n #{sing_it.count}\n"
             
-            return @sing_it
+            return sing_it
         end
 
 end

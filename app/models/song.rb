@@ -43,6 +43,12 @@ class Song < ActiveRecord::Base
         return result
     end
 
+    def self.month_new
+        today = Time.current.to_date
+        result = Song.where("created_at LIKE?", "%#{today.to_s.first(7)}%")
+        return result
+    end
+
     def self.empty_tj
         return Song.where(song_tjnum: nil)
     end
