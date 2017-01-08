@@ -36,6 +36,10 @@ class Song < ActiveRecord::Base
         song = self
         song.highkey = "false"
         song.highkey = "true" if song.jacket&.include?("//image.genie.co.kr/")
+
+        # => 원래 별도로 하는게 좋은데 걍 추가함.
+        song.title = song.title.truncate(11)
+        song.artist_name = song.artist_name.truncate(15)
         return song
     end
     
