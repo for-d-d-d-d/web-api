@@ -446,7 +446,7 @@ class Admin2Controller < ApplicationController
         user = User.find(user["id"])
         
         case request.method_symbol
-        when :get
+        when :post
             song_id = params[:id] #.gsub('[','').gsub(']','').split(',').map{|s| s.to_i}
             
             ms = MylistSong.new
