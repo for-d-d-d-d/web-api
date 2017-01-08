@@ -212,6 +212,10 @@
                 btn.attr("style","background: #fff;");
             };
             
+            function goSearch(px){
+                $( 'html, body' ).animate( { scrollTop : px }, 400 );
+            };
+            
             function load_more(page){
                 var btn = $("#loadMoreBtn");
                 
@@ -266,8 +270,8 @@
                         place.attr("id",'#page_place_before');
                         place.html(cards);
                     } else {
-                        var place = $("#page_place");
-                        place.remove();
+                        btn.hide();
+                        $("#goSearchFormBtn").show();
                     };
                     
                 }); // ajax 종료
@@ -388,6 +392,9 @@
                  
                              <div class="load-more m-t-30">
                                  <a onclick="load_more(2)" id="loadMoreBtn" style="cursor: pointer;"><i class="zmdi zmdi-refresh-alt"></i> Load More...</a>
+                             </div>
+                             <div class="load-more m-t-30" id="goSearchFormBtn" style="display: none;">
+                                 <a onclick="goSearch(0)" style="cursor: pointer; background: #2196F3;">위로 올라가기 (검색을 이용해 주세요!)</a>
                              </div>
                          </div>
                      </div>
