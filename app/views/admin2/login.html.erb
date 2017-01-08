@@ -33,6 +33,7 @@
                 if (control == "left-off") {
                     // Switch Off
                     leftBox.hide();
+                    $("body.login-content").addClass("height");
                 } else if (control == "left-on") {
                     // Switch On
                     leftBox.show();
@@ -75,7 +76,10 @@
             
             @media screen and (max-width: 768px){
                 body.login-content:after{
-                    height: initial !important;
+                    height: initial;
+                }
+                .height:after{
+                    height: 100% !important;
                 }
                 #l-start-left{
                     margin-top: 20% !important;
