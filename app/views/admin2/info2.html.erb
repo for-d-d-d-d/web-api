@@ -324,6 +324,7 @@
                 })
                 .done(function( songs ) {
                     console.log( "Data Searched: " + songs );
+                    var cards  = "";
                     if (songs != null) {
                         $(".photos").empty();
                         $.each(songs, function(index, song) {
@@ -360,8 +361,9 @@
                                             + '</div>'
                                         + '</div>'
                                     + '</div>');
-                            $(".photos").html(a_card);
+                            cards = cards + a_card;
                         });
+                        $(".photos").html(cards);
                     } else {
                         console.log("Result is Null")
                     };
