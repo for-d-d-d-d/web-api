@@ -19,6 +19,13 @@ Rails.application.routes.draw do
   get "/research(/:is_admin)", to: 'admin2#research'
   get "/survey(/:action(/:id))", to: "admin2#:action"
   match "/we/admin2/get_ids(/:id)", to: "admin2#get_ids", :via => [:get, :post, :delete]
+  
+  get   "/start",       to: "admin2#login"
+  post  "/new/dummy",   to: "admin2#create_dummy_user"
+  get   "/teach(/:id)", to: "admin2#info2"
+  match "/ajax/:action(/:id)", to: "admin2#:action", via: [:post, :get, :delete]
+  
+  
   # REST-API TRIAL
   # namespace :api do
   #   resources :my_song

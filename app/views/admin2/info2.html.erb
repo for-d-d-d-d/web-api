@@ -227,8 +227,8 @@
                 var btn = $("#loadMoreBtn");
                 
                 $.ajax({
-                    method: "GET",
-                    url: "/we/admin2/next_page",
+                    method: "POST",
+                    url: "/ajax/next_page",
                     data: { page: page }
                 })
                 .done(function( songs ) {
@@ -289,10 +289,9 @@
             }
             
             function ajax_push(id){     // 체크한 id들을 모아 전송.(마이리스트에 곡 추가)
-                // $.ajax()
                 $.ajax({
-                    method: "GET",
-                    url: "/we/admin2/get_ids",
+                    method: "POST",
+                    url: "/ajax/get_ids",
                     data: { id: id }
                 })
                 .done(function( count ) {
@@ -303,10 +302,9 @@
             }
             
             function ajax_delete(id){    // 마이리스트에서 곡 삭제
-                // $.ajax()
                 $.ajax({
                     method: "DELETE",
-                    url: "/we/admin2/get_ids",
+                    url: "/ajax/get_ids",
                     data: { id: id }
                 })
                 .done(function( count ) {
@@ -319,7 +317,7 @@
             function ajax_search(query){
                 $.ajax({
                     method: "GET",
-                    url: "/we/admin2/searching",
+                    url: "/ajax/searching",
                     data: { query: query }
                 })
                 .done(function( songs ) {

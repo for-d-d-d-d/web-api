@@ -353,7 +353,18 @@ class Admin2Controller < ApplicationController
         render layout: 'research'
     end
     
-    # 시작하기 누르면 더미 유저 생성 ~> 패쓰 (검색 대기 화면으로)
+    
+    # 고래방 길들이기 > templete rendering group
+    # ===========================================
+    #
+    # => 처음 접속하는 페이지
+    def login
+        #
+        #
+        render layout: false
+    end
+    
+    # => 시작하기 누르면 더미 유저 생성 ~> 패쓰 (검색 대기 화면으로)
     def create_dummy_user
         sex     = params[:sex]
         birth   = params[:birth]
@@ -394,7 +405,7 @@ class Admin2Controller < ApplicationController
             }])
             
             session[:user]  = user
-            redirect_to "/we/admin2/info2/#{user.id}"
+            redirect_to "/teach/#{user.id}"
         else
             redirect_to :back
         end
@@ -402,7 +413,7 @@ class Admin2Controller < ApplicationController
     
     SONGS_PER_PAGE = 20 # 한 회 로딩에 보여줄 노래 개수
     
-    # 검색 대기 (+결과) 화면 <~ Ajax통신으로 비동기 처리.
+    # => 검색 대기 (+결과) 화면 <~ Ajax통신으로 비동기 처리.
     def info2
         redirect_to '/we/admin2/login' if params[:id].nil?
         
@@ -419,14 +430,8 @@ class Admin2Controller < ApplicationController
             @count = @current_user.mylists.first.mylist_songs.count
             render layout: false
         else
-            redirect_to '/we/admin2/login'
+            redirect_to '/start'
         end
-    end
-    
-    def login
-        #
-        #
-        render layout: false
     end
     
     # 고래방 길들이기 > ajax task group
