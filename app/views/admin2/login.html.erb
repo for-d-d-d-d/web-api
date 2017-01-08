@@ -1,5 +1,6 @@
 <!DOCTYPE html>
     <!--[if IE 9 ]><html class="ie9"><![endif]-->
+<html style="overflow: auto;">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -52,11 +53,16 @@
                         $(this).attr("value", '');
                     };
                 });
+                
+                $(window).scroll(function(){
+                    var height = $(document).scrollTop();
+                    console.log(height);
+                });
             });
         </script>
     </head>
     
-    <body class="login-content">
+    <body class="login-content" style="overflow: auto;">
         <style>
             .loginCard{
                 position: fixed;
@@ -68,12 +74,15 @@
             }
             
             @media screen and (max-width: 768px){
+                body.login-content:after{
+                    height: initial !important;
+                }
                 #l-start-left{
                     margin-top: 20% !important;
                     margin-bottom: 0px !important;
                 }
                 .btn-getStart{
-                    margin-bottom: 700px !important;
+                    margin-bottom: 100px !important;
                     width: 100% !important;
                 }
                 #l-start{
@@ -122,7 +131,7 @@
             }
         </style>
         
-        <div class="card loginCard">
+        <div class="card loginCard" style="z-index: 10000;">
             <div class="card-header bgm-red" style="/*background-color: #2196f3;*/">고래방 가르치기</div>
             <div class="card-body"></div>
         </div>
