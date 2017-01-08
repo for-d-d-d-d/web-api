@@ -261,11 +261,15 @@
                                     + '</div>');
                             cards = cards + a_card;
                         }); // 반복문 종료
-                    }
-                    var place = $("#page_place");
-                    cards = cards + '<div id="page_place"></div>';
-                    place.attr("id",'#page_place_before');
-                    place.html(cards);
+                        var place = $("#page_place");
+                        cards = cards + '<div id="page_place"></div>';
+                        place.attr("id",'#page_place_before');
+                        place.html(cards);
+                    } else {
+                        var place = $("#page_place");
+                        place.remove();
+                    };
+                    
                 }); // ajax 종료
                 
                 page = page + 1;
