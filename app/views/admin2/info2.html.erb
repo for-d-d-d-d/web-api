@@ -188,8 +188,19 @@
             
             $(document).ready(function(){
                 $(".searchBtn").click(function(){
-                    console.log("searchBtn!");
-                    $(".lvh-search").fadeToggle(250);
+                    console.log("lv-header-alt!");
+                    var condition = $(".lvh-search").css("display");
+                    console.log(condition);
+                    if (condition == "none") {
+                        $(".lvh-search").fadeIn(250);
+                        $(".lvhs-input").focus();
+                    } else {
+                        $(".lvh-search").fadeOut(250);
+                    };
+                });
+                
+                $(".lvhs-input").focusout(function(){
+                    $(".lvh-search").fadeOut(250);
                 });
                 
                 $(".lvhs-input").keypress(function(event){
@@ -384,17 +395,17 @@
                     </div>
                  
                     <div class="card">
-                        <div class="lv-header-alt clearfix">
+                        <div class="lv-header-alt clearfix searchBtn">
                             <h2 class="lvh-label hidden-xs">찾는 노래가 있나요? 오른쪽 검색 아이콘을 눌러주세요!</h2>
                             
                             <div class="lvh-search">
                                 <input type="text" placeholder="Start typing..." class="lvhs-input" style="border: 1px solid #4caf50;">
-                                <i class="lvh-search-close searchBtn">&times;</i>
+                                <i class="lvh-search-close">&times;</i>
                             </div>
                             
                             <ul class="lv-actions actions">
                                 <li>
-                                    <a style="cursor:pointer" class="lvh-search-trigger searchBtn">
+                                    <a style="cursor:pointer" class="lvh-search-trigger">
                                         <i class="zmdi zmdi-search"></i>
                                     </a>
                                 </li>
