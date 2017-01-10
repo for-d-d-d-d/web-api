@@ -16,10 +16,10 @@ Rails.application.routes.draw do
   match "/:controller(/:action(/:id))", :via => [:post, :get]
   
   get "/beta(/:admin_name(/:complete_beta_user))", to: 'admin2#betaUser'
-  get "/research(/:is_admin)", to: 'admin2#research'
   get "/survey(/:action(/:id))", to: "admin2#:action"
   match "/we/admin2/get_ids(/:id)", to: "admin2#get_ids", :via => [:get, :post, :delete]
   
+  get   "/show/dummy",  to: 'admin2#research'
   get   "/start",       to: "admin2#login"
   post  "/new/dummy",   to: "admin2#create_dummy_user"
   get   "/teach(/:id)", to: "admin2#info2"

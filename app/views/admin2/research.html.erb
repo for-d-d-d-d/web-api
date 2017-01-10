@@ -17,28 +17,28 @@
         <div class="card">
             <div class="listview">
                 <div class="lv-header bgm-teal">
-                    <h3 style="color: #fff;"><%#= done.count  %> 개 완료, <%#= yet.count %> 개 남음</h3>
-                    <p><span style="color:#fff">남은 계정들 : </span> <%#= yet.map{|y| y[0].gsub('EMAIL : me@','<span style="color: #fff">').gsub('.beta','</span><span style="font-size: 1.1em; font-weight: bold;">번</span> ')}.join(', ').html_safe  %></p>
+                    <% @total_songs = @teachers.map{|u| u.mylists.first.mylist_songs}.flatten %>
+                    <h3 style="color: #fff;"><%= @teachers.count  %> 명 완료, <%= @total_songs.count %> 개 수집</h3>
+                    <p><span style="color:#fff">평균 입력갯수 : </span> <%= (@total_songs.count.to_f / @teachers.count.to_f).to_f + (@total_songs.count.to_f % @teachers.count.to_f).to_f %>개 <%#= yet.map{|y| y[0].gsub('EMAIL : me@','<span style="color: #fff">').gsub('.beta','</span><span style="font-size: 1.1em; font-weight: bold;">번</span> ')}.join(', ').html_safe  %></p>
                 </div>
                 <div class="lv-body">
                 </div>
             </div>
         </div>
-        <%# @results.compact.each do |result| %>
-        <% results = (1..100).to_a %>
-        <% results.each do |result| %>
+        <% @teachers.each do |t| %>
         <div class="col-md-3 col-sm-4 col-xs-12">
             <div class="card">
                 <div class="listview">
-                    <div class="lv-header bgm-indigo" style="color: #fff; font-size: 10px;">
-                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%= result %><%#= result[0] %></div>
-                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%#= result[1] %></div>
-                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%#= result[2] %></div>
+                    <div class="lv-header bgm-indigo" style="color: #fff; font-size: 10px;"><% songs = t.my_songs %>
+                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%= t.name %> (<%= songs.count %>)</div>
+                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%= t.email.gsub('@','_').gsub('.user','') %></div>
+                        <div class="col-md-4" style="margin-bottom: 15px; margin-top: -5px;"><%= t.created_at.to_s.gsub('2017-','17-') %></div>
                     </div>
                     <div class="lv-body" style="padding-left: 5%; padding-right: 5%; padding-bottom: 15px;">
-                        <%# result[3].each do |song| %>
-                            <p style="margin-bottom: 2px;"><%#= result[3].index(song) + 1 %> | <%#= song %></p>
-                        <%# end %>
+                        <% songs.each do |song| %>
+                            <p style="margin-bottom: 2px;"><%= song.artist_name %> | <%= song.title %></p>
+                        <% end %>
+                        <%= link_to "사용자 삭제하기", "/we/admin2/delete_dummy_user/#{t.id}", data: { confirm: '정말 삭제하시겠습니까?' }, class: "btn btn-danger" %>
                     </div>
                 </div>
             </div>

@@ -346,11 +346,7 @@ class Admin2Controller < ApplicationController
     
     # 환영합니다 메세지 & 시작하기 버튼
     def research
-        is_admin = false
-        is_admin = true if params[:is_admin].to_s == "true"
-        
-        # @results = 
-        render layout: 'research'
+        @teachers = User.teachers
     end
     
     
@@ -364,6 +360,10 @@ class Admin2Controller < ApplicationController
         render layout: false
     end
     
+    def delete_dummy_user
+        User.find(params[:id]).delete
+        redirect_to :back
+    end
     # => 시작하기 누르면 더미 유저 생성 ~> 패쓰 (검색 대기 화면으로)
     def create_dummy_user
         sex     = params[:sex]

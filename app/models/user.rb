@@ -58,6 +58,10 @@ class User < ActiveRecord::Base
         self.where("email LIKE?", "%.beta%").map{|u| if u.my_songs.count < 13 then ["EMAIL : "+ u.email, "NAME : "+ u.name, "COUNT : "+ u.my_songs.count.to_s + "개", u.mylists.first.mylist_songs.map{|s| Song.find(s.song_id)}.map{|s| s.title + " / " + s.artist_name}] end}[start..stop]
     end
 
+    def self.teachers
+        User.where("email LIKE?", "%dummy@%")
+    end
+
     def self.from_omniauth(auth)
         where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
         # where(auth.slice(:provider, :uid)).first_or_initialize.tap do |user|
