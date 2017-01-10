@@ -289,7 +289,7 @@
                         place.html(cards);
                     } else {
                         btn.hide();
-                        $("#goSearchFormBtn").show();
+                        $("#goSearchFormBtn1").show();
                     };
                     
                 }); // ajax 종료
@@ -309,6 +309,10 @@
                     console.log( "Data Saved: " + count );
                     $("span#count").empty();
                     $("span#count").append(count);
+                    
+                    var msg = "저장되었습니다!"
+                    $(".toast-msg").empty().append(msg);
+                    $(".toast").fadeIn(300).delay(500).fadeOut(300);
                 });
             }
             
@@ -322,10 +326,16 @@
                     console.log( "Data Deleted: " + count );
                     $("span#count").empty();
                     $("span#count").append(count);
+                    
+                    var msg = "삭제되었습니다!"
+                    $(".toast-msg").empty().append(msg);
+                    $(".toast").fadeIn(300).delay(500).fadeOut(300);
                 });
             }
             
             function ajax_search(query){
+                var btn = $("#loadMoreBtn");
+                
                 $.ajax({
                     method: "GET",
                     url: "/ajax/searching",
@@ -374,7 +384,9 @@
                         });
                         $(".photos").html(cards);
                     } else {
-                        console.log("Result is Null")
+                        console.log("Result is Null");
+                        btn.hide();
+                        $("#goSearchFormBtn2").show();
                     };
                 });
             }
@@ -466,6 +478,9 @@
                              <div class="load-more m-t-30" id="goSearchFormBtn" style="display: none;">
                                  <a onclick="goSearch(0)" style="cursor: pointer; background: #2196F3;">위로 올라가기 (검색을 이용해 주세요!)</a>
                              </div>
+                             <div class="load-more m-t-30" id="goSearchFormBtn2" style="display: none;">
+                                 <a onclick="goSearch(0)" style="cursor: pointer; background: #2196F3;">위로 올라가기</a>
+                             </div>
                          </div>
                      </div>
                  </div>
@@ -474,7 +489,36 @@
         </section>
         
         <%= render partial: 'admin2/feature_layouts/footer' %>
-
+        <!--Toast Message-->
+        <div class="container toast">
+            <div class="row">
+                <div class="col-sm-4 col-xs-2"></div>
+                <div class="col-sm-4 col-xs-8 toast-wrapper">
+                    <a class="btn btn-inverse waves-effect toast-btn" style="cursor: none;">
+                        <span class="toast-msg"></span>
+                    </a>
+                </div>
+                <div class="col-sm-4 col-xs-2"></div>
+            </div>
+        </div>
+        
+        <style>
+            .toast{
+                display: none;
+                position: fixed;
+                bottom: 80px;
+                width: 100%;
+                z-index: 1000000 !important;
+            }
+            .toast-wrapper{
+                text-align: center;
+            }
+            .toast-btn{
+                color: #fff;
+                padding: 10px 20px;
+            }
+        </style>
+        
         <!-- Page Loader -->
         <div class="page-loader">
             <div class="preloader pls-blue">
@@ -534,7 +578,7 @@
         <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         
-                <script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
         <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
         <script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
         <script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>

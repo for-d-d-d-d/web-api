@@ -492,7 +492,7 @@ class Admin2Controller < ApplicationController
         
         g1 = HomeController.search3_by_title(query)
         g2 = HomeController.search3_by_artist(query)
-        songs = (g1 + g2)&.each{|song| song.checkJacket2.tag_my_favorite(user)}
+        songs = (g1 + g2)&.uniq&.each{|song| song.checkJacket2.tag_my_favorite(user)}
         
         return render json: songs
     end
