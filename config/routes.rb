@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   root 'admin2#crawler_manager'
   get "/we/admin2(/:action(/:id))" => "admin2#:action"
   post "/we/admin2(/:action(/:id))" => "admin2#:action"
-  match "/:controller(/:action(/:id))", :via => [:post, :get]
+  # match "/:controller(/:action(/:id))", :via => [:post, :get]
   
   get "/beta(/:admin_name(/:complete_beta_user))", to: 'admin2#betaUser'
   get "/survey(/:action(/:id))", to: "admin2#:action"
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   post  "/new/dummy",   to: "admin2#create_dummy_user"
   get   "/teach(/:id)", to: "admin2#info2"
   match "/ajax/:action(/:id)", to: "admin2#:action", via: [:post, :get, :delete]
-  
+  get   "/end",         to: "admin2#ending"
   
   # REST-API TRIAL
   # namespace :api do

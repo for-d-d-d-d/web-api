@@ -434,6 +434,10 @@ class Admin2Controller < ApplicationController
         end
     end
     
+    def ending
+        render layout: false
+    end
+    
     # 고래방 길들이기 > ajax task group
     # ==================================
     #
