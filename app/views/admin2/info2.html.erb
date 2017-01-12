@@ -5,7 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>고래방 가르치기</title>
-    
+        
+        <meta property="og:url" content="http://join.goraebang.co.kr/start">
+        <meta property="og:title" content="고래방 가르치기">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="http://join.goraebang.co.kr/images/logo_ver3.png">
+        <meta property="og:description" content="당신의 노래 취향을 알려주세요!">
+        <meta name="description" content="당신의 애창곡을 알려주세요!">
+        <meta name="keywords" content="노래방,karaoke,음악,노래,취향,추천,고래방,고래,플랫폼">
+        
         <!-- Vendor CSS -->
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
@@ -20,6 +28,75 @@
     </head>
     
     <body>
+        <!--모달 감싸는놈-->
+        <!--<div class="modal_wrapper" style="z-index: 10001;">-->
+            <!--모달 주변 배경-->
+        <!--    <div class="modal_background"></div>-->
+            <!--모달 본문-->
+        <!--    <div class="modal_content" style="z-index: 10002;"></div>-->
+        <!--</div>-->
+        <div class="modal fade" id="modalNarrower" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">갯수별 맞춤형 메세지</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="sweet-alert showSweetAlert visible" style="display: block;">
+                            <div class="icon success animate">
+                                <span class="line tip animateSuccessTip"></span>
+                                <span class="line long animateSuccessLong"></span>
+                                <div class="placeholder"></div>
+                                <div class="fix"></div>
+                            </div>
+                        </div>
+                        <p style="text-align: center; margin-bottom: 5px;">
+                            <span class="count strong"><%= @count %></span> <span class="strong">곡</span>을 알려주셨어요!<br>
+                            괜찮으시다면 <span class="strong hangeul">네 곡</span>만 더 알려주세요!
+                        </p>
+                    </div>
+                    <div class="modal-footer"><!---->
+                        <a href="/end" class="btn waves-effect btn-warning">그만할께요</a>
+                        <a onclick="modal_hide(1)" class="btn waves-effect btn-success">더 선택하기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--모달 css-->
+        <style>
+            html{
+                height: 100%;
+            }
+            body{
+                min-height: 100%;
+            }
+            .fade{
+                background: rgba(0, 0, 0, 0.45);
+            }
+            /*.in{*/
+            /*    display: block !important;*/
+            /*}*/
+            .modal_wrapper{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+            .modal_background{
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.45);
+            }
+            .modal-dialog{
+                margin: 37% 10px;
+            }
+            .sweet-alert{
+                position: initial;
+                margin-top: initial;
+            }
+            .sweet-alert .icon{
+                margin: 0px auto 15px;
+            }
+        </style>
         <style>
             .loginCard{
                 position: fixed;
@@ -85,15 +162,20 @@
             }
             #count-wrapper{
                 float:right;
-                margin-right: 40px;
+                margin-right: 35px;
                 font-size: 13px;
-                margin-top: 10px;
+                margin-top: 24px;
             }
             .refresh_icon{
                 float: right;
                 right: 10px;
                 position: absolute;
-                top: 25px;
+                top: 47px;
+                font-size: 18px;
+            }
+            .strong{
+                font-size:14px;
+                font-weight:bold;
             }
             
             .infoCard-super{
@@ -147,12 +229,15 @@
                 font-size: 14px;
             }
             @media screen and (max-width: 768px){
-                /*.infoCard-content{*/
-                /*    width:;*/
-                /*}*/
                 .card-header{
                     line-height: 1.1 !important;
+                    padding: 23px 30px !important;
+                    font-size: 19px;
+                    padding-right: 18px !important;
                 }
+            }
+            .card-header{
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
             }
             
             
@@ -169,24 +254,90 @@
                 float: right;
                 right: 10px;
                 position: absolute;
-                top: 17px;
-                width: 30px;
-                height: 30px;
-                line-height: 35px !important;
+                top: 13px;
+                width: 35px;
+                height: 35px;
+                line-height: 36px !important;
             }
             .selectBtn > .zmdi{
                 font-size: 17px;
             }
         </style>
         <script>
-            function refresh(page){
-                var btn = $("#refreshBtn");
-                var nextPage = page + 1;
-                console.log('current : ' + page + ', nextPage : ' + nextPage);
-                location.reload();
+            function modal_show(i){
+                var count = $("#c-count").text();
+                console.log(count);
+                var titleBox = $(".modal-title");
+                var msg = "";
+                if (count <= 5) {
+                    msg = "ㅠㅠ노래가 너무 없으면 취향을 공부하기 어려워요..";
+                    c = 10 - count;
+                    hg = c + " 곡..";
+                } else if (count > 5 && count < 10) {
+                    msg = "아직 2% 부족해요; 조금만 더 부탁드립니다!! ㅇ0ㅇ";
+                    c = 10 - count;;
+                    hg = c + " 곡"
+                } else if (count >= 10 && count < 15 ) {
+                    msg = "ㅎㅎ고마워요! 피가되고 살이되었어요~ :D";
+                    hg = "네 곡";
+                } else if (count >= 15 && count < 20) {
+                    msg = "와우.. 더 알려주실도 있지만,, 만족합니다!";
+                    hg = "좋아하시는 몇 곡 정도";
+                } else if (count >= 20) {
+                    msg = "당신은 노래방 마니아입니다. 다음엔 노래도 들어보곱..";
+                    hg = "좋아하시는 몇 곡 정도";
+                };
+                titleBox.empty().append(msg);
+                $(".hangeul").empty().append(hg);
+                
+                var modal = $("#modalNarrower");
+                var dialog = $(".modal-dialog");
+                var content = $(".modal-content");
+                
+                modal.addClass("in").fadeIn(100);
+                // dialog.slideDown(500);    .fadeIn(300)
+                $("body").addClass("modal-open");
+                
             };
+            function modal_hide(i){
+                var modal = $("#modalNarrower");
+                var dialog = $(".modal-dialog");
+                var content = $(".modal-content");
+                
+                // dialog.slideUp(500);    .fadeOut(300)
+                modal.removeClass("in").slideUp(180);
+                $("body").removeClass("modal-open");
+            };
+            // function refresh(page){
+            //     var btn = $("#refreshBtn");
+            //     var nextPage = page + 1;
+            //     console.log('current : ' + page + ', nextPage : ' + nextPage);
+            //     location.reload();
+            // };
             
             $(document).ready(function(){
+                $("#prjTitle").click(function(){
+                    location.reload();
+                });
+                
+                // modal-closer
+                $('body').click(function(){
+                    console.log("window");
+                    modal_hide('1');
+                });
+                $(".modal-dialog").click(function(e){
+                    e.stopPropagation();
+                    console.log(".modal-dialog");
+                });
+                $(".card").click(function(e){
+                    e.stopPropagation();
+                    console.log(".card");
+                });
+                $("#main").click(function(e){
+                    e.stopPropagation();
+                    console.log("#main");
+                })
+                
                 $(".searchBtn").click(function(){
                     console.log("lv-header-alt!");
                     var condition = $(".lvh-search").css("display");
@@ -247,6 +398,7 @@
                     var cards  = "";
                     
                     if (songs != null) {
+                        console.log( "songs is NOT null");
                         $.each(songs, function(index, song) {
                             var anchor = "";
                             var jacket = "";
@@ -285,11 +437,11 @@
                         }); // 반복문 종료
                         var place = $("#page_place");
                         cards = cards + '<div id="page_place"></div>';
-                        place.attr("id",'#page_place_before');
-                        place.html(cards);
+                        place.html(cards).attr("id",'#page_place_before');
                     } else {
+                        console.log( "songs is null");
                         btn.hide();
-                        $("#goSearchFormBtn1").show();
+                        $("#goSearchFormBtn").show();
                     };
                     
                 }); // ajax 종료
@@ -307,12 +459,21 @@
                 })
                 .done(function( count ) {
                     console.log( "Data Saved: " + count );
-                    $("span#count").empty();
-                    $("span#count").append(count);
+                    $("span.count").empty().append(count);
                     
-                    var msg = "저장되었습니다!"
-                    $(".toast-msg").empty().append(msg);
-                    $(".toast").fadeIn(300).delay(500).fadeOut(300);
+                    var msg = count + "번째 곡이 저장되었습니다! :D";
+                    var toastBox = '<div class="container toast" id="toast_'+ id +'">'
+                                        + '<div class="row">'
+                                            + '<div class="col-sm-4 col-xs-2"></div>'
+                                            + '<div class="col-sm-8 col-xs-10 toast-wrapper">'
+                                                + '<a class="btn btn-inverse waves-effect toast-btn" style="cursor: none;">'
+                                                    + '<span class="toast-msg">'+ msg +'</span>'
+                                                + '</a>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>';
+                    $("#toast_point").append(toastBox);
+                    $("#toast_" + id).fadeIn(300).delay(800).fadeOut(300).attr("id","toast_end_" + id);
                 });
             }
             
@@ -324,17 +485,30 @@
                 })
                 .done(function( count ) {
                     console.log( "Data Deleted: " + count );
-                    $("span#count").empty();
-                    $("span#count").append(count);
+                    $("span.count").empty().append(count);
                     
-                    var msg = "삭제되었습니다!"
-                    $(".toast-msg").empty().append(msg);
-                    $(".toast").fadeIn(300).delay(500).fadeOut(300);
+                    var deleted_nth = count + 1;
+                    var msg = deleted_nth + "번째 곡이 삭제되었어요 :(";
+                    var toastBox = '<div class="container toast" id="d_toast_'+ id +'">'
+                                        + '<div class="row">'
+                                            + '<div class="col-sm-4 col-xs-2"></div>'
+                                            + '<div class="col-sm-8 col-xs-10 toast-wrapper">'
+                                                + '<a class="btn btn-inverse waves-effect toast-btn" style="cursor: none;">'
+                                                    + '<span class="toast-msg">'+ msg +'</span>'
+                                                + '</a>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>';
+                    $("#toast_point").append(toastBox);
+                    $("#d_toast_" + id).fadeIn(300).delay(800).fadeOut(300).attr("id","d_toast_end_" + id);
                 });
             }
             
             function ajax_search(query){
                 var btn = $("#loadMoreBtn");
+                btn.hide();
+                $("#goSearchFormBtn").hide();
+                $("#goSearchFormBtn2").show();
                 
                 $.ajax({
                     method: "GET",
@@ -392,9 +566,10 @@
             }
         </script>
         <div class="card loginCard" style="z-index: 1001 !important;">
-            <div class="card-header bgm-red" style="/*background-color: #2196f3;*/">고래방 가르치기 <%#= @current_user.my_songs.map{|s| s.title.first(3)} %> <%#= @current_user.my_songs.count %>
-                <a onclick="refresh(1)" id="refreshBtn" class="btn btn-default btn-icon waves-effect waves-circle waves-float refresh_icon" style=""><i class="zmdi zmdi-refresh"></i></a>
-                <span id="count-wrapper">현재까지 <span id="count"><%= @count %></span>개 했어요!</span>
+            <div class="card-header bgm-red" style="/*background-color: #2196f3;*/"><span id="prjTitle">고래방 가르치기</span> <%#= @current_user.my_songs.map{|s| s.title.first(3)} %> <%#= @current_user.my_songs.count %>
+                <a onclick="modal_show(1)" id="refreshBtn" class="btn btn-default btn-icon waves-effect waves-circle waves-float refresh_icon" style=""><span class="count" id="c-count"><%= @count %></span></a>
+                <!--<i class="zmdi zmdi-refresh"></i>-->
+                <span id="count-wrapper">COUNTER</span>
             </div>
             <div class="card-body"></div>
         </div>
@@ -402,8 +577,11 @@
         <section id="main">
             <section id="content">
                 <div class="container">
-                    <div class="block-header">
-                         <h2>당신의 취향을 알려주세요! <small>노래방에서 종종 불러본 노래를 찾아 초록색 버튼을 눌러주세요~**</small></h2>
+                    <div class="block-header" style="margin-top: 15px;">
+                        <h2>당신의 취향을 알려주세요!
+                             <small style="margin-bottom: 0;">종종 불러본 노래를 찾아 <span class="strong">초록색 버튼</span>을 눌러주세요~**</small>
+                             <small>오른쪽 위의 <span class="strong">흰색 카운터 버튼</span>을 누르면 완료하실 수 있어요!</small>
+                        </h2>
                     </div>
                  
                     <div class="card">
@@ -490,15 +668,16 @@
         
         <%= render partial: 'admin2/feature_layouts/footer' %>
         <!--Toast Message-->
-        <div class="container toast">
-            <div class="row">
-                <div class="col-sm-4 col-xs-2"></div>
-                <div class="col-sm-4 col-xs-8 toast-wrapper">
-                    <a class="btn btn-inverse waves-effect toast-btn" style="cursor: none;">
-                        <span class="toast-msg"></span>
-                    </a>
+        <div id="toast_point">
+            <div class="container toast" id="toast_" style="display: none !important;">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-2"></div>
+                    <div class="col-sm-8 col-xs-10 toast-wrapper">
+                        <a class="btn btn-inverse waves-effect toast-btn" style="cursor: none;">
+                            <span class="toast-msg">저장되었습니다!</span>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-sm-4 col-xs-2"></div>
             </div>
         </div>
         
@@ -506,16 +685,18 @@
             .toast{
                 display: none;
                 position: fixed;
-                bottom: 80px;
+                top: 85px;
                 width: 100%;
                 z-index: 1000000 !important;
             }
             .toast-wrapper{
-                text-align: center;
+                text-align: right;
+                right: 5px;
             }
             .toast-btn{
                 color: #fff;
-                padding: 10px 20px;
+                padding: 15px 20px;
+                box-shadow: 1px 1px 5px #777 !important;
             }
         </style>
         

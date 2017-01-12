@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+    <!--[if IE 9 ]><html class="ie9"><![endif]-->
+<html style="overflow: auto;">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>고래방 가르치기</title>
+
+        <meta property="og:url" content="http://join.goraebang.co.kr/start">
+        <meta property="og:title" content="고래방 가르치기">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="http://join.goraebang.co.kr/images/logo_ver3.png">
+        <meta property="og:description" content="당신의 노래 취향을 알려주세요!">
+        <meta name="description" content="당신의 애창곡을 알려주세요!">
+        <meta name="keywords" content="노래방,karaoke,음악,노래,취향,추천,고래방,고래,플랫폼">
+        
+        <!-- Vendor CSS -->
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+        <!--<link href="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">-->
+        <link href="/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+        <link href="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">        
+        <link href="/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+        <!--<link href="/vendors/bower_components/nouislider/distribute/jquery.nouislider.min.css" rel="stylesheet">-->
+        <!--<link href="/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
+        <!--<link href="/vendors/farbtastic/farbtastic.css" rel="stylesheet">-->
+        <link href="/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
+        <!--<link href="/vendors/summernote/dist/summernote.css" rel="stylesheet">-->
+        
+        <!-- CSS -->
+        <link href="/css/app.min.1.css" rel="stylesheet">
+        <link href="/css/app.min.2.css" rel="stylesheet">
+        
+        <script>
+            function goNext(current, next, control){
+                
+                var currentBox = $("#" + current);
+                var nextBox = $("#" + next);
+                var leftBox = $("#l-start-left");
+                if (control == "left-off") {
+                    // Switch Off
+                    leftBox.hide();
+                    $("body.login-content").addClass("height");
+                } else if (control == "left-on") {
+                    // Switch On
+                    leftBox.show();
+                } else {
+                    // No Action
+                };
+                currentBox.removeClass("toggled");
+                nextBox.addClass("toggled");
+                // alert('current = ' + current + ', next = ' + next);
+            };
+            $(document).ready(function(){
+                $("#acceptCheck").click(function(){
+                    var value = $(this).attr("value");
+                    // console.log(value);
+                    if (value.length == 0) {
+                        $(this).attr("value", "checked");
+                    } else {
+                        $(this).attr("value", '');
+                    };
+                });
+                
+                $(window).scroll(function(){
+                    var height = $(document).scrollTop();
+                    console.log(height);
+                });
+            });
+        </script>
+    </head>
+    
+    <body class="login-content" style="overflow: auto;">
+        <style>
+            .loginCard{
+                position: fixed;
+                width: 100%;
+                color: #fff;
+                font-size: 17px;
+                line-height: 0.5;
+                font-weight: bold;
+            }
+            
+            @media screen and (max-width: 768px){
+                body.login-content:after{
+                    height: initial;
+                }
+                .height:after{
+                    height: 100% !important;
+                }
+                #l-start-left{
+                    margin-top: 20% !important;
+                    margin-bottom: 0px !important;
+                }
+                .btn-getStart{
+                    margin-bottom: 100px !important;
+                    width: 100% !important;
+                }
+                #l-start{
+                    width: 85% !important;
+                    background: none !important;
+                    box-shadow: none;
+                }
+            }
+            @media screen and (min-width: 768px){
+                #l-start{
+                    width: inherit !important;
+                }
+            }
+            .btn-getStart{
+                top: 10% !important;
+                right: 0px !important;
+                /*position: absolute !important;*/
+                width: 250px;
+                height: 65px;
+                border-radius: 0;
+                line-height: 50px !important;
+                font-size: 25px;
+                font-weight: bold;
+            }
+            
+            .card-body > p {
+                margin: 0px;
+            }
+            .center{
+                text-align: center;
+            }
+            .hr{
+                text-align: center;
+            }
+            .title{
+                font-weight: bold;
+                margin-bottom: 3px !important;
+            }
+            .highlight{
+                background: #00bcd4;
+                color: #fff;
+                font-weight: bold;
+            }
+            .bolder{
+                font-weight: bold;
+            }
+        </style>
+        
+        <div class="card loginCard" style="z-index: 10000;">
+            <div class="card-header bgm-red" style="/*background-color: #2196f3;*/">고래방 가르치기</div>
+            <div class="card-body"></div>
+        </div>
+        
+        <div class="lc-block toggled" id="l-start-left" style="padding:0px !important; margin-top: 32% !important;">
+            <div class="card" style="margin-bottom: 0px;">
+                <div class="card-header bgm-orange" style="padding: 15px;">
+                    <h2>참여해주셔서 감사합니다!!</h2>
+                </div>
+                <div class="card-body card-padding" style="text-align: left; padding: 15px; padding-top: 12px;">
+                    <p class="hr">--- * ---</p>
+                    <p class="title">■ 1. 더 똑똑한 고래가 되어가고 있어요@</p>
+                    <br>
+                    <p class="hr">--- * ---</p>
+                    <p class="title">■ 2. 좋은 서비스로 곧이어 찾아뵙겠습니다!</p>
+                    <br>
+                    <p class="hr">--- * ---</p>
+                    <p class="title">■ 3. 새해 복 많이 받으시고 좋은 하루 되세요@</p>
+                    <br>
+                    <p class="hr">--- * ---</p>
+                    <p class="title">■ 4. (소곤소곤)종료하셔도 됩니다..!</p>
+                    <br><br>
+                    <p class="hr">--- team SLUBBY (inc) 드림 ---</p>
+                </div>
+            </div>
+        </div>
+        
+        <%= render partial: 'admin2/feature_layouts/footer' %>
+        <!-- Older IE warning message -->
+        <!--[if lt IE 9]>
+            <div class="ie-warning">
+                <h1 class="c-white">Warning!!</h1>
+                <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+                <div class="iew-container">
+                    <ul class="iew-download">
+                        <li>
+                            <a href="http://www.google.com/chrome/">
+                                <img src="img/browsers/chrome.png" alt="">
+                                <div>Chrome</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.mozilla.org/en-US/firefox/new/">
+                                <img src="img/browsers/firefox.png" alt="">
+                                <div>Firefox</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.opera.com">
+                                <img src="img/browsers/opera.png" alt="">
+                                <div>Opera</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.apple.com/safari/">
+                                <img src="img/browsers/safari.png" alt="">
+                                <div>Safari</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                                <img src="img/browsers/ie.png" alt="">
+                                <div>IE (New)</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <p>Sorry for the inconvenience!</p>
+            </div>
+        <![endif]-->
+        
+        <!-- Javascript Libraries -->
+        <script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        <script src="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
+        <script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+        <!--<script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>-->
+        
+        <!--<script src="/vendors/bower_components/moment/min/moment.min.js"></script>-->
+        <script src="/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+        <!--<script src="/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>-->
+        <!--<script src="/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>-->
+        <!--<script src="/vendors/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>-->
+        <!--<script src="/vendors/summernote/dist/summernote-updated.min.js"></script>-->
+        
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+        
+        <script src="/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
+        <!--<script src="/vendors/fileinput/fileinput.min.js"></script>-->
+        <!--<script src="/vendors/input-mask/input-mask.min.js"></script>-->
+        <!--<script src="/vendors/farbtastic/farbtastic.min.js"></script>-->
+        
+        <script src="/js/functions.js"></script>
+        <script src="/js/demo.js"></script>
+        
+    </body>
+</html>
