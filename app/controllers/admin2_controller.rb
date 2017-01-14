@@ -411,7 +411,20 @@ class Admin2Controller < ApplicationController
         end
     end
     
-    SONGS_PER_PAGE = 20 # 한 회 로딩에 보여줄 노래 개수
+    # => 고래방 길들이기 전용 반응형 연산자 :do
+    IN_ROW_MOBILE   = 2
+    IN_ROW_TABLET   = 3
+    IN_ROW_MIDDLE   = 4
+    IN_ROW_DESKTOP  = 6
+    
+    @grid_xs = 12/IN_ROW_MOBILE
+    @grid_sm = 12/IN_ROW_TABLET
+    @grid_bs = 12/IN_ROW_MIDDLE
+    @grid_md = 12/IN_ROW_DESKTOP
+    
+    SONGS_PER_PAGE  = @grid_xs.lcm(@grid_sm).lcm(@grid_bs).lcm(@grid_md) * 2 # 한 회 로딩에 보여줄 노래 개수
+    SAMPLES         = [847, 730, 253, 907, 28283, 611, 138, 514, 26371, 308, 6206, 127, 7825, 644, 371, 37051, 80, 871, 654, 27459, 23920, 386, 767, 695, 906, 471, 652, 26181, 301, 346, 19290, 181, 217, 54, 913, 266, 649, 86, 262, 321, 27027, 598, 315, 359, 501, 10295, 122, 92, 340, 9693, 835, 260, 30, 395, 10356, 33, 26513, 12103, 28097, 79, 440, 826, 813, 215, 196, 37682, 900, 331, 9262, 405, 10537, 579, 33635, 295, 220, 916, 861, 284, 12034, 645, 21242, 236, 685, 379, 866, 420, 28032, 19838, 121, 749, 845, 438, 817, 37858, 141, 675, 535, 785, 194, 132, 10358, 532, 350, 9528, 823]
+    # end:
     
     # => 검색 대기 (+결과) 화면 <~ Ajax통신으로 비동기 처리.
     def info2
@@ -426,7 +439,21 @@ class Admin2Controller < ApplicationController
         if @current_user
             spp = SONGS_PER_PAGE
             page = 1
-            @songs = Song.popular_month[(page - 1)*spp..(page*spp - 1)]&.each{|song| song.tag_my_favorite(@current_user)}
+            
+            
+            # => 장르별 샘플 매번실행 ver
+            # genres = Song.tj_ok.all.map{|s| "#{s.genre1}___#{s.genre2}"}.uniq.map{|g| g.split('___')}
+            # @songs = genres.map{|g| Song.where(genre1: g[0], genre2: g[1]).first(5)}
+            
+            # => 장르별 샘플 각각 5개 ver
+            # @songs  = SAMPLES[(page - 1)*spp..(page*spp - 1)]&.map{|id| Song.find(id)}&.each{|song| song.tag_my_favorite(@current_user)}
+            
+            # => 무작위 샘플 5페이지 ver
+            @songs  = Song.tj_ok.sample(spp*5)[(page - 1)*spp..(page*spp - 1)]&.each{|song| song.checkJacket2.tag_my_favorite(@current_user)}
+            
+            # => 인기차트 기반 ver
+            # @songs = Song.popular_month[(page - 1)*spp..(page*spp - 1)]&.each{|song| song.tag_my_favorite(@current_user)}
+            
             @count = @current_user.mylists.first.mylist_songs.count
             render layout: false
         else
@@ -480,7 +507,15 @@ class Admin2Controller < ApplicationController
         
         spp     = SONGS_PER_PAGE
         page    = params[:page].to_i
-        songs   = Song.popular_month[(page - 1)*spp..(page*spp - 1)]&.each{|song| song.checkJacket2.tag_my_favorite(user)}
+        
+        # => 장르별 샘플 각각 5개 ver
+        # songs   = SAMPLES[(page - 1)*spp..(page*spp - 1)]&.map{|id| Song.find(id)}&.each{|song| song.checkJacket2.tag_my_favorite(user)}
+        
+        # => 무작위 샘플 5페이지 ver
+        songs   = Song.tj_ok.sample(spp*5)[(page - 1)*spp..(page*spp - 1)]&.each{|song| song.checkJacket2.tag_my_favorite(user)}
+        
+        # => 인기차트 기반 ver
+        # songs = Song.popular_month[(page - 1)*spp..(page*spp - 1)]&.each{|song| song.tag_my_favorite(user)}
         
         return render json: songs
     end
