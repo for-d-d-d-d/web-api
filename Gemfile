@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # => admin & theme
 gem 'haml'
 gem 'haml-rails'
-gem 'compass-rails'
+gem 'compass-rails', '~> 2.0.4'
 gem 'bootstrap-sass'
 gem 'hierapolis-rails'
 gem 'rails_admin'

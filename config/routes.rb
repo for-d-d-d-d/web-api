@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   root 'admin2#crawler_manager'
   get "/we/admin2(/:action(/:id))" => "admin2#:action"
   post "/we/admin2(/:action(/:id))" => "admin2#:action"
-  # match "/:controller(/:action(/:id))", :via => [:post, :get]
+  match "/:controller(/:action(/:id))", :via => [:post, :get]
   
   get "/beta(/:admin_name(/:complete_beta_user))", to: 'admin2#betaUser'
   get "/survey(/:action(/:id))", to: "admin2#:action"
@@ -33,6 +33,8 @@ Rails.application.routes.draw do
   # end
   
   # RealTime RESTful Routing
+  post '/api/user/login',         to: "api/user#login"
+  get '/api/user/find_password',  to: "api/user#find_password"
   namespace :api do
       resources :mylist do
           resources :my_song
@@ -46,8 +48,7 @@ Rails.application.routes.draw do
       end
       resources :interface, :blacklist_song, :user
   end
-  post '/api/user/login', to: "api/user#login"
-  get '/api/:action', to: "api/interface#:action"
   
+  get '/api/:action', to: "api/interface#:action"
   
 end

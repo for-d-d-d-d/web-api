@@ -342,4 +342,27 @@ class Api::UserController < ApplicationController
         # super
     end
     
+    def find_password
+        email_address   = params[:email]
+        user            = User.where(email: email_address).take
+        
+        if user
+            ExampleMailer.sample_email(user).deliver
+            message = "임시비밀번호를 #{email_address}로 전송해드렸습니다."
+            return render json: {result: "SUCCESS", message: message}
+        else
+            return render json: {result: "ERROR", message: "계정이 존재하지 않습니다. 입력된 이메일을 확인해주세요."}
+        end
+      
+    end
+    
+    # def find_password
+    #   ExampleMailer.sample_email(User.where(email: "sunwoolyu@naver.com").take).deliver
+    #   # box = ExampleMailer.sample_email(User.where(email: email_address).take)
+      
+    #   redirect_to :back
+    # end
+    
+    
+    
 end
