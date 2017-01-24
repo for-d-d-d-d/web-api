@@ -356,6 +356,42 @@ class Api::UserController < ApplicationController
       
     end
     
+    def kakao_login
+        
+        @check      = "ERROR"
+        @status     = "400 BAD REQUEST"
+        @massage    = nil
+        @mytoken    = nil
+        @mylist_id  = nil
+        
+        user = params[:user]
+        
+        
+        u = User.new
+        req_user_info = ["email", "password", "password_confirmation"]
+        req_user_info.each do |attribute|
+            eval( "u.#{attribute} = user[:#{attribute}]")
+            u.name      = ""
+            u.gender    = 0
+        end
+        u.mytoken = u.email
+        
+        u.save!
+        uml = Mylist.new({
+                        user_id:    u.id,
+                        title:      "#{u.name}님의 첫 번째 리스트"
+                    })
+        uml.save!
+        @check, @mytoken, @mylist_id, @my_id = "SUCCESS", u.mytoken, uml.id, u.id
+     
+
+        message = "#{u.password} , #{u.password_confirmation}"
+
+        puts message
+        render :json => {result: @check, mytoken: @mytoken, myid: @my_id, mylist_id: @mylist_id}
+        
+    end
+    
     # def find_password
     #   ExampleMailer.sample_email(User.where(email: "sunwoolyu@naver.com").take).deliver
     #   # box = ExampleMailer.sample_email(User.where(email: email_address).take)
