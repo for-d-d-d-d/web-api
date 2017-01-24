@@ -48,6 +48,8 @@ class Api::UserController < ApplicationController
             return render json: {result: @check, status: @status, message: @massage}
         end
         
+        
+        
         if me[:mytoken].nil?    # 로그인시 토큰이 없다(== 토큰만료. 자동로그인 불가. >> 재로그인)
             if me[:email].nil?                                              # 차단2. user[email]이 입력되지 않음
                 @massage = "email을 입력해주세요"
@@ -59,6 +61,7 @@ class Api::UserController < ApplicationController
                 @massage = "password을(를) 입력해주세요"
                 return render json: {result: @check, status: @status, message: @massage}
             end
+            
             
             unless User.find_by_email(me[:email]).nil?
                 user = User.find_by_email(me[:email])
@@ -79,6 +82,8 @@ class Api::UserController < ApplicationController
                 @massage = "Oops! Please Check your Email! It's not registed account email :("
                 return render json: {result: @check, status: @status, message: @massage}
             end
+            
+            
         else                    # 토큰 있는 로그인(== 자동로그인.)
             if me[:mytoken] == "20000"                                      # 차단8. 탈퇴한 회원의 로그인
                 @massage = "앗, 탈퇴하신적이 있으신가요? 다시 가입해주세요~"
@@ -96,6 +101,87 @@ class Api::UserController < ApplicationController
         @mylist_id = user.mylists.first.id if user.mylists.count != 0
         render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
     end
+    
+    
+    
+    
+    
+    
+    
+    
+    # def login            ## 소셜로그인 반영 로그인
+        
+    #     @check      = "ERROR"
+    #     @status     = "400 BAD REQUEST"
+    #     @massage    = nil
+    
+    #     @id         = "ERROR"
+    #     @mytoken    = nil
+    #     @mylist_id  = nil
+        
+    #     unless params[:user].nil?
+    #         me = params[:user]
+    #     else                                                                # 차단1. 회원정보가 전혀 입력되지 않음
+    #         @massage = "회원 정보를 입력해주세요"
+    #         return render json: {result: @check, status: @status, message: @massage}
+    #     end
+        
+    #     if me[:mytoken].nil?    # 로그인시 토큰이 없다(== 토큰만료. 자동로그인 불가. >> 재로그인)
+    #         if me[:email].nil?                                              # 차단2. user[email]이 입력되지 않음
+    #             @massage = "email을 입력해주세요"
+    #             return render json: {result: @check, status: @status, message: @massage}
+    #         elsif UtilController.check_email(me[:email]) == nil             # 차단3. email이 형식에 맞지 않음
+    #             @massage = "Oops! Please Check your Email Format! (ex. blah@blah.blah)"
+    #             return render json: {result: @check, status: @status, message: @massage}
+    #         elsif me[:password].nil?                                        # 차단4. password가 입력되지 않음
+    #             @massage = "password을(를) 입력해주세요"
+    #             return render json: {result: @check, status: @status, message: @massage}
+    #         end
+            
+            
+    #         unless User.find_by_email(me[:email]).nil?
+    #             user = User.find_by_email(me[:email])
+    #             my_account_password = BCrypt::Password.new(user.encrypted_password)
+    #             if my_account_password == me[:password]
+    #                 @check    = "SUCCESS"
+    #                 @id       = user.id
+    #                 @mytoken  = user.mytoken
+    #                 if @mytoken == "20000"                                  # 차단5. 탈퇴한 회원의 로그인
+    #                     @massage = "앗, 탈퇴하신적이 있으신가요? 다시 가입해주세요~"
+    #                     return render json: {result: @check, status: @status, message: @massage}
+    #                 end
+    #             else                                                        # 차단6. password가 맞지 않음
+    #                 @massage = "Incorrect Password! Please Check your password!"
+    #                 return render json: {result: @check, status: @status, message: @massage}
+    #             end
+    #         else                                                            # 차단7. 가입되지 않은 email
+    #             @massage = "Oops! Please Check your Email! It's not registed account email :("
+    #             return render json: {result: @check, status: @status, message: @massage}
+    #         end
+            
+            
+    #     else                    # 토큰 있는 로그인(== 자동로그인.)
+    #         if me[:mytoken] == "20000"                                      # 차단8. 탈퇴한 회원의 로그인
+    #             @massage = "앗, 탈퇴하신적이 있으신가요? 다시 가입해주세요~"
+    #             return render json: {result: @check, status: @status, message: @massage}
+    #         end
+            
+    #         user = User.where(mytoken: me[:mytoken]).take
+    #         if user.nil?                                                    # 차단9. 저장되지 않은 토큰으로 로그인 시도.
+    #             @massage = "잘못된 로그인 시도입니다. 다시 로그인해주세요"
+    #             return render json: {result: @check, status: @status, message: @massage}
+    #         end
+    #         @check = "SUCCESS"
+    #         @id = user.id
+    #     end
+    #     @mylist_id = user.mylists.first.id if user.mylists.count != 0
+    #     render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
+    # end
+    
+    
+    
+    
+    
     
     
     
@@ -362,33 +448,43 @@ class Api::UserController < ApplicationController
         @status     = "400 BAD REQUEST"
         @massage    = nil
         @mytoken    = nil
+        @id         = "ERROR"
         @mylist_id  = nil
         
         user = params[:user]
         
+        if User.where(email: user[:email]).count == 0 ## make new user using kakao account
+            u = User.new
+            req_user_info = ["email", "password", "password_confirmation"]
+            req_user_info.each do |attribute|
+                eval( "u.#{attribute} = user[:#{attribute}]")
+                u.name      = ""
+                u.gender    = 0
+            end
+            u.mytoken = SecureRandom.hex(16)
+            
+            u.save!
+            uml = Mylist.new({
+                            user_id:    u.id,
+                            title:      "#{u.name}님의 첫 번째 리스트"
+                        })
+            uml.save!
+            @check, @mytoken, @mylist_id, @my_id = "SUCCESS", u.mytoken, uml.id, u.id
+         
+    
+            message = "#{u.password} , #{u.password_confirmation}"
+    
+            puts message
+            render :json => {result: @check, mytoken: @mytoken, myid: @my_id, mylist_id: @mylist_id}
         
-        u = User.new
-        req_user_info = ["email", "password", "password_confirmation"]
-        req_user_info.each do |attribute|
-            eval( "u.#{attribute} = user[:#{attribute}]")
-            u.name      = ""
-            u.gender    = 0
+        else #when the user exists with the kakao account
+                
+            @check = "SUCCESS"
+            @id = user.id
+            @mylist_id = user.mylists.first.id if user.mylists.count != 0
+            render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
         end
-        u.mytoken = u.email
-        
-        u.save!
-        uml = Mylist.new({
-                        user_id:    u.id,
-                        title:      "#{u.name}님의 첫 번째 리스트"
-                    })
-        uml.save!
-        @check, @mytoken, @mylist_id, @my_id = "SUCCESS", u.mytoken, uml.id, u.id
-     
-
-        message = "#{u.password} , #{u.password_confirmation}"
-
-        puts message
-        render :json => {result: @check, mytoken: @mytoken, myid: @my_id, mylist_id: @mylist_id}
+            
         
     end
     
