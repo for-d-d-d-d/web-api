@@ -50,5 +50,5 @@ Rails.application.routes.draw do
   end
   
   get '/api/:action', to: "api/interface#:action"
-  
+  post '/api/user/kakao_login', to: "api/user#kakao_login"  
 end

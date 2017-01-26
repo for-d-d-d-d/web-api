@@ -113,6 +113,7 @@ class Api::UserController < ApplicationController
     #               mylist_id:  \개인 기본 mylist id\
     #           }
     def create
+        redirect_to '/api/social/create' unless params[:provider].nil?
         @check      = "ERROR"
         @status     = "400 BAD REQUEST"
         @massage    = nil
@@ -261,6 +262,7 @@ class Api::UserController < ApplicationController
     #             mytoken         : (토큰)
     #           }
     def update
+        redirect_to '/api/social/update' unless params[:provider].nil?
         error = {result: "ERROR", message: "this is default error message", name: nil, gender: nil, email: nil, mytoken: nil}
         
         mytoken = params[:id]
@@ -362,7 +364,51 @@ class Api::UserController < ApplicationController
       
     #   redirect_to :back
     # end
-    
-    
-    
+   
+    def kakao_login
+         @check      = "ERROR"
+         @status     = "400 BAD REQUEST"
+         @massage    = nil
+         @mytoken    = nil
+         @id         = "ERROR"
+         @mylist_id  = nil
+
+         user = params[:user]
+         exist = User.where(uid: user[:uid], provider: user[:provider]).take 
+         if exist == nil ## make new user using kakao account
+             u = User.new
+             req_user_info = ["provider", "uid", "password", "password_confirmation"]
+             req_user_info.each do |attribute|
+                eval( "u.#{attribute} = user[:#{attribute}]")
+                u.name      = ""
+                u.gender    = 0
+             end
+             u.email = "#{u.uid}@#{u.provider}.com"
+             u.mytoken = SecureRandom.hex(16)
+             u.save!
+             uml = Mylist.new({
+                              user_id:    u.id,
+                              title:      "#{u.name}님의 첫 번째 리스트"
+                             })
+
+             uml.save!
+             @check, @mytoken, @mylist_id, @id = "SUCCESS", u.mytoken, uml.id, u.id
+
+             message = "#{u.password} , #{u.password_confirmation}"
+             puts message
+             return render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
+
+          else #when the user exists with the kakao account
+                 if BCrypt::Password.new(exist.encrypted_password) == user[:password]
+                     @check = "SUCCESS already"
+                     @id = exist.id
+                     @mytoken = exist.mytoken
+                     @mylist_id = exist.mylists.first.id if exist.mylists.count != 0
+                     return render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
+                 else
+                     @massage = "Wrong Password"
+                     return render :json => {result: @check, status: @status, message:@massage}
+                 end
+          end
+    end
 end
