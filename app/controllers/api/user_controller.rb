@@ -1,6 +1,6 @@
 class Api::UserController < ApplicationController
     ## REST-API Definition
-    
+     
     # => (로그인) POST        /api/user/login                       api/user#login
     # STORY   > 수동 로그인 및 토큰 발행
     # INPUT       > parameters : {
@@ -32,7 +32,7 @@ class Api::UserController < ApplicationController
     #     7. 자동 로그인 > 가입되지 않은 email
     #     8. 자동 로그인 > 탈퇴한 회원의 로그인
     #     9. 자동 로그인 > 저장되지 않은 토큰으로 로그인 시도
-    def login
+    def login  ##with oauth
         @check      = "ERROR"
         @status     = "400 BAD REQUEST"
         @massage    = nil
@@ -47,57 +47,139 @@ class Api::UserController < ApplicationController
             @massage = "회원 정보를 입력해주세요"
             return render json: {result: @check, status: @status, message: @massage}
         end
+
+        if me[:provider] != nil ## 소셜로그인
+
+            @check, @status, @massage, @mytoken, @id, @mylist_id = omniauth_login(me)
         
-        if me[:mytoken].nil?    # 로그인시 토큰이 없다(== 토큰만료. 자동로그인 불가. >> 재로그인)
-            if me[:email].nil?                                              # 차단2. user[email]이 입력되지 않음
-                @massage = "email을 입력해주세요"
-                return render json: {result: @check, status: @status, message: @massage}
-            elsif UtilController.check_email(me[:email]) == nil             # 차단3. email이 형식에 맞지 않음
-                @massage = "Oops! Please Check your Email Format! (ex. blah@blah.blah)"
-                return render json: {result: @check, status: @status, message: @massage}
-            elsif me[:password].nil?                                        # 차단4. password가 입력되지 않음
-                @massage = "password을(를) 입력해주세요"
-                return render json: {result: @check, status: @status, message: @massage}
-            end
-            
-            unless User.find_by_email(me[:email]).nil?
-                user = User.find_by_email(me[:email])
-                my_account_password = BCrypt::Password.new(user.encrypted_password)
-                if my_account_password == me[:password]
-                    @check    = "SUCCESS"
-                    @id       = user.id
-                    @mytoken  = user.mytoken
-                    if @mytoken == "20000"                                  # 차단5. 탈퇴한 회원의 로그인
-                        @massage = "앗, 탈퇴하신적이 있으신가요? 다시 가입해주세요~"
-                        return render json: {result: @check, status: @status, message: @massage}
-                    end
-                else                                                        # 차단6. password가 맞지 않음
-                    @massage = "Incorrect Password! Please Check your password!"
+            hash = {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}  if @check.include? "SUCCESS"
+            hash = {result: @check, status: @status, message: @massage}                 if @check == "ERROR"
+
+            return render json: hash
+
+        else ## 소셜로그인이 아닐떄
+        
+            if me[:mytoken].nil?    # 로그인시 토큰이 없다(== 토큰만료. 자동로그인 불가. >> 재로그인)
+                if me[:email].nil?                                              # 차단2. user[email]이 입력되지 않음
+                    @massage = "email을 입력해주세요"
+                    return render json: {result: @check, status: @status, message: @massage}
+                elsif UtilController.check_email(me[:email]) == nil             # 차단3. email이 형식에 맞지 않음
+                    @massage = "Oops! Please Check your Email Format! (ex. blah@blah.blah)"
+                    return render json: {result: @check, status: @status, message: @massage}
+                elsif me[:password].nil?                                        # 차단4. password가 입력되지 않음
+                    @massage = "password을(를) 입력해주세요"
                     return render json: {result: @check, status: @status, message: @massage}
                 end
-            else                                                            # 차단7. 가입되지 않은 email
-                @massage = "Oops! Please Check your Email! It's not registed account email :("
-                return render json: {result: @check, status: @status, message: @massage}
+                
+                unless User.find_by_email(me[:email]).nil?
+                    user = User.find_by_email(me[:email])
+                    my_account_password = BCrypt::Password.new(user.encrypted_password)
+                    if my_account_password == me[:password]
+                        @check    = "SUCCESS"
+                        @id       = user.id
+                        @mytoken  = user.mytoken
+                        if @mytoken == "20000"                                  # 차단5. 탈퇴한 회원의 로그인
+                            @massage = "앗, 탈퇴하신적이 있으신가요? 다시 가입해주세요~"
+                            return render json: {result: @check, status: @status, message: @massage}
+                        end
+                    else                                                        # 차단6. password가 맞지 않음
+                        @massage = "Incorrect Password! Please Check your password!"
+                        return render json: {result: @check, status: @status, message: @massage}
+                    end
+                else                                                            # 차단7. 가입되지 않은 email
+                    @massage = "Oops! Please Check your Email! It's not registed account email :("
+                    return render json: {result: @check, status: @status, message: @massage}
+                end
+            else                    # 토큰 있는 로그인(== 자동로그인.)
+                if me[:mytoken] == "20000"                                      # 차단8. 탈퇴한 회원의 로그인
+                    @massage = "앗, 탈퇴하신적이 있으신가요? 다시 가입해주세요~"
+                    return render json: {result: @check, status: @status, message: @massage}
+                end
+                
+                user = User.where(mytoken: me[:mytoken]).take
+                if user.nil?                                                    # 차단9. 저장되지 않은 토큰으로 로그인 시도.
+                    @massage = "잘못된 로그인 시도입니다. 다시 로그인해주세요"
+                    return render json: {result: @check, status: @status, message: @massage}
+                end
+                @check = "SUCCESS"
+                @id = user.id
             end
-        else                    # 토큰 있는 로그인(== 자동로그인.)
-            if me[:mytoken] == "20000"                                      # 차단8. 탈퇴한 회원의 로그인
-                @massage = "앗, 탈퇴하신적이 있으신가요? 다시 가입해주세요~"
-                return render json: {result: @check, status: @status, message: @massage}
-            end
-            
-            user = User.where(mytoken: me[:mytoken]).take
-            if user.nil?                                                    # 차단9. 저장되지 않은 토큰으로 로그인 시도.
-                @massage = "잘못된 로그인 시도입니다. 다시 로그인해주세요"
-                return render json: {result: @check, status: @status, message: @massage}
-            end
-            @check = "SUCCESS"
-            @id = user.id
+            @mylist_id = user.mylists.first.id if user.mylists.count != 0
+            render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
+
+
         end
-        @mylist_id = user.mylists.first.id if user.mylists.count != 0
-        render :json => {result: @check, mytoken: @mytoken, id: @id, mylist_id: @mylist_id}
+        
     end
     
-    
+    def omniauth_login(param_info_hash)
+        me = param_info_hash
+        exist = User.where(uid: me[:uid], provider: me[:provider]).take
+
+        check       = @check
+        status      = @status
+        message     = @massage
+        mytoken     = @mytoken
+        my_user_id  = @id
+        mylist_id   = @mylist_id
+
+        case me[:provider]
+        when "kakao"
+            
+            if exist == nil ## make new user using kakao account
+                # => user create
+                u = User.new
+                req_user_info = ["provider", "uid", "password", "password_confirmation"]
+                req_user_info.each do |attribute|
+                    eval( "u.#{attribute} = me[:#{attribute}]" )
+                end
+                u.name      = ""
+                u.gender    = 0
+                u.email     = "#{u.uid}@#{u.provider}.com"
+                u.mytoken   = SecureRandom.hex(16)
+                u.save!
+                
+                # => user's mylist create
+                uml = Mylist.new({
+                                    user_id:    u.id,
+                                    title:      "#{u.name}님의 첫 번째 리스트"
+                                })
+                uml.save!
+                
+                # => message for debugging
+                message = "#{u.password} , #{u.password_confirmation}"
+                puts message
+                message = nil
+                
+                # => ready for return
+                status = "200 OK"
+                check, mytoken, my_user_id, mylist_id = "SUCCESS WITH KAKAO", u.mytoken, u.id, uml.id
+
+            else #when the user exists with the kakao account
+
+                if BCrypt::Password.new(exist.encrypted_password) == me[:password] ## login success
+                    check       = "SUCCESS WITH KAKAO!!"
+                    status      = "200 OK"
+                    mytoken     = exist.mytoken
+                    my_user_id  = exist.id
+                    mylist_id   = exist.mylists.first.id if exist.mylists.count != 0
+
+                else ## login failure
+                    message = "Wrong Password"
+                end
+            end
+
+        when "facebook"
+            
+
+        end
+
+        return check, status, message, mytoken, my_user_id, mylist_id
+    end
+
+
+
+
     
     # => (신규 생성) POST     /api/user                             api/user#create
     # STORY   > 회원가입
